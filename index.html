@@ -44,7 +44,7 @@ h3{font-size:22px}
 .muted{color:#55557a;font-weight:700}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:4px solid var(--ink);border-radius:12px;box-shadow:0 6px 0 var(--ink);
  padding:14px 22px;font-size:22px;background:var(--yellow);transition:transform .05s}
-.btn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+.btn:active{filter:brightness(.95)}
 .btn.green{background:var(--green);color:#fff}.btn.red{background:var(--red);color:#fff}.btn.blue{background:var(--blue);color:#fff}.btn.grey{background:#e2e8f0}
 .btn.purple{background:var(--purple);color:#fff}
 .row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
@@ -90,6 +90,8 @@ input.name:focus{background:#fffbe6}
 .speed{height:18px;border:4px solid var(--ink);border-radius:8px;background:#e2e8f0;overflow:hidden;position:relative}
 .speed span{position:absolute;inset:0;width:100%;background:linear-gradient(90deg,#22c55e,#facc15);transform-origin:left;transition:transform .1s linear}
 .speedlbl{font-size:15px;color:#55557a;display:flex;justify-content:space-between}
+.speed.half span{background:linear-gradient(90deg,#f97316,#facc15)}
+.halfbanner{background:#c2410c;color:#fff;border:4px solid var(--ink);border-radius:12px;padding:12px 14px;font-size:26px;line-height:1.2;text-align:center;box-shadow:0 4px 0 var(--ink)}
 .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.78em;line-height:1.08;margin:0 .1em}
 .frac>span:first-child{border-bottom:.12em solid currentColor;padding:0 .18em}
 .mixed{white-space:nowrap}
@@ -185,6 +187,7 @@ textarea{width:100%;font:inherit;font-size:20px;padding:10px;border:4px solid va
 #modal .card{max-width:520px;width:100%;text-align:center}
 #modal p{font-size:20px;line-height:1.4}
 #fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+#fx,#fx *{pointer-events:none}
 #fx .coin{position:absolute;left:0;top:0;font-size:22px}
 .floattxt{position:absolute;font-size:28px;font-weight:900;color:var(--yellow);text-shadow:0 3px 0 #000,2px 0 0 #000,-2px 0 0 #000}
 .confetti{position:absolute;left:0;top:0;width:14px;height:14px;border:2px solid #000}
@@ -192,11 +195,35 @@ textarea{width:100%;font:inherit;font-size:20px;padding:10px;border:4px solid va
 .ninjaq .qtext{font-size:28px;flex:none}
 .dropnote{font-size:15px;color:#55557a}
 .field{position:relative;flex:1;min-height:340px;background:linear-gradient(#1e1b4b,#312e81 55%,#0f172a);border:4px solid var(--ink);border-radius:16px;overflow:hidden;touch-action:none;box-shadow:0 6px 0 var(--ink)}
-.field #ans{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:14px;pointer-events:none}
-.field #ans:not(:empty){pointer-events:auto;background:rgba(15,23,42,.88)}
-.field #ans .fb{width:min(480px,100%);max-height:100%;overflow:auto}
-.fallchip{position:absolute;left:0;top:0;z-index:3;min-height:76px;padding:8px 12px;border:4px solid var(--ink);border-radius:14px;box-shadow:0 6px 0 #000;font-size:26px;line-height:1.15;text-align:center;touch-action:none;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.fallchip.long{font-size:16px;min-height:68px}
+.field #ans{position:absolute;inset:0;z-index:6;display:flex;align-items:flex-end;justify-content:center;padding:12px;pointer-events:none}
+.field #ans:not(:empty){pointer-events:auto;background:rgba(15,23,42,.72)}
+.field #ans .fb{width:min(560px,100%);max-height:100%;overflow:hidden;display:flex;flex-direction:column}
+.field #ans .fbbody{overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;min-height:0}
+.fallchip{position:absolute;left:0;top:0;z-index:3;min-height:84px;padding:10px 12px;border:4px solid var(--ink);border-radius:14px;box-shadow:0 6px 0 #000;font-size:24px;line-height:1.15;text-align:center;touch-action:none;display:flex;align-items:center;justify-content:center}
+.fallchip.long{font-size:18px;min-height:84px}
+.roundbar{position:fixed;left:0;right:0;bottom:0;z-index:45;display:flex;gap:10px;justify-content:center;padding:10px 12px calc(10px + env(safe-area-inset-bottom));background:#fff;border-top:5px solid var(--ink);box-shadow:0 -6px 0 rgba(0,0,0,.12)}
+.roundbar .btn{flex:1;max-width:320px;min-height:64px;font-size:22px;touch-action:manipulation}
+body.has-roundbar #app{padding-bottom:108px}
+body.ninja-on{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+body.ninja-on #hdr{flex:none;min-height:0;padding:4px 10px;gap:8px}
+body.ninja-on #hdr .brand,body.ninja-on #hdr .hbtn:not([data-act="mute"]){display:none}
+body.ninja-on #hdr .who svg{height:36px;width:auto}
+body.ninja-on #hdr .who .nm{font-size:16px}
+body.ninja-on #app{flex:1;min-height:0;max-width:none;margin:0;padding:6px 8px 8px;display:flex;flex-direction:column;overflow:hidden}
+body.ninja-on .ninjawrap{position:relative;flex:1;min-height:0;gap:6px}
+body.ninja-on #halfslot:not(:empty){position:absolute;left:8px;right:8px;top:42px;z-index:8;pointer-events:none}
+body.ninja-on .qtop{margin:0;gap:6px}
+body.ninja-on .qtop .tagbox{padding:3px 8px;font-size:14px}
+body.ninja-on .blocks i{width:16px;height:16px;border-width:2px}
+body.ninja-on .ninjaq{flex:none;max-height:30dvh;overflow:auto;padding:8px 10px;gap:6px;min-height:0;box-shadow:0 4px 0 var(--ink)}
+body.ninja-on .ninjaq .qtext{font-size:22px;line-height:1.25}
+body.ninja-on .ninjaq .qtext.long{font-size:18px}
+body.ninja-on .helpmini{width:auto;padding:6px 12px;font-size:16px;box-shadow:0 3px 0 var(--ink);white-space:nowrap}
+body.ninja-on .speed{height:12px;border-width:3px}
+body.ninja-on .field{flex:1;min-height:0}
+body.ninja-on .ninjaguy{width:64px}
+body.has-roundbar.ninja-on #app{padding-bottom:8px}
+body.has-roundbar .field #ans{padding-bottom:96px}
 .fallchip.c0{background:#fde68a}.fallchip.c1{background:#bfdbfe}.fallchip.c2{background:#bbf7d0}.fallchip.c3{background:#fbcfe8}
 .fallchip.hit{background:var(--green)!important;color:#fff}
 .fallchip.miss{background:var(--red)!important;color:#fff}
@@ -214,8 +241,9 @@ textarea{width:100%;font:inherit;font-size:20px;padding:10px;border:4px solid va
 @media (max-width:900px){
  .start,.quiz,.grid2,.housepage{grid-template-columns:1fr!important}
  .badges{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}
- h1{font-size:34px}.qtext{font-size:28px}.qtext.long{font-size:22px}.ninjaq .qtext{font-size:24px}
- .field{min-height:300px}.fallchip{min-height:72px;font-size:22px}
+ h1{font-size:34px}.qtext{font-size:28px}.qtext.long{font-size:22px}
+ body:not(.ninja-on) .ninjaq .qtext{font-size:24px}
+ .fallchip{min-height:80px;font-size:22px}
  #hdr .brand{display:none}
  .hbtn .lbl{display:none}
  .sitebar svg{height:72px}
@@ -245,7 +273,8 @@ const pad2=n=>String(n).padStart(2,'0');
 const COIN='<span class="coin">R$</span>';
 const $=s=>document.querySelector(s);
 const REWARD={easy:1,medium:2,hard:3};
-const LIMIT=12;
+const LIMIT=14;
+const GRACE=30;
 const DNAME={easy:'Easy',medium:'Medium',hard:'Hard'};
 
 const KEY='blockMathsQuest_v1';
@@ -833,7 +862,7 @@ const HOUSE=[
  {id:'lights',name:'Garden lights',cost:8,say:'Lights on!'},
  {id:'swing',name:'Swing set',cost:10,say:'Swing set ready! Your house is complete!'}
 ];
-function houseProgress(pts){pts=Math.max(0,pts|0);let used=0;const built=[];
+function houseProgress(pts){pts=Math.max(0,+pts||0);let used=0;const built=[];
  for(let i=0;i<HOUSE.length;i++){const s=HOUSE[i];if(pts>=used+s.cost){used+=s.cost;built.push(s);}else return{built,next:s,have:pts-used,need:s.cost,done:false,pts};}
  return{built,next:null,have:0,need:0,done:true,pts};}
 function houseSVG(pts,fresh){const st=houseProgress(pts);const on=id=>st.built.some(s=>s.id===id);const pop=id=>fresh===id?' class="rise"':'';const ink='#14142b';
@@ -861,9 +890,9 @@ function houseSVG(pts,fresh){const st=houseProgress(pts);const on=id=>st.built.s
  ${g('swing',`<g stroke="${ink}" stroke-width="3" fill="none"><path d="M250 250 V214 H300 V250"/><line x1="268" y1="214" x2="268" y2="236"/><line x1="284" y1="214" x2="284" y2="236"/><rect x="260" y="234" width="32" height="6" rx="2" fill="#f97316"/></g>`)}
  ${on('swing')?`<g${pop('flag')}><line x1="246" y1="48" x2="246" y2="28" stroke="${ink}" stroke-width="3"/><polygon points="246,28 270,34 246,40" fill="#fde047" stroke="${ink}" stroke-width="2"/></g>`:''}
  </svg>`;}
-function houseBar(pts,fresh){const st=houseProgress(pts);const label=st.done?'House complete! You built every part.':`Next: ${st.next.name} · ${st.have}/${st.need} bricks`;
+function houseBar(pts,fresh){const st=houseProgress(pts);const label=st.done?'House complete! You built every part.':`Next: ${st.next.name} · ${fmt(st.have)}/${st.need} bricks`;
  const pc=st.done?100:Math.round(st.have/st.need*100);
- return `<div class="sitebar" id="houseSlot"><div style="width:148px">${houseSVG(pts,fresh)}</div><div class="ht"><b>🏠 ${st.done?'Mansion complete':st.built[st.built.length-1].name}</b><p>${label}. Easy +1, medium +2, hard +3.</p><div class="prog"><span style="width:${pc}%"></span></div></div></div>`;}
+ return `<div class="sitebar" id="houseSlot"><div style="width:148px">${houseSVG(pts,fresh)}</div><div class="ht"><b>🏠 ${st.done?'Mansion complete':st.built[st.built.length-1].name}</b><p>${label}. Full points add 1, 2 or 3 bricks. A late answer adds half.</p><div class="prog"><span style="width:${pc}%"></span></div></div></div>`;}
 
 const SPK_ON='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 8q3 4 0 8M18.5 5.5q5 6.5 0 13" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
 const SPK_OFF='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 9l6 6M22 9l-6 6" stroke="#f87171" stroke-width="2.6" stroke-linecap="round"/></svg>';
@@ -898,14 +927,19 @@ function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
 function stopFall(){if(fallRAF){cancelAnimationFrame(fallRAF);fallRAF=0;}}
 function clearAuto(){if(Q&&Q.auto){clearTimeout(Q.auto);Q.auto=null;}}
 function timeUsed(){if(!Q)return 99;return Q.elapsed+(Q.paused?0:(performance.now()-Q.t0)/1000);}
-function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();const b=$('#sbar'),s=$('#secs');if(!b||!s){stopTimer();return;}const left=Math.max(0,LIMIT-el);b.style.transform=`scaleX(${left/LIMIT})`;s.textContent=Math.ceil(left)+'s';if(left<=0){stopTimer();timeUp();}}
+function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();const b=$('#sbar'),s=$('#secs');if(!b||!s){stopTimer();return;}
+ const lim=Q.limit||LIMIT;
+ if(!Q.half){const left=lim-el;if(left<=0){beginHalf();return;}b.style.transform=`scaleX(${Math.max(0,left)/lim})`;s.textContent=Math.ceil(left)+'s';return;}
+ const left=GRACE-(el-lim);if(left<=0){stopTimer();timeUp();return;}b.style.transform=`scaleX(${Math.max(0,left)/GRACE})`;s.textContent=Math.ceil(left)+'s';}
 function startClock(){stopTimer();timer=setInterval(paintClock,100);}
+function clearChrome(){document.body.classList.remove('ninja-on','has-roundbar');const b=document.querySelector('.roundbar');if(b)b.remove();}
+function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
 let startMsg='',subjectTab='maths',parentSum=null;
-function showStart(){stopTimer();clearAuto();stopFall();Q=null;header();const names=Object.values(store.players);
+function showStart(){stopTimer();clearAuto();stopFall();clearChrome();Q=null;header();const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
  const blurb=subjectTab==='science'
-  ?'Year 5 science. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. Help is a pass. You have 12 seconds.'
-  :'A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). Number Ninja is a slicing game. The house builds only in Times Table Tycoon.';
+  ?'Year 5 science. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. After 14 seconds it is half points. Help is a pass.'
+  :'A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). After the timer, a right answer is worth half. Number Ninja is a slicing game. The house builds only in Times Table Tycoon.';
  app.innerHTML=`<div class="start">
  <div class="hero"><h1>Block<br>Maths<br>Quest</h1><div class="avatarBox">${avatar(player?player.av:null,180)}</div>
   <div style="color:#fff;font-size:18px;text-shadow:0 2px 0 #14142b;line-height:1.4">Get questions right. Earn 1, 2 or 3 ${COIN}. Build your block house!</div></div>
@@ -922,16 +956,18 @@ function showStart(){stopTimer();clearAuto();stopFall();Q=null;header();const na
 function newRound(L){Q={L,qs:buildRound(L),i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts};}
 function startRound(key){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
  const L=LEVELS.find(l=>l.key===key);if(!L)return;
- if(inp)inp.blur();setPlayer(nm);newRound(L);if(!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
+ if(inp)inp.blur();setPlayer(nm);subjectTab=L.subject==='science'?'science':'maths';newRound(L);if(!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
 function roundQuestionPay(){return Q.earn.easy+Q.earn.medium+Q.earn.hard;}
 function pipClass(k){if(k===Q.i)return 'cur';if(k>Q.i)return '';if(Q.res[k]===true)return 'ok';if(Q.res[k]==='pass')return 'pass';return 'no';}
 function isNinja(){return !!(Q&&Q.L&&Q.L.mode==='ninja');}
 function isTycoon(){return !!(Q&&Q.L&&Q.L.tycoon);}
-/* Seconds for an answer to cross the playfield. Easy is fastest, hard is slowest. */
-const FALL_SECS={easy:3.6,medium:7,hard:14};
 const DROP_WORD={easy:'drops fast',medium:'steady fall',hard:'slow fall — time to think'};
 function qTop(){return `<div class="qtop"><div class="blocks">${Q.qs.map((_,k)=>`<i class="${pipClass(k)}"></i>`).join('')}</div><div class="spacer"></div>
- <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${roundQuestionPay()}</span> this round</div></div>`;}
+ <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${fmt(roundQuestionPay())}</span> this round</div></div>`;}
+/* Seconds for the correct answer to cross the field. Easy is fastest, hard is slowest. */
+const FALL_SECS={easy:7,medium:11,hard:16};
+function ninjaLimit(diff){return (FALL_SECS[diff]||FALL_SECS.medium)+2;}
+function halfPay(reward){return reward/2;}
 function ninjaLabel(q,n){if(q.prefix==='S$')return money(n);return (q.prefix||'')+fmt(n)+(q.suffix?' '+q.suffix:'');}
 function ninjaOptions(q){if(q.type==='mc')return q.choices.slice();
  const right=ninjaLabel(q,q.ans);const wrongs=[];const seen=new Set([right]);
@@ -940,7 +976,7 @@ function ninjaOptions(q){if(q.type==='mc')return q.choices.slice();
  let k=1;while(wrongs.length<3&&k<20){const lab=ninjaLabel(q,clean(q.ans+k*7));k++;if(seen.has(lab))continue;seen.add(lab);wrongs.push(lab);}
  return shuf([right,...wrongs]);}
 const NINJA_GUY=`<svg class="ninjaguy" viewBox="0 0 90 120" aria-hidden="true"><rect x="22" y="10" width="46" height="40" rx="8" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="28" y="18" width="34" height="28" rx="4" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="26" y="18" width="38" height="9" fill="#ef4444" stroke="#14142b" stroke-width="2"/><polygon points="64,18 84,10 64,28" fill="#ef4444" stroke="#14142b" stroke-width="2"/><rect x="36" y="30" width="7" height="7" fill="#14142b"/><rect x="50" y="30" width="7" height="7" fill="#14142b"/><path d="M38 40 Q45 46 54 40" fill="none" stroke="#14142b" stroke-width="3" stroke-linecap="round"/><rect x="8" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="66" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="52" width="42" height="34" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="74" width="42" height="7" fill="#ef4444"/><rect x="26" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="48" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><g transform="rotate(-28 78 70)"><rect x="74" y="40" width="7" height="36" rx="1" fill="#e5e7eb" stroke="#14142b" stroke-width="2"/><rect x="70" y="70" width="15" height="6" fill="#facc15" stroke="#14142b" stroke-width="2"/></g></svg>`;
-function showQ(){stopTimer();clearAuto();stopFall();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.elapsed=0;Q.paused=false;window.scrollTo(0,0);
+function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.half=false;Q.elapsed=0;Q.paused=false;Q.limit=isNinja()?ninjaLimit(q.diff):LIMIT;window.scrollTo(0,0);
  if(isNinja()){showNinja(q);return;}
  app.innerHTML=`${qTop()}
  ${isTycoon()?houseBar(player.house.pts):''}
@@ -948,30 +984,31 @@ function showQ(){stopTimer();clearAuto();stopFall();const q=Q.qs[Q.i];Q.input=''
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
   <div id="help" class="helppanel hidden"></div>
-  <div><div class="speedlbl"><span>⏱ ${LIMIT} seconds to answer</span><span id="secs">${LIMIT}s</span></div><div class="speed"><span id="sbar"></span></div></div></div>
+  <div id="halfslot"></div>
+  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
   <div id="ans">${answerArea(q)}</div></div>`;
  Q.t0=performance.now();startClock();}
-function showNinja(q){const drop=DROP_WORD[q.diff]||DROP_WORD.medium;
+function showNinja(q){const drop=DROP_WORD[q.diff]||DROP_WORD.medium;document.body.classList.add('ninja-on');
  app.innerHTML=`<div class="ninjawrap">${qTop()}
- <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$ · ${drop}</span></div>
+ <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$ · ${drop}</span><button class="helpbtn helpmini" type="button" data-act="help">Help</button></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
-  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
-  <div id="help" class="helppanel hidden"></div>
-  <div><div class="speedlbl"><span>⏱ ${LIMIT} seconds · slice the right answer</span><span id="secs">${LIMIT}s</span></div><div class="speed"><span id="sbar"></span></div></div></div>
+  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
+ <div id="halfslot"></div>
  <div class="field" id="field">${NINJA_GUY}<div id="ans"></div></div></div>`;
  Q.t0=performance.now();startClock();startFall(q);}
 function startFall(q){const field=$('#field');if(!field)return;const opts=ninjaOptions(q);const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);
- const chips=opts.map((lab,i)=>{const el=document.createElement('button');el.type='button';el.className='fallchip c'+i+(String(lab).length>16?' long':'');el.innerHTML=lab;el.setAttribute('aria-label','Falling answer');field.appendChild(el);
+ const chips=opts.map((lab,i)=>{const el=document.createElement('button');el.type='button';el.className='fallchip c'+i+(String(lab).length>22?' long':'');el.innerHTML=lab;el.setAttribute('aria-label','Falling answer');field.appendChild(el);
   el.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation();if(!Q||Q.locked)return;const r=field.getBoundingClientRect();const s=document.createElement('div');s.className='slash';s.style.left=(ev.clientX-r.left)+'px';s.style.top=(ev.clientY-r.top)+'px';field.appendChild(s);el.classList.add(lab===right?'hit':'miss');
    const given=plain(lab);if(q.type==='mc')answer(lab===right?q.ans:'\u0000',null,{given});else answer(lab===right?String(q.ans):'\u0000',null,{given});});
   return {el,lab,correct:lab===right};});
- const place=()=>{const w=field.clientWidth||320,h=field.clientHeight||340;const gap=8,cw=Math.min(220,Math.max(78,(w-gap*(chips.length+1))/chips.length));
-  chips.forEach((c,i)=>{c.el.style.width=cw+'px';c.w=cw;c.h=c.el.offsetHeight||76;c.x=gap+i*((w-gap*2-cw)/Math.max(1,chips.length-1));c.y=-c.h-18-(i%chips.length)*28;c.el.style.transform=`translate(${c.x}px,${c.y}px)`;});
-  return {w,h};};
+ const place=()=>{const w=field.clientWidth||320;const gap=10;const cw=Math.min(240,(w-gap*(chips.length+1))/Math.max(1,chips.length));
+  chips.forEach((c,i)=>{c.el.style.width=cw+'px';c.w=cw;c.h=c.el.offsetHeight||84;c.x=gap+i*((w-gap*2-cw)/Math.max(1,chips.length-1));c.y=-c.h-12-(i%chips.length)*18;c.el.style.transform=`translate(${c.x}px,${c.y}px)`;});};
  place();
+ const h0=field.clientHeight||340;const correct=chips.find(c=>c.correct)||chips[0];
+ const dist=Math.max(120,(h0-8)-correct.y);const speed=dist/(FALL_SECS[q.diff]||FALL_SECS.medium);
  let last=performance.now();
  const step=now=>{if(!Q||Q.locked||!isNinja()){stopFall();return;}const fieldNow=$('#field');if(!fieldNow){stopFall();return;}
-  const dt=Math.min(0.05,(now-last)/1000);last=now;const h=fieldNow.clientHeight||340;const speed=(h+90)/(FALL_SECS[q.diff]||FALL_SECS.medium);let gone=false;
+  const dt=Math.min(0.05,(now-last)/1000);last=now;const h=fieldNow.clientHeight||h0;let gone=false;
   chips.forEach(c=>{if(c.dead)return;c.y+=speed*dt;c.el.style.transform=`translate(${c.x}px,${c.y}px)`;if(c.correct&&c.y>h-8){c.dead=true;gone=true;}});
   if(gone){fellOff();return;}fallRAF=requestAnimationFrame(step);};
  fallRAF=requestAnimationFrame(step);}
@@ -987,10 +1024,15 @@ function helpHTML(q){return `<div class="passbanner">Passed – no Robux this ti
 function plain(s){const d=document.createElement('div');d.innerHTML=String(s==null?'':s);return (d.textContent||'').replace(/\s+/g,' ').trim();}
 function shownAns(q){if(q.type==='num'){if(q.prefix==='S$')return money(q.ans);return (q.prefix||'')+fmt(q.ans)+(q.suffix?' '+q.suffix:'');}return plain(q.ans);}
 function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.mistakes)player.mistakes=[];
- const rec=player.review[q.topic]||(player.review[q.topic]={c:0,w:0,t:0,p:0,subject:q.subject||'Maths'});
- if(kind==='correct')rec.c++;else if(kind==='timeout')rec.t++;else if(kind==='pass')rec.p++;else rec.w++;
+ const rec=player.review[q.topic]||(player.review[q.topic]={c:0,w:0,t:0,p:0,late:0,subject:q.subject||'Maths'});
+ if(rec.late==null)rec.late=0;
+ if(kind==='correct'||kind==='late')rec.c++;
+ if(kind==='late')rec.late++;
+ else if(kind==='timeout')rec.t++;
+ else if(kind==='pass')rec.p++;
+ else if(kind!=='correct')rec.w++;
  if(kind==='correct')return;
- const givenText=kind==='timeout'?'timed out':kind==='pass'?'passed':kind==='fell'?'fell off':plain(given);
+ const givenText=kind==='timeout'?'timed out':kind==='pass'?'passed':kind==='fell'?'fell off':kind==='late'?'late':plain(given);
  player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:givenText||'wrong',ans:shownAns(q)});
  if(player.mistakes.length>400)player.mistakes.length=400;}
 function passQuestion(){if(!Q||Q.locked)return;const q=Q.qs[Q.i];
@@ -999,8 +1041,15 @@ function passQuestion(){if(!Q||Q.locked)return;const q=Q.qs[Q.i];
  const p=$('#help');if(p){p.innerHTML=helpHTML(q);p.classList.remove('hidden');}
  const streakEl=document.querySelector('.tagbox.streak');if(streakEl)streakEl.textContent='🔥 Streak 0';
  const s=$('#secs');if(s)s.textContent='Passed';const b=$('#sbar');if(b)b.style.transform='scaleX(0)';
- const area=$('#ans');if(area)area.innerHTML=`<div class="fb pass" id="fb"><h2>Passed – no Robux this time</h2><p style="font-size:20px;line-height:1.4">Asking for help passes this question. You get <b>0 R$</b> and <b>0 house bricks</b>. It does not count as correct, and it does not keep your streak.</p><button class="btn purple" data-act="next">Next question ▶</button></div>`;
+ const area=$('#ans');if(area)area.innerHTML=`<div class="fb pass" id="fb"><div class="fbbody"><h2>Passed – no Robux this time</h2><p style="font-size:20px;line-height:1.4">Asking for help passes this question. You get <b>0 R$</b> and <b>0 house bricks</b>. It does not count as correct, and it does not keep your streak.</p></div></div>`;
+ showRoundBar('<button class="btn purple" data-act="next">Next question ▶</button>');
  if(p&&p.scrollIntoView)p.scrollIntoView({block:'nearest',behavior:'smooth'});}
+function beginHalf(){if(!Q||Q.locked||Q.half)return;Q.half=true;const q=Q.qs[Q.i];
+ const slot=$('#halfslot');if(slot)slot.innerHTML=`<div class="halfbanner" id="halfbanner">Time's up! Half points now</div>`;
+ const speed=$('#speed');if(speed)speed.classList.add('half');
+ const pill=document.querySelector('.dpill');if(pill)pill.textContent=`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ now`;
+ const lbl=document.querySelector('.speedlbl span');if(lbl)lbl.textContent="Time's up! Half points now";
+ const s=$('#secs');if(s)s.textContent=GRACE+'s';const b=$('#sbar');if(b)b.style.transform='scaleX(1)';}
 function answerArea(q){if(q.type==='mc')return `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-act="choose" data-k="${k}">${c}</button>`).join('')}</div>`;
  const keys=['7','8','9','del','4','5','6','-','1','2','3','ok','0','.'];
  return `<div class="disp" id="disp">${q.prefix?`<span class="aff">${q.prefix}</span>`:''}<span id="dv"></span><span class="cur"></span>${q.suffix?`<span class="aff">${q.suffix}</span>`:''}</div>
@@ -1017,48 +1066,51 @@ function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[
  let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
  const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
  const bon=[];let gained=0;let built=null;
+ const late=!!(ok&&Q.half);
  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak,Q.streak);
-  gained=q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;player.total+=gained;
+  gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;player.total+=gained;
   if(isTycoon()){const before=houseProgress(player.house.pts);player.house.pts+=gained;const after=houseProgress(player.house.pts);
    if(after.built.length>before.built.length)built=after.built[after.built.length-1];
-   bon.push('+'+gained+' house brick'+(gained>1?'s':''));}
-  bon.unshift('+'+gained+' R$ · '+DNAME[q.diff].toLowerCase());
-  if(secs<=10)bon.push('⚡ speed star');
+   bon.push('+'+fmt(gained)+' house brick'+(gained===1?'':'s'));}
+  bon.unshift('+'+fmt(gained)+' R$ · '+(late?'half points':DNAME[q.diff].toLowerCase()));
+  if(!late&&secs<=10)bon.push('⚡ speed star');
   if(Q.streak>=3)bon.push('🔥 streak '+Q.streak);}
  else Q.streak=0;
- Q.res[Q.i]=ok;logAttempt(q,ok?'correct':opts.timeout?'timeout':opts.fell?'fell':'wrong',opts.given!=null?opts.given:val);save();
+ Q.res[Q.i]=ok;logAttempt(q,ok?(late?'late':'correct'):opts.timeout?'timeout':opts.fell?'fell':'wrong',opts.given!=null?opts.given:val);save();
  if(q.type==='mc')document.querySelectorAll('.choice').forEach(b=>{const c=q.choices[+b.dataset.k];if(c===q.ans)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim');});
  const ansHtml=q.type==='num'?`${q.prefix||''}${q.prefix==='S$'?(+q.ans).toFixed(2):fmt(q.ans)}${q.suffix?' '+q.suffix:''}`:q.ans;
  const fb=document.createElement('div');fb.className='fb '+(ok?'good':'bad');fb.id='fb';
  const buildNote=built?`<div class="unlock"><span style="font-size:28px">🏠</span><div class="u"><b>${esc(built.say)}</b><br><span class="muted">${esc(built.name)} added to your house.</span></div></div>`:'';
- const missTitle=opts.timeout?"Time's up!":opts.fell?'It got away!':pick(['Not quite!','Nearly!','Good try!']);
- const missNote=opts.timeout?'The timer ran out, so this counts as a wrong answer. No R$ this time.':opts.fell?'The right answer fell off the screen, so this counts as a wrong answer. No R$ this time.':(isTycoon()?'No R$ lost, and your house stays as it is. Every mistake makes your brain stronger.':'No R$ lost. Every mistake makes your brain stronger.');
- fb.innerHTML=ok?`<h2>${pick(['Awesome!','Correct!','Epic!','Nailed it!','Brilliant!','Super!'])}</h2><div class="bon">${bon.map(b=>`<span>${b}</span>`).join('')}</div>${buildNote}<button class="btn green" data-act="next">Next ▶</button>`
-  :`<h2>${missTitle}</h2><div class="ansbig">The answer is ${ansHtml}</div><div class="ex">${q.steps.map(s=>s).join(' ')}</div><div class="muted" style="margin-bottom:12px;font-size:17px">${missNote}</div><button class="btn blue" data-act="next">Got it ▶</button>`;
+ const missTitle=opts.timeout?'Timed out':opts.fell?'It got away!':pick(['Not quite!','Nearly!','Good try!']);
+ const missNote=opts.timeout?'The extra 30 seconds ran out, so this counts as a wrong answer. No R$ this time.':opts.fell?'The right answer fell off the screen, so this counts as a wrong answer. No R$ this time.':(isTycoon()?'No R$ lost, and your house stays as it is. Every mistake makes your brain stronger.':'No R$ lost. Every mistake makes your brain stronger.');
+ const lateNote=late?'<p style="font-size:20px;margin:0 0 8px">Half points, because the timer had already run out.</p>':'';
+ fb.innerHTML=ok?`<div class="fbbody"><h2>${late?'Half points!':pick(['Awesome!','Correct!','Epic!','Nailed it!','Brilliant!','Super!'])}</h2>${lateNote}<div class="bon">${bon.map(b=>`<span>${b}</span>`).join('')}</div>${buildNote}</div>`
+  :`<div class="fbbody"><h2>${missTitle}</h2><div class="ansbig">The answer is ${ansHtml}</div><div class="ex">${q.steps.map(s=>s).join(' ')}</div><div class="muted" style="margin-bottom:8px;font-size:17px">${missNote}</div></div>`;
  const area=$('#ans');if(area){if(q.type==='num'||isNinja())area.innerHTML='';area.appendChild(fb);}
  const slot=$('#houseSlot');if(slot&&ok&&isTycoon())slot.outerHTML=houseBar(player.house.pts,built&&built.id);
- const rnd=$('#rnd');if(rnd)rnd.textContent='+'+roundQuestionPay();
- if(ok){sfx.correct();if(built){setTimeout(sfx.build,280);if(houseProgress(player.house.pts).done){setTimeout(sfx.fanfare,500);confetti();}}else if(Q.streak>=3)setTimeout(sfx.streak,300);coinBurst(fb,gained);floatText(fb,'+'+gained+' R$');Q.auto=setTimeout(nextQ,built?3200:2400);}
+ const rnd=$('#rnd');if(rnd)rnd.textContent='+'+fmt(roundQuestionPay());
+ showRoundBar(`<button class="btn ${ok?'green':'blue'}" data-act="next">${ok?'Next question ▶':'Got it ▶'}</button>`);
+ if(ok){sfx.correct();if(built){setTimeout(sfx.build,280);if(houseProgress(player.house.pts).done){setTimeout(sfx.fanfare,500);confetti();}}else if(Q.streak>=3)setTimeout(sfx.streak,300);coinBurst(fb,Math.max(1,Math.round(gained)));floatText(fb,'+'+fmt(gained)+' R$');Q.auto=setTimeout(nextQ,built?3200:2400);}
  else{sfx.wrong();if(fb.scrollIntoView)fb.scrollIntoView({block:'nearest',behavior:'smooth'});}}
 function nextQ(){if(!Q)return;clearAuto();Q.i++;if(Q.i>=Q.qs.length)finish();else showQ();}
-function finish(){stopTimer();clearAuto();stopFall();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon;const before=player.total-roundQuestionPay();
+function finish(){stopTimer();clearAuto();stopFall();clearChrome();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon;const before=player.total-roundQuestionPay();
  const rb=L.bonus,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect;player.rounds++;
  const earned=roundQuestionPay()+rb+perfect;
  player.history.unshift({d:new Date().toISOString(),lvl:L.tag+': '+L.name,score,of:Q.qs.length,earned});if(player.history.length>200)player.history.length=200;
  const newM=MILESTONES.filter(m=>player.total>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
  const oldT=titleFor(before),newT=titleFor(player.total);save();header();window.scrollTo(0,0);
- const rows=['easy','medium','hard'].filter(d=>Q.counts[d]).map(d=>`<tr><td>${DNAME[d]} questions (${Q.counts[d]} × ${REWARD[d]})</td><td class="r">+${Q.earn[d]}</td></tr>`).join('');
+ const rows=['easy','medium','hard'].filter(d=>Q.counts[d]).map(d=>`<tr><td>${DNAME[d]} questions (${Q.counts[d]})</td><td class="r">+${fmt(Q.earn[d])}</td></tr>`).join('');
  const h0=houseProgress(Q.houseAtStart),h1=houseProgress(player.house.pts);const grew=h1.built.slice(h0.built.length);
  app.innerHTML=`<div class="grid2"><div class="card center"><h2>Round complete!</h2><div class="muted" style="font-size:20px">${L.tag}: ${L.name}</div>
   <div class="score">${score}/${Q.qs.length}</div><div style="font-size:22px">${perfect?'PERFECT ROUND!':score>=8?'Amazing work!':score>=5?'Great effort!':'Keep practising, you have got this!'}</div>
   ${passed?`<div class="muted" style="font-size:18px;margin-top:6px">${passed} passed · no Robux</div>`:''}
   ${ty?`<div style="margin:12px auto 0">${houseSVG(player.house.pts)}</div>`:''}
-  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn green" data-act="again" data-k="${L.key}">Play again</button><button class="btn" data-act="home">Change level</button>${ty?'<button class="btn purple" data-act="house">My house</button>':''}</div></div>
+  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn green" data-act="again" data-k="${L.key}">Next round</button><button class="btn" data-act="home">Menu</button>${ty?'<button class="btn purple" data-act="house">My house</button>':''}</div></div>
  <div class="card"><h2 style="display:flex;align-items:center;gap:10px">${COIN} Robux points earned</h2><table class="tbl">
   ${rows}
   <tr><td>Round complete bonus</td><td class="r">+${rb}</td></tr>
   ${perfect?`<tr><td>Perfect round bonus</td><td class="r">+${perfect}</td></tr>`:''}
-  <tr class="tot"><td>Total this round</td><td class="r">+${earned} R$</td></tr></table>
+  <tr class="tot"><td>Total this round</td><td class="r">+${fmt(earned)} R$</td></tr></table>
   <div style="font-size:20px;margin-top:12px;display:flex;gap:8px;align-items:center">Bank total: ${COIN} ${fmt(player.total)}</div>
   ${ty&&grew.length?`<div class="unlock"><span style="font-size:32px">🏠</span><div class="u">You built: <b>${grew.map(s=>esc(s.name)).join(', ')}</b></div></div>`:''}
   ${newT!==oldT?`<div class="unlock"><span style="font-size:32px">🎉</span><div class="u">LEVEL UP! You are now a <span class="pill t-${newT}">${newT}</span></div></div>`:''}
@@ -1067,17 +1119,18 @@ function finish(){stopTimer();clearAuto();stopFall();const L=Q.L;const score=Q.r
  </div></div>`;
  const tot=document.querySelector('.tot');if(tot)coinBurst(tot,6);
  if(newM.length||newT!==oldT||h1.done){setTimeout(sfx.unlock,300);confetti();}else{sfx.fanfare();if(score>=8)confetti();}
+ showRoundBar(`<button class="btn green" data-act="again" data-k="${L.key}">Next round</button><button class="btn" data-act="home">Menu</button>`);
  Q=null;}
 function nextMilestoneHtml(){const nx=MILESTONES.find(m=>player.total<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>player.total>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((player.total-lo)/(nx.at-lo)*100));
  return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ (${fmt(nx.at-player.total)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
 function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
-function leaveRound(){stopTimer();clearAuto();stopFall();Q=null;}
+function leaveRound(){stopTimer();clearAuto();stopFall();clearChrome();Q=null;}
 function showHouse(){if(!needPlayer())return;leaveRound();header();const st=houseProgress(player.house.pts);
  app.innerHTML=`<div class="housepage"><div class="card"><h2 style="margin-bottom:8px">🏠 ${esc(player.name)}'s house</h2>
   ${houseSVG(player.house.pts)}
-  <p style="font-size:18px;margin:10px 0 0">${st.done?'Every part is built. What a tycoon!':`Next part: <b>${esc(st.next.name)}</b> · ${st.have} / ${st.need} bricks`}</p>
+  <p style="font-size:18px;margin:10px 0 0">${st.done?'Every part is built. What a tycoon!':`Next part: <b>${esc(st.next.name)}</b> · ${fmt(st.have)} / ${st.need} bricks`}</p>
   ${st.done?'':`<div class="prog"><span style="width:${Math.round(st.have/st.need*100)}%"></span></div>`}
-  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks, the same as the R$. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
+  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks, the same as the R$. A late answer adds half. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
   <button class="btn green" data-act="home">Play to build ▶</button></div>
  <div class="card"><h2>Build list</h2><div class="stlist">${HOUSE.map((s,i)=>{const done=st.built.some(b=>b.id===s.id);const now=!done&&st.next&&st.next.id===s.id;return `<div class="st ${done?'done':''} ${now?'now':''}"><span>${done?'✅':now?'🔨':'🔒'} ${i+1}. ${esc(s.name)}</span><span class="need">${s.cost?s.cost+' bricks':"free"}</span></div>`;}).join('')}</div></div></div>`;}
 function showBank(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;const st=houseProgress(p.house.pts);
@@ -1087,7 +1140,7 @@ function showBank(){if(!needPlayer())return;leaveRound();header();const p=player
  ${nextMilestoneHtml()}
  <h3 style="margin-top:18px">History</h3>
  ${p.history.length?`<div style="max-height:360px;overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th>Level</th><th class="r">Score</th><th class="r">R$ earned</th></tr>
- ${p.history.slice(0,100).map(h=>{const d=new Date(h.d);return `<tr><td>${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}, ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td><td>${esc(h.lvl)}</td><td class="r">${h.score}/${h.of||10}</td><td class="r">+${h.earned}</td></tr>`;}).join('')}</table></div>`:'<p class="muted" style="font-size:20px">No rounds yet. Go and play one!</p>'}
+ ${p.history.slice(0,100).map(h=>{const d=new Date(h.d);return `<tr><td>${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}, ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td><td>${esc(h.lvl)}</td><td class="r">${h.score}/${h.of||10}</td><td class="r">+${fmt(h.earned)}</td></tr>`;}).join('')}</table></div>`:'<p class="muted" style="font-size:20px">No rounds yet. Go and play one!</p>'}
  <div class="row" style="margin-top:20px"><button class="btn red" data-act="reset">Reset my bank</button><span class="muted">Clears R$, the house, history and unlocks for ${esc(p.name)} only.</span></div></div>`;}
 function showRewards(){if(!needPlayer())return;leaveRound();header();const p=player,u=unlocked(p.total);
  app.innerHTML=`<div class="grid2" style="grid-template-columns:1fr 1.4fr"><div class="card center"><h2>Your avatar</h2><div style="margin:6px auto">${avatar(p.av,200)}</div><span class="pill t-${titleFor(p.total)}" style="font-size:20px">${titleFor(p.total)}</span>
@@ -1099,8 +1152,8 @@ function showRewards(){if(!needPlayer())return;leaveRound();header();const p=pla
   <h3 style="margin-top:14px">Shirt colours</h3><div class="opts">${Object.keys(SHIRTS).map(sk=>{const ok=u.shirts.includes(sk);const bg=SHIRTS[sk]==='rainbow'?'linear-gradient(#ef4444,#facc15,#22c55e,#3b82f6,#a855f7)':SHIRTS[sk];return `<button class="opt ${p.av.shirt===sk?'sel':''} ${ok?'':'locked'}" data-act="shirt" data-s="${sk}" ${ok?'':'disabled'}><div class="sw" style="background:${bg}"></div><div>${sk}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
  </div></div>`;}
 function reviewRows(){const rev=player.review||{};const rows=[];
- for(const id in rev){const s=rev[id];const attempts=s.c+s.w+s.t+s.p;if(!attempts)continue;
-  rows.push({id,name:TOPICS[id]||id,subject:s.subject||'Maths',attempts,c:s.c,w:s.w,t:s.t,p:s.p,acc:Math.round(s.c/attempts*100)});}
+ for(const id in rev){const s=rev[id];const late=s.late||0;const attempts=s.c+s.w+s.t+s.p;if(!attempts)continue;
+  rows.push({id,name:TOPICS[id]||id,subject:s.subject||'Maths',attempts,c:s.c,w:s.w,t:s.t,p:s.p,late,acc:Math.round(s.c/attempts*100)});}
  rows.sort((a,b)=>a.acc-b.acc||b.attempts-a.attempts||a.name.localeCompare(b.name));return rows;}
 function showParentGate(){if(!needPlayer())return;leaveRound();header();
  const a=R(18,49),b=R(17,48);parentSum=a+b;
@@ -1121,17 +1174,17 @@ function showParentGate(){if(!needPlayer())return;leaveRound();header();
  btn.addEventListener('pointerleave',stop);
  btn.addEventListener('pointercancel',stop);}
 function showParent(){if(!needPlayer())return;leaveRound();header();const p=player;const rows=reviewRows();
- const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="font-size:16px"><tr><th>Topic</th><th class="r">Attempts</th><th class="r">Correct</th><th class="r">Wrong</th><th class="r">Timed out</th><th class="r">Passed</th><th class="r">Accuracy</th></tr>
- ${rows.map(s=>`<tr><td>${esc(s.subject)} · ${esc(s.name)}</td><td class="r">${s.attempts}</td><td class="r">${s.c}</td><td class="r">${s.w}</td><td class="r">${s.t}</td><td class="r">${s.p}</td><td class="r">${s.acc}%</td></tr>`).join('')}</table></div>`:'<p class="muted">No questions logged yet.</p>';
+ const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="font-size:16px"><tr><th>Topic</th><th class="r">Attempts</th><th class="r">Correct</th><th class="r">Wrong</th><th class="r">Timed out</th><th class="r">Passed</th><th class="r">Late</th><th class="r">Accuracy</th></tr>
+ ${rows.map(s=>`<tr><td>${esc(s.subject)} · ${esc(s.name)}</td><td class="r">${s.attempts}</td><td class="r">${s.c}</td><td class="r">${s.w}</td><td class="r">${s.t}</td><td class="r">${s.p}</td><td class="r">${s.late}</td><td class="r">${s.acc}%</td></tr>`).join('')}</table></div>`:'<p class="muted">No questions logged yet.</p>';
  const misses=(p.mistakes||[]).slice(0,25);
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
-  return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts or passes yet.</p>';
+  return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes or late answers yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. Help passes the question and is not counted correct. A timeout is wrong. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. After the timer, a right answer is worth half and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
  <h3>Topics, weakest first</h3>
- <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt, including wrong answers, timeouts and passes.</p>
+ <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt. Late answers count as correct. Passes, wrong answers and timeouts are included in the attempts.</p>
  ${table}
- <h3 style="margin-top:18px">Recent mistakes</h3>
+ <h3 style="margin-top:18px">Recent log</h3>
  ${list}
  <div class="row" style="margin-top:12px"><button class="btn red" data-act="clearlog">Clear mistake history</button><span class="muted">Clears this log only. R$ and the house stay.</span></div>
  <h3 style="margin-top:18px">Exchange note (optional)</h3>
@@ -1150,7 +1203,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
   case 'tab':{const typed=$('#nm')?$('#nm').value:'';subjectTab=el.dataset.t==='science'?'science':'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
   case 'level':startRound(el.dataset.k);break;
-  case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;newRound(L);sfx.click();showQ();break;}
+  case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;subjectTab=L.subject==='science'?'science':'maths';newRound(L);sfx.click();showQ();break;}
   case 'choose':if(Q&&!Q.locked){answer(Q.qs[Q.i].choices[+el.dataset.k],el);}break;
   case 'key':keyIn(el.dataset.k);break;
   case 'help':passQuestion();break;
@@ -1184,8 +1237,12 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  const hp=houseProgress(0);if(hp.built.length!==1||hp.next.id!=='foundation')throw new Error('house start');
  const full=HOUSE.reduce((s,x)=>s+x.cost,0);if(!houseProgress(full).done)throw new Error('house done');
  if(houseProgress(full-1).done)throw new Error('house early');
- if(LIMIT!==12)throw new Error('timer');
- if(!(FALL_SECS.easy<FALL_SECS.medium&&FALL_SECS.medium<FALL_SECS.hard))throw new Error('fall');
+ if(LIMIT!==14||GRACE!==30)throw new Error('timer');
+ if(!(FALL_SECS.easy===7&&FALL_SECS.medium===11&&FALL_SECS.hard===16))throw new Error('fall');
+ if(ninjaLimit('easy')!==9||ninjaLimit('medium')!==13||ninjaLimit('hard')!==18)throw new Error('ninja timer');
+ if(ninjaLimit('hard')<FALL_SECS.hard||halfPay(1)!==0.5||halfPay(2)!==1||halfPay(3)!==1.5)throw new Error('half');
+ if(fmt(12.5)!=='12.5'||fmt(0.5)!=='0.5')throw new Error('fmt half');
+ const halfHouse=houseProgress(0.5);if(halfHouse.have!==0.5||halfHouse.next.id!=='foundation')throw new Error('half brick');
  const seenSci={};SCIENCE.forEach(s=>{if(!s.ans||s.wrongs.length<3||s.wrongs.indexOf(s.ans)>=0||new Set([s.ans,...s.wrongs]).size!==s.wrongs.length+1)throw new Error('sci dup '+s.text.slice(0,48));
   if(!s.hint||!s.steps||s.steps.length<2||!B[s.bite])throw new Error('sci link '+s.bite);
   const q=mcQ(s.topic,s.diff,s.text,s.ans,s.wrongs,{bite:s.bite,hint:s.hint,steps:s.steps});
@@ -1194,7 +1251,7 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  ['materials','space','forces','living','humans'].forEach(t=>['easy','medium','hard'].forEach(d=>{if((seenSci[t+'|'+d]||0)<3)throw new Error('sci bank '+t+' '+d);if(!make(t,d))throw new Error('sci make '+t+' '+d);}));
  if(!LEVELS.some(l=>l.tycoon&&l.key==='m2')||!LEVELS.some(l=>l.subject==='science'&&l.mode==='ninja'))throw new Error('levels');}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,FALL_SECS,TOPICS,toRoman,words,fmt,fr,mixed,money};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf};
 showStart();
 })();
 </script>
