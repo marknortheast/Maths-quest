@@ -72,7 +72,7 @@ input.name:focus{background:#fffbe6}
 .qtop{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:#fff;flex-wrap:wrap}
 .blocks{display:flex;gap:6px}
 .blocks i{width:26px;height:26px;border:3px solid var(--ink);border-radius:6px;background:rgba(255,255,255,.35)}
-.blocks i.ok{background:var(--green)}.blocks i.no{background:var(--red)}.blocks i.cur{background:var(--yellow);animation:pulse 1s infinite}
+.blocks i.ok{background:var(--green)}.blocks i.no{background:var(--red)}.blocks i.pass{background:#c4b5fd}.blocks i.cur{background:var(--yellow);animation:pulse 1s infinite}
 @keyframes pulse{50%{transform:scale(1.12)}}
 .tagbox{background:var(--ink);border:3px solid #000;border-radius:10px;padding:6px 12px;font-size:18px;display:flex;align-items:center;gap:8px}
 .streak{color:#fdba74}
@@ -117,6 +117,7 @@ table.mini th{background:#dbeafe;font-size:15px;text-transform:none;letter-spaci
 .key.fn{background:#e2e8f0;font-size:26px}.key.go{background:var(--green);color:#fff;grid-row:span 2;height:auto;font-size:36px}
 .helpbtn{width:100%;background:#ede9fe;color:#5b21b6;border:4px solid var(--ink);border-radius:12px;box-shadow:0 5px 0 var(--ink);padding:12px 14px;font-size:20px;text-align:center}
 .helpbtn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.helpbtn:disabled{opacity:1;transform:none;box-shadow:0 5px 0 var(--ink);cursor:default}
 .helppanel{background:#f5f3ff;border:4px solid #7c3aed;border-radius:12px;padding:14px}
 .helptop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
 .helppanel h3{margin:8px 0 6px;color:#5b21b6}
@@ -127,9 +128,10 @@ table.mini th{background:#dbeafe;font-size:15px;text-transform:none;letter-spaci
 .bitelink:active{transform:translateY(4px);box-shadow:0 1px 0 #000}
 .fb{border:5px solid var(--ink);border-radius:14px;box-shadow:0 8px 0 var(--ink);padding:18px;animation:slide .25s ease-out}
 @keyframes slide{from{transform:translateY(20px);opacity:0}}
-.fb.good{background:#dcfce7}.fb.bad{background:#fff7ed}
+.fb.good{background:#dcfce7}.fb.bad{background:#fff7ed}.fb.pass{background:#f5f3ff;border-color:#7c3aed}
 .fb h2{font-size:32px;margin-bottom:6px}
-.fb.good h2{color:#15803d}.fb.bad h2{color:#c2410c}
+.fb.good h2{color:#15803d}.fb.bad h2{color:#c2410c}.fb.pass h2{color:#5b21b6}
+.passbanner{background:#5b21b6;color:#fff;border:4px solid var(--ink);border-radius:12px;padding:10px 12px;font-size:22px;font-weight:900;margin-bottom:10px}
 .fb .ex{font-size:19px;line-height:1.45;font-weight:700;margin:8px 0 14px}
 .bon{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
 .bon span{background:var(--ink);color:var(--yellow);border-radius:8px;padding:5px 10px;font-size:18px}
@@ -186,10 +188,34 @@ textarea{width:100%;font:inherit;font-size:20px;padding:10px;border:4px solid va
 #fx .coin{position:absolute;left:0;top:0;font-size:22px}
 .floattxt{position:absolute;font-size:28px;font-weight:900;color:var(--yellow);text-shadow:0 3px 0 #000,2px 0 0 #000,-2px 0 0 #000}
 .confetti{position:absolute;left:0;top:0;width:14px;height:14px;border:2px solid #000}
+.ninjawrap{display:flex;flex-direction:column;gap:10px;min-height:calc(100dvh - 108px)}
+.ninjaq .qtext{font-size:28px;flex:none}
+.dropnote{font-size:15px;color:#55557a}
+.field{position:relative;flex:1;min-height:340px;background:linear-gradient(#1e1b4b,#312e81 55%,#0f172a);border:4px solid var(--ink);border-radius:16px;overflow:hidden;touch-action:none;box-shadow:0 6px 0 var(--ink)}
+.field #ans{position:absolute;inset:0;z-index:6;display:flex;align-items:center;justify-content:center;padding:14px;pointer-events:none}
+.field #ans:not(:empty){pointer-events:auto;background:rgba(15,23,42,.88)}
+.field #ans .fb{width:min(480px,100%);max-height:100%;overflow:auto}
+.fallchip{position:absolute;left:0;top:0;z-index:3;min-height:76px;padding:8px 12px;border:4px solid var(--ink);border-radius:14px;box-shadow:0 6px 0 #000;font-size:26px;line-height:1.15;text-align:center;touch-action:none;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.fallchip.long{font-size:16px;min-height:68px}
+.fallchip.c0{background:#fde68a}.fallchip.c1{background:#bfdbfe}.fallchip.c2{background:#bbf7d0}.fallchip.c3{background:#fbcfe8}
+.fallchip.hit{background:var(--green)!important;color:#fff}
+.fallchip.miss{background:var(--red)!important;color:#fff}
+.tabs{display:flex;gap:10px;margin:4px 0 8px}
+.tab{flex:1;border:4px solid var(--ink);border-radius:12px;padding:10px 8px;font-size:20px;background:#e0f2fe;box-shadow:0 4px 0 var(--ink)}
+.tab.on{background:var(--yellow)}
+.hold{position:relative;overflow:hidden;width:100%;background:#e0f2fe;touch-action:none;user-select:none}
+.hold .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:#86efac;z-index:0}
+.hold span{position:relative;z-index:1}
+.miss{border:3px solid var(--ink);border-radius:12px;padding:10px 12px;margin:8px 0;background:#fff7ed}
+.miss p{margin:2px 0;font-size:17px;line-height:1.35}
+.ninjaguy{position:absolute;left:8px;bottom:6px;width:92px;height:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(0,0,0,.35))}
+.slash{position:absolute;z-index:4;width:110px;height:10px;margin:-5px 0 0 -55px;background:#fff;border:3px solid #000;border-radius:6px;pointer-events:none;animation:slash .28s ease-out forwards}
+@keyframes slash{to{opacity:0;transform:rotate(-40deg) scaleX(1.35)}}
 @media (max-width:900px){
  .start,.quiz,.grid2,.housepage{grid-template-columns:1fr!important}
  .badges{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}
- h1{font-size:34px}.qtext{font-size:28px}.qtext.long{font-size:22px}
+ h1{font-size:34px}.qtext{font-size:28px}.qtext.long{font-size:22px}.ninjaq .qtext{font-size:24px}
+ .field{min-height:300px}.fallchip{min-height:72px;font-size:22px}
  #hdr .brand{display:none}
  .hbtn .lbl{display:none}
  .sitebar svg{height:72px}
@@ -219,6 +245,7 @@ const pad2=n=>String(n).padStart(2,'0');
 const COIN='<span class="coin">R$</span>';
 const $=s=>document.querySelector(s);
 const REWARD={easy:1,medium:2,hard:3};
+const LIMIT=12;
 const DNAME={easy:'Easy',medium:'Medium',hard:'Hard'};
 
 const KEY='blockMathsQuest_v1';
@@ -226,8 +253,8 @@ let store={players:{},last:'',muted:false};
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.players)store=Object.assign(store,s);}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 load();
-function newPlayer(name){return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2'};}
-function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];}
+function newPlayer(name){return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{}};}
+function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];if(!p.mistakes)p.mistakes=[];if(!p.review)p.review={};}
 let player=null;
 function setPlayer(name){const k=name.trim().toLowerCase();if(!store.players[k])store.players[k]=newPlayer(name.trim());player=store.players[k];migrate(player);store.last=k;save();}
 if(store.last&&store.players[store.last]){player=store.players[store.last];migrate(player);}
@@ -345,7 +372,19 @@ const B={
  ttable:'https://www.bbc.co.uk/bitesize/topics/z7rcwmn/articles/z4dgvwx',
  money:'https://www.bbc.co.uk/bitesize/topics/z8yv4wx/articles/z2s6hv4',
  solve:'https://www.bbc.co.uk/bitesize/topics/z69k7ty/articles/zpwwy4j',
- scale:'https://www.bbc.co.uk/bitesize/topics/z36tyrd/articles/zb7hm39'
+ scale:'https://www.bbc.co.uk/bitesize/topics/z36tyrd/articles/zb7hm39',
+ dissolve:'https://www.bbc.co.uk/bitesize/articles/z4bshcw',
+ separate:'https://www.bbc.co.uk/bitesize/articles/zsgfp4j',
+ reverse:'https://www.bbc.co.uk/bitesize/articles/z7dcbqt',
+ space:'https://www.bbc.co.uk/bitesize/articles/z7jvf82',
+ gravity:'https://www.bbc.co.uk/bitesize/articles/zxdcbqt',
+ friction:'https://www.bbc.co.uk/bitesize/articles/zcmwkty',
+ resist:'https://www.bbc.co.uk/bitesize/articles/zb784xs',
+ gears:'https://www.bbc.co.uk/bitesize/articles/z7kqfdm',
+ cycle:'https://www.bbc.co.uk/bitesize/articles/zdvhxbk',
+ plants:'https://www.bbc.co.uk/bitesize/articles/ztvntrd',
+ seeds:'https://www.bbc.co.uk/bitesize/articles/zrrk4xs',
+ human:'https://www.bbc.co.uk/bitesize/articles/zd3p6g8'
 };
 const BN={
  add:'Addition and subtraction',add4:'Adding 4-digit numbers',sub4:'Subtracting 4-digit numbers',
@@ -362,7 +401,11 @@ const BN={
  time12:'12-hour and 24-hour time',timeDur:'Durations of time',timeConv:'Converting time',
  ang:'Types of angle',angPoint:'Angles around a point',shapes:'2D shapes',shapes3:'2D and 3D shapes',
  coord:'Coordinates',trans:'Translating shapes',table:'Comparing data',bar:'Bar charts',line:'Line graphs',ttable:'Timetables',
- money:'Giving change',solve:'Solving problems',scale:'Multiplication as scaling'
+ money:'Giving change',solve:'Solving problems',scale:'Multiplication as scaling',
+ dissolve:'Dissolving',separate:'Separating mixtures',reverse:'Reversible and irreversible changes',
+ space:'Earth and space',gravity:'Gravity',friction:'Friction',resist:'Air and water resistance',
+ gears:'Levers, pulleys and gears',cycle:'Life cycles',plants:'Reproduction in flowering plants',
+ seeds:'Pollination and seed dispersal',human:'Changes in humans'
 };
 function bite(key){return{link:B[key],linkName:BN[key]};}
 
@@ -372,7 +415,8 @@ const TOPICS={
  factors:'Factors, primes, squares & cubes',multiply:'Long multiplication',shortdiv:'Short division',fractions:'Fractions',
  decimals:'Decimals',percent:'Percentages',area:'Area & perimeter',volume:'Volume',measures:'Converting units',time:'Time',
  angles:'Angles',shapes:'2D & 3D shapes',coords:'Coordinates',stats:'Tables & graphs',money:'Money problems',word:'Word problems',
- scaling:'Scaling & rates'
+ scaling:'Scaling & rates',
+ materials:'Materials',space:'Earth & space',forces:'Forces',living:'Living things',humans:'Humans'
 };
 const PV=['ones','tens','hundreds','thousands','ten thousands','hundred thousands','millions'];
 const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
@@ -637,6 +681,91 @@ G.scaling=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,2);
  const each=pick([2,3,4,5]),qty=R(2,hard?8:5),want=R(1,hard?9:6);if(want===qty)return null;const cost=each*qty;
  return numQ('scaling',diff,'<b>'+qty+'</b> mangoes cost <b>'+money(cost)+'</b>. How much do <b>'+want+'</b> mangoes cost?',each*want,{bite:'scale',prefix:'S$',long:true,hint:'Find the cost of 1 mango, then multiply by how many you want.',steps:['Cost of 1 mango: '+money(cost)+' ÷ '+qty+' = '+money(each)+'.','Cost of '+want+': '+money(each)+' × '+want+' = '+money(each*want)+'.',end(money(each*want))],audit:{op:'mul',a:each,b:want}});};
 
+const SCIENCE_TOPICS={materials:1,space:1,forces:1,living:1,humans:1};
+const SCIENCE=[
+ {topic:'materials',diff:'easy',bite:'dissolve',text:'Salt is stirred into water and you cannot see the grains any more. What has happened to the salt?',ans:'It has dissolved',wrongs:['It has melted','It has vanished forever','It has frozen'],hint:'If a solid mixes into a liquid and seems to disappear, it may still be there as a solution.',steps:['The salt was a solid and the water is a liquid.','The salt has mixed into the water to make a solution. It has not been destroyed.','So the salt has dissolved.']},
+ {topic:'materials',diff:'easy',bite:'dissolve',text:'Which of these dissolves in water?',ans:'Salt',wrongs:['Sand','Gravel','Pebbles'],hint:'Soluble substances dissolve. Insoluble ones, like sand, do not.',steps:['Salt is soluble, so it dissolves in water.','Sand, gravel and pebbles do not dissolve.','So the answer is salt.']},
+ {topic:'materials',diff:'easy',bite:'dissolve',text:'A soluble substance is one that...',ans:'dissolves in a liquid',wrongs:['always burns in air','cannot be mixed with anything','turns into a magnet'],hint:'Soluble means it can dissolve, like sugar or salt in water.',steps:['Look at the word soluble.','It describes a substance that dissolves in a liquid to make a solution.','So a soluble substance dissolves in a liquid.']},
+ {topic:'materials',diff:'easy',bite:'reverse',text:'Which change is reversible?',ans:'Melting ice',wrongs:['Burning wood','Cooking an egg','Mixing vinegar and bicarbonate of soda'],hint:'A reversible change can be undone. Melting can be undone by cooling.',steps:['Ice melts into water, and the water can freeze back into ice.','Burning, cooking an egg, and mixing vinegar with bicarbonate of soda make new materials.','So melting ice is reversible.']},
+ {topic:'materials',diff:'easy',bite:'separate',text:'How do you separate a mixture of sand and gravel?',ans:'Sieve it',wrongs:['Burn it','Freeze it','Dissolve the gravel'],hint:'Sieving separates solid bits of different sizes. The smaller bits fall through.',steps:['Sand grains are smaller than gravel.','A sieve lets the sand through and keeps the gravel.','So you sieve the mixture.']},
+ {topic:'materials',diff:'medium',bite:'dissolve',text:'Sugar stirred into water makes a transparent mixture. What is that mixture called?',ans:'A solution',wrongs:['A sieve','A new metal','An irreversible gas'],hint:'When a soluble solid dissolves, the mixture is a solution.',steps:['The sugar dissolves. It is still there, but you may not see the grains.','A dissolved solid in a liquid is called a solution.','So the mixture is a solution.']},
+ {topic:'materials',diff:'medium',bite:'dissolve',text:'Sand does not dissolve in water. Sand is...',ans:'insoluble',wrongs:['soluble','a solution','evaporated'],hint:'If it does not dissolve, scientists call it insoluble.',steps:['Soluble means it dissolves. Sand does not.','The word for that is insoluble.','So sand is insoluble.']},
+ {topic:'materials',diff:'medium',bite:'separate',text:'How can you get the salt back from salty water?',ans:'Evaporate the water',wrongs:['Sieve the salt out of the liquid','Burn the solution','Freeze the salt into sand'],hint:'Dissolving is reversible. Heating the solution lets the water evaporate and leaves the salt.',steps:['The salt has dissolved, so a sieve will not catch it.','Heat the solution so the water evaporates.','The salt is left behind.']},
+ {topic:'materials',diff:'medium',bite:'separate',text:'What is the best way to separate sand from water?',ans:'Filtering',wrongs:['Burning the sand','Using a magnet on the water','Melting the sand'],hint:'Filtering traps an insoluble solid and lets the liquid through.',steps:['Sand does not dissolve, so the bits are still big enough to catch.','Filter paper lets the water through and keeps the sand.','So you use filtering.']},
+ {topic:'materials',diff:'medium',bite:'reverse',text:'Which of these is an irreversible change?',ans:'Burning a candle',wrongs:['Freezing water','Dissolving sugar','Melting chocolate'],hint:'Irreversible changes make a new material. You cannot get the original substances back easily.',steps:['Freezing, dissolving and melting can be undone.','Burning uses the wax in a chemical change and makes new materials.','So burning a candle is irreversible.']},
+ {topic:'materials',diff:'hard',bite:'reverse',text:'Vinegar mixed with bicarbonate of soda makes bubbles of a new gas. What kind of change is this?',ans:'Irreversible',wrongs:['Reversible','Only melting','A change that gives the vinegar back'],hint:'If a new substance is made and you cannot get the starting materials back, the change is irreversible.',steps:['The bubbles are carbon dioxide, a new material.','You cannot turn that mixture back into vinegar and bicarbonate of soda.','So the change is irreversible.']},
+ {topic:'materials',diff:'hard',bite:'dissolve',text:'Why is dissolving salt a reversible change?',ans:'The water can be evaporated to leave the salt',wrongs:['The salt has been destroyed','Burning is the only way to get salt back','The salt turns into sand'],hint:'Reversible means you can get the original substance back.',steps:['The salt is still in the solution.','Evaporating the water leaves the salt behind.','So dissolving is reversible.']},
+ {topic:'materials',diff:'hard',bite:'separate',text:'How can iron filings be separated from a mixture with sand?',ans:'With a magnet',wrongs:['By burning the sand','By evaporating the iron','By dissolving the sand in water'],hint:'Iron is magnetic. Sand is not. A magnet attracts only the iron.',steps:['The two solids do not need to be dissolved.','A magnet pulls out the iron filings and leaves the sand.','So you use a magnet.']},
+ {topic:'materials',diff:'hard',bite:'separate',text:'Why does filtering separate sand from water?',ans:'The water passes through, but the sand does not',wrongs:['The paper dissolves the sand','Both turn into a gas','Heat makes the sand soluble'],hint:'Filter paper has tiny gaps. Liquids can pass. Insoluble grains cannot.',steps:['Sand is insoluble, so it stays as solid bits.','Those bits are too big for the gaps in the paper. The water goes through.','So the sand is left in the filter.']},
+ {topic:'materials',diff:'hard',bite:'reverse',text:'Which list contains only reversible changes?',ans:'Melting, freezing and dissolving',wrongs:['Burning, rusting and cooking','Frying an egg and burning wood','Mixing vinegar with bicarbonate of soda, then burning the gas'],hint:'Melting, freezing, evaporating and dissolving can be undone. Burning and cooking usually cannot.',steps:['Ice can freeze and melt again. A dissolved solid can be recovered.','Burning, rusting and cooking an egg make new materials.','So melting, freezing and dissolving are the reversible list.']},
+ {topic:'space',diff:'easy',bite:'space',text:'What is at the centre of our solar system?',ans:'The Sun',wrongs:['The Earth','The Moon','Pluto'],hint:'The planets travel around one star. That star is our Sun.',steps:['Earth and the other planets orbit the Sun.','The Moon orbits the Earth, not the other way round.','So the Sun is at the centre.']},
+ {topic:'space',diff:'easy',bite:'space',text:'How many planets are in our solar system?',ans:'8',wrongs:['7','9','12'],hint:'Mercury, Venus, Earth, Mars, Jupiter, Saturn, Uranus and Neptune. Pluto is a dwarf planet.',steps:['Count the planets, not the moons and not Pluto.','There are four rocky planets and four giant planets.','So there are 8 planets.']},
+ {topic:'space',diff:'easy',bite:'space',text:'The Moon orbits...',ans:'the Earth',wrongs:['only the Sun','Mars','the centre of a sieve'],hint:'The Moon is Earth\'s natural satellite. It travels around Earth.',steps:['The Moon stays with the Earth as the Earth goes around the Sun.','Its own orbit is around the Earth.','So the Moon orbits the Earth.']},
+ {topic:'space',diff:'easy',bite:'space',text:'What shape are the Earth, the Sun and the Moon?',ans:'Roughly spherical, like a ball',wrongs:['Flat discs','Cubes','Triangles'],hint:'They are not perfect balls, but they are roughly spherical.',steps:['Photos and the way we see them show rounded bodies.','Sphere is the mathematical name for a ball shape.','So they are roughly spherical.']},
+ {topic:'space',diff:'easy',bite:'space',text:'Which planet do we live on?',ans:'Earth',wrongs:['Mars','Venus','Jupiter'],hint:'Our planet is the third one from the Sun.',steps:['The order starts Mercury, Venus, then Earth.','People, oceans and air are on Earth.','So we live on Earth.']},
+ {topic:'space',diff:'medium',bite:'space',text:'About how long does the Earth take to spin once?',ans:'24 hours',wrongs:['28 days','365 days','1 hour'],hint:'One full rotation is one day and night.',steps:['The Earth rotates on its axis.','One rotation takes about 24 hours.','So the answer is 24 hours.']},
+ {topic:'space',diff:'medium',bite:'space',text:'Why do we have day and night?',ans:'The Earth rotates',wrongs:['The Sun orbits the Earth each day','The Earth stops at night','The Moon covers the Sun every night'],hint:'Your side of the Earth faces the Sun, then turns away.',steps:['The Earth spins once about every 24 hours.','When your side faces the Sun it is day. When it faces away it is night.','So day and night happen because the Earth rotates.']},
+ {topic:'space',diff:'medium',bite:'space',text:'About how long does the Earth take to orbit the Sun once?',ans:'One year',wrongs:['One day','28 days','One hour'],hint:'A trip all the way around the Sun is a year.',steps:['Rotation (spinning) takes a day.','The orbit around the Sun takes about 365 days.','So one orbit is one year.']},
+ {topic:'space',diff:'medium',bite:'space',text:'Which planet is closest to the Sun?',ans:'Mercury',wrongs:['Venus','Earth','Neptune'],hint:'Start at the Sun and count outwards. The first planet is the closest.',steps:['The order begins Mercury, Venus, Earth, Mars.','Mercury is the first.','So Mercury is closest to the Sun.']},
+ {topic:'space',diff:'medium',bite:'space',text:'The Sun looks as if it moves across the sky because...',ans:'the Earth is spinning',wrongs:['the Sun orbits the Earth each day','the Moon pushes the Sun','clouds pull the Sun along'],hint:'The Sun stays at the centre. We are the ones turning.',steps:['This is called the apparent movement of the Sun.','As the Earth rotates, the Sun appears to rise and set.','So it looks like that because the Earth is spinning.']},
+ {topic:'space',diff:'hard',bite:'space',text:'About how long does the Moon take to orbit the Earth?',ans:'About 28 days',wrongs:['24 hours','One year','8 hours'],hint:'The Moon\'s trip around the Earth takes about a month, roughly 28 days.',steps:['A day is the Earth spinning, not the Moon\'s orbit.','A year is the Earth orbiting the Sun.','The Moon orbits Earth in about 28 days.']},
+ {topic:'space',diff:'hard',bite:'space',text:'Which is the order of the first four planets from the Sun?',ans:'Mercury, Venus, Earth, Mars',wrongs:['Venus, Mercury, Mars, Earth','Earth, Mars, Venus, Mercury','Mars, Earth, Venus, Mercury'],hint:'A memory order starts with Mercury and puts Earth third.',steps:['Closest is Mercury, then Venus.','Earth is third and Mars is fourth.','So the order is Mercury, Venus, Earth, Mars.']},
+ {topic:'space',diff:'hard',bite:'space',text:'What is Pluto?',ans:'A dwarf planet',wrongs:['The ninth planet','A moon of Earth','The star at the centre'],hint:'There are eight planets. Pluto is smaller and is called a dwarf planet.',steps:['The eight planets do not include Pluto.','Pluto orbits the Sun, but it is not counted as one of those eight.','So Pluto is a dwarf planet.']},
+ {topic:'space',diff:'hard',bite:'space',text:'When it is daytime where you are, your side of the Earth is...',ans:'facing the Sun',wrongs:['facing away from the Sun','outside the solar system','no longer rotating'],hint:'Daylight is the side that the Sun is shining on.',steps:['The Sun lights up one half of the Earth.','That bright half has daytime.','So your side is facing the Sun.']},
+ {topic:'space',diff:'hard',bite:'space',text:'Which of the eight planets is furthest from the Sun?',ans:'Neptune',wrongs:['Mercury','Earth','Mars'],hint:'Go outwards past Saturn and Uranus. The last of the eight is Neptune.',steps:['Mercury is the closest, not the furthest.','Earth and Mars are near the start of the order.','Neptune is the eighth planet, so it is furthest from the Sun.']},
+ {topic:'forces',diff:'easy',bite:'gravity',text:'Gravity pulls objects towards...',ans:'the centre of the Earth',wrongs:['the nearest tree','only the Moon','straight up into space'],hint:'On Earth, gravity is a pull towards the middle of the planet.',steps:['Unsupported objects fall down, not sideways.','Down means towards the centre of the Earth.','So gravity pulls that way.']},
+ {topic:'forces',diff:'easy',bite:'gravity',text:'Why does an unsupported object fall?',ans:'Gravity pulls it',wrongs:['Friction pushes it upwards','It wants to dissolve','The Moon always covers it'],hint:'Sir Isaac Newton\'s idea for Year 5: gravity pulls the object and the Earth towards each other.',steps:['If nothing holds the object up, it falls.','The force that pulls it down is gravity.','So it falls because gravity pulls it.']},
+ {topic:'forces',diff:'easy',bite:'friction',text:'Friction is greater when a surface is...',ans:'rough',wrongs:['icy and smooth','covered in oil','perfectly slippery'],hint:'Rough surfaces grip. Smooth or oily surfaces have less friction.',steps:['Gravel and carpet feel grippy. Ice feels slippery.','More grip means more friction.','So friction is greater on a rough surface.']},
+ {topic:'forces',diff:'easy',bite:'resist',text:'A parachute makes a person fall more slowly because of...',ans:'air resistance',wrongs:['extra gravity','no forces at all','water resistance in the sky'],hint:'A big canopy hits more air. That push back is air resistance.',steps:['The parachute has a large surface.','Air pushes against it and slows the fall.','So the force is air resistance.']},
+ {topic:'forces',diff:'easy',bite:'friction',text:'Friction between your shoes and the pavement is useful because it...',ans:'stops you slipping',wrongs:['removes gravity','pushes you into space','dissolves the ground'],hint:'Without friction your feet would slide. Brakes use friction too.',steps:['The shoe sole and the ground rub.','That friction grips so you can walk.','So it stops you slipping.']},
+ {topic:'forces',diff:'medium',bite:'resist',text:'Air resistance is a force that...',ans:'slows an object moving through air',wrongs:['speeds every fall up','only works under water','pulls planets into cubes'],hint:'Air resistance is a kind of friction with the air. It opposes the movement.',steps:['Moving through air means pushing air aside.','The air pushes back and slows the object.','So air resistance slows an object moving through air.']},
+ {topic:'forces',diff:'medium',bite:'resist',text:'Water resistance acts most clearly when...',ans:'an object moves through water',wrongs:['a book slides on ice','an object sits still in space','the Sun shines on a plant'],hint:'Water resistance is friction between water and something moving through it.',steps:['Swimmers and boats push against water.','The water pushes back. That is water resistance.','So it acts when an object moves through water.']},
+ {topic:'forces',diff:'medium',bite:'resist',text:'A streamlined shape is useful because it...',ans:'reduces air or water resistance',wrongs:['increases gravity','makes every surface rougher','stops the Earth rotating'],hint:'A smooth, pointed shape slips through air or water more easily.',steps:['Racing cars and fish have smooth shapes.','Less pushing against air or water means less resistance.','So a streamlined shape reduces resistance.']},
+ {topic:'forces',diff:'medium',bite:'friction',text:'Why is it easy to slip on ice?',ans:'Ice produces very little friction',wrongs:['Ice has more friction than gravel','Ice removes gravity','Ice is a strong magnet'],hint:'Smooth ice does not grip shoes the way a rough path does.',steps:['Friction needs surfaces to grip.','Ice is smooth, so there is little friction.','That is why you slip.']},
+ {topic:'forces',diff:'medium',bite:'friction',text:'Which force works against the direction of sliding?',ans:'Friction',wrongs:['A dissolved solution','Daylight','A moon orbit'],hint:'Friction opposes sliding. It slows a moving object down.',steps:['Push a book across the floor and it slows.','The force opposing that slide is friction.','So the answer is friction.']},
+ {topic:'forces',diff:'hard',bite:'gears',text:'Why are levers, pulleys and gears useful?',ans:'A smaller force can have a greater effect',wrongs:['They switch gravity off','They stop the Earth rotating','They make friction disappear everywhere'],hint:'These mechanisms help you move a heavy load with less effort.',steps:['A lever, pulley or gear changes how a force is used.','You can lift or turn a bigger load than with your effort alone.','So a smaller force can have a greater effect.']},
+ {topic:'forces',diff:'hard',bite:'gears',text:'What does a pulley help you do?',ans:'Lift a load with less effort',wrongs:['Make gravity stronger','Dissolve a solid','Orbit the Sun'],hint:'A pulley is a grooved wheel with a rope. It helps lift things.',steps:['The rope runs over the wheel.','Pulling the rope lifts the load more easily.','So a pulley lets you lift a load with less effort.']},
+ {topic:'forces',diff:'hard',bite:'gears',text:'Two gears have teeth that lock together. If one turns clockwise, the other...',ans:'turns the opposite way',wrongs:['must turn clockwise too','floats off its axle','stops and cannot move'],hint:'Meshed gears turn in opposite directions.',steps:['The teeth push each other.','As one wheel turns one way, it drives the next wheel the other way.','So the other gear turns the opposite way.']},
+ {topic:'forces',diff:'hard',bite:'gears',text:'A lever turns around a fixed point. That point is called the...',ans:'fulcrum',wrongs:['solution','parachute','stigma'],hint:'A seesaw pivots in the middle. That pivot is the fulcrum.',steps:['A lever is a bar that rotates.','The fixed pivot it rotates around has a special name.','That name is fulcrum.']},
+ {topic:'forces',diff:'hard',bite:'resist',text:'Opening a parachute changes the fall mainly by increasing...',ans:'air resistance',wrongs:['gravity','the mass of the Earth','water resistance'],hint:'The canopy is large, so it hits more air. Gravity has not changed.',steps:['The person\'s weight is about the same.','A bigger surface meets more air, so air resistance increases.','The bigger air resistance makes the fall slower.']},
+ {topic:'living',diff:'easy',bite:'cycle',text:'What is a life cycle?',ans:'The stages from birth to death',wrongs:['Only the egg stage','The pull of gravity','A mixture of sand and salt'],hint:'Every living thing passes through stages as it grows, reproduces and dies.',steps:['A life cycle is not a force or a mixture.','It is the series of changes in a life.','So it is the stages from birth to death.']},
+ {topic:'living',diff:'easy',bite:'cycle',text:'Most mammals...',ans:'give birth to live young',wrongs:['all lay eggs in a pond','hatch from a chrysalis','grow from pollen'],hint:'A mammal baby is born live and is fed milk. It looks like a small adult.',steps:['Dogs, cats and humans are mammals.','Their babies are born, not hatched from a chrysalis.','So most mammals give birth to live young.']},
+ {topic:'living',diff:'easy',bite:'cycle',text:'Which order matches a butterfly?',ans:'Egg, caterpillar, chrysalis, adult',wrongs:['Egg, tadpole, frog','Chick, nest, cloud','Seed, sieve, salt'],hint:'A butterfly changes a lot: larva, then pupa, then adult.',steps:['The egg hatches into a caterpillar, which is the larva.','The caterpillar becomes a chrysalis, then an adult butterfly.','So the order is egg, caterpillar, chrysalis, adult.']},
+ {topic:'living',diff:'easy',bite:'cycle',text:'A frog\'s life cycle begins with...',ans:'eggs in water',wrongs:['a chrysalis on a leaf','a live baby that never changes shape','a flower'],hint:'Frogs are amphibians. The eggs are called frogspawn.',steps:['Frogspawn is laid in water.','Tadpoles hatch from those eggs.','So the cycle begins with eggs in water.']},
+ {topic:'living',diff:'easy',bite:'cycle',text:'Birds reproduce by...',ans:'laying eggs',wrongs:['giving birth with no egg at all','dissolving','making gears'],hint:'A bird life cycle always has an egg. The chick looks like a small bird.',steps:['Birds are not mammals.','The baby develops inside an egg, then hatches.','So birds reproduce by laying eggs.']},
+ {topic:'living',diff:'medium',bite:'cycle',text:'A tadpole changing into a frog is an example of...',ans:'metamorphosis',wrongs:['dissolving','pollination','friction'],hint:'Metamorphosis is a big change of body form during a life cycle.',steps:['A tadpole has gills and a tail, then grows legs.','The adult frog looks very different.','That change is called metamorphosis.']},
+ {topic:'living',diff:'medium',bite:'cycle',text:'Which animal has the life cycle egg, larva, pupa, adult?',ans:'Butterfly',wrongs:['Dog','Sparrow','Human baby'],hint:'That pattern is complete metamorphosis, common in many insects.',steps:['A dog and a human are mammals with live young.','A sparrow is a bird: egg, then a chick that looks like a bird.','A butterfly has a larva and a pupa, so the answer is butterfly.']},
+ {topic:'living',diff:'medium',bite:'plants',text:'Pollination is when...',ans:'pollen moves to the female part of a flower',wrongs:['a seed is sieved from sand','the Sun orbits the Earth each day','a lever lifts a load'],hint:'Pollen comes from the male part. It needs to reach the stigma.',steps:['Insects or the wind can carry pollen.','When pollen arrives on the stigma, pollination has happened.','So pollination is pollen moving to the female part of a flower.']},
+ {topic:'living',diff:'medium',bite:'seeds',text:'How do bees help flowering plants?',ans:'They carry pollen from flower to flower',wrongs:['They dissolve the petals','They stop seeds forming','They turn the flower into a frog'],hint:'Bees visit flowers for food and pick up pollen as they go.',steps:['Pollen sticks to the bee.','At the next flower it can rub onto the stigma.','So bees carry pollen from flower to flower.']},
+ {topic:'living',diff:'medium',bite:'seeds',text:'Why is seed dispersal useful?',ans:'New plants are not all crowded in one place',wrongs:['Seeds need to dissolve before they can exist','Seeds must orbit the Sun','Dispersal turns the plant into an insect'],hint:'If every seed grows next to the parent, they all compete for light and water.',steps:['Wind, animals, water or the plant itself can move seeds.','Spreading them out gives the young plants more room.','So dispersal stops them all being crowded in one place.']},
+ {topic:'living',diff:'hard',bite:'plants',text:'After pollen lands on the stigma, fertilisation can make...',ans:'a seed',wrongs:['a tadpole','a gear','a planet'],hint:'The pollen grows towards the ovary and joins an ovule. That begins a seed.',steps:['Pollination is the arrival of the pollen.','Fertilisation is when it joins the egg cell in the ovary.','A seed starts to form.']},
+ {topic:'living',diff:'hard',bite:'plants',text:'Which part of a flower makes the pollen?',ans:'The stamen',wrongs:['The root','The seed coat','The leaf stem only'],hint:'The stamen is the male part. Its anther holds the pollen.',steps:['Pollen is the powder used in pollination.','It is made by the male part of the flower.','That part is the stamen.']},
+ {topic:'living',diff:'hard',bite:'seeds',text:'Which seeds are well suited to wind dispersal?',ans:'Light seeds or seeds with wings',wrongs:['Seeds that must be burned first','Seeds that are always heavy stones','Seeds that have to be sieved from salt'],hint:'Sycamore seeds spin. Dandelion seeds float. They are shaped to catch the wind.',steps:['Wind can only carry seeds that stay up in the air.','Wings or fluff give a large surface for their mass.','So light seeds or seeds with wings suit the wind.']},
+ {topic:'living',diff:'hard',bite:'cycle',text:'Which life cycle includes a pupa?',ans:'Butterfly',wrongs:['Dog','Chicken','Human'],hint:'A pupa, or chrysalis, is the resting stage between larva and adult insect.',steps:['Mammals and birds do not have a pupa.','A butterfly\'s chrysalis is a pupa.','So the answer is butterfly.']},
+ {topic:'living',diff:'hard',bite:'cycle',text:'A baby mammal is different from a caterpillar because the baby...',ans:'looks like a small adult',wrongs:['must become a chrysalis','hatches in a pond as frogspawn','is a seed'],hint:'Mammal babies grow larger but do not change body plan the way insects do.',steps:['A kitten looks like a cat. A human baby looks human.','A caterpillar does not look like the adult butterfly.','So a baby mammal looks like a small adult.']},
+ {topic:'humans',diff:'easy',bite:'human',text:'About how long does a human baby grow inside its mother before birth?',ans:'9 months',wrongs:['9 days','28 days','9 years'],hint:'Pregnancy lasts about nine months.',steps:['The baby develops in the womb before it is born.','That stage is much longer than a month and much shorter than nine years.','So it is about 9 months.']},
+ {topic:'humans',diff:'easy',bite:'human',text:'What is the stage of human life just after birth?',ans:'Baby',wrongs:['Old age','Foetus','Planet'],hint:'Before birth the baby is a foetus. After birth we call it a baby.',steps:['Birth is the start of life outside the womb.','The first stage after that is baby.','So the answer is baby.']},
+ {topic:'humans',diff:'easy',bite:'human',text:'In old age, hair often...',ans:'turns grey or becomes thinner',wrongs:['turns into leaves','doubles the number of bones','falls off because of air resistance'],hint:'Old age is the last stage of the human life cycle. The body changes slowly.',steps:['Skin can wrinkle and hair can lose its colour.','Hair may also become thinner.','So hair often turns grey or becomes thinner.']},
+ {topic:'humans',diff:'easy',bite:'human',text:'Childhood is a time when children...',ans:'learn to walk and talk',wrongs:['are still a foetus','are at the end of the life cycle','hatch from eggs'],hint:'After being a baby, a child grows and learns many skills.',steps:['Childhood comes after babyhood.','Walking and talking develop in childhood.','So children learn to walk and talk.']},
+ {topic:'humans',diff:'easy',bite:'human',text:'What is the last stage of the human life cycle?',ans:'Old age',wrongs:['Baby','Foetus','Childhood'],hint:'The cycle continues through adulthood and finishes with old age.',steps:['Foetus, baby and childhood are early stages.','The final stage is when a person is elderly.','So the last stage is old age.']},
+ {topic:'humans',diff:'medium',bite:'human',text:'The stage between childhood and adulthood is...',ans:'adolescence',wrongs:['foetus','old age','metamorphosis'],hint:'Adolescence is the teenage stage, when the body changes towards adulthood.',steps:['A foetus is before birth. Old age is at the end.','The in-between stage has its own name.','That name is adolescence.']},
+ {topic:'humans',diff:'medium',bite:'human',text:'What is a foetus?',ans:'A baby growing in the womb',wrongs:['A hatched chick','An adult human','A flower seed'],hint:'The foetus stage is before birth.',steps:['The baby develops inside the mother.','During that time it is called a foetus.','So a foetus is a baby growing in the womb.']},
+ {topic:'humans',diff:'medium',bite:'human',text:'Babies have about 300 bones, but adults have 206. Why?',ans:'Some bones join together',wrongs:['Bones dissolve in water','Gravity deletes bones','Bones are sieved out'],hint:'Separate baby bones fuse as a person grows.',steps:['The number goes down, but bones are not thrown away.','Some bones join to make bigger bones.','So adults have fewer bones because some join together.']},
+ {topic:'humans',diff:'medium',bite:'human',text:'During adolescence the body...',ans:'changes as a child grows towards adulthood',wrongs:['turns back into a foetus','stops being a human','becomes a chrysalis'],hint:'This change is puberty. It is a normal part of growing up.',steps:['Adolescence sits between childhood and adulthood.','The body grows and changes during puberty.','So the body changes as a child grows towards adulthood.']},
+ {topic:'humans',diff:'medium',bite:'human',text:'Which order is a human life cycle?',ans:'Baby, child, adolescent, adult, old age',wrongs:['Old age, baby, adult, child','Egg, tadpole, chrysalis, adult','Adult, foetus, baby, old age'],hint:'Start after birth and move forwards in time.',steps:['A baby grows into a child, then a teenager.','An adult comes next, and old age is last.','So the order is baby, child, adolescent, adult, old age.']},
+ {topic:'humans',diff:'hard',bite:'human',text:'What is puberty?',ans:'The body changes from a child towards an adult',wrongs:['The moment a baby is born','Only the start of old age','A stage where humans lay eggs'],hint:'Puberty happens during adolescence. It is how the body becomes adult.',steps:['It is not birth and it is not old age.','It is the set of changes in the teenage years.','So puberty is the body changing from a child towards an adult.']},
+ {topic:'humans',diff:'hard',bite:'human',text:'Why might a person become a little shorter in old age?',ans:'Bones can shrink and lose strength',wrongs:['They orbit the Sun more slowly','Gravity switches off','They grow back to 300 separate bones'],hint:'In old age, bones can lose size and density.',steps:['Height can decrease a little late in life.','The skeleton can shrink and become weaker.','So bones can shrink and lose strength.']},
+ {topic:'humans',diff:'hard',bite:'cycle',text:'Humans do not have a chrysalis stage. Humans are...',ans:'mammals that give birth to live young',wrongs:['amphibians','insects','flowering plants'],hint:'Compare the human life cycle with a butterfly or a frog.',steps:['There is no larva or pupa.','A baby is born live and looks human.','So humans are mammals that give birth to live young.']},
+ {topic:'humans',diff:'hard',bite:'human',text:'Which happens before birth?',ans:'Growing as a foetus in the womb',wrongs:['Adolescence','Old age','Learning to talk'],hint:'Before birth the developing baby is a foetus.',steps:['Talking, adolescence and old age come after birth.','The womb stage is first.','So growing as a foetus happens before birth.']},
+ {topic:'humans',diff:'hard',bite:'cycle',text:'How is a human life cycle different from a butterfly life cycle?',ans:'A human baby looks like a small human',wrongs:['Humans hatch as caterpillars','Humans have a pupa stage','Humans lay frogspawn'],hint:'Humans do not go through metamorphosis.',steps:['A butterfly changes from caterpillar to chrysalis to adult.','A human baby already has a human body shape.','So a human baby looks like a small human.']}
+];
+function sciPick(topic,diff){const pool=SCIENCE.filter(s=>s.topic===topic&&s.diff===diff);if(!pool.length)return null;const s=pick(pool);
+ return mcQ(topic,diff,s.text,s.ans,s.wrongs,{bite:s.bite,hint:s.hint,steps:s.steps,long:s.text.length>68});}
+G.materials=d=>sciPick('materials',d);
+G.space=d=>sciPick('space',d);
+G.forces=d=>sciPick('forces',d);
+G.living=d=>sciPick('living',d);
+G.humans=d=>sciPick('humans',d);
 function make(topic,diff){for(let i=0;i<60;i++){let q;try{q=G[topic](diff);}catch(e){q=null;}
  if(!q||q.diff!==diff||q.reward!==REWARD[diff])continue;
  if(!q.hint||!q.steps||q.steps.length<2)continue;
@@ -644,24 +773,40 @@ function make(topic,diff){for(let i=0;i<60;i++){let q;try{q=G[topic](diff);}catc
  if(q.type==='num'&&!isFinite(q.ans))continue;
  if(q.type==='mc'&&(!q.choices||q.choices.length<4||q.choices.indexOf(q.ans)<0))continue;
  if(q.type==='mc'&&new Set(q.choices).size!==q.choices.length)continue;
+ q.subject=SCIENCE_TOPICS[topic]?'Science':'Maths';
  return q;}return null;}
 
 const LEVELS=[
- {id:1,cls:'l1',name:'Number Ninja',tag:'Level 1',bonus:2,diffs:['easy','easy','medium'],
-  desc:'Place value to 1,000,000, ordering, rounding, Roman numerals, negatives, adding and subtracting',
+ {key:'m1',subject:'maths',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Level 1',bonus:2,diffs:['easy','easy','medium','hard'],
+  desc:'Slice the falling answer. Easy drops fast, hard drops slowly. Place value, rounding, Roman numerals, negatives and more',
   topics:{addsub:3,placevalue:2,rounding:2,order:2,negative:1,roman:1,x10:1}},
- {id:2,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',bonus:2,diffs:['easy','medium','medium'],
+ {key:'m2',subject:'maths',mode:'quiz',tycoon:true,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',bonus:2,diffs:['easy','medium','medium'],
   desc:'Times tables to 12×12, division, remainders, factors, primes, squares, cubes and short division',
   topics:{times:3,division:2,remainders:2,factors:2,shortdiv:2,x10:1}},
- {id:3,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
+ {key:'m3',subject:'maths',mode:'quiz',tycoon:false,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
   desc:'Long multiplication, fractions, decimals, percentages and money word problems',
   topics:{multiply:2,shortdiv:1,fractions:3,decimals:2,percent:2,money:2}},
- {id:4,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
+ {key:'m4',subject:'maths',mode:'quiz',tycoon:false,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
   desc:'Area, perimeter, volume, angles, shapes, coordinates, time, measures, tables and graphs',
   topics:{area:2,volume:1,angles:1,shapes:1,coords:1,time:1,measures:1,stats:2,scaling:1}},
- {id:5,cls:'l5',name:'BOSS BATTLE',tag:'Boss level',bonus:5,diffs:['hard','hard','medium'],
+ {key:'m5',subject:'maths',mode:'quiz',tycoon:false,cls:'l5',name:'BOSS BATTLE',tag:'Boss level',bonus:5,diffs:['hard','hard','medium'],
   desc:'Hard mix: big numbers, fractions, measures, graphs, scaling and tricky word problems',
-  topics:{addsub:1,rounding:1,fractions:1,percent:1,multiply:1,area:1,word:2,stats:1,time:1,negative:1,measures:1,scaling:1}}
+  topics:{addsub:1,rounding:1,fractions:1,percent:1,multiply:1,area:1,word:2,stats:1,time:1,negative:1,measures:1,scaling:1}},
+ {key:'s1',subject:'science',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
+  desc:'Slice the right science answer. Easy drops fast, hard drops slowly so you can think.',
+  topics:{materials:2,space:2,forces:2,living:2,humans:2}},
+ {key:'s2',subject:'science',mode:'quiz',tycoon:false,cls:'l3',name:'Materials Lab',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
+  desc:'Dissolving, separating mixtures, and reversible and irreversible changes',
+  topics:{materials:10}},
+ {key:'s3',subject:'science',mode:'quiz',tycoon:false,cls:'l2',name:'Earth & Space',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
+  desc:'The Sun, Earth and Moon, day and night, and the planets',
+  topics:{space:10}},
+ {key:'s4',subject:'science',mode:'quiz',tycoon:false,cls:'l4',name:'Forces',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
+  desc:'Gravity, friction, air and water resistance, levers, pulleys and gears',
+  topics:{forces:10}},
+ {key:'s5',subject:'science',mode:'quiz',tycoon:false,cls:'l5',name:'Life & growing',tag:'Science',bonus:3,diffs:['easy','medium','hard'],
+  desc:'Life cycles, plant reproduction, and how humans change to old age',
+  topics:{living:5,humans:5}}
 ];
 function buildRound(L){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);
  const qs=[],seen=new Set();let g=0;
@@ -728,10 +873,10 @@ function header(){const h=$('#hdr');
  h.innerHTML=`<div class="who" data-act="home" style="cursor:pointer">${avatar(player.av,52)}<div><div class="nm">${esc(player.name)}</div><span class="pill t-${t}">${t}</span></div></div>
  <div class="spacer"></div><div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div>
  <div class="bank" id="hdrBank">${COIN}<span id="hdrTotal">${fmt(player.total)}</span></div>
- <button class="hbtn" data-act="house"><span>🏠</span><span class="lbl">House</span></button>
+ ${(!Q||Q.L.tycoon)?`<button class="hbtn" data-act="house"><span>🏠</span><span class="lbl">House</span></button>`:''}
  <button class="hbtn" data-act="bank"><span>🏦</span><span class="lbl">Bank</span></button>
  <button class="hbtn" data-act="rewards"><span>🏅</span><span class="lbl">Rewards</span></button>
- <button class="hbtn" data-act="parent"><span>👪</span><span class="lbl">Parent</span></button>
+ <button class="hbtn" data-act="parent"><span>👪</span><span class="lbl">Parents</span></button>
  <button class="hbtn" data-act="mute" aria-label="Sound on or off">${store.muted?SPK_OFF:SPK_ON}</button>`;}
 function bumpTotal(){const el=$('#hdrTotal');if(el&&player)el.textContent=fmt(player.total);const b=$('#hdrBank');if(b){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}}
 
@@ -748,16 +893,19 @@ function floatText(el,txt){if(!canAnim||!el)return;const fx=$('#fx');const s=cen
 function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','#facc15','#22c55e','#3b82f6','#a855f7','#f97316'];for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti';c.style.background=pick(cols);fx.appendChild(c);
  const x=Math.random()*innerWidth;c.animate([{transform:`translate(${x}px,-30px) rotate(0deg)`},{transform:`translate(${x+R(-120,120)}px,${innerHeight+40}px) rotate(${R(180,720)}deg)`}],{duration:R(1400,2600),delay:R(0,400),easing:'cubic-bezier(.3,.6,.6,1)',fill:'both'}).onfinish=()=>c.remove();}}
 
-const app=$('#app');let Q=null,timer=null;
+const app=$('#app');let Q=null,timer=null,fallRAF=0;
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function stopFall(){if(fallRAF){cancelAnimationFrame(fallRAF);fallRAF=0;}}
 function clearAuto(){if(Q&&Q.auto){clearTimeout(Q.auto);Q.auto=null;}}
 function timeUsed(){if(!Q)return 99;return Q.elapsed+(Q.paused?0:(performance.now()-Q.t0)/1000);}
-function paintClock(){if(!Q)return;const el=timeUsed();const b=$('#sbar'),s=$('#secs');if(!b||!s){stopTimer();return;}const left=Math.max(0,10-el);b.style.transform=`scaleX(${left/10})`;s.textContent=left>0?Math.ceil(left)+'s':'Speed star missed — no rush';if(left<=0)stopTimer();}
+function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();const b=$('#sbar'),s=$('#secs');if(!b||!s){stopTimer();return;}const left=Math.max(0,LIMIT-el);b.style.transform=`scaleX(${left/LIMIT})`;s.textContent=Math.ceil(left)+'s';if(left<=0){stopTimer();timeUp();}}
 function startClock(){stopTimer();timer=setInterval(paintClock,100);}
-function pauseClock(){if(!Q||Q.paused||Q.locked)return;Q.elapsed+=(performance.now()-Q.t0)/1000;Q.paused=true;stopTimer();paintClock();}
-function resumeClock(){if(!Q||!Q.paused||Q.locked)return;Q.paused=false;Q.t0=performance.now();if(timeUsed()<10)startClock();}
-let startMsg='';
-function showStart(){stopTimer();clearAuto();Q=null;header();const names=Object.values(store.players);
+let startMsg='',subjectTab='maths',parentSum=null;
+function showStart(){stopTimer();clearAuto();stopFall();Q=null;header();const names=Object.values(store.players);
+ const list=LEVELS.filter(L=>L.subject===subjectTab);
+ const blurb=subjectTab==='science'
+  ?'Year 5 science. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. Help is a pass. You have 12 seconds.'
+  :'A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). Number Ninja is a slicing game. The house builds only in Times Table Tycoon.';
  app.innerHTML=`<div class="start">
  <div class="hero"><h1>Block<br>Maths<br>Quest</h1><div class="avatarBox">${avatar(player?player.av:null,180)}</div>
   <div style="color:#fff;font-size:18px;text-shadow:0 2px 0 #14142b;line-height:1.4">Get questions right. Earn 1, 2 or 3 ${COIN}. Build your block house!</div></div>
@@ -765,36 +913,94 @@ function showStart(){stopTimer();clearAuto();Q=null;header();const names=Object.
   <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${player?esc(player.name):''}">
   ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${fmt(p.total)} R$</button>`).join('')}</div>`:''}
   <div class="err" id="err">${startMsg}</div>
+  <div class="tabs"><button class="tab ${subjectTab==='maths'?'on':''}" data-act="tab" data-t="maths">Maths</button><button class="tab ${subjectTab==='science'?'on':''}" data-act="tab" data-t="science">Science</button></div>
   <h2 style="margin-top:4px">Pick a level</h2>
-  <p class="muted" style="margin-top:-4px">A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard).</p>
-  <div class="levels">${LEVELS.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-l="${L.id}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
+  <p class="muted" style="margin-top:-4px">${blurb}</p>
+  <div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
  </div></div>`;
  startMsg='';}
 function newRound(L){Q={L,qs:buildRound(L),i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts};}
-function startRound(id){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
- if(inp)inp.blur();setPlayer(nm);newRound(LEVELS.find(l=>l.id===+id));if(!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
+function startRound(key){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
+ const L=LEVELS.find(l=>l.key===key);if(!L)return;
+ if(inp)inp.blur();setPlayer(nm);newRound(L);if(!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
 function roundQuestionPay(){return Q.earn.easy+Q.earn.medium+Q.earn.hard;}
-function showQ(){stopTimer();clearAuto();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.elapsed=0;Q.paused=false;window.scrollTo(0,0);
- app.innerHTML=`<div class="qtop"><div class="blocks">${Q.qs.map((_,k)=>`<i class="${k<Q.i?(Q.res[k]?'ok':'no'):k===Q.i?'cur':''}"></i>`).join('')}</div><div class="spacer"></div>
- <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${roundQuestionPay()}</span> this round</div></div>
- ${houseBar(player.house.pts)}
+function pipClass(k){if(k===Q.i)return 'cur';if(k>Q.i)return '';if(Q.res[k]===true)return 'ok';if(Q.res[k]==='pass')return 'pass';return 'no';}
+function isNinja(){return !!(Q&&Q.L&&Q.L.mode==='ninja');}
+function isTycoon(){return !!(Q&&Q.L&&Q.L.tycoon);}
+/* Seconds for an answer to cross the playfield. Easy is fastest, hard is slowest. */
+const FALL_SECS={easy:3.6,medium:7,hard:14};
+const DROP_WORD={easy:'drops fast',medium:'steady fall',hard:'slow fall — time to think'};
+function qTop(){return `<div class="qtop"><div class="blocks">${Q.qs.map((_,k)=>`<i class="${pipClass(k)}"></i>`).join('')}</div><div class="spacer"></div>
+ <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${roundQuestionPay()}</span> this round</div></div>`;}
+function ninjaLabel(q,n){if(q.prefix==='S$')return money(n);return (q.prefix||'')+fmt(n)+(q.suffix?' '+q.suffix:'');}
+function ninjaOptions(q){if(q.type==='mc')return q.choices.slice();
+ const right=ninjaLabel(q,q.ans);const wrongs=[];const seen=new Set([right]);
+ const bumps=[1,-1,2,-2,10,-10,5,-5,100,-100,20,-20,3,-3,50,-50,0.1,-0.1,0.5];
+ for(const b of shuf(bumps)){const n=clean(q.ans+b);if(!isFinite(n))continue;const lab=ninjaLabel(q,n);if(seen.has(lab))continue;seen.add(lab);wrongs.push(lab);if(wrongs.length===3)break;}
+ let k=1;while(wrongs.length<3&&k<20){const lab=ninjaLabel(q,clean(q.ans+k*7));k++;if(seen.has(lab))continue;seen.add(lab);wrongs.push(lab);}
+ return shuf([right,...wrongs]);}
+const NINJA_GUY=`<svg class="ninjaguy" viewBox="0 0 90 120" aria-hidden="true"><rect x="22" y="10" width="46" height="40" rx="8" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="28" y="18" width="34" height="28" rx="4" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="26" y="18" width="38" height="9" fill="#ef4444" stroke="#14142b" stroke-width="2"/><polygon points="64,18 84,10 64,28" fill="#ef4444" stroke="#14142b" stroke-width="2"/><rect x="36" y="30" width="7" height="7" fill="#14142b"/><rect x="50" y="30" width="7" height="7" fill="#14142b"/><path d="M38 40 Q45 46 54 40" fill="none" stroke="#14142b" stroke-width="3" stroke-linecap="round"/><rect x="8" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="66" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="52" width="42" height="34" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="74" width="42" height="7" fill="#ef4444"/><rect x="26" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="48" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><g transform="rotate(-28 78 70)"><rect x="74" y="40" width="7" height="36" rx="1" fill="#e5e7eb" stroke="#14142b" stroke-width="2"/><rect x="70" y="70" width="15" height="6" fill="#facc15" stroke="#14142b" stroke-width="2"/></g></svg>`;
+function showQ(){stopTimer();clearAuto();stopFall();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.elapsed=0;Q.paused=false;window.scrollTo(0,0);
+ if(isNinja()){showNinja(q);return;}
+ app.innerHTML=`${qTop()}
+ ${isTycoon()?houseBar(player.house.pts):''}
  <div class="quiz"><div class="card qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$</span></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
   <div id="help" class="helppanel hidden"></div>
-  <div><div class="speedlbl"><span>⚡ Speed star if you answer within 10s</span><span id="secs">10s</span></div><div class="speed"><span id="sbar"></span></div></div></div>
+  <div><div class="speedlbl"><span>⏱ ${LIMIT} seconds to answer</span><span id="secs">${LIMIT}s</span></div><div class="speed"><span id="sbar"></span></div></div></div>
   <div id="ans">${answerArea(q)}</div></div>`;
  Q.t0=performance.now();startClock();}
-function helpHTML(q){return `<div class="helptop"><h3 style="margin:0">Hint</h3><button class="btn grey" type="button" data-act="closehelp">Close</button></div>
+function showNinja(q){const drop=DROP_WORD[q.diff]||DROP_WORD.medium;
+ app.innerHTML=`<div class="ninjawrap">${qTop()}
+ <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$ · ${drop}</span></div>
+  <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
+  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
+  <div id="help" class="helppanel hidden"></div>
+  <div><div class="speedlbl"><span>⏱ ${LIMIT} seconds · slice the right answer</span><span id="secs">${LIMIT}s</span></div><div class="speed"><span id="sbar"></span></div></div></div>
+ <div class="field" id="field">${NINJA_GUY}<div id="ans"></div></div></div>`;
+ Q.t0=performance.now();startClock();startFall(q);}
+function startFall(q){const field=$('#field');if(!field)return;const opts=ninjaOptions(q);const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);
+ const chips=opts.map((lab,i)=>{const el=document.createElement('button');el.type='button';el.className='fallchip c'+i+(String(lab).length>16?' long':'');el.innerHTML=lab;el.setAttribute('aria-label','Falling answer');field.appendChild(el);
+  el.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation();if(!Q||Q.locked)return;const r=field.getBoundingClientRect();const s=document.createElement('div');s.className='slash';s.style.left=(ev.clientX-r.left)+'px';s.style.top=(ev.clientY-r.top)+'px';field.appendChild(s);el.classList.add(lab===right?'hit':'miss');
+   const given=plain(lab);if(q.type==='mc')answer(lab===right?q.ans:'\u0000',null,{given});else answer(lab===right?String(q.ans):'\u0000',null,{given});});
+  return {el,lab,correct:lab===right};});
+ const place=()=>{const w=field.clientWidth||320,h=field.clientHeight||340;const gap=8,cw=Math.min(220,Math.max(78,(w-gap*(chips.length+1))/chips.length));
+  chips.forEach((c,i)=>{c.el.style.width=cw+'px';c.w=cw;c.h=c.el.offsetHeight||76;c.x=gap+i*((w-gap*2-cw)/Math.max(1,chips.length-1));c.y=-c.h-18-(i%chips.length)*28;c.el.style.transform=`translate(${c.x}px,${c.y}px)`;});
+  return {w,h};};
+ place();
+ let last=performance.now();
+ const step=now=>{if(!Q||Q.locked||!isNinja()){stopFall();return;}const fieldNow=$('#field');if(!fieldNow){stopFall();return;}
+  const dt=Math.min(0.05,(now-last)/1000);last=now;const h=fieldNow.clientHeight||340;const speed=(h+90)/(FALL_SECS[q.diff]||FALL_SECS.medium);let gone=false;
+  chips.forEach(c=>{if(c.dead)return;c.y+=speed*dt;c.el.style.transform=`translate(${c.x}px,${c.y}px)`;if(c.correct&&c.y>h-8){c.dead=true;gone=true;}});
+  if(gone){fellOff();return;}fallRAF=requestAnimationFrame(step);};
+ fallRAF=requestAnimationFrame(step);}
+function fellOff(){if(!Q||Q.locked)return;answer(null,null,{fell:true});}
+function helpHTML(q){return `<div class="passbanner">Passed – no Robux this time</div>
+ <div class="helptop"><h3 style="margin:0">Hint</h3></div>
  <div class="hint">${q.hint}</div>
  <h3>Worked example</h3>
- <p class="muted" style="margin-top:-4px">Read the steps in order. The answer comes at the end, so try the hint before you peek.</p>
+ <p class="muted" style="margin-top:-4px">Read the steps, then go on to the next question. This one is a pass, so the answer is here for you to learn.</p>
  <ol>${q.steps.map(s=>`<li>${s}</li>`).join('')}</ol>
  <a class="bitelink" href="${q.link}" target="_blank" rel="noopener noreferrer">Learn more on BBC Bitesize: ${esc(q.linkName)} ↗</a>
- <p class="muted">You can still answer. Asking for help does not take any R$ away.</p>`;}
-function toggleHelp(){if(!Q||Q.locked)return;const p=$('#help');if(!p)return;sfx.click();
- if(p.classList.contains('hidden')){p.innerHTML=helpHTML(Q.qs[Q.i]);p.classList.remove('hidden');pauseClock();if(p.scrollIntoView)p.scrollIntoView({block:'nearest',behavior:'smooth'});}
- else{p.classList.add('hidden');resumeClock();}}
+ <p class="muted">A pass earns <b>0 R$</b> and <b>0 house bricks</b>. It is not counted as a correct answer.</p>`;}
+function plain(s){const d=document.createElement('div');d.innerHTML=String(s==null?'':s);return (d.textContent||'').replace(/\s+/g,' ').trim();}
+function shownAns(q){if(q.type==='num'){if(q.prefix==='S$')return money(q.ans);return (q.prefix||'')+fmt(q.ans)+(q.suffix?' '+q.suffix:'');}return plain(q.ans);}
+function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.mistakes)player.mistakes=[];
+ const rec=player.review[q.topic]||(player.review[q.topic]={c:0,w:0,t:0,p:0,subject:q.subject||'Maths'});
+ if(kind==='correct')rec.c++;else if(kind==='timeout')rec.t++;else if(kind==='pass')rec.p++;else rec.w++;
+ if(kind==='correct')return;
+ const givenText=kind==='timeout'?'timed out':kind==='pass'?'passed':kind==='fell'?'fell off':plain(given);
+ player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:givenText||'wrong',ans:shownAns(q)});
+ if(player.mistakes.length>400)player.mistakes.length=400;}
+function passQuestion(){if(!Q||Q.locked)return;const q=Q.qs[Q.i];
+ Q.locked=true;Q.streak=0;Q.res[Q.i]='pass';stopTimer();stopFall();logAttempt(q,'pass');save();sfx.click();
+ const btn=document.querySelector('.helpbtn');if(btn){btn.disabled=true;btn.textContent='Passed – no Robux this time';}
+ const p=$('#help');if(p){p.innerHTML=helpHTML(q);p.classList.remove('hidden');}
+ const streakEl=document.querySelector('.tagbox.streak');if(streakEl)streakEl.textContent='🔥 Streak 0';
+ const s=$('#secs');if(s)s.textContent='Passed';const b=$('#sbar');if(b)b.style.transform='scaleX(0)';
+ const area=$('#ans');if(area)area.innerHTML=`<div class="fb pass" id="fb"><h2>Passed – no Robux this time</h2><p style="font-size:20px;line-height:1.4">Asking for help passes this question. You get <b>0 R$</b> and <b>0 house bricks</b>. It does not count as correct, and it does not keep your streak.</p><button class="btn purple" data-act="next">Next question ▶</button></div>`;
+ if(p&&p.scrollIntoView)p.scrollIntoView({block:'nearest',behavior:'smooth'});}
 function answerArea(q){if(q.type==='mc')return `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-act="choose" data-k="${k}">${c}</button>`).join('')}</div>`;
  const keys=['7','8','9','del','4','5','6','-','1','2','3','ok','0','.'];
  return `<div class="disp" id="disp">${q.prefix?`<span class="aff">${q.prefix}</span>`:''}<span id="dv"></span><span class="cur"></span>${q.suffix?`<span class="aff">${q.suffix}</span>`:''}</div>
@@ -806,33 +1012,36 @@ function keyIn(k){if(!Q||Q.locked)return;const q=Q.qs[Q.i];if(q.type!=='num')ret
  else if(k==='.'){if(!Q.input.includes('.'))Q.input+=(Q.input===''||Q.input==='-'?'0':'')+'.';}
  else if(Q.input.replace(/[-.]/g,'').length<9)Q.input+=k;
  sfx.click();const dv=$('#dv');if(dv)dv.textContent=Q.input.replace('-','−');}
-function answer(val,btn){const q=Q.qs[Q.i];Q.locked=true;const secs=timeUsed();stopTimer();
- let ok;if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;
+function timeUp(){if(!Q||Q.locked)return;answer(null,null,{timeout:true});}
+function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;const secs=timeUsed();stopTimer();stopFall();
+ let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
  const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
  const bon=[];let gained=0;let built=null;
  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak,Q.streak);
   gained=q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;player.total+=gained;
-  const before=houseProgress(player.house.pts);player.house.pts+=gained;const after=houseProgress(player.house.pts);
-  if(after.built.length>before.built.length)built=after.built[after.built.length-1];
-  bon.push('+'+gained+' R$ · '+DNAME[q.diff].toLowerCase());
-  bon.push('+'+gained+' house brick'+(gained>1?'s':''));
+  if(isTycoon()){const before=houseProgress(player.house.pts);player.house.pts+=gained;const after=houseProgress(player.house.pts);
+   if(after.built.length>before.built.length)built=after.built[after.built.length-1];
+   bon.push('+'+gained+' house brick'+(gained>1?'s':''));}
+  bon.unshift('+'+gained+' R$ · '+DNAME[q.diff].toLowerCase());
   if(secs<=10)bon.push('⚡ speed star');
   if(Q.streak>=3)bon.push('🔥 streak '+Q.streak);}
  else Q.streak=0;
- Q.res[Q.i]=ok;save();
+ Q.res[Q.i]=ok;logAttempt(q,ok?'correct':opts.timeout?'timeout':opts.fell?'fell':'wrong',opts.given!=null?opts.given:val);save();
  if(q.type==='mc')document.querySelectorAll('.choice').forEach(b=>{const c=q.choices[+b.dataset.k];if(c===q.ans)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim');});
  const ansHtml=q.type==='num'?`${q.prefix||''}${q.prefix==='S$'?(+q.ans).toFixed(2):fmt(q.ans)}${q.suffix?' '+q.suffix:''}`:q.ans;
  const fb=document.createElement('div');fb.className='fb '+(ok?'good':'bad');fb.id='fb';
  const buildNote=built?`<div class="unlock"><span style="font-size:28px">🏠</span><div class="u"><b>${esc(built.say)}</b><br><span class="muted">${esc(built.name)} added to your house.</span></div></div>`:'';
+ const missTitle=opts.timeout?"Time's up!":opts.fell?'It got away!':pick(['Not quite!','Nearly!','Good try!']);
+ const missNote=opts.timeout?'The timer ran out, so this counts as a wrong answer. No R$ this time.':opts.fell?'The right answer fell off the screen, so this counts as a wrong answer. No R$ this time.':(isTycoon()?'No R$ lost, and your house stays as it is. Every mistake makes your brain stronger.':'No R$ lost. Every mistake makes your brain stronger.');
  fb.innerHTML=ok?`<h2>${pick(['Awesome!','Correct!','Epic!','Nailed it!','Brilliant!','Super!'])}</h2><div class="bon">${bon.map(b=>`<span>${b}</span>`).join('')}</div>${buildNote}<button class="btn green" data-act="next">Next ▶</button>`
-  :`<h2>${pick(['Not quite!','Nearly!','Good try!'])}</h2><div class="ansbig">The answer is ${ansHtml}</div><div class="ex">${q.steps.map(s=>s).join(' ')}</div><div class="muted" style="margin-bottom:12px;font-size:17px">No R$ lost, and your house stays as it is. Every mistake makes your brain stronger.</div><button class="btn blue" data-act="next">Got it ▶</button>`;
- const area=$('#ans');if(q.type==='num')area.innerHTML='';area.appendChild(fb);
- const slot=$('#houseSlot');if(slot&&ok)slot.outerHTML=houseBar(player.house.pts,built&&built.id);
+  :`<h2>${missTitle}</h2><div class="ansbig">The answer is ${ansHtml}</div><div class="ex">${q.steps.map(s=>s).join(' ')}</div><div class="muted" style="margin-bottom:12px;font-size:17px">${missNote}</div><button class="btn blue" data-act="next">Got it ▶</button>`;
+ const area=$('#ans');if(area){if(q.type==='num'||isNinja())area.innerHTML='';area.appendChild(fb);}
+ const slot=$('#houseSlot');if(slot&&ok&&isTycoon())slot.outerHTML=houseBar(player.house.pts,built&&built.id);
  const rnd=$('#rnd');if(rnd)rnd.textContent='+'+roundQuestionPay();
  if(ok){sfx.correct();if(built){setTimeout(sfx.build,280);if(houseProgress(player.house.pts).done){setTimeout(sfx.fanfare,500);confetti();}}else if(Q.streak>=3)setTimeout(sfx.streak,300);coinBurst(fb,gained);floatText(fb,'+'+gained+' R$');Q.auto=setTimeout(nextQ,built?3200:2400);}
  else{sfx.wrong();if(fb.scrollIntoView)fb.scrollIntoView({block:'nearest',behavior:'smooth'});}}
 function nextQ(){if(!Q)return;clearAuto();Q.i++;if(Q.i>=Q.qs.length)finish();else showQ();}
-function finish(){stopTimer();clearAuto();const L=Q.L;const score=Q.res.filter(Boolean).length;const before=player.total-roundQuestionPay();
+function finish(){stopTimer();clearAuto();stopFall();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon;const before=player.total-roundQuestionPay();
  const rb=L.bonus,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect;player.rounds++;
  const earned=roundQuestionPay()+rb+perfect;
  player.history.unshift({d:new Date().toISOString(),lvl:L.tag+': '+L.name,score,of:Q.qs.length,earned});if(player.history.length>200)player.history.length=200;
@@ -842,15 +1051,16 @@ function finish(){stopTimer();clearAuto();const L=Q.L;const score=Q.res.filter(B
  const h0=houseProgress(Q.houseAtStart),h1=houseProgress(player.house.pts);const grew=h1.built.slice(h0.built.length);
  app.innerHTML=`<div class="grid2"><div class="card center"><h2>Round complete!</h2><div class="muted" style="font-size:20px">${L.tag}: ${L.name}</div>
   <div class="score">${score}/${Q.qs.length}</div><div style="font-size:22px">${perfect?'PERFECT ROUND!':score>=8?'Amazing work!':score>=5?'Great effort!':'Keep practising, you have got this!'}</div>
-  <div style="margin:12px auto 0">${houseSVG(player.house.pts)}</div>
-  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn green" data-act="again" data-l="${L.id}">Play again</button><button class="btn" data-act="home">Change level</button><button class="btn purple" data-act="house">My house</button></div></div>
+  ${passed?`<div class="muted" style="font-size:18px;margin-top:6px">${passed} passed · no Robux</div>`:''}
+  ${ty?`<div style="margin:12px auto 0">${houseSVG(player.house.pts)}</div>`:''}
+  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn green" data-act="again" data-k="${L.key}">Play again</button><button class="btn" data-act="home">Change level</button>${ty?'<button class="btn purple" data-act="house">My house</button>':''}</div></div>
  <div class="card"><h2 style="display:flex;align-items:center;gap:10px">${COIN} Robux points earned</h2><table class="tbl">
   ${rows}
   <tr><td>Round complete bonus</td><td class="r">+${rb}</td></tr>
   ${perfect?`<tr><td>Perfect round bonus</td><td class="r">+${perfect}</td></tr>`:''}
   <tr class="tot"><td>Total this round</td><td class="r">+${earned} R$</td></tr></table>
   <div style="font-size:20px;margin-top:12px;display:flex;gap:8px;align-items:center">Bank total: ${COIN} ${fmt(player.total)}</div>
-  ${grew.length?`<div class="unlock"><span style="font-size:32px">🏠</span><div class="u">You built: <b>${grew.map(s=>esc(s.name)).join(', ')}</b></div></div>`:''}
+  ${ty&&grew.length?`<div class="unlock"><span style="font-size:32px">🏠</span><div class="u">You built: <b>${grew.map(s=>esc(s.name)).join(', ')}</b></div></div>`:''}
   ${newT!==oldT?`<div class="unlock"><span style="font-size:32px">🎉</span><div class="u">LEVEL UP! You are now a <span class="pill t-${newT}">${newT}</span></div></div>`:''}
   ${newM.map(m=>`<div class="unlock">${avatar({hat:m.hats[0]||player.av.hat,shirt:m.shirts[0]||player.av.shirt},70)}<div class="u">Badge unlocked: <b>${m.name}</b> (${fmt(m.at)} R$)<br><span class="muted" style="font-size:16px">New: ${[...m.hats.map(x=>HATS[x]),...m.shirts.map(x=>x+' shirt')].join(', ')}. Wear it in Rewards!</span></div></div>`).join('')}
   ${nextMilestoneHtml()}
@@ -861,13 +1071,13 @@ function finish(){stopTimer();clearAuto();const L=Q.L;const score=Q.res.filter(B
 function nextMilestoneHtml(){const nx=MILESTONES.find(m=>player.total<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>player.total>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((player.total-lo)/(nx.at-lo)*100));
  return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ (${fmt(nx.at-player.total)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
 function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
-function leaveRound(){stopTimer();clearAuto();Q=null;}
+function leaveRound(){stopTimer();clearAuto();stopFall();Q=null;}
 function showHouse(){if(!needPlayer())return;leaveRound();header();const st=houseProgress(player.house.pts);
  app.innerHTML=`<div class="housepage"><div class="card"><h2 style="margin-bottom:8px">🏠 ${esc(player.name)}'s house</h2>
   ${houseSVG(player.house.pts)}
   <p style="font-size:18px;margin:10px 0 0">${st.done?'Every part is built. What a tycoon!':`Next part: <b>${esc(st.next.name)}</b> · ${st.have} / ${st.need} bricks`}</p>
   ${st.done?'':`<div class="prog"><span style="width:${Math.round(st.have/st.need*100)}%"></span></div>`}
-  <p class="muted">Correct answers add bricks: 1 easy, 2 medium, 3 hard — the same as the R$ for that question. Your build is saved in this browser.</p>
+  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks, the same as the R$. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
   <button class="btn green" data-act="home">Play to build ▶</button></div>
  <div class="card"><h2>Build list</h2><div class="stlist">${HOUSE.map((s,i)=>{const done=st.built.some(b=>b.id===s.id);const now=!done&&st.next&&st.next.id===s.id;return `<div class="st ${done?'done':''} ${now?'now':''}"><span>${done?'✅':now?'🔨':'🔒'} ${i+1}. ${esc(s.name)}</span><span class="need">${s.cost?s.cost+' bricks':"free"}</span></div>`;}).join('')}</div></div></div>`;}
 function showBank(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;const st=houseProgress(p.house.pts);
@@ -888,18 +1098,48 @@ function showRewards(){if(!needPlayer())return;leaveRound();header();const p=pla
   <h3 style="margin-top:14px">Hats & gear</h3><div class="opts">${Object.keys(HATS).map(hk=>{const ok=u.hats.includes(hk);return `<button class="opt ${p.av.hat===hk?'sel':''} ${ok?'':'locked'}" data-act="hat" data-h="${hk}" ${ok?'':'disabled'}>${avatar({hat:hk,shirt:p.av.shirt},70)}<div>${HATS[hk]}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
   <h3 style="margin-top:14px">Shirt colours</h3><div class="opts">${Object.keys(SHIRTS).map(sk=>{const ok=u.shirts.includes(sk);const bg=SHIRTS[sk]==='rainbow'?'linear-gradient(#ef4444,#facc15,#22c55e,#3b82f6,#a855f7)':SHIRTS[sk];return `<button class="opt ${p.av.shirt===sk?'sel':''} ${ok?'':'locked'}" data-act="shirt" data-s="${sk}" ${ok?'':'disabled'}><div class="sw" style="background:${bg}"></div><div>${sk}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
  </div></div>`;}
-function showParent(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;const st=houseProgress(p.house.pts);
- const rows=Object.keys(TOPICS).filter(t=>p.topics[t]).map(t=>{const s=p.topics[t],a=Math.round(s.c/s.n*100);return `<tr><td>${TOPICS[t]}</td><td class="r">${s.c}/${s.n}</td><td><div class="bar"><span style="width:${a}%;background:${a>=80?'#22c55e':a>=50?'#facc15':'#ef4444'}"></span></div></td><td class="r">${a}%</td></tr>`;}).join('');
- app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parent area · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are <b>practice points only</b>. They are not real Robux and this game has no link to Roblox. A correct answer is worth <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). You decide whether to swap them for a real treat. Nothing is bought, no ads are shown and no data leaves this device.</div>
- <div class="stats"><div class="stat"><div class="v"><span class="coin big">R$</span>${fmt(p.total)}</div><div class="k">Total earned</div></div><div class="stat"><div class="v">${p.rounds}</div><div class="k">Rounds played</div></div>
- <div class="stat"><div class="v">${acc}%</div><div class="k">Overall accuracy</div></div><div class="stat"><div class="v">🏠 ${st.built.length}/${HOUSE.length}</div><div class="k">House parts</div></div></div>
- <div class="grid2"><div><h3>Accuracy by topic</h3>${rows?`<table class="tbl" style="font-size:16px"><tr><th>Topic</th><th class="r">Right</th><th></th><th class="r">%</th></tr>${rows}</table>`:'<p class="muted">No answers yet.</p>'}</div>
- <div><h3>Exchange note (optional)</h3><p class="muted" style="margin-top:-4px">Write your house rule. With the new 1–3 point prizes, a small treat might be about 15–20 R$.</p>
-  <textarea id="note" maxlength="300" placeholder="e.g. 20 points = one small treat on Saturday">${esc(p.note||'')}</textarea>
-  <div class="row" style="margin-top:10px"><button class="btn green" data-act="savenote">Save note</button></div>
-  ${p.note?`<div class="note" style="background:#fefce8;border-color:#ca8a04">Current deal: <b>${esc(p.note)}</b></div>`:''}
-  <p class="muted" style="font-size:16px;margin-top:14px;line-height:1.4">Questions follow the England Year 5 maths curriculum, which matches a Singapore international school Year 5. The house build is saved in this browser with the score.</p></div></div></div>`;}
+function reviewRows(){const rev=player.review||{};const rows=[];
+ for(const id in rev){const s=rev[id];const attempts=s.c+s.w+s.t+s.p;if(!attempts)continue;
+  rows.push({id,name:TOPICS[id]||id,subject:s.subject||'Maths',attempts,c:s.c,w:s.w,t:s.t,p:s.p,acc:Math.round(s.c/attempts*100)});}
+ rows.sort((a,b)=>a.acc-b.acc||b.attempts-a.attempts||a.name.localeCompare(b.name));return rows;}
+function showParentGate(){if(!needPlayer())return;leaveRound();header();
+ const a=R(18,49),b=R(17,48);parentSum=a+b;
+ app.innerHTML=`<div class="card" style="max-width:640px;margin:12px auto"><div class="row"><h2 style="margin:0">Parents</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
+  <p style="font-size:20px;line-height:1.4">This page is for grown-ups. Answer the sum, or press and hold the button.</p>
+  <p style="font-size:36px;margin:8px 0">${a} + ${b} = ?</p>
+  <input class="name" id="psum" inputmode="numeric" autocomplete="off" placeholder="Type the total">
+  <div class="err" id="perr"></div>
+  <div class="row" style="margin-top:8px"><button class="btn green" data-act="parentcheck">Open</button></div>
+  <button class="btn hold" id="phold" type="button" style="width:100%;margin-top:12px"><i class="fill" id="pholdfill"></i><span>Hold for parents</span></button>
+ </div>`;
+ const btn=$('#phold'),fill=$('#pholdfill');if(!btn)return;let raf=0,t0=0;
+ const tick=()=>{const p=Math.min(1,(performance.now()-t0)/1600);if(fill)fill.style.width=(p*100)+'%';if(p>=1){stop();showParent();return;}raf=requestAnimationFrame(tick);};
+ const start=e=>{e.preventDefault();t0=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);};
+ const stop=()=>{cancelAnimationFrame(raf);raf=0;if(fill)fill.style.width='0';};
+ btn.addEventListener('pointerdown',start);
+ btn.addEventListener('pointerup',stop);
+ btn.addEventListener('pointerleave',stop);
+ btn.addEventListener('pointercancel',stop);}
+function showParent(){if(!needPlayer())return;leaveRound();header();const p=player;const rows=reviewRows();
+ const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="font-size:16px"><tr><th>Topic</th><th class="r">Attempts</th><th class="r">Correct</th><th class="r">Wrong</th><th class="r">Timed out</th><th class="r">Passed</th><th class="r">Accuracy</th></tr>
+ ${rows.map(s=>`<tr><td>${esc(s.subject)} · ${esc(s.name)}</td><td class="r">${s.attempts}</td><td class="r">${s.c}</td><td class="r">${s.w}</td><td class="r">${s.t}</td><td class="r">${s.p}</td><td class="r">${s.acc}%</td></tr>`).join('')}</table></div>`:'<p class="muted">No questions logged yet.</p>';
+ const misses=(p.mistakes||[]).slice(0,25);
+ const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts or passes yet.</p>';
+ app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. Help passes the question and is not counted correct. A timeout is wrong. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <h3>Topics, weakest first</h3>
+ <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt, including wrong answers, timeouts and passes.</p>
+ ${table}
+ <h3 style="margin-top:18px">Recent mistakes</h3>
+ ${list}
+ <div class="row" style="margin-top:12px"><button class="btn red" data-act="clearlog">Clear mistake history</button><span class="muted">Clears this log only. R$ and the house stay.</span></div>
+ <h3 style="margin-top:18px">Exchange note (optional)</h3>
+ <p class="muted" style="margin-top:-4px">A small treat might be about 15–20 R$.</p>
+ <textarea id="note" maxlength="300" placeholder="e.g. 20 points = one small treat on Saturday">${esc(p.note||'')}</textarea>
+ <div class="row" style="margin-top:10px"><button class="btn green" data-act="savenote">Save note</button></div>
+ ${p.note?`<div class="note" style="background:#fefce8;border-color:#ca8a04">Current deal: <b>${esc(p.note)}</b></div>`:''}
+ </div>`;}
 function confirmReset(){if(!player)return;const m=$('#modal');m.classList.remove('hidden');
  m.innerHTML=`<div class="card"><h2>Reset ${esc(player.name)}'s bank?</h2><p>This wipes <b>all ${fmt(player.total)} R$</b>, the house build, the history, badges and unlocks for ${esc(player.name)}. It cannot be undone.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doreset">Yes, reset</button></div></div>`;}
 function closeModal(){const m=$('#modal');m.classList.add('hidden');m.innerHTML='';}
@@ -908,17 +1148,20 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  switch(a){
   case 'home':closeModal();showStart();break;
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
-  case 'level':startRound(el.dataset.l);break;
-  case 'again':newRound(LEVELS.find(l=>l.id===+el.dataset.l));sfx.click();showQ();break;
+  case 'tab':{const typed=$('#nm')?$('#nm').value:'';subjectTab=el.dataset.t==='science'?'science':'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
+  case 'level':startRound(el.dataset.k);break;
+  case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;newRound(L);sfx.click();showQ();break;}
   case 'choose':if(Q&&!Q.locked){answer(Q.qs[Q.i].choices[+el.dataset.k],el);}break;
   case 'key':keyIn(el.dataset.k);break;
-  case 'help':toggleHelp();break;
-  case 'closehelp':toggleHelp();break;
+  case 'help':passQuestion();break;
   case 'next':nextQ();break;
   case 'house':showHouse();break;
   case 'bank':showBank();break;
   case 'rewards':showRewards();break;
-  case 'parent':showParent();break;
+  case 'parent':showParentGate();break;
+  case 'parentcheck':{const n=parseInt(($('#psum')&&$('#psum').value||'').replace(/\s/g,''),10);const err=$('#perr');if(n===parentSum){sfx.coin();showParent();}else{if(err)err.textContent='Not quite. Try the sum, or hold the button.';sfx.wrong();}break;}
+  case 'clearlog':{const m=$('#modal');m.classList.remove('hidden');m.innerHTML=`<div class="card"><h2>Clear mistake history?</h2><p>This removes the topic summary and the saved wrong answers, timeouts and passes for ${esc(player.name)}. Robux and the house stay.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doclearlog">Yes, clear</button></div></div>`;break;}
+  case 'doclearlog':player.mistakes=[];player.review={};save();closeModal();showParent();break;
   case 'mute':store.muted=!store.muted;save();header();if(!store.muted)sfx.click();break;
   case 'hat':player.av.hat=el.dataset.h;save();sfx.click();showRewards();break;
   case 'shirt':player.av.shirt=el.dataset.s;save();sfx.click();showRewards();break;
@@ -927,7 +1170,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'cancelreset':closeModal();break;
   case 'doreset':{const k=player.name.trim().toLowerCase();store.players[k]=newPlayer(player.name);player=store.players[k];save();closeModal();showBank();break;}
  }});
-document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}return;}
+document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}if(e.key==='Enter'&&t.id==='psum'){e.preventDefault();const b=document.querySelector('[data-act="parentcheck"]');if(b)b.click();}return;}
  if(!Q)return;const q=Q.qs[Q.i];
  if(Q.locked){if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}return;}
  if(q.type==='mc'){const k=+e.key;if(k>=1&&k<=q.choices.length){const b=document.querySelector(`.choice[data-k="${k-1}"]`);if(b)b.click();}return;}
@@ -940,9 +1183,18 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  for(let i=0;i<80;i++){const a=R(20,99999),b=R(1,a-1);const w=subWork(a,b);if(!w||w.val!==a-b)throw new Error('sub '+a+' '+b);const u=addWork(a,b);if(!u||u.val!==a+b)throw new Error('add '+a+' '+b);}
  const hp=houseProgress(0);if(hp.built.length!==1||hp.next.id!=='foundation')throw new Error('house start');
  const full=HOUSE.reduce((s,x)=>s+x.cost,0);if(!houseProgress(full).done)throw new Error('house done');
- if(houseProgress(full-1).done)throw new Error('house early');}
+ if(houseProgress(full-1).done)throw new Error('house early');
+ if(LIMIT!==12)throw new Error('timer');
+ if(!(FALL_SECS.easy<FALL_SECS.medium&&FALL_SECS.medium<FALL_SECS.hard))throw new Error('fall');
+ const seenSci={};SCIENCE.forEach(s=>{if(!s.ans||s.wrongs.length<3||s.wrongs.indexOf(s.ans)>=0||new Set([s.ans,...s.wrongs]).size!==s.wrongs.length+1)throw new Error('sci dup '+s.text.slice(0,48));
+  if(!s.hint||!s.steps||s.steps.length<2||!B[s.bite])throw new Error('sci link '+s.bite);
+  const q=mcQ(s.topic,s.diff,s.text,s.ans,s.wrongs,{bite:s.bite,hint:s.hint,steps:s.steps});
+  if(!q||q.choices.indexOf(s.ans)<0||q.reward!==REWARD[s.diff]||q.link.indexOf('https://www.bbc.co.uk/bitesize/')!==0)throw new Error('sci q '+s.text.slice(0,40));
+  seenSci[s.topic+'|'+s.diff]=(seenSci[s.topic+'|'+s.diff]||0)+1;});
+ ['materials','space','forces','living','humans'].forEach(t=>['easy','medium','hard'].forEach(d=>{if((seenSci[t+'|'+d]||0)<3)throw new Error('sci bank '+t+' '+d);if(!make(t,d))throw new Error('sci make '+t+' '+d);}));
+ if(!LEVELS.some(l=>l.tycoon&&l.key==='m2')||!LEVELS.some(l=>l.subject==='science'&&l.mode==='ninja'))throw new Error('levels');}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,TOPICS,toRoman,words,fmt,fr,mixed,money};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,FALL_SECS,TOPICS,toRoman,words,fmt,fr,mixed,money};
 showStart();
 })();
 </script>
