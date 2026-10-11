@@ -238,6 +238,99 @@ body.has-roundbar .field #ans{padding-bottom:96px}
 .ninjaguy{position:absolute;left:8px;bottom:6px;width:92px;height:auto;z-index:2;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(0,0,0,.35))}
 .slash{position:absolute;z-index:4;width:110px;height:10px;margin:-5px 0 0 -55px;background:#fff;border:3px solid #000;border-radius:6px;pointer-events:none;animation:slash .28s ease-out forwards}
 @keyframes slash{to{opacity:0;transform:rotate(-40deg) scaleX(1.35)}}
+body.duel-on{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+body.duel-on #hdr{flex:none;min-height:0;padding:4px 10px;gap:8px}
+body.duel-on #hdr .brand,body.duel-on #hdr .hbtn:not([data-act="mute"]){display:none}
+body.duel-on #hdr .who svg{height:36px;width:auto}
+body.duel-on #hdr .who .nm{font-size:16px}
+body.duel-on #app{flex:1;min-height:0;max-width:none;margin:0;padding:6px 8px 8px;display:flex;flex-direction:column;overflow:hidden}
+body.has-roundbar.duel-on #app{padding-bottom:calc(96px + env(safe-area-inset-bottom))}
+.duelwrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:6px}
+.duelmeta{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.duelmeta .tagbox{font-size:14px;padding:4px 8px}
+.duelmeta .btn{min-height:48px;padding:6px 12px;font-size:16px;box-shadow:0 3px 0 var(--ink)}
+.duel{flex:1;min-height:0;display:grid;grid-template-columns:1.05fr .95fr;gap:8px}
+.duel>*{min-width:0;min-height:0}
+.arena{display:flex;flex-direction:column;min-height:0;border:4px solid var(--ink);border-radius:16px;overflow:hidden;background:#0f172a;box-shadow:0 6px 0 var(--ink)}
+.arena .hud{display:flex;gap:8px;align-items:center;padding:8px;background:#0f172a;color:#fff}
+.hpcol{flex:1;min-width:0}
+.hplab{display:flex;justify-content:space-between;gap:6px;font-size:14px}
+.hplab b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.hp{height:16px;border:3px solid #000;border-radius:8px;background:#1e293b;overflow:hidden}
+.hp span{display:block;height:100%}
+.pips{display:flex;gap:4px;margin-top:4px}
+.pips i{width:16px;height:16px;border:2px solid #000;border-radius:4px;background:#334155}
+.pips i.on{background:#facc15}
+.vs{text-align:center;color:#facc15;line-height:1.05}
+.vs b{display:block;font-size:18px}
+.vs small{font-size:11px;letter-spacing:.4px;text-transform:uppercase}
+.scene{position:relative;flex:1;min-height:160px;background:linear-gradient(#7dd3fc 0 46%,#38bdf8 46% 58%,#4ade80 58% 72%,#166534 72%)}
+.scene:after{content:"";position:absolute;inset:0;pointer-events:none;box-shadow:inset 0 0 36px rgba(0,0,0,.28);z-index:6}
+.plat,.block{position:absolute;border:3px solid var(--ink);z-index:1;pointer-events:none}
+.plat.a{width:30%;height:16px;left:4%;bottom:24%;background:#15803d}
+.plat.b{width:24%;height:16px;right:6%;bottom:40%;background:#166534}
+.plat.c{width:18%;height:14px;left:16%;bottom:56%;background:#22c55e}
+.block.b1{width:32px;height:32px;left:7%;bottom:30%;background:#f97316}
+.block.b2{width:24px;height:24px;right:12%;bottom:48%;background:#38bdf8}
+.block.b3{width:20px;height:20px;left:24%;bottom:62%;background:#facc15}
+.cross{position:absolute;left:50%;top:40%;width:28px;height:28px;transform:translate(-50%,-50%);z-index:3;pointer-events:none}
+.cross:before,.cross:after{content:"";position:absolute;background:#fff;box-shadow:0 0 0 2px #000}
+.cross:before{left:50%;top:0;bottom:0;width:3px;margin-left:-1.5px}
+.cross:after{top:50%;left:0;right:0;height:3px;margin-top:-1.5px}
+.rival{position:absolute;left:50%;bottom:18%;width:min(38%,170px);transform:translateX(-50%);z-index:2;pointer-events:none}
+.botname{position:absolute;left:50%;top:8px;transform:translateX(-50%);z-index:4;pointer-events:none;background:#000;color:#fff;border:3px solid #facc15;border-radius:8px;padding:2px 8px;font-size:14px;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.gun{position:absolute;left:50%;bottom:0;width:min(52%,240px);transform:translateX(-50%);z-index:5;pointer-events:none;filter:drop-shadow(0 6px 0 rgba(0,0,0,.35))}
+.gunart{width:100%;height:auto;display:block}
+.hitnum{position:absolute;left:50%;top:36%;transform:translate(-50%,-50%);z-index:7;pointer-events:none;text-align:center;line-height:.85}
+.hitnum b{display:block;font-size:64px;color:#fff;text-shadow:0 4px 0 #000,3px 0 0 #000,-3px 0 0 #000,0 -3px 0 #000}
+.hitnum small{display:block;margin-top:2px;font-size:22px;letter-spacing:2px;color:#facc15;text-shadow:0 2px 0 #000}
+.hitnum.crit b{color:#facc15}
+.hitnum.in{left:24%}
+.hitnum.in b{color:#fecaca;font-size:52px}
+.muzzle{position:absolute;left:50%;bottom:16%;width:42px;height:42px;margin-left:-21px;border-radius:50%;background:radial-gradient(circle,#fff,#facc15 45%,transparent 72%);z-index:7;pointer-events:none}
+.finbanner{position:absolute;left:50%;top:16%;transform:translateX(-50%);z-index:8;pointer-events:none;background:#000;color:#facc15;border:4px solid #facc15;border-radius:10px;padding:4px 10px;font-size:22px;letter-spacing:1px;white-space:nowrap}
+.arena.shoot .gun{animation:recoil .22s ease-out}
+.arena.shoot .rival{animation:flinch .35s ease-out}
+.arena.hurt{animation:hurtflash .45s ease-out}
+@keyframes recoil{40%{transform:translateX(-50%) translateY(16px)}}
+@keyframes flinch{35%{transform:translateX(-42%) translateY(-8px) rotate(6deg)}}
+@keyframes hurtflash{30%{box-shadow:inset 0 0 0 14px #ef4444}}
+.duelq{overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;display:flex;flex-direction:column;gap:8px;padding:12px}
+.duelq .qtext{font-size:24px}
+.duelq .qtext.long{font-size:18px}
+.duelq .choice{min-height:72px;font-size:18px;box-shadow:0 4px 0 var(--ink)}
+.duelq .choices{gap:8px}
+.duelq .key{height:54px;font-size:26px}
+.duelq .disp{height:58px;font-size:32px;margin-bottom:8px}
+.duelq .halfbanner{font-size:20px;padding:8px 10px}
+.duelq .helpbtn{padding:8px 10px;font-size:18px}
+.duelq .choice:active,.duelq .key:active,.duelq .helpbtn:active,.duelq .btn:active{transform:none;filter:brightness(.95)}
+.duellobby{max-width:920px;margin:0 auto}
+.topicbox{max-height:132px;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.ranks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px}
+.rankbtn{border:4px solid var(--ink);border-radius:12px;background:#fff;box-shadow:0 4px 0 var(--ink);padding:8px;text-align:left;min-height:72px;display:flex;flex-direction:column;gap:2px;font-size:14px}
+.rankbtn b{font-size:18px}
+.rankbtn.on{background:var(--yellow)}
+.rankbtn:disabled{opacity:.5}
+.rankbtn:active{filter:brightness(.95)}
+.shopgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.skin{display:flex;flex-direction:column;align-items:center;gap:4px;border:4px solid var(--ink);border-radius:14px;background:#fff;box-shadow:0 5px 0 var(--ink);padding:10px;min-height:168px;font-size:16px;text-align:center}
+.skin.on{background:#fef9c3;outline:3px solid var(--ink)}
+.skin .gunart{height:72px;width:auto;max-width:100%}
+.skin em{font-style:normal;font-size:14px;color:#55557a}
+.skin:disabled{opacity:.55}
+.skin:active{filter:brightness(.95)}
+body.duel-on #app>.gg{flex:1;min-height:0}
+.gg{overflow:auto;-webkit-overflow-scrolling:touch;background:radial-gradient(circle at 50% 18%,#312e81,#070b16 68%);border:5px solid #facc15;border-radius:18px;box-shadow:0 0 0 4px #000,0 8px 0 #000;color:#fff;text-align:center;padding:18px 16px 14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px}
+.gg h1{font-size:96px;line-height:.82;color:#facc15;margin:0;letter-spacing:8px;text-shadow:0 6px 0 #000,4px 0 0 #000,-4px 0 0 #000}
+.ggtag{letter-spacing:2px;font-size:14px;color:#fde68a;text-transform:uppercase}
+.ggwho{font-size:28px}
+.ggscore{font-size:44px;line-height:1}
+.ggstats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(680px,100%);margin-top:6px}
+.ggstats div{background:#0f172a;border:4px solid #facc15;border-radius:12px;padding:8px 6px}
+.ggstats b{display:block;font-size:36px;color:#facc15;line-height:1.05}
+.ggstats span{font-size:13px;letter-spacing:1px;text-transform:uppercase;color:#e2e8f0}
+.ggear{font-size:22px;margin-top:4px}
 @media (max-width:900px){
  .start,.quiz,.grid2,.housepage{grid-template-columns:1fr!important}
  .badges{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}
@@ -247,6 +340,14 @@ body.has-roundbar .field #ans{padding-bottom:96px}
  #hdr .brand{display:none}
  .hbtn .lbl{display:none}
  .sitebar svg{height:72px}
+ body.duel-on .duel{grid-template-columns:1fr;grid-template-rows:minmax(210px,34dvh) minmax(0,1fr)}
+ body.duel-on .gun{width:min(42%,160px)}
+ body.duel-on .rival{width:min(34%,130px);bottom:22%}
+ .gg h1{font-size:72px;letter-spacing:4px}
+ .ggwho{font-size:24px}.ggscore{font-size:36px}.ggstats b{font-size:28px}
+ .hitnum b{font-size:48px}
+ .ranks{grid-template-columns:1fr 1fr}
+ .shopgrid{grid-template-columns:1fr 1fr}
 }
 @media (max-width:560px){.levels{grid-template-columns:1fr}.choice{font-size:22px;min-height:80px}.lvl:last-child:nth-child(odd){grid-column:auto}}
 </style>
@@ -282,8 +383,10 @@ let store={players:{},last:'',muted:false};
 function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.players)store=Object.assign(store,s);}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 load();
-function newPlayer(name){return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{}};}
-function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];if(!p.mistakes)p.mistakes=[];if(!p.review)p.review={};}
+function freshDuel(){return{tag:'Redliss',wins:0,losses:0,streak:0,bestStreak:0,skin:'block',finisher:'pop',owned:['block'],finishers:['pop'],pick:{subject:'mixed',topic:'mixed',diff:'easy',rank:'bronze'}};}
+function newPlayer(name){return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel()};}
+function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];if(!p.mistakes)p.mistakes=[];if(!p.review)p.review={};
+ if(!p.duel)p.duel=freshDuel();const d=p.duel;if(!d.tag)d.tag='Redliss';if(!Array.isArray(d.owned))d.owned=['block'];if(d.owned.indexOf('block')<0)d.owned.unshift('block');if(!Array.isArray(d.finishers))d.finishers=['pop'];if(d.finishers.indexOf('pop')<0)d.finishers.unshift('pop');if(!d.skin)d.skin='block';if(!d.finisher)d.finisher='pop';if(!d.pick)d.pick={subject:'mixed',topic:'mixed',diff:'easy',rank:'bronze'};}
 let player=null;
 function setPlayer(name){const k=name.trim().toLowerCase();if(!store.players[k])store.players[k]=newPlayer(name.trim());player=store.players[k];migrate(player);store.last=k;save();}
 if(store.last&&store.players[store.last]){player=store.players[store.last];migrate(player);}
@@ -341,7 +444,9 @@ const sfx={
  streak:()=>{[784,988,1175,1568].forEach((f,i)=>tone(f,i*.06,.12,'square',.05));},
  fanfare:()=>{[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i*.12,i===5?.5:.14,'square',.06));},
  unlock:()=>{[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,i*.07,.2,'triangle',.08));},
- build:()=>{tone(196,0,.09,'square',.05);tone(262,.08,.1,'square',.05);tone(392,.16,.22,'triangle',.07);}
+ build:()=>{tone(196,0,.09,'square',.05);tone(262,.08,.1,'square',.05);tone(392,.16,.22,'triangle',.07);},
+ shot:()=>{tone(740,0,.05,'square',.06,280);tone(180,.04,.09,'square',.05);},
+ hurt:()=>{tone(160,0,.16,'square',.07,90);tone(90,.1,.18,'triangle',.05);}
 };
 document.addEventListener('touchstart',()=>{actx();},{once:true,passive:true});
 
@@ -932,10 +1037,12 @@ function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();c
  if(!Q.half){const left=lim-el;if(left<=0){beginHalf();return;}b.style.transform=`scaleX(${Math.max(0,left)/lim})`;s.textContent=Math.ceil(left)+'s';return;}
  const left=GRACE-(el-lim);if(left<=0){stopTimer();timeUp();return;}b.style.transform=`scaleX(${Math.max(0,left)/GRACE})`;s.textContent=Math.ceil(left)+'s';}
 function startClock(){stopTimer();timer=setInterval(paintClock,100);}
-function clearChrome(){document.body.classList.remove('ninja-on','has-roundbar');const b=document.querySelector('.roundbar');if(b)b.remove();}
+function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar');const b=document.querySelector('.roundbar');if(b)b.remove();}
 function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
-let startMsg='',subjectTab='maths',parentSum=null;
-function showStart(){stopTimer();clearAuto();stopFall();clearChrome();Q=null;header();const names=Object.values(store.players);
+let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'bronze'},shopMsg='';
+function showStart(){stopTimer();clearAuto();stopFall();clearChrome();Q=null;header();
+ if(subjectTab==='duel'){loadDuelPick();renderDuelHome();startMsg='';return;}
+ const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
  const blurb=subjectTab==='science'
   ?'Year 5 science. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. After 14 seconds it is half points. Help is a pass.'
@@ -947,12 +1054,13 @@ function showStart(){stopTimer();clearAuto();stopFall();clearChrome();Q=null;hea
   <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${player?esc(player.name):''}">
   ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${fmt(p.total)} R$</button>`).join('')}</div>`:''}
   <div class="err" id="err">${startMsg}</div>
-  <div class="tabs"><button class="tab ${subjectTab==='maths'?'on':''}" data-act="tab" data-t="maths">Maths</button><button class="tab ${subjectTab==='science'?'on':''}" data-act="tab" data-t="science">Science</button></div>
+  ${tabsHTML()}
   <h2 style="margin-top:4px">Pick a level</h2>
   <p class="muted" style="margin-top:-4px">${blurb}</p>
   <div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
  </div></div>`;
  startMsg='';}
+function tabsHTML(){return `<div class="tabs"><button class="tab ${subjectTab==='maths'?'on':''}" data-act="tab" data-t="maths">Maths</button><button class="tab ${subjectTab==='science'?'on':''}" data-act="tab" data-t="science">Science</button><button class="tab ${subjectTab==='duel'?'on':''}" data-act="tab" data-t="duel">Duel</button></div>`;}
 function newRound(L){Q={L,qs:buildRound(L),i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts};}
 function startRound(key){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
  const L=LEVELS.find(l=>l.key===key);if(!L)return;
@@ -1035,7 +1143,7 @@ function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.
  const givenText=kind==='timeout'?'timed out':kind==='pass'?'passed':kind==='fell'?'fell off':kind==='late'?'late':plain(given);
  player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:givenText||'wrong',ans:shownAns(q)});
  if(player.mistakes.length>400)player.mistakes.length=400;}
-function passQuestion(){if(!Q||Q.locked)return;const q=Q.qs[Q.i];
+function passQuestion(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{pass:true});return;}const q=Q.qs[Q.i];
  Q.locked=true;Q.streak=0;Q.res[Q.i]='pass';stopTimer();stopFall();logAttempt(q,'pass');save();sfx.click();
  const btn=document.querySelector('.helpbtn');if(btn){btn.disabled=true;btn.textContent='Passed – no Robux this time';}
  const p=$('#help');if(p){p.innerHTML=helpHTML(q);p.classList.remove('hidden');}
@@ -1047,7 +1155,7 @@ function passQuestion(){if(!Q||Q.locked)return;const q=Q.qs[Q.i];
 function beginHalf(){if(!Q||Q.locked||Q.half)return;Q.half=true;const q=Q.qs[Q.i];
  const slot=$('#halfslot');if(slot)slot.innerHTML=`<div class="halfbanner" id="halfbanner">Time's up! Half points now</div>`;
  const speed=$('#speed');if(speed)speed.classList.add('half');
- const pill=document.querySelector('.dpill');if(pill)pill.textContent=`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ now`;
+ const pill=document.querySelector('.dpill');if(pill)pill.textContent=Q.duel?`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ · half damage`:`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ now`;
  const lbl=document.querySelector('.speedlbl span');if(lbl)lbl.textContent="Time's up! Half points now";
  const s=$('#secs');if(s)s.textContent=GRACE+'s';const b=$('#sbar');if(b)b.style.transform='scaleX(1)';}
 function answerArea(q){if(q.type==='mc')return `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-act="choose" data-k="${k}">${c}</button>`).join('')}</div>`;
@@ -1055,13 +1163,13 @@ function answerArea(q){if(q.type==='mc')return `<div class="choices">${q.choices
  return `<div class="disp" id="disp">${q.prefix?`<span class="aff">${q.prefix}</span>`:''}<span id="dv"></span><span class="cur"></span>${q.suffix?`<span class="aff">${q.suffix}</span>`:''}</div>
  <div class="pad">${keys.map(k=>k==='ok'?`<button class="key go" data-act="key" data-k="ok" aria-label="Enter">✓</button>`:k==='del'?`<button class="key fn" data-act="key" data-k="del" aria-label="Delete">⌫</button>`:k==='-'?`<button class="key fn" data-act="key" data-k="-" aria-label="Minus">−</button>`:k==='.'?`<button class="key fn" data-act="key" data-k=".">.</button>`:`<button class="key" data-act="key" data-k="${k}" ${k==='0'?'style="grid-column:span 2"':''}>${k}</button>`).join('')}</div>`;}
 function keyIn(k){if(!Q||Q.locked)return;const q=Q.qs[Q.i];if(q.type!=='num')return;
- if(k==='ok'){if(Q.input===''||Q.input==='-'||/^-?0?\.$/.test(Q.input)){const d=$('#disp');if(d&&canAnim)d.animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:200});return;}answer(Q.input);return;}
+ if(k==='ok'){if(Q.input===''||Q.input==='-'||/^-?0?\.$/.test(Q.input)){const d=$('#disp');if(d&&canAnim)d.animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:200});return;}if(Q.duel)duelResolve(Q.input);else answer(Q.input);return;}
  if(k==='del')Q.input=Q.input.slice(0,-1);
  else if(k==='-'){Q.input=Q.input.startsWith('-')?Q.input.slice(1):'-'+Q.input;}
  else if(k==='.'){if(!Q.input.includes('.'))Q.input+=(Q.input===''||Q.input==='-'?'0':'')+'.';}
  else if(Q.input.replace(/[-.]/g,'').length<9)Q.input+=k;
  sfx.click();const dv=$('#dv');if(dv)dv.textContent=Q.input.replace('-','−');}
-function timeUp(){if(!Q||Q.locked)return;answer(null,null,{timeout:true});}
+function timeUp(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{timeout:true});return;}answer(null,null,{timeout:true});}
 function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;const secs=timeUsed();stopTimer();stopFall();
  let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
  const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
@@ -1194,20 +1302,30 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  ${p.note?`<div class="note" style="background:#fefce8;border-color:#ca8a04">Current deal: <b>${esc(p.note)}</b></div>`:''}
  </div>`;}
 function confirmReset(){if(!player)return;const m=$('#modal');m.classList.remove('hidden');
- m.innerHTML=`<div class="card"><h2>Reset ${esc(player.name)}'s bank?</h2><p>This wipes <b>all ${fmt(player.total)} R$</b>, the house build, the history, badges and unlocks for ${esc(player.name)}. It cannot be undone.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doreset">Yes, reset</button></div></div>`;}
+ m.innerHTML=`<div class="card"><h2>Reset ${esc(player.name)}'s bank?</h2><p>This wipes <b>all ${fmt(player.total)} R$</b>, the house build, the history, badges, duel skins and unlocks for ${esc(player.name)}. It cannot be undone.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doreset">Yes, reset</button></div></div>`;}
 function closeModal(){const m=$('#modal');m.classList.add('hidden');m.innerHTML='';}
 
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el||el.disabled)return;if(el.tagName!=='A')actx();const a=el.dataset.act;
  switch(a){
   case 'home':closeModal();showStart();break;
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
-  case 'tab':{const typed=$('#nm')?$('#nm').value:'';subjectTab=el.dataset.t==='science'?'science':'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
+  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=t==='science'?'science':t==='duel'?'duel':'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
   case 'level':startRound(el.dataset.k);break;
   case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;subjectTab=L.subject==='science'?'science':'maths';newRound(L);sfx.click();showQ();break;}
-  case 'choose':if(Q&&!Q.locked){answer(Q.qs[Q.i].choices[+el.dataset.k],el);}break;
+  case 'choose':if(Q&&!Q.locked){const choice=Q.qs[Q.i].choices[+el.dataset.k];if(Q.duel)duelResolve(choice,{btn:el});else answer(choice,el);}break;
   case 'key':keyIn(el.dataset.k);break;
   case 'help':passQuestion();break;
-  case 'next':nextQ();break;
+  case 'next':if(Q&&Q.duel)break;nextQ();break;
+  case 'duelstart':duelStart();break;
+  case 'duelsub':duelPick.subject=el.dataset.s;duelPick.topic='mixed';sfx.click();renderDuelHome();break;
+  case 'dueltopic':duelPick.topic=el.dataset.t;sfx.click();renderDuelHome();break;
+  case 'dueldiff':duelPick.diff=el.dataset.d;sfx.click();renderDuelHome();break;
+  case 'duelrank':if(el.disabled)break;duelPick.rank=el.dataset.r;sfx.click();renderDuelHome();break;
+  case 'duelshop':openDuelShop();break;
+  case 'duelbuy':duelBuy(el.dataset.kind,el.dataset.id);break;
+  case 'duelshot':duelAsk();break;
+  case 'duelround':duelNextRound();break;
+  case 'duelagain':duelStart(true);break;
   case 'house':showHouse();break;
   case 'bank':showBank();break;
   case 'rewards':showRewards();break;
@@ -1225,9 +1343,191 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  }});
 document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}if(e.key==='Enter'&&t.id==='psum'){e.preventDefault();const b=document.querySelector('[data-act="parentcheck"]');if(b)b.click();}return;}
  if(!Q)return;const q=Q.qs[Q.i];
- if(Q.locked){if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}return;}
+ if(Q.locked){if(e.key==='Enter'||e.key===' '){e.preventDefault();if(Q.duel){const b=document.querySelector('.roundbar [data-act]');if(b)b.click();}else nextQ();}return;}
  if(q.type==='mc'){const k=+e.key;if(k>=1&&k<=q.choices.length){const b=document.querySelector(`.choice[data-k="${k-1}"]`);if(b)b.click();}return;}
  if(/^[0-9]$/.test(e.key))keyIn(e.key);else if(e.key==='Backspace'){e.preventDefault();keyIn('del');}else if(e.key==='-')keyIn('-');else if(e.key==='.')keyIn('.');else if(e.key==='Enter')keyIn('ok');});
+
+const DUEL_DMG={easy:20,medium:30,hard:40};
+const WIN_BONUS=5;
+const RANKS=[
+ {id:'bronze',name:'Bronze',need:0,hit:18,bot:'Brickbyte',color:'#d97706'},
+ {id:'silver',name:'Silver',need:2,hit:22,bot:'Nova Cube',color:'#cbd5e1'},
+ {id:'gold',name:'Gold',need:5,hit:28,bot:'Captain Pixel',color:'#facc15'},
+ {id:'diamond',name:'Diamond',need:10,hit:34,bot:'Star Warden',color:'#67e8f9'}
+];
+const SKINS=[
+ {id:'block',name:'Block Blaster',cost:0},
+ {id:'sunny',name:'Sunny Slinger',cost:8},
+ {id:'mint',name:'Mint Popper',cost:10},
+ {id:'lava',name:'Lava Blaster',cost:15},
+ {id:'galaxy',name:'Galaxy Slingshot',cost:25}
+];
+const FINISHERS=[
+ {id:'pop',name:'Block Pop',cost:0,say:'BLOCK POP'},
+ {id:'boom',name:'Pixel Boom',cost:18,say:'PIXEL BOOM'},
+ {id:'stars',name:'Star Rain',cost:20,say:'STAR RAIN'}
+];
+function rankBy(id){return RANKS.find(r=>r.id===id)||RANKS[0];}
+function duelUnlocked(id){const wins=player&&player.duel?player.duel.wins||0:0;return wins>=rankBy(id).need;}
+function duelDamage(diff,late,streak){let d=DUEL_DMG[diff]||20;if(late)d=d/2;if(streak>=3)d+=10;return Math.round(d);}
+function duelTopicIds(){const maths=Object.keys(TOPICS).filter(id=>!SCIENCE_TOPICS[id]);const sci=Object.keys(SCIENCE_TOPICS);
+ if(duelPick.subject==='maths')return maths;if(duelPick.subject==='science')return sci;return maths.concat(sci);}
+function loadDuelPick(){if(!player||!player.duel||!player.duel.pick)return;const p=player.duel.pick;
+ const subjects=['maths','science','mixed'];
+ duelPick.subject=subjects.indexOf(p.subject)>=0?p.subject:'mixed';
+ duelPick.topic=p.topic||'mixed';
+ duelPick.diff=p.diff==='medium'||p.diff==='hard'?p.diff:'easy';
+ duelPick.rank=RANKS.some(r=>r.id===p.rank)?p.rank:'bronze';
+ if(!duelUnlocked(duelPick.rank))duelPick.rank='bronze';
+ if(duelPick.topic!=='mixed'&&duelTopicIds().indexOf(duelPick.topic)<0)duelPick.topic='mixed';}
+function duelPool(){const maths=Object.keys(TOPICS).filter(id=>!SCIENCE_TOPICS[id]);const sci=Object.keys(SCIENCE_TOPICS);
+ if(Q.topic&&Q.topic!=='mixed')return [Q.topic];if(Q.subject==='science')return sci;if(Q.subject==='maths')return maths;return maths.concat(sci);}
+function duelMake(){const ids=duelPool();for(let i=0;i<40;i++){const q=make(pick(ids),Q.diff);if(q)return q;}return null;}
+function equippedSkin(){const d=player&&player.duel;if(!d||!d.owned||d.owned.indexOf(d.skin)<0)return 'block';return d.skin||'block';}
+function equippedFin(){const d=player&&player.duel;if(!d||!d.finishers||d.finishers.indexOf(d.finisher)<0)return 'pop';return d.finisher||'pop';}
+function gunSVG(id){const ink='#14142b',a='class="gunart" viewBox="0 0 220 100" aria-hidden="true"';
+ if(id==='lava')return `<svg ${a}><rect x="18" y="34" width="130" height="36" rx="4" fill="#ea580c" stroke="${ink}" stroke-width="4"/><rect x="130" y="40" width="48" height="24" fill="#b91c1c" stroke="${ink}" stroke-width="4"/><rect x="170" y="44" width="28" height="16" fill="#facc15" stroke="${ink}" stroke-width="3"/><rect x="40" y="70" width="22" height="18" fill="#9a3412" stroke="${ink}" stroke-width="4"/><rect x="70" y="22" width="14" height="14" fill="#ef4444" stroke="${ink}" stroke-width="3"/><rect x="96" y="16" width="12" height="18" fill="#f97316" stroke="${ink}" stroke-width="3"/><rect x="118" y="24" width="10" height="12" fill="#fde047" stroke="${ink}" stroke-width="3"/></svg>`;
+ if(id==='galaxy')return `<svg ${a}><path d="M48 88 L78 18 H98 L68 88 Z" fill="#6d28d9" stroke="${ink}" stroke-width="4"/><path d="M150 88 L120 18 H140 L170 88 Z" fill="#7c3aed" stroke="${ink}" stroke-width="4"/><rect x="78" y="70" width="62" height="16" rx="6" fill="#22d3ee" stroke="${ink}" stroke-width="4"/><circle cx="40" cy="28" r="6" fill="#fde047" stroke="${ink}" stroke-width="2"/><circle cx="186" cy="24" r="5" fill="#67e8f9" stroke="${ink}" stroke-width="2"/><circle cx="160" cy="48" r="4" fill="#f9a8d4" stroke="${ink}" stroke-width="2"/><rect x="100" y="40" width="8" height="8" fill="#fff" stroke="${ink}" stroke-width="2"/></svg>`;
+ if(id==='mint')return `<svg ${a}><rect x="24" y="32" width="118" height="40" rx="16" fill="#6ee7b7" stroke="${ink}" stroke-width="4"/><rect x="124" y="40" width="46" height="24" rx="8" fill="#34d399" stroke="${ink}" stroke-width="4"/><circle cx="182" cy="52" r="14" fill="#ecfdf5" stroke="${ink}" stroke-width="4"/><circle cx="70" cy="28" r="8" fill="#a7f3d0" stroke="${ink}" stroke-width="3"/><circle cx="98" cy="20" r="6" fill="#fff" stroke="${ink}" stroke-width="3"/><rect x="52" y="72" width="24" height="16" rx="4" fill="#059669" stroke="${ink}" stroke-width="4"/></svg>`;
+ if(id==='sunny')return `<svg ${a}><path d="M46 86 L84 24 H102 L64 86 Z" fill="#facc15" stroke="${ink}" stroke-width="4"/><path d="M168 86 L130 24 H148 L186 86 Z" fill="#f59e0b" stroke="${ink}" stroke-width="4"/><circle cx="110" cy="62" r="18" fill="#fb923c" stroke="${ink}" stroke-width="4"/><rect x="104" y="28" width="12" height="10" fill="#fde047" stroke="${ink}" stroke-width="3"/><rect x="78" y="40" width="10" height="10" fill="#fde047" stroke="${ink}" stroke-width="3"/><rect x="132" y="40" width="10" height="10" fill="#fde047" stroke="${ink}" stroke-width="3"/></svg>`;
+ return `<svg ${a}><rect x="16" y="32" width="128" height="38" rx="4" fill="#94a3b8" stroke="${ink}" stroke-width="4"/><rect x="128" y="38" width="46" height="26" fill="#475569" stroke="${ink}" stroke-width="4"/><rect x="166" y="42" width="28" height="18" fill="#facc15" stroke="${ink}" stroke-width="3"/><rect x="48" y="70" width="28" height="22" fill="#64748b" stroke="${ink}" stroke-width="4"/><rect x="36" y="42" width="18" height="10" fill="#e2e8f0" stroke="${ink}" stroke-width="3"/></svg>`;}
+function finSVG(id){const ink='#14142b';
+ if(id==='stars')return `<svg class="gunart" viewBox="0 0 80 60" aria-hidden="true"><polygon points="22,6 26,18 38,18 28,26 32,38 22,30 12,38 16,26 6,18 18,18" fill="#facc15" stroke="${ink}" stroke-width="2"/><polygon points="58,16 61,26 72,26 63,32 66,42 58,36 50,42 53,32 44,26 55,26" fill="#67e8f9" stroke="${ink}" stroke-width="2"/></svg>`;
+ if(id==='boom')return `<svg class="gunart" viewBox="0 0 80 60" aria-hidden="true"><rect x="34" y="22" width="14" height="14" fill="#f97316" stroke="${ink}" stroke-width="2"/><rect x="16" y="14" width="12" height="12" fill="#facc15" stroke="${ink}" stroke-width="2"/><rect x="52" y="12" width="12" height="12" fill="#ef4444" stroke="${ink}" stroke-width="2"/><rect x="14" y="36" width="10" height="10" fill="#38bdf8" stroke="${ink}" stroke-width="2"/><rect x="54" y="36" width="12" height="12" fill="#a855f7" stroke="${ink}" stroke-width="2"/></svg>`;
+ return `<svg class="gunart" viewBox="0 0 80 60" aria-hidden="true"><rect x="30" y="20" width="20" height="20" fill="#facc15" stroke="${ink}" stroke-width="3"/><rect x="8" y="8" width="12" height="12" fill="#38bdf8" stroke="${ink}" stroke-width="3"/><rect x="58" y="10" width="12" height="12" fill="#ef4444" stroke="${ink}" stroke-width="3"/><rect x="12" y="40" width="10" height="10" fill="#22c55e" stroke="${ink}" stroke-width="3"/></svg>`;}
+function rivalSVG(color){const ink='#14142b';
+ return `<svg class="rival" viewBox="0 0 120 150" aria-hidden="true"><rect x="34" y="8" width="52" height="44" rx="6" fill="#f6c744" stroke="${ink}" stroke-width="4"/><rect x="40" y="18" width="40" height="16" rx="3" fill="#0f172a" stroke="${ink}" stroke-width="3"/><rect x="46" y="22" width="8" height="8" fill="#67e8f9"/><rect x="66" y="22" width="8" height="8" fill="#67e8f9"/><rect x="18" y="56" width="18" height="40" rx="3" fill="#f6c744" stroke="${ink}" stroke-width="4"/><rect x="84" y="56" width="18" height="40" rx="3" fill="#f6c744" stroke="${ink}" stroke-width="4"/><rect x="36" y="54" width="48" height="52" rx="4" fill="${color}" stroke="${ink}" stroke-width="4"/><rect x="44" y="64" width="32" height="10" fill="#0f172a"/><rect x="38" y="108" width="20" height="36" rx="3" fill="#1e293b" stroke="${ink}" stroke-width="4"/><rect x="62" y="108" width="20" height="36" rx="3" fill="#1e293b" stroke="${ink}" stroke-width="4"/></svg>`;}
+function pipHTML(n){let s='';for(let i=0;i<3;i++)s+=`<i class="${i<n?'on':''}"></i>`;return s;}
+function renderDuelHome(){const nameEl=$('#nm'),tagEl=$('#dtag');
+ const nameVal=nameEl?nameEl.value:(player?player.name:'');
+ const tagVal=tagEl?tagEl.value:((player&&player.duel&&player.duel.tag)||'Redliss');
+ if(player&&player.duel){player.duel.pick={subject:duelPick.subject,topic:duelPick.topic,diff:duelPick.diff,rank:duelPick.rank};save();}
+ const names=Object.values(store.players);
+ const d=player&&player.duel;
+ const chip=(act,val,on,label)=>`<button class="chip ${on?'on':''}" data-act="${act}" data-${act==='duelsub'?'s':act==='dueldiff'?'d':'t'}="${val}">${label}</button>`;
+ const topics=`<button class="chip ${duelPick.topic==='mixed'?'on':''}" data-act="dueltopic" data-t="mixed">Mixed</button>`+duelTopicIds().map(id=>`<button class="chip ${duelPick.topic===id?'on':''}" data-act="dueltopic" data-t="${id}">${esc(TOPICS[id])}</button>`).join('');
+ app.innerHTML=`<div class="card duellobby"><div class="row" style="align-items:center"><div>${avatar(player?player.av:null,84)}</div><div><h2 style="margin:0">Duel Mode</h2><p class="muted" style="margin:2px 0 0">First to 3 rounds. Original arena, original gear.</p></div></div>
+  <h3 style="margin-top:12px">Who's playing?</h3>
+  <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${esc(nameVal)}">
+  ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${fmt(p.total)} R$</button>`).join('')}</div>`:''}
+  <div class="err" id="err">${startMsg}</div>
+  ${tabsHTML()}
+  <h3>Arena tag</h3>
+  <input class="name" id="dtag" maxlength="16" placeholder="Redliss" autocomplete="off" spellcheck="false" value="${esc(tagVal)}">
+  <h3 style="margin-top:12px">Subject</h3>
+  <div class="chips">${chip('duelsub','maths',duelPick.subject==='maths','Maths')}${chip('duelsub','science',duelPick.subject==='science','Science')}${chip('duelsub','mixed',duelPick.subject==='mixed','Mixed')}</div>
+  <h3 style="margin-top:12px">Topic</h3>
+  <div class="topicbox">${topics}</div>
+  <h3 style="margin-top:12px">Difficulty</h3>
+  <div class="chips">${chip('dueldiff','easy',duelPick.diff==='easy','Easy · 20 dmg')}${chip('dueldiff','medium',duelPick.diff==='medium','Medium · 30 dmg')}${chip('dueldiff','hard',duelPick.diff==='hard','Hard · 40 dmg')}</div>
+  <h3 style="margin-top:12px">Rival rank</h3>
+  <div class="ranks">${RANKS.map(r=>{const open=duelUnlocked(r.id);return `<button class="rankbtn ${duelPick.rank===r.id?'on':''}" data-act="duelrank" data-r="${r.id}" ${open?'':'disabled'}><b>${r.name}</b><span>${open?esc(r.bot):'Unlocks at '+r.need+' wins'}</span></button>`;}).join('')}</div>
+  <p style="font-size:18px;margin:12px 0 0">Win streak <b>${d?d.streak:0}</b> · Best win streak <b>${d?d.bestStreak:0}</b> · Wins <b>${d?d.wins:0}</b> · Losses <b>${d?d.losses||0:0}</b></p>
+  <p class="muted">A right answer shoots. Easy hits for 20, medium 30 and hard 40. A streak of 3 adds a crit of +10. After 14 seconds a hit does half damage and pays half R$ (1, 2 or 3, same as the other modes). A wrong answer, asking for help, or the extra 30 seconds means the rival shoots and you earn nothing. Help is a pass. First to 3 rounds. A match win pays +${WIN_BONUS} R$. The house does not build in a duel.</p>
+  <div class="row" style="margin-top:8px"><button class="btn green" data-act="duelstart">Start duel</button><button class="btn purple" data-act="duelshop">Weapon shop</button></div>
+ </div>`;
+ startMsg='';}
+function duelChrome(){clearChrome();document.body.classList.add('duel-on');}
+function renderDuelBoard(o){o=o||{};const q=o.q;const rank=rankBy(Q.rank);const tag=player.duel.tag||'Redliss';const hit=Q.hit;
+ const fin=o.finisher?FINISHERS.find(f=>f.id===equippedFin()):null;
+ const hitHTML=hit?`<div class="hitnum ${hit.crit?'crit':''} ${hit.incoming?'in':''}" id="hitnum"><b>−${hit.dmg}</b>${hit.crit?'<small>CRIT</small>':''}</div>`:'';
+ const asking=!!o.asking;
+ const qBody=asking?`<button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button><div id="halfslot"></div><div><div class="speedlbl"><span>⏱ ${LIMIT} seconds for full points</span><span id="secs">${LIMIT}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div><div id="ans">${answerArea(q)}</div>`
+  :`<div class="fb ${o.ok?'good':o.pass?'pass':'bad'}" id="fb"><div class="fbbody"><h2>${esc(o.title||'')}</h2><p style="font-size:20px;line-height:1.35;margin:0">${esc(o.note||'')}</p></div></div>${o.pass?helpHTML(q):''}`;
+ app.innerHTML=`<div class="duelwrap"><div class="duelmeta"><div class="tagbox">🔥 Streak ${Q.streak}${Q.streak>=2?' · next hit crits':''}</div><div class="tagbox">${COIN}+${fmt(roundQuestionPay())} this match</div><div class="tagbox">${esc(rank.name)}</div><div class="spacer"></div><button class="btn grey" data-act="home">Menu</button></div>
+ <div class="duel"><div class="arena ${hit?(hit.incoming?'hurt':'shoot'):''}"><div class="hud"><div class="hpcol"><div class="hplab"><b>${esc(tag)}</b><span>${Q.me} HP</span></div><div class="hp"><span id="mebar" style="width:${Q.me}%;background:#22c55e"></span></div><div class="pips">${pipHTML(Q.myRounds)}</div></div>
+  <div class="vs"><b>VS</b><small>first to 3</small></div>
+  <div class="hpcol"><div class="hplab"><b>${esc(rank.bot)}</b><span>${Q.foe} HP</span></div><div class="hp"><span id="foebar" style="width:${Q.foe}%;background:#ef4444"></span></div><div class="pips">${pipHTML(Q.foeRounds)}</div></div></div>
+  <div class="scene"><i class="plat a"></i><i class="plat b"></i><i class="plat c"></i><i class="block b1"></i><i class="block b2"></i><i class="block b3"></i><div class="cross"></div><div class="botname">${esc(rank.bot)}</div>${rivalSVG(rank.color)}${hitHTML}${hit&&!hit.incoming?'<div class="muzzle"></div>':''}${fin?`<div class="finbanner">${esc(fin.say)}</div>`:''}<div class="gun">${gunSVG(equippedSkin())}</div></div></div>
+  <div class="card duelq"><div class="qnum"><span>Round ${Q.myRounds+Q.foeRounds+1} · ${esc(TOPICS[q.topic]||q.topic)}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$ · ${DUEL_DMG[q.diff]} dmg</span></div>
+   <div class="qtext ${q.long?'long':''}"><span class="qi">${q.text}</span></div>${qBody}</div></div></div>`;}
+function duelStart(rematch){if(!rematch){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
+  const tagEl=$('#dtag');const tag=(tagEl&&tagEl.value.trim().slice(0,16))||'Redliss';if(inp)inp.blur();setPlayer(nm);
+  if(!duelUnlocked(duelPick.rank))duelPick.rank='bronze';
+  player.duel.tag=tag;player.duel.pick={subject:duelPick.subject,topic:duelPick.topic,diff:duelPick.diff,rank:duelPick.rank};save();
+ }else if(!player){showStart();return;}
+ const pick=player.duel.pick||duelPick;if(!duelUnlocked(pick.rank))pick.rank='bronze';
+ Q={duel:true,L:{name:'Duel',tag:'Duel',tycoon:false,mode:'duel',key:'duel',bonus:WIN_BONUS},qs:[],i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,half:false,elapsed:0,paused:false,limit:LIMIT,me:100,foe:100,myRounds:0,foeRounds:0,dmgDealt:0,dmgTaken:0,asked:0,right:0,subject:pick.subject||'mixed',topic:pick.topic||'mixed',diff:pick.diff||'easy',rank:pick.rank||'bronze',phase:'ask',hit:null,winBonus:0};
+ subjectTab='duel';header();sfx.click();duelAsk();}
+function duelAsk(){if(!Q||!Q.duel)return;if(Q.phase==='gg'||Q.phase==='round')return;clearAuto();stopTimer();
+ Q.phase='ask';Q.locked=false;Q.half=false;Q.input='';Q.elapsed=0;Q.paused=false;Q.limit=LIMIT;Q.hit=null;
+ const q=duelMake();duelChrome();
+ if(!q){Q.phase='wait';Q.locked=true;app.innerHTML=`<div class="card"><h2>No question this time</h2><p>Have another shot.</p></div>`;showRoundBar('<button class="btn green" data-act="duelshot">Next shot</button><button class="btn" data-act="home">Menu</button>');return;}
+ Q.qs=[q];Q.i=0;renderDuelBoard({asking:true,q});Q.t0=performance.now();startClock();}
+function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=='ask')return;const q=Q.qs[Q.i];if(!q)return;
+ Q.locked=true;stopTimer();let ok=false;
+ if(!opts.timeout&&!opts.pass){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
+ const late=!!(ok&&Q.half);Q.asked++;
+ if(!opts.pass){const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
+  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);Q.right++;
+   const gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;player.total+=gained;}}
+ else Q.streak=0;
+ if(!ok)Q.streak=0;
+ const kind=opts.pass?'pass':ok?(late?'late':'correct'):opts.timeout?'timeout':'wrong';
+ logAttempt(q,kind,val);
+ const rank=rankBy(Q.rank);let dmg,incoming=false,crit=false,title,note;
+ if(ok){dmg=duelDamage(q.diff,late,Q.streak);crit=Q.streak>=3;Q.foe=Math.max(0,Q.foe-dmg);Q.dmgDealt+=dmg;incoming=false;
+  title=late?'Half-damage hit!':crit?'CRIT!':'Direct hit!';
+  note=(late?'Half damage, because the timer had already run out. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+fmt(late?halfPay(q.reward):q.reward)+' R$.';
+  sfx.shot();sfx.correct();if(crit)setTimeout(sfx.streak,260);
+ }else{dmg=rank.hit;Q.me=Math.max(0,Q.me-dmg);Q.dmgTaken+=dmg;incoming=true;
+  title=opts.pass?'Passed':opts.timeout?'Timed out':'You got hit';
+  note=opts.pass?'Asking for help passes. No shot, and '+rank.bot+' hits you for '+dmg+'. 0 R$.':opts.timeout?'The extra 30 seconds ran out, so this counts as wrong. '+rank.bot+' hits you for '+dmg+'.':'Not this time. '+rank.bot+' hits you for '+dmg+'. The answer is '+shownAns(q)+'.';
+  sfx.hurt();if(opts.pass)sfx.click();else sfx.wrong();}
+ Q.hit={dmg,crit,incoming};save();bumpTotal();
+ const iWon=Q.foe<=0;const roundOver=Q.foe<=0||Q.me<=0;
+ if(roundOver){if(iWon)Q.myRounds++;else Q.foeRounds++;
+  if(Q.myRounds>=3||Q.foeRounds>=3){duelGG();return;}
+  Q.phase='round';
+  renderDuelBoard({q,ok,pass:!!opts.pass,title,note,finisher:iWon});
+  if(iWon){const fin=equippedFin();if(fin==='stars'||fin==='boom')confetti();sfx.fanfare();}
+  showRoundBar('<button class="btn green" data-act="duelround">Next round</button><button class="btn" data-act="home">Menu</button>');
+  return;}
+ Q.phase='wait';
+ renderDuelBoard({q,ok,pass:!!opts.pass,title,note});
+ const fb=$('#fb');if(ok&&fb){coinBurst(fb,Math.max(1,Math.round(late?halfPay(q.reward):q.reward)));floatText(fb,'+'+fmt(late?halfPay(q.reward):q.reward)+' R$');}
+ showRoundBar(`<button class="btn ${ok?'green':'blue'}" data-act="duelshot">${ok?'Next shot':'Next shot'}</button><button class="btn" data-act="home">Menu</button>`);}
+function duelNextRound(){if(!Q||!Q.duel||Q.phase!=='round')return;if(Q.myRounds>=3||Q.foeRounds>=3){duelGG();return;}Q.me=100;Q.foe=100;Q.hit=null;Q.phase='ask';duelAsk();}
+function duelGG(){if(!Q||!Q.duel||Q.phase==='gg')return;Q.phase='gg';stopTimer();clearAuto();
+ const won=Q.myRounds>Q.foeRounds;const d=player.duel;const bonus=won?WIN_BONUS:0;const before=player.total-roundQuestionPay();
+ if(won){d.wins=(d.wins||0)+1;d.streak=(d.streak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.streak);player.total+=bonus;}
+ else{d.losses=(d.losses||0)+1;d.streak=0;}
+ Q.winBonus=bonus;const earned=clean(roundQuestionPay()+bonus);player.rounds++;
+ const rank=rankBy(Q.rank);
+ player.history.unshift({d:new Date().toISOString(),lvl:'Duel: '+rank.name,score:Q.myRounds,of:Q.myRounds+Q.foeRounds,earned});
+ if(player.history.length>200)player.history.length=200;
+ const newM=MILESTONES.filter(m=>player.total>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
+ const oldT=titleFor(before),newT=titleFor(player.total);save();
+ duelChrome();header();
+ const acc=Q.asked?Math.round(Q.right/Q.asked*100):0;const tag=d.tag||'Redliss';
+ app.innerHTML=`<div class="gg"><div class="ggtag">Duel · ${esc(rank.name)} · ${esc(rank.bot)}</div><h1>GG</h1>
+  <div class="ggwho">${won?esc(tag)+' wins!':esc(rank.bot)+' wins'}</div>
+  <div class="ggscore">${Q.myRounds} – ${Q.foeRounds}</div>
+  <div class="ggstats"><div><b>${acc}%</b><span>Accuracy</span></div><div><b>${Q.best}</b><span>Best streak</span></div><div><b>${Q.dmgDealt}</b><span>Damage dealt</span></div></div>
+  <div class="ggear">${won?'Win bonus +'+WIN_BONUS+' R$ · ':''}This match +${fmt(earned)} R$</div>
+  <div class="ggear">Win streak ${d.streak}</div>
+  ${newT!==oldT?`<div class="ggear">Level up: ${newT}</div>`:''}
+  ${newM.map(m=>`<div class="ggear">Badge unlocked: ${esc(m.name)}</div>`).join('')}
+ </div>`;
+ if(won){sfx.fanfare();confetti();}else sfx.wrong();
+ showRoundBar('<button class="btn green" data-act="duelagain">Next match</button><button class="btn" data-act="home">Menu</button>');}
+function shopCard(kind,item){const d=player.duel;const owned=(kind==='finisher'?d.finishers:d.owned).indexOf(item.id)>=0;const eq=(kind==='finisher'?d.finisher:d.skin)===item.id;
+ const dis=!owned&&player.total+1e-9<item.cost;
+ const label=eq?'Equipped':owned?'Equip':dis?'Need '+fmt(item.cost-player.total)+' more':'Buy · '+fmt(item.cost)+' R$';
+ return `<button class="skin ${eq?'on':''}" type="button" data-act="duelbuy" data-kind="${kind}" data-id="${item.id}" ${dis?'disabled':''}>${kind==='finisher'?finSVG(item.id):gunSVG(item.id)}<b>${esc(item.name)}</b><span>${item.cost?fmt(item.cost)+' R$':'Free'}</span><em>${label}</em></button>`;}
+function openDuelShop(){if(!needPlayer())return;leaveRound();header();subjectTab='duel';const msg=shopMsg;shopMsg='';window.scrollTo(0,0);
+ app.innerHTML=`<div class="card duellobby"><div class="row"><h2 style="margin:0">Weapon shop</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
+  <p class="muted">Cosmetic only. A skin changes how the shot looks, not the damage. Spend the R$ you earned. Your house is not touched.</p>
+  <p style="font-size:20px">Bank ${COIN} <b>${fmt(player.total)}</b> · Equipped <b>${esc((SKINS.find(s=>s.id===equippedSkin())||SKINS[0]).name)}</b> · Finish <b>${esc((FINISHERS.find(f=>f.id===equippedFin())||FINISHERS[0]).name)}</b></p>
+  ${msg?`<div class="note">${esc(msg)}</div>`:''}
+  <h3>Weapon skins</h3><div class="shopgrid">${SKINS.map(s=>shopCard('skin',s)).join('')}</div>
+  <h3 style="margin-top:16px">Finishing moves</h3><div class="shopgrid">${FINISHERS.map(s=>shopCard('finisher',s)).join('')}</div>
+ </div>`;}
+function duelBuy(kind,id){if(!player)return;const list=kind==='finisher'?FINISHERS:SKINS;const item=list.find(s=>s.id===id);if(!item)return;const d=player.duel;
+ const owned=kind==='finisher'?d.finishers:d.owned;
+ if(owned.indexOf(id)>=0){if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='Equipped '+item.name+'.';save();sfx.click();openDuelShop();return;}
+ if(player.total+1e-9<item.cost){shopMsg='You need '+fmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
+ player.total=clean(player.total-item.cost);owned.push(id);if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='You bought '+item.name+'.';save();header();sfx.coin();openDuelShop();}
 
 function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',58:'LVIII',90:'XC',99:'XCIX',400:'CD',444:'CDXLIV',900:'CM',999:'CMXCIX',1000:'M'};
  for(const k in roman)if(toRoman(+k)!==roman[k])throw new Error('roman '+k+' '+toRoman(+k));
@@ -1249,9 +1549,14 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
   if(!q||q.choices.indexOf(s.ans)<0||q.reward!==REWARD[s.diff]||q.link.indexOf('https://www.bbc.co.uk/bitesize/')!==0)throw new Error('sci q '+s.text.slice(0,40));
   seenSci[s.topic+'|'+s.diff]=(seenSci[s.topic+'|'+s.diff]||0)+1;});
  ['materials','space','forces','living','humans'].forEach(t=>['easy','medium','hard'].forEach(d=>{if((seenSci[t+'|'+d]||0)<3)throw new Error('sci bank '+t+' '+d);if(!make(t,d))throw new Error('sci make '+t+' '+d);}));
- if(!LEVELS.some(l=>l.tycoon&&l.key==='m2')||!LEVELS.some(l=>l.subject==='science'&&l.mode==='ninja'))throw new Error('levels');}
+ if(!LEVELS.some(l=>l.tycoon&&l.key==='m2')||!LEVELS.some(l=>l.subject==='science'&&l.mode==='ninja'))throw new Error('levels');
+ if(DUEL_DMG.easy!==20||DUEL_DMG.medium!==30||DUEL_DMG.hard!==40)throw new Error('duel dmg');
+ if(RANKS.length!==4||RANKS[0].need!==0||RANKS[3].need!==10||RANKS[0].id!=='bronze')throw new Error('ranks');
+ if(freshDuel().tag!=='Redliss'||duelDamage('easy',true,0)!==10||duelDamage('medium',true,3)!==25||duelDamage('hard',false,3)!==50)throw new Error('duel hit');
+ if(WIN_BONUS!==5||SKINS.some(s=>/rival/i.test(s.name))||FINISHERS.some(s=>/rival/i.test(s.name)))throw new Error('duel names');
+ if(!SKINS.some(s=>s.name==='Lava Blaster'&&s.cost>0)||!SKINS.some(s=>s.name==='Galaxy Slingshot'&&s.cost>0)||SKINS[0].cost!==0)throw new Error('skins');}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,duelDamage,freshDuel};
 showStart();
 })();
 </script>
