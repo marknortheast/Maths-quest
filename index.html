@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<title>Block Maths Quest – earn Robux points!</title>
+<style>
+:root{--ink:#14142b;--sky1:#38bdf8;--sky2:#6366f1;--green:#22c55e;--red:#ef4444;--yellow:#facc15;--blue:#3b82f6;--orange:#f97316;--purple:#a855f7;--card:#ffffff}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0}
+body{font-family:"Avenir Next","Arial Rounded MT Bold","Trebuchet MS",system-ui,-apple-system,sans-serif;font-weight:700;color:var(--ink);
+ background:linear-gradient(160deg,var(--sky1),var(--sky2));min-height:100vh;min-height:100dvh;overflow-x:hidden;
+ -webkit-user-select:none;user-select:none;touch-action:manipulation}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.12;
+ background-image:linear-gradient(90deg,#fff 2px,transparent 2px),linear-gradient(#fff 2px,transparent 2px);background-size:48px 48px}
+button{font-family:inherit;font-weight:900;color:inherit;cursor:pointer;touch-action:manipulation}
+.hidden{display:none!important}
+#hdr{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:12px;padding:10px 16px;padding-top:max(10px,env(safe-area-inset-top));
+ background:var(--ink);color:#fff;border-bottom:5px solid #000;min-height:72px}
+#hdr .brand{font-size:22px;letter-spacing:1px;text-transform:uppercase;white-space:nowrap}
+#hdr .brand b{color:var(--yellow)}
+#hdr .who{display:flex;align-items:center;gap:10px;min-width:0}
+#hdr .who .nm{font-size:20px;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.pill{display:inline-block;padding:3px 10px;border-radius:6px;border:3px solid #000;font-size:14px;text-transform:uppercase;letter-spacing:.5px;color:#14142b}
+.t-Noob{background:#cbd5e1}.t-Builder{background:#fdba74}.t-Pro{background:#93c5fd}.t-Legend{background:linear-gradient(90deg,#fde047,#f472b6,#a78bfa)}
+.spacer{flex:1}
+.bank{display:flex;align-items:center;gap:8px;background:#000;border:3px solid var(--yellow);border-radius:10px;padding:4px 12px 4px 6px;font-size:24px;color:var(--yellow)}
+.bank.pop{animation:pop .45s}
+@keyframes pop{40%{transform:scale(1.25)}100%{transform:scale(1)}}
+.hbtn{background:#2a2a4a;color:#fff;border:3px solid #000;border-radius:10px;padding:8px 12px;font-size:16px;box-shadow:0 4px 0 #000;display:flex;align-items:center;gap:6px}
+.hbtn:active{transform:translateY(3px);box-shadow:0 1px 0 #000}
+.hbtn svg{width:22px;height:22px}
+.coin{display:inline-flex;align-items:center;justify-content:center;width:1.6em;height:1.6em;border-radius:50%;font-size:.7em;font-weight:900;color:#7a4a00;
+ background:radial-gradient(circle at 35% 30%,#fff7b0,#facc15 45%,#d99100);border:3px solid #7a4a00;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2);flex:none;letter-spacing:-.5px}
+.coin.big{font-size:28px}
+#app{position:relative;max-width:1180px;margin:0 auto;padding:18px 18px 40px}
+.card{background:var(--card);border:5px solid var(--ink);border-radius:14px;box-shadow:0 8px 0 var(--ink);padding:20px}
+h1,h2,h3{margin:0 0 10px;font-weight:900}
+h1{font-size:44px;line-height:1.05;text-transform:uppercase;letter-spacing:1px}
+h2{font-size:30px}
+.muted{color:#55557a;font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:4px solid var(--ink);border-radius:12px;box-shadow:0 6px 0 var(--ink);
+ padding:14px 22px;font-size:22px;background:var(--yellow);transition:transform .05s}
+.btn:active{transform:translateY(5px);box-shadow:0 1px 0 var(--ink)}
+.btn.green{background:var(--green);color:#fff}.btn.red{background:var(--red);color:#fff}.btn.blue{background:var(--blue);color:#fff}.btn.grey{background:#e2e8f0}
+.btn.purple{background:var(--purple);color:#fff}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:center}
+.start{display:grid;grid-template-columns:330px 1fr;gap:22px}
+.hero{display:flex;flex-direction:column;align-items:center;text-align:center;gap:10px}
+.hero h1{color:#fff;text-shadow:0 4px 0 var(--ink),3px 0 0 var(--ink),-3px 0 0 var(--ink),0 -3px 0 var(--ink)}
+.hero .avatarBox{background:rgba(255,255,255,.25);border:5px solid var(--ink);border-radius:14px;padding:10px 26px;box-shadow:0 8px 0 var(--ink)}
+input.name{width:100%;font:inherit;font-size:28px;font-weight:900;padding:12px 14px;border:4px solid var(--ink);border-radius:12px;outline:none;-webkit-user-select:text;user-select:text}
+input.name:focus{background:#fffbe6}
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.chip{border:3px solid var(--ink);border-radius:10px;background:#e0f2fe;padding:6px 12px;font-size:18px;box-shadow:0 3px 0 var(--ink)}
+.chip.on{background:var(--yellow)}
+.levels{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:16px}
+.lvl{text-align:left;border:5px solid var(--ink);border-radius:14px;box-shadow:0 7px 0 var(--ink);padding:16px;color:#fff;min-height:132px;display:flex;flex-direction:column;gap:6px}
+.lvl:active{transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+.lvl .t{font-size:26px;text-shadow:0 3px 0 rgba(0,0,0,.35)}
+.lvl .d{font-size:16px;font-weight:700;opacity:.95;line-height:1.3}
+.lvl .tag{align-self:flex-start;background:rgba(0,0,0,.3);border-radius:6px;padding:2px 8px;font-size:14px}
+.l1{background:linear-gradient(135deg,#22c55e,#15803d)}.l2{background:linear-gradient(135deg,#3b82f6,#1d4ed8)}
+.l3{background:linear-gradient(135deg,#f97316,#c2410c)}.l4{background:linear-gradient(135deg,#7f1d1d,#111);border-color:#000}
+.l4 .t{color:#fde047}
+.err{color:var(--red);font-size:18px;min-height:24px;margin-top:6px}
+.qtop{display:flex;align-items:center;gap:14px;margin-bottom:14px;color:#fff;flex-wrap:wrap}
+.blocks{display:flex;gap:6px}
+.blocks i{width:30px;height:30px;border:3px solid var(--ink);border-radius:6px;background:rgba(255,255,255,.35)}
+.blocks i.ok{background:var(--green)}.blocks i.no{background:var(--red)}.blocks i.cur{background:var(--yellow);animation:pulse 1s infinite}
+@keyframes pulse{50%{transform:scale(1.12)}}
+.tagbox{background:var(--ink);border:3px solid #000;border-radius:10px;padding:6px 12px;font-size:20px;display:flex;align-items:center;gap:8px}
+.streak{color:#fdba74}
+.quiz{display:grid;grid-template-columns:1.15fr 1fr;gap:20px;align-items:start}
+.qcard{min-height:330px;display:flex;flex-direction:column;gap:14px}
+.qnum{font-size:18px;color:#55557a;text-transform:uppercase;letter-spacing:1px;display:flex;justify-content:space-between;gap:10px}
+.qtext{font-size:38px;line-height:1.3;font-weight:900;flex:1;display:flex;align-items:center}
+.qtext>span.qi{display:block}
+.qtext.long{font-size:28px}
+.qtext b{color:#1d4ed8}
+.blank{display:inline-block;min-width:1.4em;border-bottom:4px solid var(--ink);text-align:center;color:#c2410c}
+.speed{height:22px;border:4px solid var(--ink);border-radius:8px;background:#e2e8f0;overflow:hidden;position:relative}
+.speed span{position:absolute;inset:0;width:100%;background:linear-gradient(90deg,#22c55e,#facc15);transform-origin:left;transition:transform .1s linear}
+.speedlbl{font-size:15px;color:#55557a;display:flex;justify-content:space-between}
+.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;font-size:.78em;line-height:1.08;margin:0 .1em}
+.frac>span:first-child{border-bottom:.12em solid currentColor;padding:0 .18em}
+.mixed{white-space:nowrap}
+.choices{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.choice{min-height:110px;font-size:32px;border:5px solid var(--ink);border-radius:14px;box-shadow:0 7px 0 var(--ink);background:#fff;padding:10px}
+.choice:nth-child(1){background:#fde68a}.choice:nth-child(2){background:#bfdbfe}.choice:nth-child(3){background:#bbf7d0}.choice:nth-child(4){background:#fbcfe8}
+.choice:active{transform:translateY(5px);box-shadow:0 2px 0 var(--ink)}
+.choice.right{background:var(--green)!important;color:#fff}.choice.wrong{background:var(--red)!important;color:#fff;opacity:.85}
+.choice.dim{opacity:.45}
+.disp{display:flex;align-items:center;justify-content:center;gap:8px;height:84px;border:5px solid var(--ink);border-radius:14px;background:#fff;font-size:44px;margin-bottom:12px;box-shadow:inset 0 4px 0 rgba(0,0,0,.08)}
+.disp .cur{display:inline-block;width:4px;height:44px;background:var(--ink);animation:blink 1s steps(1) infinite}
+.disp .aff{color:#55557a;font-size:32px}
+@keyframes blink{50%{opacity:0}}
+.pad{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.key{height:70px;font-size:32px;border:4px solid var(--ink);border-radius:12px;box-shadow:0 5px 0 var(--ink);background:#fff}
+.key:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.key.fn{background:#e2e8f0;font-size:28px}.key.go{background:var(--green);color:#fff;grid-row:span 2;height:auto;font-size:40px}
+.fb{border:5px solid var(--ink);border-radius:14px;box-shadow:0 8px 0 var(--ink);padding:18px;animation:slide .25s ease-out}
+@keyframes slide{from{transform:translateY(20px);opacity:0}}
+.fb.good{background:#dcfce7}.fb.bad{background:#fff7ed}
+.fb h2{font-size:34px;margin-bottom:6px}
+.fb.good h2{color:#15803d}.fb.bad h2{color:#c2410c}
+.fb .ex{font-size:21px;line-height:1.45;font-weight:700;margin:8px 0 14px}
+.bon{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 12px}
+.bon span{background:var(--ink);color:var(--yellow);border-radius:8px;padding:5px 10px;font-size:19px}
+.ansbig{font-size:30px;font-weight:900}
+.center{text-align:center}
+.score{font-size:80px;line-height:1;margin:6px 0}
+.tbl{width:100%;border-collapse:collapse;font-size:20px}
+.tbl td,.tbl th{padding:9px 10px;border-bottom:3px solid #e2e8f0;text-align:left}
+.tbl th{font-size:16px;text-transform:uppercase;color:#55557a}
+.tbl td.r,.tbl th.r{text-align:right}
+.tbl tr.tot td{border-top:4px solid var(--ink);font-size:24px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.unlock{display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,#fef9c3,#fde68a);border:4px solid var(--ink);border-radius:12px;padding:10px 14px;margin:8px 0;animation:slide .4s}
+.unlock .u{font-size:22px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat{background:#fff;border:4px solid var(--ink);border-radius:12px;box-shadow:0 5px 0 var(--ink);padding:12px;text-align:center}
+.stat .v{font-size:34px;display:flex;align-items:center;justify-content:center;gap:8px}
+.stat .k{font-size:15px;color:#55557a;text-transform:uppercase}
+.badges{display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.badge{border:4px solid var(--ink);border-radius:12px;padding:10px 6px;text-align:center;background:linear-gradient(#fef3c7,#fde68a);box-shadow:0 5px 0 var(--ink)}
+.badge.locked{background:#e2e8f0;filter:grayscale(1);opacity:.7}
+.badge .amt{font-size:20px;display:flex;justify-content:center;align-items:center;gap:6px}
+.badge .bn{font-size:15px;margin-top:4px}.badge .bs{font-size:13px;color:#55557a;margin-top:2px}
+.prog{height:28px;border:4px solid var(--ink);border-radius:10px;background:#e2e8f0;overflow:hidden;margin:8px 0}
+.prog span{display:block;height:100%;background:repeating-linear-gradient(45deg,#facc15 0 14px,#f59e0b 14px 28px)}
+.opts{display:flex;flex-wrap:wrap;gap:10px}
+.opt{border:4px solid var(--ink);border-radius:12px;background:#fff;padding:6px;box-shadow:0 4px 0 var(--ink);position:relative;min-width:72px;text-align:center;font-size:13px}
+.opt.sel{background:var(--yellow)}
+.opt.locked{opacity:.4}
+.opt .lock{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px}
+.sw{width:56px;height:56px;border-radius:6px;border:3px solid var(--ink);margin:0 auto}
+.bar{height:18px;background:#e2e8f0;border:3px solid var(--ink);border-radius:6px;overflow:hidden;min-width:120px}
+.bar span{display:block;height:100%}
+textarea{width:100%;font:inherit;font-size:20px;padding:10px;border:4px solid var(--ink);border-radius:12px;min-height:80px;-webkit-user-select:text;user-select:text}
+.note{background:#eff6ff;border:4px dashed #1d4ed8;border-radius:12px;padding:12px 14px;font-size:18px;line-height:1.4;margin:12px 0}
+#modal{position:fixed;inset:0;z-index:50;background:rgba(10,10,30,.6);display:flex;align-items:center;justify-content:center;padding:20px}
+#modal .card{max-width:520px;width:100%;text-align:center}
+#modal p{font-size:20px;line-height:1.4}
+#fx{position:fixed;inset:0;pointer-events:none;z-index:60;overflow:hidden}
+#fx .coin{position:absolute;left:0;top:0;font-size:22px}
+.floattxt{position:absolute;font-size:30px;font-weight:900;color:var(--yellow);text-shadow:0 3px 0 #000,2px 0 0 #000,-2px 0 0 #000}
+.confetti{position:absolute;left:0;top:0;width:14px;height:14px;border:2px solid #000}
+@media (max-width:900px){
+ .start,.quiz,.grid2{grid-template-columns:1fr!important}
+ .badges{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}
+ h1{font-size:34px}.qtext{font-size:30px}.qtext.long{font-size:24px}
+ #hdr .brand{display:none}
+ .hbtn .lbl{display:none}
+}
+@media (max-width:560px){.levels{grid-template-columns:1fr}.choice{font-size:26px;min-height:90px}}
+</style>
+</head>
+<body>
+<header id="hdr"></header>
+<main id="app"></main>
+<div id="modal" class="hidden"></div>
+<div id="fx"></div>
+<script>
+(function(){
+"use strict";
+/* ============ utilities ============ */
+const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const pick=a=>a[R(0,a.length-1)];
+const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
+const clean=x=>+(+x).toFixed(6);
+const gcd=(a,b)=>b?gcd(b,a%b):a; const lcm=(a,b)=>a*b/gcd(a,b);
+const fmt=n=>{const s=Math.abs(n).toLocaleString('en-GB',{maximumFractionDigits:3});return (n<0?'−':'')+s;};
+const money=n=>'S$'+(+n).toFixed(2);
+const fr=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
+const mixed=(w,n,d)=>`<span class="mixed">${w}${fr(n,d)}</span>`;
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const pad2=n=>String(n).padStart(2,'0');
+const COIN='<span class="coin">R$</span>';
+const $=s=>document.querySelector(s);
+
+/* ============ storage (this device only) ============ */
+const KEY='blockMathsQuest_v1';
+let store={players:{},last:'',muted:false};
+function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&s.players)store=Object.assign(store,s);}catch(e){}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
+load();
+function newPlayer(name){return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:''};}
+let player=null;
+function setPlayer(name){const k=name.trim().toLowerCase();if(!store.players[k])store.players[k]=newPlayer(name.trim());player=store.players[k];store.last=k;save();}
+if(store.last&&store.players[store.last])player=store.players[store.last];
+
+/* ============ milestones / unlocks ============ */
+const SHIRTS={green:'#22c55e',red:'#ef4444',blue:'#3b82f6',orange:'#f97316',purple:'#a855f7',lime:'#a3e635',gold:'#facc15',rainbow:'rainbow'};
+const HATS={none:'No hat',cap:'Baseball cap',hardhat:'Builder helmet',headphones:'Gamer headphones',crown:'Pro crown',halo:'Legend halo',shades:'Cool shades'};
+const MILESTONES=[
+ {at:100,name:'First Hundred',hats:['cap'],shirts:['blue']},
+ {at:250,name:'Builder',hats:['hardhat'],shirts:['orange']},
+ {at:500,name:'High Five Hundred',hats:['headphones'],shirts:['purple','lime']},
+ {at:1000,name:'Pro Player',hats:['crown'],shirts:['gold']},
+ {at:2500,name:'Legend',hats:['halo'],shirts:['rainbow']},
+ {at:5000,name:'Mega Saver',hats:['shades'],shirts:[]}
+];
+const titleFor=t=>t>=2500?'Legend':t>=1000?'Pro':t>=250?'Builder':'Noob';
+function unlocked(t){const h=['none'],s=['green','red'];MILESTONES.forEach(m=>{if(t>=m.at){h.push(...m.hats);s.push(...m.shirts);}});return{hats:h,shirts:s};}
+
+/* ============ blocky avatar (SVG, original artwork) ============ */
+let gid=0;
+function avatar(av,size){av=av||{hat:'none',shirt:'green'};const id='g'+(++gid);const sc=SHIRTS[av.shirt]||SHIRTS.green;
+ const fill=sc==='rainbow'?`url(#${id})`:sc;const skin='#f6c744',ink='#14142b';
+ let hat='';
+ switch(av.hat){
+  case 'cap':hat=`<rect x="28" y="4" width="44" height="14" rx="3" fill="#ef4444" stroke="${ink}" stroke-width="3"/><rect x="60" y="13" width="26" height="6" rx="2" fill="#b91c1c" stroke="${ink}" stroke-width="3"/>`;break;
+  case 'hardhat':hat=`<rect x="28" y="2" width="44" height="16" rx="7" fill="#facc15" stroke="${ink}" stroke-width="3"/><rect x="22" y="15" width="56" height="6" rx="2" fill="#f59e0b" stroke="${ink}" stroke-width="3"/><rect x="47" y="3" width="6" height="12" fill="#f59e0b"/>`;break;
+  case 'headphones':hat=`<path d="M26 30 V18 Q50 -6 74 18 V30" fill="none" stroke="${ink}" stroke-width="6"/><rect x="18" y="24" width="12" height="18" rx="3" fill="#22d3ee" stroke="${ink}" stroke-width="3"/><rect x="70" y="24" width="12" height="18" rx="3" fill="#22d3ee" stroke="${ink}" stroke-width="3"/>`;break;
+  case 'crown':hat=`<polygon points="30,18 30,2 40,10 50,0 60,10 70,2 70,18" fill="#facc15" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/><rect x="45" y="9" width="10" height="7" fill="#ef4444" stroke="${ink}" stroke-width="2"/>`;break;
+  case 'halo':hat=`<ellipse cx="50" cy="5" rx="24" ry="5" fill="none" stroke="#fde047" stroke-width="5"/>`;break;
+  case 'shades':hat=`<rect x="31" y="21" width="17" height="9" rx="2" fill="${ink}"/><rect x="52" y="21" width="17" height="9" rx="2" fill="${ink}"/><rect x="46" y="23" width="8" height="3" fill="${ink}"/><rect x="34" y="23" width="5" height="2" fill="#fff"/><rect x="55" y="23" width="5" height="2" fill="#fff"/>`;break;
+ }
+ const eyes=av.hat==='shades'?'':`<rect x="38" y="22" width="7" height="8" fill="${ink}"/><rect x="55" y="22" width="7" height="8" fill="${ink}"/>`;
+ return `<svg viewBox="0 0 100 140" width="${Math.round(size*100/140)}" height="${size}" aria-hidden="true">
+ <defs><linearGradient id="${id}" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#ef4444"/><stop offset=".25" stop-color="#facc15"/><stop offset=".5" stop-color="#22c55e"/><stop offset=".75" stop-color="#3b82f6"/><stop offset="1" stop-color="#a855f7"/></linearGradient></defs>
+ ${av.hat==='halo'?`<circle cx="50" cy="70" r="48" fill="#fde047" opacity=".35"/>`:''}
+ <rect x="8" y="50" width="16" height="42" rx="2" fill="${skin}" stroke="${ink}" stroke-width="3"/>
+ <rect x="76" y="50" width="16" height="42" rx="2" fill="${skin}" stroke="${ink}" stroke-width="3"/>
+ <rect x="25" y="48" width="50" height="46" rx="2" fill="${fill}" stroke="${ink}" stroke-width="3"/>
+ <rect x="25" y="94" width="24" height="42" rx="2" fill="#2563eb" stroke="${ink}" stroke-width="3"/>
+ <rect x="51" y="94" width="24" height="42" rx="2" fill="#2563eb" stroke="${ink}" stroke-width="3"/>
+ <rect x="40" y="42" width="20" height="8" fill="${skin}" stroke="${ink}" stroke-width="3"/>
+ <rect x="30" y="10" width="40" height="34" rx="5" fill="${skin}" stroke="${ink}" stroke-width="3"/>
+ ${eyes}<path d="M40 35 Q50 42 60 35" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>
+ ${hat}</svg>`;}
+
+/* ============ sound (generated with WebAudio, no files) ============ */
+let ac=null;
+function actx(){if(store.muted)return null;try{if(!ac){const C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();}if(ac.state==='suspended')ac.resume();}catch(e){return null;}return ac;}
+function tone(f,at,dur,type,vol,slide){const c=actx();if(!c)return;const t=c.currentTime+at;const o=c.createOscillator(),g=c.createGain();o.type=type||'square';o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+dur);
+ g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(vol||0.07,t+0.01);g.gain.exponentialRampToValueAtTime(0.0001,t+dur);o.connect(g);g.connect(c.destination);o.start(t);o.stop(t+dur+0.02);}
+const sfx={
+ click:()=>tone(660,0,.05,'square',.03),
+ coin:()=>{tone(988,0,.08,'square',.06);tone(1319,.07,.22,'square',.06);},
+ correct:()=>{[523,659,784].forEach((f,i)=>tone(f,i*.07,.14,'triangle',.09));setTimeout(sfx.coin,220);},
+ wrong:()=>{tone(330,0,.18,'triangle',.08,250);tone(250,.16,.25,'triangle',.08,190);},
+ streak:()=>{[784,988,1175,1568].forEach((f,i)=>tone(f,i*.06,.12,'square',.05));},
+ fanfare:()=>{[523,659,784,1047,784,1047].forEach((f,i)=>tone(f,i*.12,i===5?.5:.14,'square',.06));},
+ unlock:()=>{[392,523,659,784,1047,1319].forEach((f,i)=>tone(f,i*.07,.2,'triangle',.08));}
+};
+document.addEventListener('touchstart',()=>{actx();},{once:true,passive:true});
+
+/* ============ question generators (UK Year 5, Singapore context) ============ */
+const TOPICS={addsub:'Adding & subtracting',placevalue:'Place value',rounding:'Rounding',negative:'Negative numbers',roman:'Roman numerals',x10:'× and ÷ by 10, 100, 1000',times:'Times tables',division:'Division facts',remainders:'Dividing with remainders',factors:'Factors, primes, squares & cubes',multiply:'Long multiplication',fractions:'Fractions',decimals:'Decimals & percentages',measures:'Measures, time & angles',word:'Word problems'};
+function N(topic,text,ans,explain,o){return Object.assign({topic,text,type:'num',ans:clean(ans),explain},o||{});}
+function M(topic,text,correct,distractors,explain,o){const set=[String(correct)];for(const d of distractors){if(set.length>=4)break;const s=String(d);if(!set.includes(s))set.push(s);}return Object.assign({topic,text,type:'mc',ans:String(correct),choices:shuf(set),explain},o||{});}
+const PV=['ones','tens','hundreds','thousands','ten thousands','hundred thousands','millions'];
+const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+function w3(n){const h=Math.floor(n/100),r=n%100,s=[];if(h)s.push(ONES[h]+' hundred');if(r){const t=r<20?ONES[r]:TENS[Math.floor(r/10)]+(r%10?'-'+ONES[r%10]:'');s.push(h?'and '+t:t);}return s.join(' ');}
+function words(n){const th=Math.floor(n/1000),r=n%1000;let s='';if(th)s=w3(th)+' thousand';if(r){if(th)s+=(r<100?' and ':', ');s+=w3(r);}return s;}
+function toRoman(n){const m=[[1000,'M'],[900,'CM'],[500,'D'],[400,'CD'],[100,'C'],[90,'XC'],[50,'L'],[40,'XL'],[10,'X'],[9,'IX'],[5,'V'],[4,'IV'],[1,'I']];let s='';for(const[v,r]of m)while(n>=v){s+=r;n-=v;}return s;}
+function romanParts(n){return [1000,100,10,1].map(p=>Math.floor(n%(p*10)/p)*p).filter(x=>x>0).map(x=>`${toRoman(x)} = ${x}`).join(', ');}
+const PRIMES=[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97];
+const ODDCOMP=[9,15,21,25,27,33,35,39,45,49,51,55,57,63,65,69,75,77,81,85,87,91,93,95];
+const to12=(h,m)=>`${h%12||12}:${pad2(m)} ${h<12?'am':'pm'}`;
+const t24=mins=>{mins=((mins%1440)+1440)%1440;return `${pad2(Math.floor(mins/60))}:${pad2(mins%60)}`;};
+
+const G={};
+G.addsub=h=>{const big=h||Math.random()<.5;const mn=h?10000:big?1000:100,mx=h?99999:big?9999:999;let a=R(mn,mx),b=R(Math.floor(mn/2),mx);
+ if(Math.random()<.5)return N('addsub',`${fmt(a)} + ${fmt(b)} = ?`,a+b,`${fmt(a)} + ${fmt(b)} = <b>${fmt(a+b)}</b>. Line the numbers up in columns (ones under ones) and add from the right, carrying when a column makes 10 or more.`);
+ if(b>a)[a,b]=[b,a];if(a===b)a+=R(11,99);
+ return N('addsub',`${fmt(a)} − ${fmt(b)} = ?`,a-b,`${fmt(a)} − ${fmt(b)} = <b>${fmt(a-b)}</b>. Subtract column by column from the right, exchanging from the next column when you need to. Check: ${fmt(a-b)} + ${fmt(b)} = ${fmt(a)}.`);};
+G.placevalue=h=>{const v=R(0,2);
+ if(v===0){let n,s,p,d,g=0;do{n=R(100000,999999);s=String(n);p=R(h?0:1,5);d=s[5-p];g++;}while((d==='0'||s.split(d).length>2)&&g<500);const val=+d*10**p;
+  return N('placevalue',`What is the value of the digit <b>${d}</b> in ${fmt(n)}?`,val,`The ${d} is in the <b>${PV[p]}</b> column, so it is worth <b>${fmt(val)}</b>.`);}
+ if(v===1){const n=R(10000,989999),k=pick([10,100,1000,10000,100000]),more=Math.random()<.55||n<k;const a=more?n+k:n-k;
+  return N('placevalue',`What is <b>${fmt(k)} ${more?'more':'less'}</b> than ${fmt(n)}?`,a,`Count on or back one in the ${PV[Math.round(Math.log10(k))]} column (carrying or exchanging if needed): ${fmt(n)} ${more?'+':'−'} ${fmt(k)} = <b>${fmt(a)}</b>.`);}
+ const th=R(11,999),hu=pick([0,R(1,9)]),te=R(0,99);const n=th*1000+hu*100+te;const s=words(n);
+ const dis=[n+R(1,9)*1000,th*100+hu*10+(te%10),th*10000+hu*100+te,n+(te<90?10:-10),th*1000+te*10+hu].filter(x=>x!==n&&x>0).map(fmt);
+ return M('placevalue',`Which number is <i>“${s}”</i>?`,fmt(n),dis,`Split it up: ${fmt(th)} thousand, then ${fmt(n%1000)}. Put the thousands before the comma: <b>${fmt(n)}</b>.`,{long:true});};
+G.rounding=h=>{const n=R(10000,999999),to=pick(h?[100,1000,10000,100000]:[10,100,1000,10000]);const a=Math.round(n/to)*to;const look=Math.floor(n/(to/10))%10;
+ return N('rounding',`Round ${fmt(n)} to the nearest <b>${fmt(to)}</b>.`,a,`Look at the digit to the right of the ${PV[Math.round(Math.log10(to))]} column: it's a <b>${look}</b>. ${look>=5?'5 or more, so round <b>up</b>':'Less than 5, so round <b>down</b>'}. Answer: <b>${fmt(a)}</b>.`);};
+G.negative=h=>{const v=R(0,2);
+ if(v===0){const s=R(-12,4),c=R(3,h?20:12),up=Math.random()<.5,e=up?s+c:s-c;const pl=pick(['in Sapporo, Japan','on a ski trip in Korea','inside a giant freezer','at the Snow City play area']);
+  return N('negative',`The temperature ${pl} is <b>${fmt(s)} °C</b>. It ${up?'rises':'falls'} by <b>${c} °C</b>. What is the temperature now?`,e,`Start at ${fmt(s)} on a number line and count ${c} ${up?'up':'down'}: you land on <b>${fmt(e)} °C</b>.`,{suffix:'°C',long:true});}
+ if(v===1){const a=R(1,15),b=R(a+1,a+(h?25:12));return N('negative',`${a} − ${b} = ?`,a-b,`Count back ${b} from ${a}: ${a} steps take you to 0, then ${b-a} more takes you to <b>${fmt(a-b)}</b>.`);}
+ const a=-R(2,15),b=R(3,20);return N('negative',`How many degrees is it from <b>${fmt(a)} °C</b> up to <b>${b} °C</b>?`,b-a,`From ${fmt(a)} up to 0 is ${-a}, then from 0 up to ${b} is ${b}. ${-a} + ${b} = <b>${b-a}</b> degrees.`,{suffix:'°C',long:true});};
+G.roman=h=>{const n=h?R(400,1000):R(11,600);
+ if(Math.random()<.5)return N('roman',`What number is <b>${toRoman(n)}</b>?`,n,`Split it into parts: ${romanParts(n)}. Add them up: <b>${n}</b>.`);
+ const d=[n+1,n-1,n+10,n-10,n+5,n+50,n-50,n+100].filter(x=>x>0&&x<=1000&&x!==n).map(toRoman);
+ return M('roman',`Which Roman numeral is <b>${n}</b>?`,toRoman(n),shuf(d),`${n} is ${romanParts(n)}, so it's <b>${toRoman(n)}</b>.`);};
+G.x10=h=>{const k=pick([10,100,1000]),pl=Math.round(Math.log10(k));
+ if(Math.random()<.5){const a=(h||Math.random()<.5)?clean(R(1,999)/pick([10,100])):R(2,999);const ans=clean(a*k);
+  return N('x10',`${fmt(a)} × ${fmt(k)} = ?`,ans,`Multiplying by ${fmt(k)} moves every digit <b>${pl}</b> place${pl>1?'s':''} to the left, so the number gets bigger. ${fmt(a)} × ${fmt(k)} = <b>${fmt(ans)}</b>.`);}
+ const a=(h||Math.random()<.5)?R(2,99):R(100,9999)*(Math.random()<.5?10:1);const ans=clean(a/k);
+ return N('x10',`${fmt(a)} ÷ ${fmt(k)} = ?`,ans,`Dividing by ${fmt(k)} moves every digit <b>${pl}</b> place${pl>1?'s':''} to the right, so the number gets smaller. ${fmt(a)} ÷ ${fmt(k)} = <b>${fmt(ans)}</b>.`);};
+G.times=h=>{const a=R(h?6:3,12),b=R(h?6:2,12),p=a*b;
+ const tip=b%2===0&&b>2?`Double trick: ${a} × ${b/2} = ${a*b/2}, and double that is ${p}.`:`${a} × ${b-1} = ${a*(b-1)}, then add one more ${a}: ${p}.`;
+ if(Math.random()<.3)return N('times',`${a} × <span class="blank">?</span> = ${p}`,b,`${a} × <b>${b}</b> = ${p}. Count up in ${a}s until you reach ${p}.`);
+ return N('times',`${a} × ${b} = ?`,p,`${a} × ${b} = <b>${p}</b>. ${tip}`);};
+G.division=h=>{const b=R(h?6:3,12),c=R(h?6:2,12),a=b*c;return N('division',`${a} ÷ ${b} = ?`,c,`${a} ÷ ${b} = <b>${c}</b>, because ${b} × ${c} = ${a}. Division is times tables backwards!`);};
+G.remainders=h=>{const d=R(3,9),q=R(4,h?99:12),r=R(1,d-1),n=d*q+r;const A=(x,y)=>`${x} r ${y}`;
+ return M('remainders',`${n} ÷ ${d} = ?`,A(q,r),[A(q,r+1<d?r+1:r-1),A(q+1,r),A(q-1,r),A(q,0),A(q+1,0)],`${d} × ${q} = ${d*q}, and ${n} − ${d*q} = ${r} left over. So the answer is <b>${q} remainder ${r}</b>.`);};
+G.factors=h=>{const v=R(0,4);
+ if(v===0){const n=pick([12,18,20,24,30,36,40,42,48,56,60,72]);const f=[],nf=[];for(let i=2;i<n;i++)(n%i===0?f:nf).push(i);const c=pick(f);
+  return M('factors',`Which of these is a <b>factor</b> of ${n}?`,c,shuf(nf),`A factor divides exactly with nothing left over. ${n} ÷ ${c} = ${n/c}, so <b>${c}</b> is a factor of ${n}.`);}
+ if(v===1){const c=pick(PRIMES.filter(p=>p>10));return M('factors','Which of these is a <b>prime number</b>?',c,shuf(ODDCOMP),`A prime number has exactly two factors: 1 and itself. <b>${c}</b> can only be divided by 1 and ${c}. The others can be split up, e.g. 21 = 3 × 7.`);}
+ if(v===2){const n=R(2,12);return N('factors',`What is ${n}<sup>2</sup> (${n} squared)?`,n*n,`Squared means multiplied by itself: ${n} × ${n} = <b>${n*n}</b>. It's a square number because ${n*n} blocks make a ${n} by ${n} square!`);}
+ if(v===3){const n=R(2,h?10:5);return N('factors',`What is ${n}<sup>3</sup> (${n} cubed)?`,n**3,`Cubed means ${n} × ${n} × ${n}. ${n} × ${n} = ${n*n}, then × ${n} = <b>${n**3}</b>.`);}
+ const k=R(3,12),c=k*R(3,12);const d=[];for(let i=c-12;i<=c+12;i++)if(i>0&&i%k!==0)d.push(i);
+ return M('factors',`Which of these is a <b>multiple of ${k}</b>?`,c,shuf(d),`Multiples of ${k} are in the ${k} times table. ${c} = ${k} × ${c/k}, so <b>${c}</b> is a multiple of ${k}.`);};
+G.multiply=h=>{
+ if((h&&Math.random()<.6)||(!h&&Math.random()<.25)){const a=R(h?100:12,h?2999:99),b=R(11,h?49:19),t=Math.floor(b/10)*10,o=b%10,p=a*b;
+  return N('multiply',`${fmt(a)} × ${b} = ?`,p,`Split ${b} into ${t} + ${o}. ${fmt(a)} × ${t} = ${fmt(a*t)} and ${fmt(a)} × ${o} = ${fmt(a*o)}. Add them: <b>${fmt(p)}</b>.`);}
+ const a=R(h?1000:100,h?9999:2999),b=R(3,9),p=a*b;const parts=[1000,100,10,1].map(x=>Math.floor(a%(x*10)/x)*x).filter(x=>x>0);
+ return N('multiply',`${fmt(a)} × ${b} = ?`,p,`Partition it: ${parts.map(x=>`${fmt(x)} × ${b} = ${fmt(x*b)}`).join(', ')}. Add them: <b>${fmt(p)}</b>.`);};
+const SIMPLE=[[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,6],[5,6],[3,8],[5,8],[3,10]];
+G.fractions=h=>{const v=R(0,5);
+ if(v===0){const d=pick([2,3,4,5,6,8,10]),n=R(1,d-1),each=R(2,h?25:12),amt=d*each;
+  return N('fractions',`What is ${fr(n,d)} of ${amt}?`,n*each,`Find ${fr(1,d)} first: ${amt} ÷ ${d} = ${each}. Then ${n} lot${n>1?'s':''} of ${each} = <b>${n*each}</b>.`);}
+ if(v===1){const[n,d]=pick(SIMPLE),k=R(2,5);const c=fr(n*k,d*k);const dis=[[n*k+1,d*k],[n*k,d*k+1],[n+k,d+k],[n*k,d*(k+1)],[n*k-1,d*k],[n,d*k]].filter(([a,b])=>a>0&&a*d!==b*n).map(x=>fr(...x));
+  return M('fractions',`Which fraction is <b>equivalent</b> to ${fr(n,d)}?`,c,dis,`Multiply the top and bottom by the same number (${k}): ${fr(n,d)} = ${fr(n*k,d*k)}.`);}
+ if(v===2){const[n,d]=pick(SIMPLE),k=R(2,h?6:4);return N('fractions',`${fr(n,d)} = ${fr('?',d*k)}`,n*k,`The bottom went from ${d} to ${d*k}, that's × ${k}. Do the same to the top: ${n} × ${k} = <b>${n*k}</b>.`);}
+ if(v===3){const d=R(5,12),add=Math.random()<.6;let a=R(1,d-1),b=R(1,d-1);if(add&&!h)while(a+b>d){a=R(1,d-1);b=R(1,d-1);}if(!add&&b>a)[a,b]=[b,a];if(!add&&a===b)a=Math.min(d,a+1);
+  const r=add?a+b:a-b;return N('fractions',`${fr(a,d)} ${add?'+':'−'} ${fr(b,d)} = ${fr('?',d)}`,r,`The denominators are the same (${d}), so just ${add?'add':'subtract'} the numerators: ${a} ${add?'+':'−'} ${b} = <b>${r}</b>. The bottom stays ${d}.`);}
+ if(v===4){const fam=pick([[2,4,8],[3,6,12],[5,10],[3,9],[4,8]]);const fs=[],seen=new Set();let g=0;while(fs.length<4&&g++<300){const d=pick(fam),n=R(1,d-1),key=(n/d).toFixed(6);if(!seen.has(key)){seen.add(key);fs.push([n,d]);}}
+  const best=fs.reduce((a,b)=>a[0]/a[1]>=b[0]/b[1]?a:b),L=fam.reduce(lcm);
+  return M('fractions','Which fraction is the <b>largest</b>?',fr(...best),fs.filter(f=>f!==best).map(f=>fr(...f)),`Give them all the same denominator (${L}): ${fs.map(f=>`${fr(f[0],f[1])} = ${fr(f[0]*L/f[1],L)}`).join(', ')}. The biggest is <b>${fr(...best)}</b>.`);}
+ const d=R(3,h?12:8),w=R(1,h?6:3),r=R(1,d-1),n=w*d+r;
+ return M('fractions',`Write ${fr(n,d)} as a <b>mixed number</b>.`,mixed(w,r,d),[mixed(w+1,r,d),r*2!==d?mixed(w,d-r,d):mixed(w,r,n),mixed(w>1?w-1:w+2,r,d),mixed(w,r,n)],`${d} goes into ${n} <b>${w}</b> times (${w} × ${d} = ${w*d}) with <b>${r}</b> left over. So ${fr(n,d)} = ${mixed(w,r,d)}.`);};
+G.decimals=h=>{const v=R(0,5);
+ if(v===0){const a=R(1,8);let set;do{const c=[a/10,a/10+R(1,9)/100,a/10+R(1,9)/1000,a/100,(a+1)/10,a/10+R(1,9)/100+R(1,9)/1000].map(clean);set=shuf([...new Set(c)]).slice(0,4);}while(set.length<4);const big=Math.max(...set);
+  return M('decimals','Which number is the <b>largest</b>?',fmt(big),set.filter(x=>x!==big).map(fmt),`Compare the tenths first, then the hundredths, then the thousandths. Writing them all with 3 decimal places helps: ${set.map(x=>x.toFixed(3)).join(', ')}. The largest is <b>${fmt(big)}</b>.`);}
+ if(v===1){let x;do{x=clean(R(101,9999)/100);}while(Math.round(x*100)%10===0);const one=h&&Math.random()<.5;const a=one?clean(Math.round(x*10)/10):Math.round(x);const s=x.toFixed(2);
+  return N('decimals',`Round ${s} to the nearest <b>${one?'tenth (1 decimal place)':'whole number'}</b>.`,a,`Look at the ${one?'hundredths':'tenths'} digit: ${one?s.slice(-1):s.split('.')[1][0]}. 5 or more rounds up, less than 5 rounds down. Answer: <b>${one?a.toFixed(1):a}</b>.`);}
+ if(v===2){const p=pick([10,20,25,50,75,5]);const base=p===25||p===75?4:p===5?20:10;const amt=base*R(2,h?30:15);const ans=clean(amt*p/100);
+  const why={50:'50% is a half',25:'25% is a quarter',75:'75% is three quarters',10:'10% is a tenth',20:'20% is a fifth (or 10% doubled)',5:'5% is half of 10%'}[p];
+  return N('decimals',`What is <b>${p}%</b> of S$${amt}?`,ans,`${why}. ${p}% of ${amt} = <b>${money(ans)}</b>.`,{prefix:'S$'});}
+ if(v===3){const opts=[[1,2,50],[1,4,25],[3,4,75],[1,5,20],[2,5,40],[3,5,60],[1,10,10],[3,10,30],[7,10,70],[1,20,5],[9,10,90]];const[n,d,p]=pick(opts);
+  if(Math.random()<.5)return N('decimals',`Write ${fr(n,d)} as a <b>percentage</b>.`,p,`Per cent means "out of 100". ${fr(n,d)} = ${fr(p,100)} = <b>${p}%</b>.`,{suffix:'%'});
+  const x=R(1,99);return N('decimals',`Write <b>${fmt(x/100)}</b> as a percentage.`,x,`${fmt(x/100)} means ${x} hundredths, and per cent means "out of 100", so it's <b>${x}%</b>.`,{suffix:'%'});}
+ if(v===4){let w,s,i,dig,num,g=0;do{w=R(1,9);s=String(R(111,999));i=R(0,2);dig=s[i];num=`${w}.${s}`;g++;}while((dig==='0'||num.split(dig).length>2)&&g<500);const names=['tenths','hundredths','thousandths'];
+  return M('decimals',`In <b>${num}</b>, what is the digit ${dig} worth?`,`${dig} ${names[i]}`,[`${dig} ${names[(i+1)%3]}`,`${dig} ${names[(i+2)%3]}`,`${dig} ones`,`${dig} tens`],`After the decimal point the columns are tenths, hundredths, thousandths. The ${dig} is in the ${names[i]} column, so it's worth <b>${dig} ${names[i]}</b>.`);}
+ const a=clean(R(11,999)/100),b=clean(R(1,99)/10),add=Math.random()<.6||b>a;const r=clean(add?a+b:a-b);
+ return N('decimals',`${fmt(a)} ${add?'+':'−'} ${fmt(b)} = ?`,r,`Line up the decimal points: ${a.toFixed(2)} ${add?'+':'−'} ${b.toFixed(2)} = <b>${fmt(r)}</b>.`);};
+G.measures=h=>{const v=R(0,7);
+ if(v===0||v===1){const l=R(3,h?25:12),w=R(2,l),per=v===0;const what=pick(['A rectangular sandcastle plot on Sentosa beach','A rectangular HDB playground','A rectangular flower bed at Gardens by the Bay','A rectangular school field']);
+  return per?N('measures',`${what} is <b>${l} m</b> long and <b>${w} m</b> wide. What is its <b>perimeter</b>?`,2*(l+w),`Perimeter is the distance all the way round: ${l} + ${w} + ${l} + ${w} = <b>${2*(l+w)} m</b>.`,{suffix:'m',long:true})
+   :N('measures',`${what} is <b>${l} m</b> long and <b>${w} m</b> wide. What is its <b>area</b>?`,l*w,`Area of a rectangle = length × width: ${l} × ${w} = <b>${l*w} m²</b>.`,{suffix:'m²',long:true});}
+ if(v===2){const c=pick([['km','m',1000],['m','cm',100],['cm','mm',10],['kg','g',1000],['litres','ml',1000]]);const one=c[0].replace(/s$/,'');
+  if(Math.random()<.5){const x=clean(c[2]===10?pick([R(2,50),R(11,99)/10]):pick([R(2,20),R(11,99)/10,R(101,999)/100]));const a=clean(x*c[2]);
+   return N('measures',`${fmt(x)} ${c[0]} = ? ${c[1]}`,a,`There are ${fmt(c[2])} ${c[1]} in 1 ${one}, so multiply by ${fmt(c[2])}: ${fmt(x)} × ${fmt(c[2])} = <b>${fmt(a)} ${c[1]}</b>.`,{suffix:c[1]});}
+  const y=R(2,h?99:30)*(c[2]/pick([1,10]));const a=clean(y/c[2]);
+  return N('measures',`${fmt(y)} ${c[1]} = ? ${c[0]}`,a,`There are ${fmt(c[2])} ${c[1]} in 1 ${one}, so divide by ${fmt(c[2])}: ${fmt(y)} ÷ ${fmt(c[2])} = <b>${fmt(a)} ${c[0]}</b>.`,{suffix:c[0]});}
+ if(v===3){const hh=R(1,h?5:3),mm=R(1,11)*5;return N('measures',`How many minutes are there in <b>${hh} h ${mm} min</b>?`,hh*60+mm,`1 hour = 60 minutes, so ${hh} h = ${hh*60} min. Add ${mm}: <b>${hh*60+mm} minutes</b>.`,{suffix:'min'});}
+ if(v===4){const H=R(0,23),m=R(0,11)*5;const c=to12(H,m);
+  return M('measures',`An MRT train leaves at <b>${pad2(H)}:${pad2(m)}</b>. What is that in 12-hour time?`,c,[to12((H+12)%24,m),to12((H+2)%24,m),to12(H,(m+30)%60),to12((H+10)%24,m),to12((H+1)%24,m)],`${H>12?`For times after 12:00, take away 12 from the hour: ${H} − 12 = ${H-12}, and it's pm.`:H===12?'12:xx is just after midday, so it is pm.':H===0?'00:xx is just after midnight, so it is 12:xx am.':'Before 12:00 the hour stays the same, and it is am.'} Answer: <b>${c}</b>.`,{long:true});}
+ if(v===5){const st=R(9*12,20*12)*5,d=R(7,h?40:24)*5,e=st+d,hrs=Math.floor(d/60);const show=pick(['A movie at Jewel Changi','A Sentosa beach show','A football match at the National Stadium','A ride on the Singapore Flyer']);
+  return M('measures',`${show} starts at <b>${t24(st)}</b> and lasts <b>${hrs?hrs+' h ':''}${d%60} min</b>. What time does it finish?`,t24(e),[t24(e+10),t24(e-10),t24(e+60),t24(e-60),t24(e+30)],`Add the hours first, then the minutes: ${t24(st)} + ${hrs} h = ${t24(st+hrs*60)}, then + ${d%60} min = <b>${t24(e)}</b>.`,{long:true});}
+ if(v===6){if(Math.random()<.5){const a=R(15,165);return N('measures',`Two angles sit on a <b>straight line</b>. One is <b>${a}°</b>. What is the other angle?`,180-a,`Angles on a straight line add up to 180°. 180 − ${a} = <b>${180-a}°</b>.`,{suffix:'°',long:true});}
+  const a=R(60,150),b=R(40,140);return N('measures',`Three angles meet at a point. Two of them are <b>${a}°</b> and <b>${b}°</b>. What is the third?`,360-a-b,`Angles around a point add up to 360°. ${a} + ${b} = ${a+b}, and 360 − ${a+b} = <b>${360-a-b}°</b>.`,{suffix:'°',long:true});}
+ const k=R(0,3),ang=[R(10,85),90,R(95,175),R(185,350)][k],names=['acute','right angle','obtuse','reflex'];
+ return M('measures',`What type of angle is <b>${ang}°</b>?`,names[k],names,`Acute is less than 90°, a right angle is exactly 90°, obtuse is between 90° and 180°, and reflex is more than 180°. So ${ang}° is <b>${names[k]}</b>.`);};
+const WORD=[
+ h=>{const n=R(2,h?6:4),p=pick([3.5,4,4.5,5,5.5]),d=pick([1.2,1.5,1.8,2]);const tot=clean(n*(p+d));return N('word',`At the hawker centre, chicken rice costs <b>${money(p)}</b> and a lime juice costs <b>${money(d)}</b>. How much for <b>${n}</b> chicken rice and <b>${n}</b> lime juices?`,tot,`One meal and drink = ${money(p)} + ${money(d)} = ${money(p+d)}. Times ${n} = <b>${money(tot)}</b>.`,{prefix:'S$',long:true});},
+ h=>{const c=pick([60,70,80,90]),n=R(10,h?40:20);return N('word',`Satay sticks cost <b>${c} cents</b> each. How much do <b>${n}</b> sticks cost in dollars?`,c*n/100,`${n} × ${c}c = ${c*n}c. 100 cents = S$1, so that's <b>${money(c*n/100)}</b>.`,{prefix:'S$',long:true});},
+ h=>{const p=pick([2.8,3.2,3.6,4.5,3.9]),n=R(2,4),note=n*p<10?10:n*p<20?20:50,ch=clean(note-n*p);return N('word',`A kaya toast set costs <b>${money(p)}</b>. You buy <b>${n}</b> sets and pay with a <b>S$${note}</b> note. How much change do you get?`,ch,`${n} × ${money(p)} = ${money(n*p)}. Change = S$${note} − ${money(n*p)} = <b>${money(ch)}</b>.`,{prefix:'S$',long:true});},
+ h=>{const p=R(150,h?399:250),c=h?8:6;return N('word',`Each MRT carriage can carry <b>${p}</b> passengers. A train has <b>${c}</b> carriages. How many passengers can the whole train carry?`,p*c,`${p} × ${c} = <b>${fmt(p*c)}</b> passengers.`,{long:true});},
+ h=>{const s=pick([6,8]),k=R(40,h?150:90);const n=k%s===0?k+R(1,s-1):k;const ans=Math.ceil(n/s);return N('word',`<b>${n}</b> pupils are going up to Sentosa on the cable car. Each cabin holds <b>${s}</b> people. How many cabins do they need?`,ans,`${n} ÷ ${s} = ${Math.floor(n/s)} r ${n%s}. The ${n%s} left-over pupils still need a cabin, so round up to <b>${ans}</b>.`,{long:true});},
+ h=>{const a=pick([39,45,52,60]),c=pick([25,29,34,40]),k=R(1,h?4:3);const t=2*a+k*c;return N('word',`Sentosa attraction tickets cost <b>S$${a}</b> for an adult and <b>S$${c}</b> for a child. How much for <b>2 adults and ${k} child${k>1?'ren':''}</b>?`,t,`Adults: 2 × ${a} = ${2*a}. Children: ${k} × ${c} = ${k*c}. Total: <b>S$${t}</b>.`,{prefix:'S$',long:true});},
+ h=>{const p=R(25,95),r=R(6,h?25:12);return N('word',`You earn <b>${p} R$</b> each round. How many Robux points will you have after <b>${r}</b> rounds?`,p*r,`${p} × ${r}: ${r>10?`${p} × 10 = ${p*10} and ${p} × ${r-10} = ${p*(r-10)}. `:''}Total = <b>${fmt(p*r)} R$</b>.`,{suffix:'R$',long:true});},
+ h=>{const k=pick([3,4,5]),per=clean(R(25,h?120:60)/10);const tot=clean(per*k);return N('word',`<b>${k}</b> friends share a bubble tea bill of <b>${money(tot)}</b> equally. How much does each person pay?`,per,`${money(tot)} ÷ ${k} = <b>${money(per)}</b>. Check: ${money(per)} × ${k} = ${money(tot)}.`,{prefix:'S$',long:true});}
+];
+G.word=h=>pick(WORD)(h);
+const LEVELS=[
+ {id:1,cls:'l1',name:'Number Ninja',tag:'Level 1',desc:'Adding & subtracting, place value to 1,000,000, rounding, negative numbers, Roman numerals',topics:{addsub:4,placevalue:2,rounding:2,negative:1,roman:1,x10:1},hard:false,bonus:20},
+ {id:2,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',desc:'Times tables to 12 × 12, division facts, remainders, factors, primes, squares & cubes',topics:{times:4,division:3,remainders:1,factors:2,x10:1},hard:false,bonus:20},
+ {id:3,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',desc:'Long multiplication, fractions, decimals & percentages, Singapore word problems',topics:{multiply:2,fractions:3,decimals:2,word:2,placevalue:1},hard:false,bonus:30},
+ {id:4,cls:'l4',name:'BOSS BATTLE',tag:'Boss level',desc:'Harder everything: measures, time, angles, big numbers, fractions and tricky word problems',topics:{measures:3,word:2,fractions:2,multiply:1,decimals:1,factors:1,rounding:1,negative:1,roman:1,remainders:1,x10:1,addsub:1},hard:true,bonus:50}
+];
+function buildRound(L){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);const qs=[],seen=new Set();let g=0;
+ while(qs.length<10&&g++<500){const t=pick(bag);let q;try{q=G[t](L.hard);}catch(e){continue;}if(!q||seen.has(q.text))continue;if(q.type==='num'&&!isFinite(q.ans))continue;
+  const nMC=qs.filter(x=>x.type==='mc').length,nN=qs.length-nMC;
+  if(g<400&&((q.type==='num'&&nN>=7)||(q.type==='mc'&&nMC>=6)))continue; /* keep a mix of typed and multiple choice */
+  seen.add(q.text);qs.push(q);}
+ return qs;}
+
+/* ============ header ============ */
+const SPK_ON='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 8q3 4 0 8M18.5 5.5q5 6.5 0 13" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
+const SPK_OFF='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 9l6 6M22 9l-6 6" stroke="#f87171" stroke-width="2.6" stroke-linecap="round"/></svg>';
+function header(){const h=$('#hdr');
+ if(!player){h.innerHTML=`<div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div><button class="hbtn" data-act="mute" aria-label="Sound on or off">${store.muted?SPK_OFF:SPK_ON}</button>`;return;}
+ const t=titleFor(player.total);
+ h.innerHTML=`<div class="who" data-act="home" style="cursor:pointer">${avatar(player.av,52)}<div><div class="nm">${esc(player.name)}</div><span class="pill t-${t}">${t}</span></div></div>
+ <div class="spacer"></div><div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div>
+ <div class="bank" id="hdrBank">${COIN}<span id="hdrTotal">${fmt(player.total)}</span></div>
+ <button class="hbtn" data-act="bank"><span>🏦</span><span class="lbl">My Bank</span></button>
+ <button class="hbtn" data-act="rewards"><span>🏅</span><span class="lbl">Rewards</span></button>
+ <button class="hbtn" data-act="parent"><span>👪</span><span class="lbl">Parent</span></button>
+ <button class="hbtn" data-act="mute" aria-label="Sound on or off">${store.muted?SPK_OFF:SPK_ON}</button>`;}
+function bumpTotal(){const el=$('#hdrTotal');if(el&&player)el.textContent=fmt(player.total);const b=$('#hdrBank');if(b){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}}
+
+/* ============ effects ============ */
+const canAnim=!!(Element.prototype.animate);
+function centre(el){const r=el.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};}
+function coinBurst(fromEl,count){if(!fromEl)return;if(!canAnim){bumpTotal();return;}const fx=$('#fx');const s=centre(fromEl);const tgt=$('#hdrBank');const t=tgt?centre(tgt):{x:innerWidth-80,y:30};
+ for(let i=0;i<count;i++){const c=document.createElement('span');c.className='coin';c.textContent='R$';fx.appendChild(c);
+  const a=Math.random()*Math.PI*2,d=60+Math.random()*110,mx=s.x+Math.cos(a)*d,my=s.y+Math.sin(a)*d-40;
+  const anim=c.animate([{transform:`translate(${s.x-18}px,${s.y-18}px) scale(.4)`,opacity:0},{transform:`translate(${mx-18}px,${my-18}px) scale(1.2)`,opacity:1,offset:.35},{transform:`translate(${mx-18}px,${my-18}px) scale(1)`,opacity:1,offset:.5},{transform:`translate(${t.x-18}px,${t.y-18}px) scale(.6)`,opacity:.9}],{duration:1000+i*45,easing:'ease-in-out',fill:'forwards'});
+  anim.onfinish=()=>c.remove();}
+ setTimeout(bumpTotal,950);}
+function floatText(el,txt){if(!canAnim)return;const fx=$('#fx');const s=centre(el);const d=document.createElement('div');d.className='floattxt';d.textContent=txt;d.style.left=(s.x-60)+'px';d.style.top=(s.y-20)+'px';fx.appendChild(d);
+ d.animate([{transform:'translateY(0) scale(.6)',opacity:0},{transform:'translateY(-30px) scale(1.2)',opacity:1,offset:.3},{transform:'translateY(-110px) scale(1)',opacity:0}],{duration:1500,easing:'ease-out',fill:'forwards'}).onfinish=()=>d.remove();}
+function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','#facc15','#22c55e','#3b82f6','#a855f7','#f97316'];for(let i=0;i<60;i++){const c=document.createElement('div');c.className='confetti';c.style.background=pick(cols);fx.appendChild(c);
+ const x=Math.random()*innerWidth;c.animate([{transform:`translate(${x}px,-30px) rotate(0deg)`},{transform:`translate(${x+R(-120,120)}px,${innerHeight+40}px) rotate(${R(180,720)}deg)`}],{duration:R(1600,3000),delay:R(0,500),easing:'cubic-bezier(.3,.6,.6,1)',fill:'both'}).onfinish=()=>c.remove();}}
+
+/* ============ screens ============ */
+const app=$('#app');let Q=null,timer=null;
+function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
+function clearAuto(){if(Q&&Q.auto){clearTimeout(Q.auto);Q.auto=null;}}
+let startMsg='';
+function showStart(){stopTimer();clearAuto();Q=null;header();const names=Object.values(store.players);
+ app.innerHTML=`<div class="start">
+ <div class="hero"><h1>Block<br>Maths<br>Quest</h1><div class="avatarBox">${avatar(player?player.av:null,190)}</div>
+  <div style="color:#fff;font-size:20px;text-shadow:0 2px 0 #14142b;line-height:1.4">Answer questions. Earn ${COIN} Robux points. Unlock cool gear!</div></div>
+ <div class="card"><h2>Who's playing?</h2>
+  <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${player?esc(player.name):''}">
+  ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${fmt(p.total)} R$</button>`).join('')}</div>`:''}
+  <div class="err" id="err">${startMsg}</div>
+  <h2 style="margin-top:4px">Pick a level</h2>
+  <div class="levels">${LEVELS.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-l="${L.id}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
+ </div></div>`;
+ startMsg='';}
+function newRound(L){Q={L,qs:buildRound(L),i:0,res:[],streak:0,best:0,earn:{base:0,streak:0,speed:0},input:'',locked:false,auto:null};}
+function startRound(id){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
+ if(inp)inp.blur();setPlayer(nm);newRound(LEVELS.find(l=>l.id===+id));header();sfx.click();showQ();}
+function roundEarned(){return Q.earn.base+Q.earn.streak+Q.earn.speed;}
+function showQ(){stopTimer();clearAuto();const q=Q.qs[Q.i];Q.input='';Q.locked=false;window.scrollTo(0,0);
+ app.innerHTML=`<div class="qtop"><div class="blocks">${Q.qs.map((_,k)=>`<i class="${k<Q.i?(Q.res[k]?'ok':'no'):k===Q.i?'cur':''}"></i>`).join('')}</div><div class="spacer"></div>
+ <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${roundEarned()}</span>&nbsp;this round</div></div>
+ <div class="quiz"><div class="card qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length}</span><span>${TOPICS[q.topic]}</span></div>
+  <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
+  <div><div class="speedlbl"><span>⚡ Speed bonus +5</span><span id="secs">10s</span></div><div class="speed"><span id="sbar"></span></div></div></div>
+  <div id="ans">${answerArea(q)}</div></div>`;
+ Q.t0=performance.now();timer=setInterval(()=>{const el=(performance.now()-Q.t0)/1000;const b=$('#sbar'),s=$('#secs');if(!b||!s){stopTimer();return;}const left=Math.max(0,10-el);b.style.transform=`scaleX(${left/10})`;s.textContent=left>0?Math.ceil(left)+'s':'No rush, take your time';if(left<=0)stopTimer();},100);}
+function answerArea(q){if(q.type==='mc')return `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-act="choose" data-k="${k}">${c}</button>`).join('')}</div>`;
+ const keys=['7','8','9','del','4','5','6','-','1','2','3','ok','0','.'];
+ return `<div class="disp" id="disp">${q.prefix?`<span class="aff">${q.prefix}</span>`:''}<span id="dv"></span><span class="cur"></span>${q.suffix?`<span class="aff">${q.suffix}</span>`:''}</div>
+ <div class="pad">${keys.map(k=>k==='ok'?`<button class="key go" data-act="key" data-k="ok" aria-label="Enter">✓</button>`:k==='del'?`<button class="key fn" data-act="key" data-k="del" aria-label="Delete">⌫</button>`:k==='-'?`<button class="key fn" data-act="key" data-k="-" aria-label="Minus">−</button>`:k==='.'?`<button class="key fn" data-act="key" data-k=".">.</button>`:`<button class="key" data-act="key" data-k="${k}" ${k==='0'?'style="grid-column:span 2"':''}>${k}</button>`).join('')}</div>`;}
+function keyIn(k){if(!Q||Q.locked)return;const q=Q.qs[Q.i];if(q.type!=='num')return;
+ if(k==='ok'){if(Q.input===''||Q.input==='-'||Q.input==='-0.'||/^-?0?\.$/.test(Q.input)){const d=$('#disp');if(d&&canAnim)d.animate([{transform:'translateX(-8px)'},{transform:'translateX(8px)'},{transform:'translateX(0)'}],{duration:200});return;}answer(Q.input);return;}
+ if(k==='del')Q.input=Q.input.slice(0,-1);
+ else if(k==='-'){Q.input=Q.input.startsWith('-')?Q.input.slice(1):'-'+Q.input;}
+ else if(k==='.'){if(!Q.input.includes('.'))Q.input+=(Q.input===''||Q.input==='-'?'0':'')+'.';}
+ else if(Q.input.replace(/[-.]/g,'').length<9)Q.input+=k;
+ sfx.click();const dv=$('#dv');if(dv)dv.textContent=Q.input.replace('-','−');}
+function answer(val,btn){const q=Q.qs[Q.i];Q.locked=true;stopTimer();const secs=(performance.now()-Q.t0)/1000;
+ let ok;if(q.type==='num'){const n=parseFloat(String(val).replace(/,/g,''));ok=isFinite(n)&&Math.abs(n-q.ans)<1e-6;}else ok=val===q.ans;
+ const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
+ const bon=[];let gained=0;
+ if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak,Q.streak);
+  gained+=10;Q.earn.base+=10;bon.push('+10 correct');
+  let sb=0;if(Q.streak===3)sb=5;else if(Q.streak>=5&&Q.streak%5===0)sb=15;if(sb){Q.earn.streak+=sb;gained+=sb;bon.push(`+${sb} streak of ${Q.streak}!`);}
+  if(secs<=10){Q.earn.speed+=5;gained+=5;bon.push('+5 speed');}
+  player.total+=gained;}
+ else Q.streak=0;
+ Q.res[Q.i]=ok;save();
+ if(q.type==='mc')document.querySelectorAll('.choice').forEach(b=>{const c=q.choices[+b.dataset.k];if(c===q.ans)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim');});
+ const ansHtml=q.type==='num'?`${q.prefix||''}${q.prefix==='S$'?q.ans.toFixed(2):fmt(q.ans)}${q.suffix?' '+q.suffix:''}`:q.ans;
+ const fb=document.createElement('div');fb.className='fb '+(ok?'good':'bad');fb.id='fb';
+ fb.innerHTML=ok?`<h2>${pick(['Awesome!','Correct!','Epic!','Nailed it!','Brilliant!','Super!'])}</h2><div class="bon">${bon.map(b=>`<span>${b}</span>`).join('')}</div><button class="btn green" data-act="next">Next ▶</button>`
+  :`<h2>${pick(['Not quite!','Nearly!','Good try!'])}</h2><div class="ansbig">The answer is ${ansHtml}</div><div class="ex">${q.explain}</div><div class="muted" style="margin-bottom:12px;font-size:18px">No R$ lost. Every mistake makes your brain stronger! 💪</div><button class="btn blue" data-act="next">Next ▶</button>`;
+ const area=$('#ans');if(q.type==='num')area.innerHTML='';area.appendChild(fb);
+ const rnd=$('#rnd');if(rnd)rnd.textContent='+'+roundEarned();
+ if(ok){sfx.correct();if(Q.streak===3||(Q.streak>=5&&Q.streak%5===0))setTimeout(sfx.streak,380);coinBurst(fb,Math.min(14,3+Math.round(gained/3)));floatText(fb,`+${gained} R$`);Q.auto=setTimeout(nextQ,2600);}
+ else{sfx.wrong();if(fb.scrollIntoView)fb.scrollIntoView({block:'nearest',behavior:'smooth'});}}
+function nextQ(){if(!Q)return;clearAuto();Q.i++;if(Q.i>=Q.qs.length)finish();else showQ();}
+function finish(){stopTimer();clearAuto();const L=Q.L;const score=Q.res.filter(Boolean).length;const before=player.total-roundEarned();
+ const rb=L.bonus,perfect=score===Q.qs.length?25:0;player.total+=rb+perfect;player.rounds++;
+ const earned=roundEarned()+rb+perfect;
+ player.history.unshift({d:new Date().toISOString(),lvl:L.tag+': '+L.name,score,of:Q.qs.length,earned});if(player.history.length>200)player.history.length=200;
+ const newM=MILESTONES.filter(m=>player.total>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
+ const oldT=titleFor(before),newT=titleFor(player.total);save();header();window.scrollTo(0,0);
+ app.innerHTML=`<div class="grid2"><div class="card center"><h2>Round complete!</h2><div class="muted" style="font-size:20px">${L.tag}: ${L.name}</div>
+  <div class="score">${score}/${Q.qs.length}</div><div style="font-size:24px">${perfect?'PERFECT ROUND! 🏆':score>=8?'Amazing work! ⭐':score>=5?'Great effort! 👍':'Keep practising, you\'ve got this! 💪'}</div>
+  <div style="margin:16px auto;display:inline-block">${avatar(player.av,150)}</div>
+  <div class="row" style="justify-content:center"><button class="btn green" data-act="again" data-l="${L.id}">Play again</button><button class="btn" data-act="home">Change level</button><button class="btn purple" data-act="bank">My Bank</button></div></div>
+ <div class="card"><h2 style="display:flex;align-items:center;gap:10px">${COIN} Robux points earned</h2><table class="tbl">
+  <tr><td>Correct answers (${score} × 10)</td><td class="r">+${Q.earn.base}</td></tr>
+  <tr><td>Streak bonuses (best streak ${Q.best})</td><td class="r">+${Q.earn.streak}</td></tr>
+  <tr><td>Speed bonuses</td><td class="r">+${Q.earn.speed}</td></tr>
+  <tr><td>Round complete bonus</td><td class="r">+${rb}</td></tr>
+  ${perfect?`<tr><td>Perfect round bonus</td><td class="r">+${perfect}</td></tr>`:''}
+  <tr class="tot"><td>Total this round</td><td class="r">+${earned} R$</td></tr></table>
+  <div style="font-size:22px;margin-top:12px;display:flex;gap:8px;align-items:center">Bank total: ${COIN} ${fmt(player.total)}</div>
+  ${newT!==oldT?`<div class="unlock"><span style="font-size:34px">🎉</span><div class="u">LEVEL UP! You are now a <span class="pill t-${newT}">${newT}</span></div></div>`:''}
+  ${newM.map(m=>`<div class="unlock">${avatar({hat:m.hats[0]||player.av.hat,shirt:m.shirts[0]||player.av.shirt},70)}<div class="u">Badge unlocked: <b>${m.name}</b> (${fmt(m.at)} R$)<br><span class="muted" style="font-size:17px">New: ${[...m.hats.map(x=>HATS[x]),...m.shirts.map(x=>x+' shirt')].join(', ')}. Wear it in Rewards!</span></div></div>`).join('')}
+  ${nextMilestoneHtml()}
+ </div></div>`;
+ const tot=$('.tot');if(tot)coinBurst(tot,10);
+ if(newM.length||newT!==oldT){setTimeout(sfx.unlock,300);confetti();}else{sfx.fanfare();if(score>=8)confetti();}
+ Q=null;}
+function nextMilestoneHtml(){const nx=MILESTONES.find(m=>player.total<m.at);if(!nx)return `<p style="font-size:20px">You've unlocked every badge. LEGEND! 👑</p>`;const prev=[...MILESTONES].reverse().find(m=>player.total>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((player.total-lo)/(nx.at-lo)*100));
+ return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ (${fmt(nx.at-player.total)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
+function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
+function leaveRound(){stopTimer();clearAuto();Q=null;}
+function showBank(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;
+ app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">🏦 ${esc(p.name)}'s Bank</h2><div class="spacer"></div><button class="btn green" data-act="home">Play ▶</button></div>
+ <div class="stats" style="margin-top:16px"><div class="stat"><div class="v"><span class="coin big">R$</span>${fmt(p.total)}</div><div class="k">Robux points</div></div>
+ <div class="stat"><div class="v">${p.rounds}</div><div class="k">Rounds played</div></div><div class="stat"><div class="v">${acc}%</div><div class="k">Correct answers</div></div><div class="stat"><div class="v">🔥 ${p.bestStreak}</div><div class="k">Best streak</div></div></div>
+ ${nextMilestoneHtml()}
+ <h3 style="margin-top:18px;font-size:24px">History</h3>
+ ${p.history.length?`<div style="max-height:360px;overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th>Level</th><th class="r">Score</th><th class="r">R$ earned</th></tr>
+ ${p.history.slice(0,100).map(h=>{const d=new Date(h.d);return `<tr><td>${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}, ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td><td>${esc(h.lvl)}</td><td class="r">${h.score}/${h.of||10}</td><td class="r">+${h.earned}</td></tr>`;}).join('')}</table></div>`:'<p class="muted" style="font-size:20px">No rounds yet. Go and play one!</p>'}
+ <div class="row" style="margin-top:20px"><button class="btn red" data-act="reset">Reset my bank</button><span class="muted">Clears R$, history and unlocks for ${esc(p.name)} only.</span></div></div>`;}
+function showRewards(){if(!needPlayer())return;leaveRound();header();const p=player,u=unlocked(p.total);
+ app.innerHTML=`<div class="grid2" style="grid-template-columns:1fr 1.5fr"><div class="card center"><h2>Your avatar</h2><div style="margin:6px auto">${avatar(p.av,210)}</div><span class="pill t-${titleFor(p.total)}" style="font-size:20px">${titleFor(p.total)}</span>
+  <p class="muted" style="font-size:17px;line-height:1.4">Titles: Noob → Builder (250 R$) → Pro (1,000 R$) → Legend (2,500 R$)</p></div>
+ <div class="card"><h2>🏅 Badges</h2><p class="muted" style="margin-top:-4px">Badges are free! Earn Robux points to unlock them. You never spend your R$.</p>
+  <div class="badges">${MILESTONES.map(m=>{const got=p.total>=m.at;return `<div class="badge ${got?'':'locked'}">${avatar({hat:m.hats[0]||'none',shirt:m.shirts[0]||'green'},62)}<div class="amt">${COIN}${fmt(m.at)}</div><div class="bn">${m.name}</div><div class="bs">${got?'Unlocked!':fmt(m.at-p.total)+' to go'}</div></div>`;}).join('')}</div>
+  ${nextMilestoneHtml()}
+  <h3 style="margin-top:14px">Hats & gear</h3><div class="opts">${Object.keys(HATS).map(hk=>{const ok=u.hats.includes(hk);return `<button class="opt ${p.av.hat===hk?'sel':''} ${ok?'':'locked'}" data-act="hat" data-h="${hk}" ${ok?'':'disabled'}>${avatar({hat:hk,shirt:p.av.shirt},70)}<div>${HATS[hk]}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
+  <h3 style="margin-top:14px">Shirt colours</h3><div class="opts">${Object.keys(SHIRTS).map(sk=>{const ok=u.shirts.includes(sk);const bg=SHIRTS[sk]==='rainbow'?'linear-gradient(#ef4444,#facc15,#22c55e,#3b82f6,#a855f7)':SHIRTS[sk];return `<button class="opt ${p.av.shirt===sk?'sel':''} ${ok?'':'locked'}" data-act="shirt" data-s="${sk}" ${ok?'':'disabled'}><div class="sw" style="background:${bg}"></div><div>${sk}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
+ </div></div>`;}
+function showParent(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;
+ const rows=Object.keys(TOPICS).filter(t=>p.topics[t]).map(t=>{const s=p.topics[t],a=Math.round(s.c/s.n*100);return `<tr><td>${TOPICS[t]}</td><td class="r">${s.c}/${s.n}</td><td><div class="bar"><span style="width:${a}%;background:${a>=80?'#22c55e':a>=50?'#facc15':'#ef4444'}"></span></div></td><td class="r">${a}%</td></tr>`;}).join('');
+ app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parent area · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
+ <div class="note"><b>Please note:</b> R$ here are <b>practice points only</b>. They are not real Robux and this game has no link to Roblox. You decide whether to swap them for any real reward. Nothing is bought, no ads are shown and no data leaves this device: everything is saved only in this browser.</div>
+ <div class="stats"><div class="stat"><div class="v"><span class="coin big">R$</span>${fmt(p.total)}</div><div class="k">Total earned</div></div><div class="stat"><div class="v">${p.rounds}</div><div class="k">Rounds played</div></div>
+ <div class="stat"><div class="v">${acc}%</div><div class="k">Overall accuracy</div></div><div class="stat"><div class="v">${p.answered}</div><div class="k">Questions answered</div></div></div>
+ <div class="grid2"><div><h3 style="font-size:24px">Accuracy by topic</h3>${rows?`<table class="tbl" style="font-size:17px"><tr><th>Topic</th><th class="r">Right</th><th></th><th class="r">%</th></tr>${rows}</table>`:'<p class="muted">No answers yet.</p>'}</div>
+ <div><h3 style="font-size:24px">Exchange note (optional)</h3><p class="muted" style="margin-top:-4px">Write your house rule, e.g. "100 points = 80 real Robux, paid on Saturdays".</p>
+  <textarea id="note" maxlength="300" placeholder="e.g. 100 points = 80 real Robux">${esc(p.note||'')}</textarea>
+  <div class="row" style="margin-top:10px"><button class="btn green" data-act="savenote">Save note</button><span id="saved" class="muted"></span></div>
+  ${p.note?`<div class="note" style="background:#fefce8;border-color:#ca8a04">Current deal: <b>${esc(p.note)}</b></div>`:''}
+  <p class="muted" style="font-size:16px;margin-top:14px;line-height:1.4">Questions follow the UK Year 5 maths curriculum (English National Curriculum). Red bars show topics to practise.</p></div></div></div>`;}
+function confirmReset(){if(!player)return;const m=$('#modal');m.classList.remove('hidden');
+ m.innerHTML=`<div class="card"><h2>Reset ${esc(player.name)}'s bank?</h2><p>This wipes <b>all ${fmt(player.total)} R$</b>, the history, badges and unlocks for ${esc(player.name)}. It can't be undone.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doreset">Yes, reset</button></div></div>`;}
+function closeModal(){const m=$('#modal');m.classList.add('hidden');m.innerHTML='';}
+
+/* ============ events ============ */
+document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el||el.disabled)return;actx();const a=el.dataset.act;
+ switch(a){
+  case 'home':closeModal();showStart();break;
+  case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];store.last=k;save();}sfx.click();showStart();break;}
+  case 'level':startRound(el.dataset.l);break;
+  case 'again':newRound(LEVELS.find(l=>l.id===+el.dataset.l));sfx.click();showQ();break;
+  case 'choose':if(Q&&!Q.locked){answer(Q.qs[Q.i].choices[+el.dataset.k],el);}break;
+  case 'key':keyIn(el.dataset.k);break;
+  case 'next':nextQ();break;
+  case 'bank':showBank();break;
+  case 'rewards':showRewards();break;
+  case 'parent':showParent();break;
+  case 'mute':store.muted=!store.muted;save();header();if(!store.muted)sfx.click();break;
+  case 'hat':player.av.hat=el.dataset.h;save();sfx.click();showRewards();break;
+  case 'shirt':player.av.shirt=el.dataset.s;save();sfx.click();showRewards();break;
+  case 'savenote':player.note=($('#note').value||'').trim();save();sfx.coin();showParent();{const s=$('#saved');if(s)s.textContent='Saved on this device ✓';}break;
+  case 'reset':confirmReset();break;
+  case 'cancelreset':closeModal();break;
+  case 'doreset':{const k=player.name.trim().toLowerCase();store.players[k]=newPlayer(player.name);player=store.players[k];save();closeModal();showBank();break;}
+ }});
+document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}return;}
+ if(!Q)return;const q=Q.qs[Q.i];
+ if(Q.locked){if(e.key==='Enter'||e.key===' '){e.preventDefault();nextQ();}return;}
+ if(q.type==='mc'){const k=+e.key;if(k>=1&&k<=4){const b=document.querySelector(`.choice[data-k="${k-1}"]`);if(b)b.click();}return;}
+ if(/^[0-9]$/.test(e.key))keyIn(e.key);else if(e.key==='Backspace'){e.preventDefault();keyIn('del');}else if(e.key==='-')keyIn('-');else if(e.key==='.')keyIn('.');else if(e.key==='Enter')keyIn('ok');});
+window.__bmq={G,LEVELS,buildRound,get Q(){return Q;}};
+showStart();
+})();
+</script>
+</body>
+</html>
