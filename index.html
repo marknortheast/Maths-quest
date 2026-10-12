@@ -69,6 +69,9 @@ input.name:focus{background:#fffbe6}
 .l3{background:linear-gradient(135deg,#f97316,#c2410c)}.l4{background:linear-gradient(135deg,#7c3aed,#4c1d95)}
 .l5{background:linear-gradient(135deg,#7f1d1d,#111);border-color:#000}
 .l5 .t{color:#fde047}
+.l6{background:linear-gradient(135deg,#0284c7,#075985)}
+.l7{background:linear-gradient(135deg,#d97706,#9a3412)}
+.l8{background:linear-gradient(135deg,#0f766e,#134e4a)}
 .err{color:var(--red);font-size:18px;min-height:24px;margin-top:6px}
 .qtop{display:flex;align-items:center;gap:12px;margin-bottom:12px;color:#fff;flex-wrap:wrap}
 .blocks{display:flex;gap:6px}
@@ -365,6 +368,81 @@ body.duel-on #app>.gg{flex:1;min-height:0}
 .boomcard h2{font-size:72px;line-height:.9;color:#facc15;text-shadow:0 5px 0 #000;margin:0}
 .blast{width:168px;height:168px;margin:4px auto 8px;border-radius:50%;background:radial-gradient(circle,#fff 0 8%,#fde047 18%,#f97316 42%,#ef4444 66%,transparent 70%);box-shadow:0 0 0 10px #fb923c,0 0 0 22px rgba(239,68,68,.45);animation:blastin .4s ease-out}
 @keyframes blastin{from{transform:scale(.2);opacity:.2}to{transform:scale(1);opacity:1}}
+body.play-on{display:flex;flex-direction:column;height:100dvh;overflow:hidden}
+body.play-on #hdr{flex:none;min-height:0;padding:4px 10px;gap:8px}
+body.play-on #hdr .brand,body.play-on #hdr .hbtn:not([data-act="mute"]){display:none}
+body.play-on #hdr .who svg{height:36px;width:auto}
+body.play-on #hdr .who .nm{font-size:16px}
+body.play-on #app{flex:1;min-height:0;max-width:none;margin:0;padding:6px 8px 8px;display:flex;flex-direction:column;overflow:hidden}
+body.has-roundbar.play-on #app{padding-bottom:8px}
+.pkwrap,.flapwrap,.thwrap,.potwrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px}
+.pkhud,.flaphud{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#fff;font-size:18px;text-shadow:0 2px 0 #000}
+.pkview,.flapview{position:relative;overflow:hidden;border:4px solid var(--ink);border-radius:14px;box-shadow:0 5px 0 var(--ink);touch-action:none}
+.pkview{flex:1;min-height:160px;background:linear-gradient(#38bdf8,#bae6fd 78%)}
+.pkworld{position:absolute;left:0;top:0}
+.pkplat{position:absolute;background:#c2410c;border:4px solid #14142b;border-radius:8px;box-shadow:inset 0 12px 0 #fde047}
+.pkplat.alt{background:#7c2d12;box-shadow:inset 0 12px 0 #fb923c}
+.pkblock{position:absolute;width:32px;height:32px;background:#facc15;border:3px solid #14142b;border-radius:4px;pointer-events:none}
+.pkflag{position:absolute;width:8px;height:78px;background:#14142b;pointer-events:none}
+.pkflag:after{content:"";position:absolute;left:8px;top:4px;border-style:solid;border-width:16px 28px 16px 0;border-color:transparent #ef4444 transparent transparent}
+.pkguy{position:absolute;width:56px;height:74px;z-index:3;pointer-events:none}
+.pkguy svg{width:100%;height:100%;display:block}
+.pkpad,.stagebtns{display:flex;gap:10px}
+.pkpad .btn,.stagebtns .btn{flex:1;min-height:64px;font-size:26px;touch-action:none}
+.pkpad .btn:active,.stagebtns .btn:active{transform:none;filter:brightness(.95)}
+.flapmain{flex:1;min-height:0;display:grid;grid-template-columns:1.15fr .85fr;gap:8px}
+.flapview{background:linear-gradient(#7dd3fc,#e0f2fe 72%);min-height:0}
+.flapbird{position:absolute;left:110px;width:54px;height:42px;z-index:4;pointer-events:none}
+.pipe{position:absolute;width:78px;background:linear-gradient(#4ade80,#15803d);border:4px solid #14532d;z-index:2;pointer-events:none;box-sizing:border-box}
+.pipe:after{content:"";position:absolute;left:-8px;right:-8px;height:18px;background:#22c55e;border:4px solid #14532d}
+#pipetop:after{bottom:-8px}#pipebot:after{top:-8px}
+.pipesign{position:absolute;z-index:3;width:220px;pointer-events:none;background:#fff;border:3px solid #14142b;border-radius:10px;padding:4px 6px;font-size:14px;line-height:1.2;text-align:center;color:#14142b}
+.flapside{min-height:0;overflow:hidden;display:flex;flex-direction:column;gap:8px;background:#fff;border:4px solid var(--ink);border-radius:14px;padding:8px;box-shadow:0 5px 0 var(--ink)}
+.flapqscroll{flex:1;min-height:0;overflow:auto;-webkit-overflow-scrolling:touch;display:flex;flex-direction:column;gap:8px}
+.flapside .qtext{font-size:26px;flex:none}
+.flappad .key:active{transform:none;filter:brightness(.95)}
+.flapground{position:absolute;left:0;right:0;bottom:0;height:16px;background:#166534;border-top:4px solid #14142b;z-index:2;pointer-events:none}
+.thq,.potq{flex:none;max-height:42%;overflow:auto;-webkit-overflow-scrolling:touch}
+.thmap{flex:1;min-height:140px;overflow:auto;-webkit-overflow-scrolling:touch;border:4px solid #78350f;border-radius:14px;background:#f3e6c4;box-shadow:0 5px 0 #78350f}
+.thworld{position:relative;width:1080px;height:760px;background:
+ radial-gradient(circle at 18% 30%,rgba(180,83,9,.18),transparent 28%),
+ radial-gradient(circle at 80% 70%,rgba(22,101,52,.16),transparent 26%),
+ repeating-linear-gradient(90deg,transparent,transparent 46px,rgba(120,53,15,.12) 47px),
+ repeating-linear-gradient(0deg,transparent,transparent 46px,rgba(120,53,15,.12) 47px),
+ #f6e7c1}
+.thguy{position:absolute;z-index:3;width:74px;transition:left .45s linear,top .45s linear;pointer-events:none;filter:drop-shadow(0 4px 0 rgba(0,0,0,.25))}
+.chest{position:absolute;z-index:2;width:168px;min-height:108px;border:4px solid #14142b;border-radius:12px;background:#fef3c7;box-shadow:0 5px 0 #14142b;padding:6px;font-size:15px;line-height:1.15;text-align:center}
+.chest:active{transform:none;filter:brightness(.95)}
+.chest.open.dud{background:#e7e5e4;opacity:.8}
+.chest.open.good{background:#fde68a}
+.chest .mark{font-size:13px;letter-spacing:.4px}
+.potmain{flex:1;min-height:0;display:grid;grid-template-columns:200px 1fr;gap:8px}
+.pothero{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;background:linear-gradient(#ede9fe,#fff);border:4px solid var(--ink);border-radius:14px;padding:8px;min-height:140px}
+.flask{width:54px;height:70px;margin-top:-18px;transform-origin:50% 80%;z-index:2}
+.pothero.pouring .flask{animation:tilt .6s ease-in forwards}
+@keyframes tilt{40%{transform:rotate(18deg)}100%{transform:rotate(62deg)}}
+.cauldrons{display:grid;grid-template-columns:1fr 1fr;gap:10px;min-height:0;align-content:stretch}
+.cauldron{position:relative;overflow:hidden;min-height:96px;border:4px solid var(--ink);border-radius:16px;background:#f8fafc;box-shadow:0 6px 0 var(--ink);padding:8px 8px 36px;font-size:18px;line-height:1.2}
+.cauldron:active{transform:none;filter:brightness(.95)}
+.cauldron .liquid{position:absolute;left:8px;right:8px;bottom:8px;height:0;border-radius:0 0 10px 10px;background:#c084fc;border:3px solid #6b21a8}
+.cauldron.pouring .liquid{animation:fillup .65s ease-out forwards}
+@keyframes fillup{to{height:42%}}
+.cauldron.ok{background:#dcfce7}
+.cauldron.ok .liquid{height:46%;background:#4ade80;border-color:#166534}
+.cauldron.ok .bub{opacity:1}
+.cauldron.boom{background:#fee2e2;animation:shake .45s linear}
+.cauldron.boom .liquid{height:50%;background:#ef4444;border-color:#7f1d1d}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-4px)}}
+.bub{position:absolute;left:18px;bottom:18px;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #166534;opacity:0}
+.bub.b2{left:auto;right:22px;bottom:28px;width:10px;height:10px}
+.cauldron.ok .bub{animation:bup .8s ease-in infinite}
+@keyframes bup{to{transform:translateY(-28px);opacity:0}}
+.blastmini{position:absolute;left:50%;top:40%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:radial-gradient(circle,#fff 0 10%,#fde047 30%,#f97316 55%,transparent 70%);pointer-events:none}
+.potnote{font-size:18px;min-height:24px}
+#achievements .ach.off{opacity:1;background:#e2e8f0}
+#achievements .ach.on{background:linear-gradient(#fef3c7,#fde68a)}
+#achievements{grid-template-columns:repeat(3,1fr)}
+.bigchest{width:min(280px,70vw);height:auto;display:block;margin:0 auto}
 @media (max-width:900px){
  .start,.quiz,.grid2,.housepage{grid-template-columns:1fr!important}
  .badges{grid-template-columns:repeat(3,1fr)}.stats{grid-template-columns:1fr 1fr}
@@ -386,7 +464,15 @@ body.duel-on #app>.gg{flex:1;min-height:0}
  .hitnum b{font-size:48px}
  .ranks{grid-template-columns:1fr 1fr}
  .shopgrid{grid-template-columns:1fr 1fr}
+ .flapmain,.potmain{grid-template-columns:1fr}
+ .flapmain{grid-template-rows:minmax(150px,1fr) minmax(280px,.95fr)}
+ .flapside .qtext{font-size:22px}
+ .pkpad .btn{min-height:72px}
+ .cauldron{min-height:88px;font-size:18px}
+ #achievements{grid-template-columns:1fr 1fr}
+ .thq .qtext{font-size:22px}
 }
+@media (max-width:560px){#achievements{grid-template-columns:1fr}}
 @media (max-width:560px){.levels{grid-template-columns:1fr}.choice{font-size:22px;min-height:80px}.lvl:last-child:nth-child(odd){grid-column:auto}}
 </style>
 </head>
@@ -422,9 +508,15 @@ function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 load();
 function freshDuel(){return{tag:'Redliss',wins:0,losses:0,streak:0,bestStreak:0,skin:'block',finisher:'pop',owned:['block'],finishers:['pop'],gear:[],gearOn:[],badges:[],crits:0,hardRight:0,flawless:0,pick:{subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'}};}
-function newPlayer(name){return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel()};}
+function freshModes(){return{parkour:{stage:1,best:0},flappy:{best:0},treasure:{found:0,hunts:0},potion:{clean:0},achs:[],mastermind:{hardClear:false}};}
+function newPlayer(name){const m=freshModes();return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel(),parkour:m.parkour,flappy:m.flappy,treasure:m.treasure,potion:m.potion,achs:m.achs,mastermind:m.mastermind};}
 function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];if(!p.mistakes)p.mistakes=[];if(!p.review)p.review={};
- if(!p.duel)p.duel=freshDuel();const d=p.duel;if(!d.tag)d.tag='Redliss';if(!Array.isArray(d.owned))d.owned=['block'];if(d.owned.indexOf('block')<0)d.owned.unshift('block');if(!Array.isArray(d.finishers))d.finishers=['pop'];if(d.finishers.indexOf('pop')<0)d.finishers.unshift('pop');if(!d.skin)d.skin='block';if(!d.finisher)d.finisher='pop';if(!Array.isArray(d.gear))d.gear=[];if(!Array.isArray(d.gearOn))d.gearOn=[];if(!Array.isArray(d.badges))d.badges=[];if(typeof d.crits!=='number')d.crits=0;if(typeof d.hardRight!=='number')d.hardRight=0;if(typeof d.flawless!=='number')d.flawless=0;if(!d.pick)d.pick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'};}
+ if(!p.duel)p.duel=freshDuel();const d=p.duel;if(!d.tag)d.tag='Redliss';if(!Array.isArray(d.owned))d.owned=['block'];if(d.owned.indexOf('block')<0)d.owned.unshift('block');if(!Array.isArray(d.finishers))d.finishers=['pop'];if(d.finishers.indexOf('pop')<0)d.finishers.unshift('pop');if(!d.skin)d.skin='block';if(!d.finisher)d.finisher='pop';if(!Array.isArray(d.gear))d.gear=[];if(!Array.isArray(d.gearOn))d.gearOn=[];if(!Array.isArray(d.badges))d.badges=[];if(typeof d.crits!=='number')d.crits=0;if(typeof d.hardRight!=='number')d.hardRight=0;if(typeof d.flawless!=='number')d.flawless=0;if(!d.pick)d.pick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'};
+ if(!p.parkour)p.parkour={stage:1,best:0};if(typeof p.parkour.stage!=='number'||p.parkour.stage<1)p.parkour.stage=1;if(typeof p.parkour.best!=='number')p.parkour.best=0;
+ if(!p.flappy)p.flappy={best:0};if(typeof p.flappy.best!=='number')p.flappy.best=0;
+ if(!p.treasure)p.treasure={found:0,hunts:0};if(typeof p.treasure.found!=='number')p.treasure.found=0;if(typeof p.treasure.hunts!=='number')p.treasure.hunts=0;
+ if(!p.potion)p.potion={clean:0};if(typeof p.potion.clean!=='number')p.potion.clean=0;
+ if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};}
 let player=null;
 function setPlayer(name){const k=name.trim().toLowerCase();if(!store.players[k])store.players[k]=newPlayer(name.trim());player=store.players[k];migrate(player);store.last=k;save();}
 if(store.last&&store.players[store.last]){player=store.players[store.last];migrate(player);}
@@ -487,7 +579,8 @@ const sfx={
  hurt:()=>{tone(160,0,.16,'square',.07,90);tone(90,.1,.18,'triangle',.05);},
  block:()=>{tone(520,0,.08,'square',.05);tone(780,.06,.14,'triangle',.05);},
  tick:(hot)=>{if(hot){tone(980,0,.04,'square',.045);tone(640,.05,.04,'square',.03);}else tone(420,0,.028,'square',.02);},
- boom:()=>{tone(150,0,.2,'square',.1,48);tone(80,.12,.36,'triangle',.08,36);tone(48,.28,.4,'square',.07);}
+ boom:()=>{tone(150,0,.2,'square',.1,48);tone(80,.12,.36,'triangle',.08,36);tone(48,.28,.4,'square',.07);},
+ pour:()=>{tone(520,0,.08,'triangle',.05,280);tone(240,.1,.16,'triangle',.04);}
 };
 document.addEventListener('touchstart',()=>{actx();},{once:true,passive:true});
 
@@ -962,11 +1055,20 @@ const LEVELS=[
   desc:'Long multiplication, fractions, decimals, percentages and money. Pick easy, medium or hard. A bomb is ticking',
   topics:{multiply:2,shortdiv:1,fractions:3,decimals:2,percent:2,money:2}},
  {key:'m4',subject:'maths',mode:'quiz',tycoon:false,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
-  desc:'Area, perimeter, volume, angles, shapes, coordinates, time, measures, tables and graphs',
+  desc:'Hold a potion and pour it into the right cauldron. A wrong pour explodes and sends you back to question 1. Area, perimeter, volume, angles, shapes, coordinates, time, measures, tables and graphs',
   topics:{area:2,volume:1,angles:1,shapes:1,coords:1,time:1,measures:1,stats:2,scaling:1}},
  {key:'m5',subject:'maths',mode:'quiz',tycoon:false,cls:'l5',name:'BOSS BATTLE',tag:'Boss level',bonus:5,diffs:['hard','hard','medium'],
   desc:'Hard mix: big numbers, fractions, measures, graphs, scaling and tricky word problems',
   topics:{addsub:1,rounding:1,fractions:1,percent:1,multiply:1,area:1,word:2,stats:1,time:1,negative:1,measures:1,scaling:1}},
+ {key:'m6',subject:'maths',mode:'parkour',tycoon:false,cls:'l6',name:'Block Parkour',tag:'Parkour',bonus:2,diffs:['easy'],
+  desc:'Jump the obby, then answer five questions. Stages get harder. Save your progress and resume later',
+  topics:{addsub:2,times:2,rounding:1,placevalue:1,money:1,negative:1,x10:1}},
+ {key:'m7',subject:'maths',mode:'flappy',tycoon:false,cls:'l7',name:'Flappy Flight',tag:'Flappy',bonus:0,diffs:['easy'],
+  desc:'Flap through the pipes. Type the answer before you reach the gap, or you lose',
+  topics:{addsub:2,times:2,division:1,x10:1,rounding:1,negative:1,money:1}},
+ {key:'m8',subject:'maths',mode:'treasure',tycoon:false,cls:'l8',name:'Treasure Hunt',tag:'Treasure',bonus:3,diffs:['easy','medium','hard'],
+  desc:'The question is at the top. Find the chest with the right answer. A wrong chest is a dud',
+  topics:{addsub:2,times:2,fractions:1,money:1,placevalue:1,rounding:1,negative:1}},
  {key:'s1',subject:'science',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
   desc:'Slice the right science answer. Easy drops fast, hard drops slowly so you can think.',
   topics:{materials:2,space:2,forces:2,living:2,humans:2}},
@@ -1069,7 +1171,7 @@ function floatText(el,txt){if(!canAnim||!el)return;const fx=$('#fx');const s=cen
 function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','#facc15','#22c55e','#3b82f6','#a855f7','#f97316'];for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti';c.style.background=pick(cols);fx.appendChild(c);
  const x=Math.random()*innerWidth;c.animate([{transform:`translate(${x}px,-30px) rotate(0deg)`},{transform:`translate(${x+R(-120,120)}px,${innerHeight+40}px) rotate(${R(180,720)}deg)`}],{duration:R(1400,2600),delay:R(0,400),easing:'cubic-bezier(.3,.6,.6,1)',fill:'both'}).onfinish=()=>c.remove();}}
 
-const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium';
+const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,PK=null,FL=null;
 const MM_SECS={easy:90,medium:60,hard:30};
 const MM_CLEAR={easy:15,medium:30,hard:45};
 const MM_MIX={easy:['easy','easy','easy','medium'],medium:['medium','medium','hard'],hard:['hard','hard','medium']};
@@ -1083,10 +1185,12 @@ function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();c
  if(!Q.half){const left=lim-el;if(left<=0){beginHalf();return;}b.style.transform=`scaleX(${Math.max(0,left)/lim})`;s.textContent=Math.ceil(left)+'s';return;}
  const left=GRACE-(el-lim);if(left<=0){stopTimer();timeUp();return;}b.style.transform=`scaleX(${Math.max(0,left)/GRACE})`;s.textContent=Math.ceil(left)+'s';}
 function startClock(){stopTimer();timer=setInterval(paintClock,100);}
-function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar');const b=document.querySelector('.roundbar');if(b)b.remove();}
+function stopParkourLoop(){if(pkRAF){cancelAnimationFrame(pkRAF);pkRAF=0;}}
+function stopFlappyLoop(){if(flapRAF){cancelAnimationFrame(flapRAF);flapRAF=0;}}
+function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
 function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
 let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='';
-function showStart(){stopBomb();stopTimer();clearAuto();stopFall();clearChrome();Q=null;header();
+function showStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;header();
  if(subjectTab==='duel'){loadDuelPick();renderDuelHome();startMsg='';return;}
  const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
@@ -1137,12 +1241,15 @@ function beginMastermind(diff){if(!MM_SECS[diff])diff='medium';mmPick=diff;const
  newRound(L,diff);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
 function newRound(L,bombDiff){stopBomb();let src=L,bomb=null;
  if(L.key==='m3'){const d=MM_SECS[bombDiff]?bombDiff:(MM_SECS[mmPick]?mmPick:'medium');mmPick=d;src=Object.assign({},L,{diffs:MM_MIX[d].slice()});bomb={diff:d,limit:MM_SECS[d],t0:performance.now(),dead:false,shown:null,half:0};}
- Q={L,qs:buildRound(src),i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb,finishing:false};
+ Q={L,qs:buildRound(src),i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb,finishing:false,potion:L.key==='m4',paid:L.key==='m4'?{}:null};
  if(bomb)startBomb();}
 function startRound(key){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
  const L=LEVELS.find(l=>l.key===key);if(!L)return;
  if(inp)inp.blur();setPlayer(nm);subjectTab=L.subject==='science'?'science':'maths';
  if(L.key==='m3'){showMmPick();return;}
+ if(L.key==='m6'){openParkour();return;}
+ if(L.key==='m7'){flappyStart();return;}
+ if(L.key==='m8'){treasureStart();return;}
  newRound(L);if(!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
 function roundQuestionPay(){return Q.earn.easy+Q.earn.medium+Q.earn.hard;}
 function pipClass(k){if(k===Q.i)return 'cur';if(k>Q.i)return '';if(Q.res[k]===true)return 'ok';if(Q.res[k]==='pass')return 'pass';return 'no';}
@@ -1165,6 +1272,8 @@ function ninjaOptions(q){if(q.type==='mc')return q.choices.slice();
 const NINJA_GUY=`<svg class="ninjaguy" viewBox="0 0 90 120" aria-hidden="true"><rect x="22" y="10" width="46" height="40" rx="8" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="28" y="18" width="34" height="28" rx="4" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="26" y="18" width="38" height="9" fill="#ef4444" stroke="#14142b" stroke-width="2"/><polygon points="64,18 84,10 64,28" fill="#ef4444" stroke="#14142b" stroke-width="2"/><rect x="36" y="30" width="7" height="7" fill="#14142b"/><rect x="50" y="30" width="7" height="7" fill="#14142b"/><path d="M38 40 Q45 46 54 40" fill="none" stroke="#14142b" stroke-width="3" stroke-linecap="round"/><rect x="8" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="66" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="52" width="42" height="34" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="74" width="42" height="7" fill="#ef4444"/><rect x="26" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="48" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><g transform="rotate(-28 78 70)"><rect x="74" y="40" width="7" height="36" rx="1" fill="#e5e7eb" stroke="#14142b" stroke-width="2"/><rect x="70" y="70" width="15" height="6" fill="#facc15" stroke="#14142b" stroke-width="2"/></g></svg>`;
 function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.half=false;Q.elapsed=0;Q.paused=false;Q.limit=isNinja()?ninjaLimit(q.diff):LIMIT;window.scrollTo(0,0);
  if(isNinja()){showNinja(q);return;}
+ if(Q.potion||(Q.L&&Q.L.key==='m4')){showPotion(q);return;}
+ if(Q.treasure){showTreasure();return;}
  app.innerHTML=`${qTop()}
  ${Q.bomb?bombHTML():''}
  ${isTycoon()?houseBar(player.house.pts):''}
@@ -1223,7 +1332,11 @@ function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.
  const givenText=kind==='timeout'?'timed out':kind==='pass'?'passed':kind==='fell'?'fell off':kind==='late'?'late':plain(given);
  player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:givenText||'wrong',ans:shownAns(q)});
  if(player.mistakes.length>400)player.mistakes.length=400;}
-function passQuestion(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{pass:true});return;}const q=Q.qs[Q.i];
+function passQuestion(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{pass:true});return;}
+ if(FL&&FL.alive){flapPass();return;}
+ if(Q.potion){potionPass();return;}
+ if(Q.treasure){treasurePass();return;}
+ const q=Q.qs[Q.i];
  Q.locked=true;Q.streak=0;Q.res[Q.i]='pass';stopTimer();stopFall();logAttempt(q,'pass');save();sfx.click();
  const btn=document.querySelector('.helpbtn');if(btn){btn.disabled=true;btn.textContent='Passed – no Robux this time';}
  const p=$('#help');if(p){p.innerHTML=helpHTML(q);p.classList.remove('hidden');}
@@ -1249,14 +1362,19 @@ function keyIn(k){if(!Q||Q.locked)return;const q=Q.qs[Q.i];if(q.type!=='num')ret
  else if(k==='.'){if(!Q.input.includes('.'))Q.input+=(Q.input===''||Q.input==='-'?'0':'')+'.';}
  else if(Q.input.replace(/[-.]/g,'').length<9)Q.input+=k;
  sfx.click();const dv=$('#dv');if(dv)dv.textContent=Q.input.replace('-','−');}
-function timeUp(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{timeout:true});return;}answer(null,null,{timeout:true});}
-function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;const secs=timeUsed();stopTimer();stopFall();
- let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
+function timeUp(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{timeout:true});return;}
+ if(Q.potion){potionTimeUp();return;}
+ if(Q.treasure){Q.walk=(Q.walk||0)+1;Q.walking=false;treasureTimeUp();return;}
+ answer(null,null,{timeout:true});}
+function applyGrade(q,ok,opts){opts=opts||{};
+ if(Q.paid&&Q.paid[Q.i]!=null&&ok){Q.res[Q.i]=true;return {ok:true,replay:true,gained:0,bon:['Already in your bank'],built:null,late:false};}
+ const secs=timeUsed();
  const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
  const bon=[];let gained=0;let built=null;
  const late=!!(ok&&Q.half);
-  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak,Q.streak);
-  gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;player.total+=gained;
+ if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best||0,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);
+  gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;player.total+=gained;
+  if(Q.paid)Q.paid[Q.i]=gained;
   if(q.diff==='hard'&&player.duel){player.duel.hardRight=(player.duel.hardRight||0)+1;grantBadges();}
   if(isTycoon()){const before=houseProgress(player.house.pts);player.house.pts+=gained;const after=houseProgress(player.house.pts);
    if(after.built.length>before.built.length)built=after.built[after.built.length-1];
@@ -1265,7 +1383,14 @@ function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[
   if(!late&&secs<=10)bon.push('⚡ speed star');
   if(Q.streak>=3)bon.push('🔥 streak '+Q.streak);}
  else Q.streak=0;
- Q.res[Q.i]=ok;logAttempt(q,ok?(late?'late':'correct'):opts.timeout?'timeout':opts.fell?'fell':'wrong',opts.given!=null?opts.given:val);save();
+ Q.res[Q.i]=ok;
+ const kind=ok?(late?'late':'correct'):opts.timeout?'timeout':opts.fell?'fell':'wrong';
+ logAttempt(q,kind,opts.given!=null?opts.given:opts.val);save();
+ return {ok,late,gained,bon,built,replay:false};}
+function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;stopTimer();stopFall();
+ let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
+ const g=applyGrade(q,ok,{timeout:opts.timeout,fell:opts.fell,given:opts.given,val:val});
+ const late=g.late,gained=g.gained,bon=g.bon,built=g.built;
  if(q.type==='mc')document.querySelectorAll('.choice').forEach(b=>{const c=q.choices[+b.dataset.k];if(c===q.ans)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim');});
  const ansHtml=q.type==='num'?`${q.prefix||''}${q.prefix==='S$'?(+q.ans).toFixed(2):fmt(q.ans)}${q.suffix?' '+q.suffix:''}`:q.ans;
  const fb=document.createElement('div');fb.className='fb '+(ok?'good':'bad');fb.id='fb';
@@ -1299,12 +1424,16 @@ function bombExplode(){if(!Q||!Q.bomb||Q.bomb.dead||Q.finishing)return;
   <div class="row" style="justify-content:center;margin-top:12px"><button class="btn red" data-act="again" data-k="m3" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button></div></div>`;
  showRoundBar(`<button class="btn red" data-act="again" data-k="m3" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button>`);
  Q=null;}
-function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;Q.finishing=true;stopTimer();clearAuto();stopFall();stopBomb();clearChrome();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon;const before=player.total-roundQuestionPay();
+function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
+ if(Q.parkour){parkourStageClear();return;}
+ if(Q.treasure){treasureClear();return;}
+ Q.finishing=true;stopTimer();clearAuto();stopFall();stopBomb();clearChrome();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon;const before=player.total-roundQuestionPay();
  const clearBonus=Q.bomb?(MM_CLEAR[Q.bomb.diff]||0):0;const clearName=Q.bomb?DNAME[Q.bomb.diff]:'';
  const rb=L.bonus,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect+clearBonus;player.rounds++;
  const earned=roundQuestionPay()+rb+perfect+clearBonus;
  player.history.unshift({d:new Date().toISOString(),lvl:L.tag+': '+L.name+(Q.bomb?' · '+clearName:''),score,of:Q.qs.length,earned});if(player.history.length>200)player.history.length=200;
  const newM=MILESTONES.filter(m=>player.total>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
+ if(Q.bomb&&Q.bomb.diff==='hard'){if(!player.mastermind)player.mastermind={hardClear:false};player.mastermind.hardClear=true;}
  const oldT=titleFor(before),newT=titleFor(player.total);save();header();window.scrollTo(0,0);
  const rows=['easy','medium','hard'].filter(d=>Q.counts[d]).map(d=>`<tr><td>${DNAME[d]} questions (${Q.counts[d]})</td><td class="r">+${fmt(Q.earn[d])}</td></tr>`).join('');
  const h0=houseProgress(Q.houseAtStart),h1=houseProgress(player.house.pts);const grew=h1.built.slice(h0.built.length);
@@ -1329,11 +1458,12 @@ function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;Q.finishing=t
  const tot=document.querySelector('.tot');if(tot)coinBurst(tot,6);
  if(newM.length||newT!==oldT||h1.done){setTimeout(sfx.unlock,300);confetti();}else{sfx.fanfare();if(score>=8)confetti();}
  showRoundBar(`${again}<button class="btn" data-act="home">Menu</button>`);
+ checkAchievements();
  Q=null;}
 function nextMilestoneHtml(){const nx=MILESTONES.find(m=>player.total<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>player.total>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((player.total-lo)/(nx.at-lo)*100));
  return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ (${fmt(nx.at-player.total)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
 function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
-function leaveRound(){stopBomb();stopTimer();clearAuto();stopFall();clearChrome();Q=null;}
+function leaveRound(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;}
 function showHouse(){if(!needPlayer())return;leaveRound();header();const st=houseProgress(player.house.pts);
  app.innerHTML=`<div class="housepage"><div class="card"><h2 style="margin-bottom:8px">🏠 ${esc(player.name)}'s house</h2>
   ${houseSVG(player.house.pts)}
@@ -1357,6 +1487,9 @@ function showRewards(){if(!needPlayer())return;leaveRound();header();const p=pla
  <div class="card"><h2>🏅 Badges</h2><p class="muted" style="margin-top:-4px">Earn Robux points to unlock gear. The house uses the same 1 / 2 / 3 bricks, saved separately so round bonuses do not skip a build.</p>
   <div class="badges">${MILESTONES.map(m=>{const got=p.total>=m.at;return `<div class="badge ${got?'':'locked'}">${avatar({hat:m.hats[0]||'none',shirt:m.shirts[0]||'green'},62)}<div class="amt">${COIN}${fmt(m.at)}</div><div class="bn">${m.name}</div><div class="bs">${got?'Unlocked!':fmt(m.at-p.total)+' to go'}</div></div>`;}).join('')}</div>
   ${nextMilestoneHtml()}
+  <h3 style="margin-top:14px" id="achhead">Achievements</h3>
+  <p class="muted" style="margin-top:-4px">These unlock as you play. Locked ones show what to do next.</p>
+  <div class="achgrid" id="achievements">${achievementHTML()}</div>
   <h3 style="margin-top:14px">Hats & gear</h3><div class="opts">${Object.keys(HATS).map(hk=>{const ok=u.hats.includes(hk);return `<button class="opt ${p.av.hat===hk?'sel':''} ${ok?'':'locked'}" data-act="hat" data-h="${hk}" ${ok?'':'disabled'}>${avatar({hat:hk,shirt:p.av.shirt},70)}<div>${HATS[hk]}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
   <h3 style="margin-top:14px">Shirt colours</h3><div class="opts">${Object.keys(SHIRTS).map(sk=>{const ok=u.shirts.includes(sk);const bg=SHIRTS[sk]==='rainbow'?'linear-gradient(#ef4444,#facc15,#22c55e,#3b82f6,#a855f7)':SHIRTS[sk];return `<button class="opt ${p.av.shirt===sk?'sel':''} ${ok?'':'locked'}" data-act="shirt" data-s="${sk}" ${ok?'':'disabled'}><div class="sw" style="background:${bg}"></div><div>${sk}</div>${ok?'':'<span class="lock">🔒</span>'}</button>`;}).join('')}</div>
  </div></div>`;}
@@ -1389,7 +1522,7 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes, late answers or bomb losses yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. After the timer, a right answer is worth half and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. After the timer, a right answer is worth half and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt and the potion lab log the same way. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
  <h3>Topics, weakest first</h3>
  <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt. Late answers count as correct. Passes, wrong answers and timeouts are included in the attempts.</p>
  ${table}
@@ -1442,12 +1575,29 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'reset':confirmReset();break;
   case 'cancelreset':closeModal();break;
   case 'doreset':{const k=player.name.trim().toLowerCase();store.players[k]=newPlayer(player.name);player=store.players[k];save();closeModal();showBank();break;}
+  case 'pk':break;
+  case 'pkcont':parkourStart((player.parkour&&player.parkour.stage)||1);break;
+  case 'pkback':case 'pksave':sfx.coin();showStart();break;
+  case 'pkresume':parkourStart((player.parkour&&player.parkour.stage)||1);break;
+  case 'pkfresh':if(player.parkour)player.parkour.stage=1;save();parkourStart(1);break;
+  case 'flap':flap();break;
+  case 'fkey':flapKeyIn(el.dataset.k);break;
+  case 'flapagain':flappyStart();break;
+  case 'pour':potionPour(+el.dataset.k);break;
+  case 'chest':treasureGo(+el.dataset.k);break;
+  case 'thunt':treasureStart();break;
+  case 'achclose':achClose();break;
  }});
 document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}if(e.key==='Enter'&&t.id==='psum'){e.preventDefault();const b=document.querySelector('[data-act="parentcheck"]');if(b)b.click();}return;}
- if(!Q)return;const q=Q.qs[Q.i];
+ if(PK&&PK.phase==='run'){parkourKey(e,true);return;}
+ if(FL&&FL.alive){flapKey(e);return;}
+ if(!Q||!Q.qs)return;const q=Q.qs[Q.i];if(!q)return;
+ if(Q.potion){const k=+e.key;if(k>=1&&k<=4){const b=document.querySelector(`.cauldron[data-k="${k-1}"]`);if(b)b.click();}return;}
+ if(Q.treasure){const k=+e.key;if(k>=1&&k<=4){const b=document.querySelector(`.chest[data-k="${k-1}"]`);if(b)b.click();}return;}
  if(Q.locked){if(e.key==='Enter'||e.key===' '){e.preventDefault();if(Q.duel){const b=document.querySelector('.roundbar [data-act]');if(b)b.click();}else nextQ();}return;}
  if(q.type==='mc'){const k=+e.key;if(k>=1&&k<=q.choices.length){const b=document.querySelector(`.choice[data-k="${k-1}"]`);if(b)b.click();}return;}
  if(/^[0-9]$/.test(e.key))keyIn(e.key);else if(e.key==='Backspace'){e.preventDefault();keyIn('del');}else if(e.key==='-')keyIn('-');else if(e.key==='.')keyIn('.');else if(e.key==='Enter')keyIn('ok');});
+document.addEventListener('keyup',e=>{if(PK&&PK.phase==='run')parkourKey(e,false);});
 
 const DUEL_DMG={easy:20,medium:30,hard:40};
 const WIN_BONUS=5;
@@ -1696,7 +1846,8 @@ function duelGG(){if(!Q||!Q.duel||Q.phase==='gg')return;Q.phase='gg';stopTimer()
   ${newM.map(m=>`<div class="ggear">Badge unlocked: ${esc(m.name)}</div>`).join('')}
  </div>`;
  if(won){sfx.fanfare();confetti();}else sfx.wrong();
- showRoundBar('<button class="btn green" data-act="duelagain">Next match</button><button class="btn" data-act="home">Menu</button>');}
+ showRoundBar('<button class="btn green" data-act="duelagain">Next match</button><button class="btn" data-act="home">Menu</button>');
+ checkAchievements();}
 function shopCard(kind,item){const d=player.duel;
  const owned=kind==='finisher'?d.finishers.indexOf(item.id)>=0:kind==='gear'?d.gear.indexOf(item.id)>=0:d.owned.indexOf(item.id)>=0;
  const eq=kind==='finisher'?d.finisher===item.id:kind==='gear'?d.gearOn.indexOf(item.id)>=0:d.skin===item.id;
@@ -1727,6 +1878,305 @@ function duelBuy(kind,id){if(!player)return;tidyGear();const d=player.duel;
  if(owned.indexOf(id)>=0){if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='Equipped '+item.name+'.';save();sfx.click();openDuelShop();return;}
  if(player.total+1e-9<item.cost){shopMsg='You need '+fmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
  player.total=clean(player.total-item.cost);owned.push(id);if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='You bought '+item.name+'.';save();header();sfx.coin();openDuelShop();}
+
+const GUY_W=56,GUY_H=74,PK_WORLD=420;
+const PARKOUR_GUY=`<svg viewBox="0 0 44 58" width="44" height="58" aria-hidden="true"><rect x="10" y="2" width="22" height="18" rx="3" fill="#f6c744" stroke="#14142b" stroke-width="2"/><rect x="8" y="4" width="26" height="5" fill="#ef4444"/><rect x="14" y="9" width="4" height="4" fill="#14142b"/><rect x="24" y="9" width="4" height="4" fill="#14142b"/><rect x="2" y="22" width="10" height="16" rx="2" fill="#f6c744" stroke="#14142b" stroke-width="2"/><rect x="14" y="20" width="20" height="18" rx="2" fill="#2563eb" stroke="#14142b" stroke-width="2"/><rect x="12" y="40" width="9" height="16" fill="#1e3a8a" stroke="#14142b" stroke-width="2"/><rect x="24" y="40" width="9" height="16" fill="#1e3a8a" stroke="#14142b" stroke-width="2"/></svg>`;
+const FLAP_BIRD=`<svg viewBox="0 0 64 48" width="54" height="42" aria-hidden="true"><rect x="4" y="12" width="36" height="26" rx="6" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="8" y="16" width="20" height="14" fill="#f6c744" stroke="#14142b" stroke-width="2"/><rect x="6" y="12" width="26" height="6" fill="#ef4444"/><rect x="16" y="20" width="5" height="5" fill="#14142b"/><polygon points="38,20 60,26 38,34" fill="#facc15" stroke="#14142b" stroke-width="3"/><rect x="0" y="22" width="14" height="8" rx="2" fill="#312e81" stroke="#14142b" stroke-width="2"/></svg>`;
+const FLASK=`<svg class="flask" viewBox="0 0 54 78" aria-hidden="true"><rect x="20" y="4" width="14" height="16" rx="2" fill="#e2e8f0" stroke="#14142b" stroke-width="3"/><path d="M16 20 L8 46 Q6 70 27 74 Q48 70 46 46 L38 20 Z" fill="#f3e8ff" stroke="#14142b" stroke-width="3"/><path d="M12 50 Q10 68 27 70 Q44 68 42 50 Q27 58 12 50 Z" fill="#a855f7" stroke="#6b21a8" stroke-width="2"/><rect x="17" y="0" width="20" height="7" rx="2" fill="#6b21a8" stroke="#14142b" stroke-width="2"/></svg>`;
+const CHEST_SVG=`<svg viewBox="0 0 80 54" width="72" height="48" aria-hidden="true"><rect x="6" y="20" width="68" height="28" rx="3" fill="#b45309" stroke="#14142b" stroke-width="3"/><path d="M8 24 Q40 2 72 24 V30 H8 Z" fill="#d97706" stroke="#14142b" stroke-width="3"/><rect x="34" y="26" width="12" height="10" rx="2" fill="#facc15" stroke="#14142b" stroke-width="2"/><circle cx="40" cy="31" r="2" fill="#14142b"/></svg>`;
+const BIG_CHEST=`<svg class="bigchest" viewBox="0 0 220 160" aria-hidden="true"><rect x="20" y="58" width="180" height="84" rx="6" fill="#b45309" stroke="#14142b" stroke-width="5"/><path d="M20 70 Q110 10 200 70 V88 H20 Z" fill="#d97706" stroke="#14142b" stroke-width="5"/><rect x="96" y="78" width="28" height="22" rx="3" fill="#facc15" stroke="#14142b" stroke-width="4"/><circle cx="70" cy="120" r="10" fill="#fde047" stroke="#14142b" stroke-width="3"/><circle cx="150" cy="118" r="8" fill="#facc15" stroke="#14142b" stroke-width="3"/><circle cx="118" cy="132" r="7" fill="#fef08a" stroke="#14142b" stroke-width="3"/></svg>`;
+const ACHS=[
+ {id:'park1',name:'First flag',detail:'Clear parkour stage 1',test:p=>p.parkour&&p.parkour.best>=1},
+ {id:'park5',name:'Parkour stage 5',detail:'Clear parkour stage 5',test:p=>p.parkour&&p.parkour.best>=5},
+ {id:'park10',name:'Parkour stage 10',detail:'Clear parkour stage 10',test:p=>p.parkour&&p.parkour.best>=10},
+ {id:'flap5',name:'First flights',detail:'Score 5 in Flappy Flight',test:p=>p.flappy&&p.flappy.best>=5},
+ {id:'flap10',name:'Flappy score 10',detail:'Score 10 in Flappy Flight',test:p=>p.flappy&&p.flappy.best>=10},
+ {id:'flap20',name:'Flappy score 20',detail:'Score 20 in Flappy Flight',test:p=>p.flappy&&p.flappy.best>=20},
+ {id:'treasure1',name:'First treasure',detail:'Find 1 correct chest',test:p=>p.treasure&&p.treasure.found>=1},
+ {id:'treasure5',name:'Five treasures',detail:'Find 5 correct chests',test:p=>p.treasure&&p.treasure.found>=5},
+ {id:'treasure10',name:'10 treasures',detail:'Find 10 correct chests',test:p=>p.treasure&&p.treasure.found>=10},
+ {id:'potion1',name:'First potion',detail:'Pour 1 potion correctly',test:p=>p.potion&&p.potion.clean>=1},
+ {id:'potion10',name:'10 clean potions',detail:'Pour 10 potions in a row with no explosion',test:p=>p.potion&&p.potion.clean>=10},
+ {id:'bombhard',name:'Hard bomb beaten',detail:'Finish Mixed Mastermind on hard before the bomb',test:p=>p.mastermind&&p.mastermind.hardClear},
+ {id:'streak10',name:'Streak of 10',detail:'Get 10 correct answers in a row',test:p=>(p.bestStreak||0)>=10},
+ {id:'rounds10',name:'10 rounds',detail:'Finish 10 rounds',test:p=>(p.rounds||0)>=10},
+ {id:'correct50',name:'50 correct',detail:'Answer 50 questions correctly',test:p=>(p.correct||0)>=50},
+ {id:'robux30',name:'30 Robux',detail:'Have 30 R$ in the bank',test:p=>(p.total||0)>=30}
+];
+function achievementHTML(){const got=player&&player.achs||[];return ACHS.map(a=>{const on=got.indexOf(a.id)>=0;return `<div class="ach ${on?'on':'off'}"><div><b>${on?'🏅':'🔒'} ${esc(a.name)}</b><span>${esc(a.detail)}${on?' · Unlocked!':''}</span></div></div>`;}).join('');}
+function checkAchievements(){if(!player)return [];if(!Array.isArray(player.achs))player.achs=[];const fresh=[];
+ ACHS.forEach(a=>{if(player.achs.indexOf(a.id)>=0)return;let ok=false;try{ok=!!a.test(player);}catch(err){ok=false;}if(ok){player.achs.push(a.id);fresh.push(a);}});
+ if(!fresh.length)return [];save();
+ if(FL&&FL.alive)FL.paused=true;
+ if(timer&&Q&&!Q.paused){Q.elapsed=timeUsed();Q.paused=true;Q._achPause=true;}
+ const m=$('#modal');if(m){m.classList.remove('hidden');m.innerHTML=`<div class="card"><h2>Achievement unlocked!</h2>${fresh.map(a=>`<div class="unlock"><div class="u"><b>${esc(a.name)}</b><br><span class="muted">${esc(a.detail)}</span></div></div>`).join('')}<button class="btn green" type="button" data-act="achclose" style="margin-top:8px">Nice!</button></div>`;}
+ sfx.unlock();return fresh;}
+function achClose(){closeModal();if(FL)FL.paused=false;if(Q&&Q._achPause){Q._achPause=false;Q.paused=false;Q.t0=performance.now();}}
+function buildFixed(L,diffs){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);const qs=[],seen=new Set();
+ for(const d of diffs){let q=null;for(let i=0;i<40&&!q;i++){const made=make(pick(bag),d);if(made&&!seen.has(made.text)){seen.add(made.text);q=made;}}if(q)qs.push(q);}return qs;}
+function parkourQuestionDiffs(stage){if(stage<=1)return ['easy','easy','easy','easy','easy'];if(stage===2)return ['medium','medium','medium','medium','medium'];if(stage===3)return ['hard','hard','hard','hard','hard'];return ['hard','hard','medium','hard','hard'];}
+function flappyDiff(score){return score<3?'easy':score<7?'medium':'hard';}
+function parkourCourse(stage){stage=Math.max(1,stage|0);const n=stage<=1?4:Math.min(4+stage,9);const gap=Math.min(72+stage*8,140);const step=stage<=1?0:Math.min(16+(stage-1)*10,60);
+ const plats=[];let x=0;for(let i=0;i<n;i++){const w=i===0?300:(i===n-1?240:170);const y=328-((i%2)?step:0);plats.push({x,y,w,h:36});x+=w+(i===n-1?0:(i===0?96:gap));}
+ const last=plats[plats.length-1];return {plats,flagX:last.x+36,worldW:last.x+last.w+30,gap,stage};}
+function pkHold(k,on){if(!PK||PK.phase!=='run')return;PK.keys[k]=!!on;}
+function parkourKey(e,down){let k=null;if(e.code==='ArrowLeft'||e.code==='KeyA')k='l';else if(e.code==='ArrowRight'||e.code==='KeyD')k='r';else if(e.code==='ArrowUp'||e.code==='Space'||e.code==='KeyW')k='j';if(!k)return;e.preventDefault();pkHold(k,down);}
+function bindParkourPad(){document.querySelectorAll('[data-act="pk"]').forEach(btn=>{const k=btn.dataset.k==='l'?'l':btn.dataset.k==='r'?'r':'j';
+ const down=ev=>{ev.preventDefault();pkHold(k,true);};const up=()=>pkHold(k,false);
+ btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointercancel',up);btn.addEventListener('pointerleave',up);});}
+function parkourDraw(){const view=$('#pkview'),world=$('#pkworld'),guy=$('#pkguy');if(!view||!world||!guy||!PK)return;
+ const vh=view.clientHeight||300,scale=vh/PK_WORLD,viewW=view.clientWidth||600;
+ const camMax=Math.max(0,PK.course.worldW-viewW/scale);
+ const cam=Math.max(0,Math.min(PK.x-120,camMax));
+ world.style.width=PK.course.worldW+'px';world.style.height=PK_WORLD+'px';
+ world.style.transformOrigin='0 0';world.style.transform=`translateX(${-cam*scale}px) scale(${scale})`;
+ guy.style.left=PK.x+'px';guy.style.top=PK.y+'px';}
+function parkourLoop(now){if(!PK||PK.phase!=='run')return;const dt=Math.min(0.032,(now-(PK.then||now))/1000);PK.then=now;
+ const speed=260;PK.vx=(PK.keys.l?-speed:0)+(PK.keys.r?speed:0);PK.vy=Math.min(980,PK.vy+1500*dt);PK.x+=PK.vx*dt;PK.y+=PK.vy*dt;if(PK.x<0)PK.x=0;
+ const plats=PK.course.plats;let landed=null;
+ if(PK.vy>=0){const feet=PK.y+GUY_H;for(let i=0;i<plats.length;i++){const p=plats[i];if(PK.x+GUY_W-4>p.x&&PK.x+6<p.x+p.w&&feet>=p.y&&feet<=p.y+24+PK.vy*dt){landed=p;break;}}}
+ const last=plats[plats.length-1];
+ if(landed){PK.y=landed.y-GUY_H;PK.vy=0;PK.safe=landed;
+  if(landed===last){PK.phase='ask';parkourQuestions();return;}
+  if(PK.keys.j)PK.vy=-700;}
+ if(PK.y>PK_WORLD+24){const s=PK.safe||plats[0];PK.x=s.x+16;PK.y=s.y-GUY_H;PK.vy=0;}
+ parkourDraw();pkRAF=requestAnimationFrame(parkourLoop);}
+function parkourStart(stage){stage=Math.max(1,stage|0);stopBomb();stopTimer();clearAuto();stopFall();stopFlappyLoop();FL=null;stopParkourLoop();clearChrome();
+ const course=parkourCourse(stage);const first=course.plats[0];
+ PK={phase:'run',stage,course,x:20,y:first.y-GUY_H,vx:0,vy:0,keys:{l:false,r:false,j:false},safe:first,then:0};
+ Q=null;header();
+ const blocks=course.plats.map((p,i)=>`<div class="pkblock" style="left:${p.x+18}px;top:${p.y-36}px"></div>`).join('');
+ app.innerHTML=`<div class="pkwrap"><div class="pkhud"><b>Stage ${stage}</b><span>Reach the flag</span></div>
+  <div class="pkview" id="pkview"><div class="pkworld" id="pkworld">${course.plats.map((p,i)=>`<div class="pkplat ${i%2?'alt':''}" style="left:${p.x}px;top:${p.y}px;width:${p.w}px;height:${p.h}px"></div>`).join('')}${blocks}<div class="pkflag" style="left:${course.flagX}px;top:${course.plats[course.plats.length-1].y-78}px"></div><div class="pkguy" id="pkguy">${PARKOUR_GUY}</div></div></div>
+  <div class="pkpad"><button class="btn blue" type="button" data-act="pk" data-k="l" aria-label="Left">◀</button><button class="btn green" type="button" data-act="pk" data-k="j" aria-label="Jump">Jump</button><button class="btn blue" type="button" data-act="pk" data-k="r" aria-label="Right">▶</button></div></div>`;
+ document.body.classList.add('play-on','parkour-on');bindParkourPad();parkourDraw();pkRAF=requestAnimationFrame(parkourLoop);}
+function openParkour(){stopBomb();stopTimer();clearAuto();stopFall();stopFlappyLoop();FL=null;stopParkourLoop();PK=null;
+ const pk=player.parkour||{stage:1,best:0};
+ if((pk.stage||1)<=1){parkourStart(1);return;}
+ clearChrome();Q=null;header();
+ app.innerHTML=`<div class="card center" id="parkourgate" style="max-width:760px;margin:12px auto"><h2>Block Parkour</h2><p style="font-size:22px">Your progress is saved. Resume stage ${pk.stage}. Best stage cleared: ${pk.best||0}.</p>
+  <div class="stagebtns"><button class="btn green" type="button" data-act="pkresume">Resume stage ${pk.stage}</button><button class="btn" type="button" data-act="pkfresh">Start from stage 1</button><button class="btn grey" type="button" data-act="home">Menu</button></div></div>`;
+ showRoundBar(`<button class="btn green" type="button" data-act="pkresume">Resume stage ${pk.stage}</button><button class="btn" type="button" data-act="pkfresh">Start from stage 1</button><button class="btn grey" type="button" data-act="home">Menu</button>`);}
+function parkourQuestions(){const stage=PK?PK.stage:1;stopParkourLoop();PK=null;document.body.classList.remove('play-on','parkour-on');
+ const L=LEVELS.find(l=>l.key==='m6');const qs=buildFixed(L,parkourQuestionDiffs(stage));
+ if(qs.length<5){startMsg='Could not build the questions. Try the stage again.';showStart();return;}
+ Q={L,qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,parkour:true,stage};
+ header();sfx.coin();showQ();}
+function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();clearAuto();stopFall();stopParkourLoop();PK=null;clearChrome();
+ const L=Q.L,stage=Q.stage||1,score=Q.res.filter(r=>r===true).length,passed=Q.res.filter(r=>r==='pass').length;
+ const rb=L.bonus||0,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect;player.rounds++;
+ if(!player.parkour)player.parkour={stage:1,best:0};
+ player.parkour.best=Math.max(player.parkour.best||0,stage);player.parkour.stage=stage+1;
+ const earned=roundQuestionPay()+rb+perfect;
+ player.history.unshift({d:new Date().toISOString(),lvl:'Parkour stage '+stage,score,of:Q.qs.length,earned});
+ if(player.history.length>200)player.history.length=200;save();header();
+ const next=player.parkour.stage;
+ app.innerHTML=`<div class="card center" id="stagechoice" style="max-width:760px;margin:12px auto"><h2>Stage ${stage} complete!</h2><div class="score">${score}/${Q.qs.length}</div>
+  <p style="font-size:22px">Stage clear +${rb} R$${perfect?' · perfect +'+perfect+' R$':''}</p>
+  ${passed?`<p class="muted">${passed} passed · no Robux</p>`:''}
+  <p class="muted">Saved. Next is stage ${next}. Bank ${fmt(player.total)} R$.</p>
+  <div class="stagebtns" style="margin-top:12px"><button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button></div></div>`;
+ sfx.fanfare();checkAchievements();Q=null;}
+function numericQuestion(diff){const topics=['addsub','times','division','x10','rounding','negative','money'];
+ for(let i=0;i<40;i++){const q=make(pick(topics),diff);if(q&&q.type==='num')return q;}return make('addsub','easy');}
+function flap(){if(!FL||!FL.alive||FL.paused)return;FL.vy=-280;FL.flew=true;}
+function flapKeyIn(k){if(!FL||!FL.alive||FL.paused||!FL.q||FL.q.resolved)return;
+ if(k==='ok'){flapSubmit();return;}
+ if(k==='del')FL.input=FL.input.slice(0,-1);
+ else if(k==='-')FL.input=FL.input.startsWith('-')?FL.input.slice(1):'-'+FL.input;
+ else if(k==='.'){if(!FL.input.includes('.'))FL.input+=(FL.input===''||FL.input==='-'?'0':'')+'.';}
+ else if(String(FL.input).replace(/[-.]/g,'').length<9)FL.input+=k;
+ sfx.click();const dv=$('#dv');if(dv)dv.textContent=FL.input.replace('-','−');}
+function flapKey(e){if(e.code==='Space'){e.preventDefault();flap();return;}
+ if(/^[0-9]$/.test(e.key))flapKeyIn(e.key);
+ else if(e.key==='Backspace'){e.preventDefault();flapKeyIn('del');}
+ else if(e.key==='-')flapKeyIn('-');
+ else if(e.key==='.')flapKeyIn('.');
+ else if(e.key==='Enter'){e.preventDefault();flapKeyIn('ok');}}
+function flapSubmit(){if(!FL||!FL.q||FL.q.resolved)return;const raw=FL.input;
+ if(raw===''||raw==='-'||/^-?0?\.$/.test(raw)){sfx.wrong();return;}
+ const n=parseFloat(String(raw).replace(/−/g,'-'));const q=FL.q;
+ const ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;
+ if(!ok){flapCrash('wrong',raw);return;}
+ Q.half=(performance.now()-FL.qT)/1000>8;Q.qs=[q];Q.i=0;Q.locked=false;
+ const g=applyGrade(q,true,{val:raw,given:raw});
+ FL.earn=(FL.earn||0)+g.gained;q.resolved=true;q.safe=true;FL.score++;FL.input='';
+ if(FL.score>(player.flappy.best||0)){player.flappy.best=FL.score;save();}
+ const dv=$('#dv');if(dv)dv.textContent='';
+ const hs=$('#flapscore');if(hs)hs.textContent='Score '+FL.score+' · Best '+(player.flappy.best||0);
+ sfx.correct();checkAchievements();}
+function flapPass(){if(!FL||!FL.q||FL.q.resolved)return;const q=FL.q;Q.streak=0;Q.half=false;logAttempt(q,'pass');q.resolved=true;q.safe=true;q.passed=true;FL.passAt=performance.now();FL.input='';save();sfx.click();
+ const h=$('#flaphelp');if(h){h.innerHTML=helpHTML(q);h.classList.remove('hidden');}}
+function flapCrash(kind,given){if(!FL||FL.over)return;FL.over=true;FL.alive=false;stopFlappyLoop();
+ const q=FL.q;
+ if(q&&!q.resolved&&Q){Q.qs=[q];Q.i=0;Q.half=false;applyGrade(q,false,kind==='timeout'?{timeout:true,given:'timed out'}:{given:given});q.resolved=true;}
+ const score=FL.score||0;
+ if(score>(player.flappy.best||0))player.flappy.best=score;
+ player.rounds++;
+ player.history.unshift({d:new Date().toISOString(),lvl:'Flappy Flight',score,of:score,earned:FL.earn||0});
+ if(player.history.length>200)player.history.length=200;save();
+ const best=player.flappy.best||0;
+ clearChrome();FL=null;Q=null;header();
+ app.innerHTML=`<div class="card center" id="flapover" style="max-width:720px;margin:12px auto"><h2>${kind==='wrong'?'Wrong answer!':'Too late!'}</h2><div class="score">${score}</div><p style="font-size:22px">Best ${best}</p><p class="muted">${kind==='wrong'?'That was not the answer, so the flight is over.':'Type the answer before you reach the pipe.'}</p>
+  <div class="stagebtns"><button class="btn green" type="button" data-act="flapagain">Try again</button><button class="btn" type="button" data-act="home">Menu</button></div></div>`;
+ showRoundBar('<button class="btn green" type="button" data-act="flapagain">Try again</button><button class="btn" type="button" data-act="home">Menu</button>');
+ sfx.wrong();checkAchievements();}
+function flapSpawn(){if(!FL||!FL.alive)return;const diff=flappyDiff(FL.score);const q=numericQuestion(diff);if(!q){flapCrash('timeout');return;}
+ q.resolved=false;q.safe=false;FL.q=q;FL.qT=performance.now();FL.input='';Q.half=false;Q.qs=[q];Q.i=0;Q.locked=false;
+ const view=$('#flapview');const h=Math.max(320,view?view.clientHeight:0);const w=Math.max(320,view?view.clientWidth:0);
+ const gapH=Math.max(200,Math.round(h*0.48));
+ const slack=Math.max(0,h-gapH-24);const gapY=12+Math.round(Math.random()*slack);
+ const budget=Math.max(7,11-FL.score*0.3);const x=w+40;const speed=(x-164)/budget;
+ FL.pipes=[{x,w:78,gapY,gapH,speed,q}];
+ if(!FL.flew)FL.y=Math.max(8,Math.min((h||320)-60,gapY+gapH/2-20));
+ const top=$('#pipetop'),bot=$('#pipebot'),sign=$('#pipesign'),bird=$('#flapbird');
+ if(top){top.style.left=x+'px';top.style.top='0px';top.style.height=gapY+'px';}
+ if(bot){bot.style.left=x+'px';bot.style.top=(gapY+gapH)+'px';bot.style.height=Math.max(0,(h||320)-gapY-gapH)+'px';}
+ if(sign){sign.style.left=(x-70)+'px';sign.style.top=(gapY+6)+'px';sign.textContent=plain(q.text).slice(0,90);}
+ if(bird)bird.style.top=FL.y+'px';
+ const qt=$('#flapqtext');if(qt)qt.innerHTML=q.text;
+ const pill=$('#flappill');if(pill)pill.textContent=DNAME[q.diff]+' · '+q.reward+' R$';
+ const help=$('#flaphelp');if(help){help.classList.add('hidden');help.innerHTML='';}
+ const half=$('#halfslot');if(half)half.innerHTML='';
+ const dv=$('#dv');if(dv)dv.textContent='';
+ const hs=$('#flapscore');if(hs)hs.textContent='Score '+FL.score+' · Best '+(player.flappy.best||0);}
+function flapLoop(now){if(!FL||!FL.alive)return;
+ if(FL.paused){if(!FL.hold)FL.hold=now;flapRAF=requestAnimationFrame(flapLoop);return;}
+ if(FL.hold){if(FL.qT)FL.qT+=now-FL.hold;FL.hold=0;}
+ const dt=Math.min(0.032,(now-(FL.then||now))/1000);FL.then=now;
+ FL.vy=Math.min(420,FL.vy+680*dt);FL.y+=FL.vy*dt;
+ const view=$('#flapview');if(!view){flapRAF=requestAnimationFrame(flapLoop);return;}
+ const h=view.clientHeight||320;
+ if(FL.y<4){FL.y=4;FL.vy=30;}
+ if(FL.y>h-56){FL.y=h-56;FL.vy=-30;}
+ const bird=$('#flapbird');if(bird){bird.style.top=FL.y+'px';bird.style.transform=`rotate(${Math.max(-24,Math.min(55,FL.vy*0.07))}deg)`;}
+ const pipe=FL.pipes&&FL.pipes[0];
+ if(pipe&&!pipe.q.resolved&&FL.qT&&(now-FL.qT)>8000&&!Q.half){Q.half=true;const slot=$('#halfslot');if(slot&&!slot.firstChild)slot.innerHTML=`<div class="halfbanner">Time's up! Half points now</div>`;}
+ if(pipe){pipe.x-=pipe.speed*dt;const top=$('#pipetop'),bot=$('#pipebot'),sign=$('#pipesign');
+  if(top){top.style.left=pipe.x+'px';top.style.height=pipe.gapY+'px';}
+  if(bot){bot.style.left=pipe.x+'px';bot.style.top=(pipe.gapY+pipe.gapH)+'px';bot.style.height=Math.max(0,h-pipe.gapY-pipe.gapH)+'px';}
+  if(sign){sign.style.left=(pipe.x-70)+'px';sign.style.top=(pipe.gapY+8)+'px';}
+  const birdR=164;
+  if(!pipe.q.resolved&&pipe.x<birdR&&pipe.x+pipe.w>110){flapCrash('timeout');return;}
+  if(pipe.q.resolved&&pipe.x+pipe.w<100&&!(pipe.q.passed&&FL.passAt&&now-FL.passAt<2500)){flapSpawn();}}
+ flapRAF=requestAnimationFrame(flapLoop);}
+function flappyStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();PK=null;stopFlappyLoop();clearChrome();
+ const L=LEVELS.find(l=>l.key==='m7');
+ if(!player.flappy)player.flappy={best:0};
+ FL={y:120,vy:0,score:0,earn:0,alive:true,paused:false,over:false,flew:false,pipes:[],input:'',q:null,qT:0,then:0,hold:0};
+ Q={L,qs:[],i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},half:false,locked:false,flappy:true,elapsed:0,paused:false,t0:performance.now(),houseAtStart:player.house.pts,finishing:false,input:''};
+ header();
+ const keys=['7','8','9','del','4','5','6','-','1','2','3','ok','0','.'];
+ const pad=keys.map(k=>k==='ok'?`<button class="key go" type="button" data-act="fkey" data-k="ok" aria-label="Enter">✓</button>`:k==='del'?`<button class="key fn" type="button" data-act="fkey" data-k="del" aria-label="Delete">⌫</button>`:k==='-'?`<button class="key fn" type="button" data-act="fkey" data-k="-" aria-label="Minus">−</button>`:k==='.'?`<button class="key fn" type="button" data-act="fkey" data-k=".">.</button>`:`<button class="key" type="button" data-act="fkey" data-k="${k}" ${k==='0'?'style="grid-column:span 2"':''}>${k}</button>`).join('');
+ app.innerHTML=`<div class="flapwrap"><div class="flaphud"><b id="flapscore">Score 0 · Best ${player.flappy.best||0}</b><button class="btn green" type="button" data-act="flap" id="flapbtn" style="min-height:64px">Flap</button></div>
+  <div class="flapmain"><div class="flapview" id="flapview"><div class="flapbird" id="flapbird">${FLAP_BIRD}</div><div class="pipe" id="pipetop"></div><div class="pipe" id="pipebot"></div><div class="pipesign" id="pipesign">Type the answer</div><div class="flapground"></div></div>
+  <div class="flapside"><div class="flapqscroll"><div class="qnum"><span>Answer before the pipe</span><span class="dpill d-easy" id="flappill">Easy · 1 R$</span></div>
+   <div class="qtext" id="flapqtext"></div><div id="halfslot"></div>
+   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button><div id="flaphelp" class="helppanel hidden"></div>
+   <div class="disp" id="disp"><span id="dv"></span><span class="cur"></span></div></div>
+   <div class="pad flappad" id="flappad">${pad}</div></div></div></div>`;
+ document.body.classList.add('play-on','flappy-on');
+ const view=$('#flapview');view.addEventListener('pointerdown',ev=>{if(ev.target.closest('button'))return;ev.preventDefault();flap();});
+ flapSpawn();flapRAF=requestAnimationFrame(flapLoop);}
+function showPotion(q){document.body.classList.add('play-on','potion-on');
+ const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);
+ const labels=q.type==='mc'?q.choices.slice():ninjaOptions(q);
+ Q.potRight=right;Q.potOpts=labels;Q.potion=true;
+ app.innerHTML=`<div class="potwrap"><div class="card potq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$</span></div>
+  <div class="qtext ${q.long?'long':''}"><span class="qi">${q.text}</span></div>
+  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
+  <div id="help" class="helppanel hidden"></div><div id="halfslot"></div>
+  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div>
+  <div class="potnote" id="potnote">Pour the potion into the right answer. A wrong pour explodes and you go back to question 1. Robux you already earned stay.</div></div>
+  <div class="potmain"><div class="pothero" id="pothero">${avatar(player.av,130)}${FLASK}</div>
+  <div class="cauldrons" id="cauldrons">${labels.map((lab,i)=>`<button class="cauldron" type="button" data-act="pour" data-k="${i}"><span>${lab}</span><i class="liquid"></i><i class="bub"></i><i class="bub b2"></i></button>`).join('')}</div></div></div>`;
+ Q.t0=performance.now();startClock();}
+function potionPour(k){if(!Q||Q.locked||!Q.potion)return;const q=Q.qs[Q.i];const opt=Q.potOpts&&Q.potOpts[k];if(opt==null)return;
+ Q.locked=true;stopTimer();const el=document.querySelector(`.cauldron[data-k="${k}"]`);const hero=$('#pothero');
+ if(hero)hero.classList.add('pouring');if(el)el.classList.add('pouring');sfx.pour();
+ const ok=opt===Q.potRight;
+ Q.auto=setTimeout(()=>{if(!Q||!Q.potion)return;
+  if(ok){const g=applyGrade(q,true,{given:plain(opt),val:q.type==='num'?String(q.ans):q.ans});
+   if(el){el.classList.remove('pouring');el.classList.add('ok');}
+   if(!player.potion)player.potion={clean:0};player.potion.clean=(player.potion.clean||0)+1;save();
+   const note=$('#potnote');if(note)note.textContent=g.replay?'Already in your bank. Nice pour!':'It is bubbling! +'+fmt(g.gained)+' R$';
+   sfx.correct();if(!g.replay&&g.gained)coinBurst(el||hero,Math.max(1,Math.round(g.gained)));
+   checkAchievements();Q.auto=setTimeout(nextQ,1200);}
+  else {applyGrade(q,false,{given:plain(opt)});
+   if(el){el.classList.remove('pouring');el.classList.add('boom');el.insertAdjacentHTML('beforeend','<i class="blastmini"></i>');}
+   if(!player.potion)player.potion={clean:0};player.potion.clean=0;save();sfx.boom();
+   const note=$('#potnote');if(note)note.textContent='It exploded! Back to question 1. Your Robux stay.';
+   Q.auto=setTimeout(potionRestart,1200);}},700);}
+function potionRestart(){if(!Q||!Q.potion)return;Q.i=0;Q.res=[];Q.streak=0;Q.locked=false;Q.finishing=false;showQ();}
+function potionTimeUp(){if(!Q||!Q.potion)return;const q=Q.qs[Q.i];Q.locked=true;stopTimer();applyGrade(q,false,{timeout:true});
+ if(!player.potion)player.potion={clean:0};player.potion.clean=0;save();sfx.boom();
+ document.querySelectorAll('.cauldron').forEach(el=>{el.classList.add('boom');});
+ const note=$('#potnote');if(note)note.textContent="Time's up! The potion exploded. Back to question 1. Your Robux stay.";
+ Q.auto=setTimeout(potionRestart,1200);}
+function potionPass(){const q=Q.qs[Q.i];Q.locked=true;Q.streak=0;Q.res[Q.i]='pass';stopTimer();logAttempt(q,'pass');save();sfx.click();
+ const btn=document.querySelector('.helpbtn');if(btn){btn.disabled=true;btn.textContent='Passed – no Robux this time';}
+ const p=$('#help');if(p){p.innerHTML=helpHTML(q);p.classList.remove('hidden');}
+ const note=$('#potnote');if(note)note.textContent='Passed. The potion does not explode, and you get 0 R$.';
+ showRoundBar('<button class="btn purple" type="button" data-act="next">Next question ▶</button>');}
+function treasureChests(q){const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);const labels=q.type==='mc'?q.choices.slice():ninjaOptions(q);
+ const spots=shuf([{x:70,y:150},{x:390,y:80},{x:720,y:190},{x:160,y:430},{x:500,y:500},{x:820,y:400}]).slice(0,labels.length);
+ return labels.map((label,i)=>({label,right:label===right,x:spots[i].x,y:spots[i].y,opened:false}));}
+function treasureStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();
+ const L=LEVELS.find(l=>l.key==='m8');const hunt=(player.treasure&&player.treasure.hunts||0)+1;
+ const diffs=hunt<=1?['easy','easy','medium','medium','hard']:hunt===2?['medium','medium','hard','hard','hard']:['hard','hard','medium','hard','hard'];
+ const qs=buildFixed(L,diffs);
+ if(qs.length<5){startMsg='Could not build a hunt. Try again.';showStart();return;}
+ Q={L,qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,treasure:true,hunt,chestFor:-1,chests:null,walking:false,walk:0};
+ header();sfx.click();showQ();}
+function showTreasure(){const q=Q.qs[Q.i];document.body.classList.add('play-on','treasure-on');
+ if(Q.chestFor!==Q.i){Q.chests=treasureChests(q);Q.chestFor=Q.i;}
+ const chests=Q.chests.map((c,i)=>`<button class="chest ${c.opened?(c.right?'open good':'open dud'):''}" type="button" data-act="chest" data-k="${i}" style="left:${c.x}px;top:${c.y}px" ${c.opened?'disabled':''}>${CHEST_SVG}<div class="mark">${c.opened?(c.right?'Treasure!':'Empty'):'X marks the spot'}</div><div>${c.label}</div></button>`).join('');
+ app.innerHTML=`<div class="thwrap"><div class="card thq qcard"><div class="qnum"><span>Hunt question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$</span></div>
+  <div class="qtext ${q.long?'long':''}" id="thquestion"><span class="qi">${q.text}</span></div>
+  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
+  <div id="help" class="helppanel hidden"></div><div id="halfslot"></div>
+  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div>
+  <div class="potnote" id="thnote">Walk to a chest. The right answer is treasure. A wrong one is a dud.</div></div>
+  <div class="thmap" id="thmap"><div class="thworld" id="thworld">${chests}<div class="thguy" id="thguy" style="left:36px;top:620px">${avatar(player.av,96)}</div></div></div></div>`;
+ Q.t0=performance.now();Q.walking=false;startClock();}
+function treasureGo(k){if(!Q||Q.locked||Q.walking||!Q.treasure)return;const c=Q.chests&&Q.chests[k];if(!c||c.opened)return;
+ Q.walking=true;const id=++Q.walk;const guy=$('#thguy');if(guy){guy.style.left=c.x+'px';guy.style.top=(c.y-8)+'px';}
+ const btn=document.querySelector(`.chest[data-k="${k}"]`);if(btn&&btn.scrollIntoView)btn.scrollIntoView({block:'center',inline:'center'});
+ setTimeout(()=>{if(!Q||!Q.treasure||Q.walk!==id)return;treasureOpen(k);},520);}
+function treasureOpen(k){if(!Q||!Q.treasure)return;Q.walking=false;const c=Q.chests[k];if(!c||c.opened){Q.locked=false;return;}
+ const q=Q.qs[Q.i];c.opened=true;const btn=document.querySelector(`.chest[data-k="${k}"]`);
+ if(c.right){Q.locked=true;stopTimer();const g=applyGrade(q,true,{given:plain(c.label)});
+  if(!player.treasure)player.treasure={found:0,hunts:0};player.treasure.found=(player.treasure.found||0)+1;save();
+  if(btn){btn.classList.add('open','good');btn.disabled=true;const mark=btn.querySelector('.mark');if(mark)mark.textContent='Treasure!';}
+  const note=$('#thnote');if(note)note.textContent='Treasure! +'+fmt(g.gained)+' R$';
+  sfx.correct();coinBurst(btn,Math.max(1,Math.round(g.gained||1)));checkAchievements();
+  Q.auto=setTimeout(()=>{if(Q&&Q.treasure)nextQ();},1100);}
+ else {if(btn){btn.classList.add('open','dud');btn.disabled=true;const mark=btn.querySelector('.mark');if(mark)mark.textContent='Empty';}
+  const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;Q.streak=0;logAttempt(q,'wrong',plain(c.label));save();sfx.wrong();
+  const note=$('#thnote');if(note)note.textContent='Empty! That chest is a dud. Try another.';
+  Q.walking=false;Q.locked=false;}}
+function treasurePass(){const q=Q.qs[Q.i];Q.locked=true;Q.walking=false;Q.walk=(Q.walk||0)+1;Q.streak=0;Q.res[Q.i]='pass';stopTimer();logAttempt(q,'pass');save();sfx.click();
+ const btn=document.querySelector('.helpbtn');if(btn){btn.disabled=true;btn.textContent='Passed – no Robux this time';}
+ const p=$('#help');if(p){p.innerHTML=helpHTML(q);p.classList.remove('hidden');}
+ const note=$('#thnote');if(note)note.textContent='Passed. 0 R$ this time.';
+ showRoundBar('<button class="btn purple" type="button" data-act="next">Next question ▶</button>');}
+function treasureTimeUp(){if(!Q||!Q.treasure)return;const q=Q.qs[Q.i];Q.locked=true;Q.walking=false;stopTimer();applyGrade(q,false,{timeout:true});sfx.wrong();
+ const note=$('#thnote');if(note)note.textContent='Timed out. This treasure got away.';
+ Q.auto=setTimeout(()=>{if(Q&&Q.treasure)nextQ();},1100);}
+function treasureClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();clearAuto();stopBomb();clearChrome();
+ const L=Q.L,score=Q.res.filter(r=>r===true).length,passed=Q.res.filter(r=>r==='pass').length;
+ const rb=L.bonus||0,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect;player.rounds++;
+ if(!player.treasure)player.treasure={found:0,hunts:0};player.treasure.hunts=(player.treasure.hunts||0)+1;
+ const earned=roundQuestionPay()+rb+perfect;
+ player.history.unshift({d:new Date().toISOString(),lvl:'Treasure Hunt',score,of:Q.qs.length,earned});
+ if(player.history.length>200)player.history.length=200;save();header();
+ app.innerHTML=`<div class="card center" id="treasurechest" style="max-width:720px;margin:12px auto"><h2>Treasure chest!</h2>${BIG_CHEST}<div class="score">${score}/${Q.qs.length}</div>
+  <p style="font-size:22px">Hunt bonus +${rb} R$${perfect?' · full chest +'+perfect+' R$':''}</p>
+  ${passed?`<p class="muted">${passed} passed</p>`:''}
+  <p class="muted">Treasures found in all: ${player.treasure.found}. Bank ${fmt(player.total)} R$. The house does not build here.</p>
+  <div class="stagebtns"><button class="btn green" type="button" data-act="thunt">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button></div></div>`;
+ showRoundBar('<button class="btn green" type="button" data-act="thunt">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button>');
+ sfx.fanfare();if(score>=4)confetti();checkAchievements();Q=null;}
 
 function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',58:'LVIII',90:'XC',99:'XCIX',400:'CD',444:'CDXLIV',900:'CM',999:'CMXCIX',1000:'M'};
  for(const k in roman)if(toRoman(+k)!==roman[k])throw new Error('roman '+k+' '+toRoman(+k));
@@ -1767,9 +2217,21 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(!m3||MM_MIX.medium.join(',')!==m3.diffs.join(','))throw new Error('mm mix');
  if(MM_MIX.easy.indexOf('hard')>=0||MM_MIX.hard.indexOf('easy')>=0)throw new Error('mm band');
  if(!GEAR.some(g=>g.id==='shield')||!GEAR.some(g=>g.id==='armour')||!GEAR.some(g=>g.id==='pack')||!GEAR.some(g=>g.id==='boots'))throw new Error('gear');
- if(BADGES.length<5||currentRank(0).id!=='iron3'||currentRank(22).name!=='Gold III'||currentRank(999).id!=='legend')throw new Error('current rank');}
+ if(BADGES.length<5||currentRank(0).id!=='iron3'||currentRank(22).name!=='Gold III'||currentRank(999).id!=='legend')throw new Error('current rank');
+ const m4=LEVELS.find(l=>l.key==='m4');
+ if(!m4||m4.topics.area!==2||m4.topics.stats!==2||m4.diffs.join(',')!=='medium,medium,hard')throw new Error('m4');
+ if(!LEVELS.some(l=>l.key==='m6'&&l.mode==='parkour')||!LEVELS.some(l=>l.key==='m7'&&l.mode==='flappy')||!LEVELS.some(l=>l.key==='m8'&&l.mode==='treasure'))throw new Error('modes');
+ if(LEVELS.filter(l=>l.tycoon).length!==1)throw new Error('tycoon only');
+ const ids=ACHS.map(a=>a.id);['park5','flap10','flap20','treasure10','potion10','bombhard'].forEach(id=>{if(ids.indexOf(id)<0)throw new Error('ach '+id);});
+ const np=newPlayer('Self');if(np.parkour.stage!==1||np.flappy.best!==0||!Array.isArray(np.achs)||np.mastermind.hardClear!==false||np.potion.clean!==0)throw new Error('fresh modes');
+ const mig={name:'old',total:3,duel:freshDuel()};migrate(mig);if(!mig.parkour||mig.parkour.stage!==1||!mig.flappy||!Array.isArray(mig.achs)||!mig.mastermind)throw new Error('migrate modes');
+ if(parkourQuestionDiffs(1)[0]!=='easy'||parkourQuestionDiffs(2)[0]!=='medium'||parkourQuestionDiffs(3)[0]!=='hard')throw new Error('pk diff');
+ if(parkourQuestionDiffs(4).indexOf('medium')<0||parkourQuestionDiffs(4).indexOf('easy')>=0)throw new Error('pk mix');
+ if(flappyDiff(0)!=='easy'||flappyDiff(3)!=='medium'||flappyDiff(7)!=='hard')throw new Error('flap diff');
+ for(let s=1;s<=6;s++){const c=parkourCourse(s);if(c.plats.length<4||c.gap>150||c.flagX<=c.plats[0].x)throw new Error('course '+s);}
+ if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyDiff,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL};
 showStart();
 })();
 </script>
