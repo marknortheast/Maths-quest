@@ -378,14 +378,15 @@ body.has-roundbar.play-on #app{padding-bottom:8px}
 .pkwrap,.flapwrap,.thwrap,.potwrap{flex:1;min-height:0;display:flex;flex-direction:column;gap:8px}
 .pkhud,.flaphud{display:flex;justify-content:space-between;gap:8px;align-items:center;color:#fff;font-size:18px;text-shadow:0 2px 0 #000}
 .pkview,.flapview{position:relative;overflow:hidden;border:4px solid var(--ink);border-radius:14px;box-shadow:0 5px 0 var(--ink);touch-action:none}
-.pkview{flex:1;min-height:160px;background:linear-gradient(#38bdf8 0 62%,#86efac 62% 78%,#4ade80 78%)}
+.pkview{flex:1;min-height:160px;background:linear-gradient(#38bdf8,#bae6fd 78%)}
 .pkworld{position:absolute;left:0;top:0}
-.pkplat{position:absolute;background:#15803d;border:4px solid #14142b;border-radius:6px;box-shadow:inset 0 8px 0 #4ade80}
-.pkplat.alt{background:#b45309;box-shadow:inset 0 8px 0 #fbbf24}
-.pkblock{position:absolute;width:28px;height:28px;background:#facc15;border:3px solid #14142b;border-radius:4px;pointer-events:none}
+.pkplat{position:absolute;background:#c2410c;border:4px solid #14142b;border-radius:8px;box-shadow:inset 0 12px 0 #fde047}
+.pkplat.alt{background:#7c2d12;box-shadow:inset 0 12px 0 #fb923c}
+.pkblock{position:absolute;width:32px;height:32px;background:#facc15;border:3px solid #14142b;border-radius:4px;pointer-events:none}
 .pkflag{position:absolute;width:8px;height:78px;background:#14142b;pointer-events:none}
 .pkflag:after{content:"";position:absolute;left:8px;top:4px;border-style:solid;border-width:16px 28px 16px 0;border-color:transparent #ef4444 transparent transparent}
-.pkguy{position:absolute;width:44px;height:58px;z-index:3;pointer-events:none}
+.pkguy{position:absolute;width:56px;height:74px;z-index:3;pointer-events:none}
+.pkguy svg{width:100%;height:100%;display:block}
 .pkpad,.stagebtns{display:flex;gap:10px}
 .pkpad .btn,.stagebtns .btn{flex:1;min-height:64px;font-size:26px;touch-action:none}
 .pkpad .btn:active,.stagebtns .btn:active{transform:none;filter:brightness(.95)}
@@ -1878,7 +1879,7 @@ function duelBuy(kind,id){if(!player)return;tidyGear();const d=player.duel;
  if(player.total+1e-9<item.cost){shopMsg='You need '+fmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
  player.total=clean(player.total-item.cost);owned.push(id);if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='You bought '+item.name+'.';save();header();sfx.coin();openDuelShop();}
 
-const GUY_W=40,GUY_H=58,PK_WORLD=420;
+const GUY_W=56,GUY_H=74,PK_WORLD=420;
 const PARKOUR_GUY=`<svg viewBox="0 0 44 58" width="44" height="58" aria-hidden="true"><rect x="10" y="2" width="22" height="18" rx="3" fill="#f6c744" stroke="#14142b" stroke-width="2"/><rect x="8" y="4" width="26" height="5" fill="#ef4444"/><rect x="14" y="9" width="4" height="4" fill="#14142b"/><rect x="24" y="9" width="4" height="4" fill="#14142b"/><rect x="2" y="22" width="10" height="16" rx="2" fill="#f6c744" stroke="#14142b" stroke-width="2"/><rect x="14" y="20" width="20" height="18" rx="2" fill="#2563eb" stroke="#14142b" stroke-width="2"/><rect x="12" y="40" width="9" height="16" fill="#1e3a8a" stroke="#14142b" stroke-width="2"/><rect x="24" y="40" width="9" height="16" fill="#1e3a8a" stroke="#14142b" stroke-width="2"/></svg>`;
 const FLAP_BIRD=`<svg viewBox="0 0 64 48" width="54" height="42" aria-hidden="true"><rect x="4" y="12" width="36" height="26" rx="6" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="8" y="16" width="20" height="14" fill="#f6c744" stroke="#14142b" stroke-width="2"/><rect x="6" y="12" width="26" height="6" fill="#ef4444"/><rect x="16" y="20" width="5" height="5" fill="#14142b"/><polygon points="38,20 60,26 38,34" fill="#facc15" stroke="#14142b" stroke-width="3"/><rect x="0" y="22" width="14" height="8" rx="2" fill="#312e81" stroke="#14142b" stroke-width="2"/></svg>`;
 const FLASK=`<svg class="flask" viewBox="0 0 54 78" aria-hidden="true"><rect x="20" y="4" width="14" height="16" rx="2" fill="#e2e8f0" stroke="#14142b" stroke-width="3"/><path d="M16 20 L8 46 Q6 70 27 74 Q48 70 46 46 L38 20 Z" fill="#f3e8ff" stroke="#14142b" stroke-width="3"/><path d="M12 50 Q10 68 27 70 Q44 68 42 50 Q27 58 12 50 Z" fill="#a855f7" stroke="#6b21a8" stroke-width="2"/><rect x="17" y="0" width="20" height="7" rx="2" fill="#6b21a8" stroke="#14142b" stroke-width="2"/></svg>`;
@@ -1916,8 +1917,8 @@ function buildFixed(L,diffs){const bag=[];for(const t in L.topics)for(let i=0;i<
 function parkourQuestionDiffs(stage){if(stage<=1)return ['easy','easy','easy','easy','easy'];if(stage===2)return ['medium','medium','medium','medium','medium'];if(stage===3)return ['hard','hard','hard','hard','hard'];return ['hard','hard','medium','hard','hard'];}
 function flappyDiff(score){return score<3?'easy':score<7?'medium':'hard';}
 function parkourCourse(stage){stage=Math.max(1,stage|0);const n=stage<=1?4:Math.min(4+stage,9);const gap=Math.min(72+stage*8,140);const step=stage<=1?0:Math.min(16+(stage-1)*10,60);
- const plats=[];let x=0;for(let i=0;i<n;i++){const w=i===0?280:(i===n-1?220:160);const y=300-((i%2)?step:0);plats.push({x,y,w,h:28});x+=w+(i===n-1?0:(i===0?90:gap));}
- const last=plats[plats.length-1];return {plats,flagX:last.x+Math.round(last.w*0.55),worldW:last.x+last.w+30,gap,stage};}
+ const plats=[];let x=0;for(let i=0;i<n;i++){const w=i===0?300:(i===n-1?240:170);const y=328-((i%2)?step:0);plats.push({x,y,w,h:36});x+=w+(i===n-1?0:(i===0?96:gap));}
+ const last=plats[plats.length-1];return {plats,flagX:last.x+36,worldW:last.x+last.w+30,gap,stage};}
 function pkHold(k,on){if(!PK||PK.phase!=='run')return;PK.keys[k]=!!on;}
 function parkourKey(e,down){let k=null;if(e.code==='ArrowLeft'||e.code==='KeyA')k='l';else if(e.code==='ArrowRight'||e.code==='KeyD')k='r';else if(e.code==='ArrowUp'||e.code==='Space'||e.code==='KeyW')k='j';if(!k)return;e.preventDefault();pkHold(k,down);}
 function bindParkourPad(){document.querySelectorAll('[data-act="pk"]').forEach(btn=>{const k=btn.dataset.k==='l'?'l':btn.dataset.k==='r'?'r':'j';
@@ -1936,7 +1937,7 @@ function parkourLoop(now){if(!PK||PK.phase!=='run')return;const dt=Math.min(0.03
  if(PK.vy>=0){const feet=PK.y+GUY_H;for(let i=0;i<plats.length;i++){const p=plats[i];if(PK.x+GUY_W-4>p.x&&PK.x+6<p.x+p.w&&feet>=p.y&&feet<=p.y+24+PK.vy*dt){landed=p;break;}}}
  const last=plats[plats.length-1];
  if(landed){PK.y=landed.y-GUY_H;PK.vy=0;PK.safe=landed;
-  if(landed===last&&PK.x+18>=PK.course.flagX){PK.phase='ask';parkourQuestions();return;}
+  if(landed===last){PK.phase='ask';parkourQuestions();return;}
   if(PK.keys.j)PK.vy=-700;}
  if(PK.y>PK_WORLD+24){const s=PK.safe||plats[0];PK.x=s.x+16;PK.y=s.y-GUY_H;PK.vy=0;}
  parkourDraw();pkRAF=requestAnimationFrame(parkourLoop);}
@@ -1975,7 +1976,6 @@ function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTime
   ${passed?`<p class="muted">${passed} passed · no Robux</p>`:''}
   <p class="muted">Saved. Next is stage ${next}. Bank ${fmt(player.total)} R$.</p>
   <div class="stagebtns" style="margin-top:12px"><button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button></div></div>`;
- showRoundBar('<button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button>');
  sfx.fanfare();checkAchievements();Q=null;}
 function numericQuestion(diff){const topics=['addsub','times','division','x10','rounding','negative','money'];
  for(let i=0;i<40;i++){const q=make(pick(topics),diff);if(q&&q.type==='num')return q;}return make('addsub','easy');}
@@ -2026,7 +2026,7 @@ function flapSpawn(){if(!FL||!FL.alive)return;const diff=flappyDiff(FL.score);co
  const view=$('#flapview');const h=Math.max(320,view?view.clientHeight:0);const w=Math.max(320,view?view.clientWidth:0);
  const gapH=Math.max(200,Math.round(h*0.48));
  const slack=Math.max(0,h-gapH-24);const gapY=12+Math.round(Math.random()*slack);
- const budget=Math.max(6,9-FL.score*0.25);const x=w+12;const speed=Math.max(40,(x-110)/budget);
+ const budget=Math.max(7,11-FL.score*0.3);const x=w+40;const speed=(x-164)/budget;
  FL.pipes=[{x,w:78,gapY,gapH,speed,q}];
  if(!FL.flew)FL.y=Math.max(8,Math.min((h||320)-60,gapY+gapH/2-20));
  const top=$('#pipetop'),bot=$('#pipebot'),sign=$('#pipesign'),bird=$('#flapbird');
