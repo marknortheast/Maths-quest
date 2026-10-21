@@ -231,9 +231,17 @@ body.has-roundbar .field #ans{padding-bottom:96px}
 .fallchip.c0{background:#fde68a}.fallchip.c1{background:#bfdbfe}.fallchip.c2{background:#bbf7d0}.fallchip.c3{background:#fbcfe8}
 .fallchip.hit{background:var(--green)!important;color:#fff}
 .fallchip.miss{background:var(--red)!important;color:#fff}
-.tabs{display:flex;gap:10px;margin:4px 0 8px}
-.tab{flex:1;border:4px solid var(--ink);border-radius:12px;padding:10px 8px;font-size:20px;background:#e0f2fe;box-shadow:0 4px 0 var(--ink)}
+.tabs{display:flex;gap:8px;margin:4px 0 8px;flex-wrap:wrap}
+.tab{flex:1 1 88px;min-height:52px;border:4px solid var(--ink);border-radius:12px;padding:10px 8px;font-size:18px;background:#e0f2fe;box-shadow:0 4px 0 var(--ink)}
 .tab.on{background:var(--yellow)}
+.tab:active{filter:brightness(.95)}
+.redeem{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;background:#fff7d6;border:5px solid var(--ink);border-radius:14px;box-shadow:0 6px 0 var(--ink);padding:12px 14px;margin:0 0 16px}
+.redeem h3{margin:0 0 4px}
+.redeem p{margin:0;font-size:18px;line-height:1.35}
+.redeem .btn{min-height:64px}
+.spellbox{display:flex;flex-direction:column;gap:10px}
+.spellbox .btn{min-height:64px}
+#spellclue{background:#fef9c3;border:4px solid var(--ink);border-radius:12px;padding:10px 12px;font-size:20px;line-height:1.35}
 .hold{position:relative;overflow:hidden;width:100%;background:#e0f2fe;touch-action:none;user-select:none}
 .hold .fill{position:absolute;left:0;top:0;bottom:0;width:0;background:#86efac;z-index:0}
 .hold span{position:relative;z-index:1}
@@ -316,7 +324,7 @@ body.has-roundbar.duel-on #app{padding-bottom:calc(96px + env(safe-area-inset-bo
 .duelq .helpbtn{padding:8px 10px;font-size:18px}
 .duelq .choice:active,.duelq .key:active,.duelq .helpbtn:active,.duelq .btn:active{transform:none;filter:brightness(.95)}
 .duellobby{max-width:920px;margin:0 auto}
-.topicbox{max-height:132px;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.topicbox{max-height:180px;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .ranks{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:8px;max-height:280px;overflow:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y}
 .rankbtn{border:4px solid var(--ink);border-radius:12px;background:#fff;box-shadow:0 4px 0 var(--ink);padding:6px;text-align:left;min-height:64px;display:flex;flex-direction:row;align-items:center;gap:6px;font-size:14px}
 .rankbtn .rt{display:flex;flex-direction:column;gap:1px;min-width:0}
@@ -509,15 +517,17 @@ function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 load();
 function freshDuel(){return{tag:'Redliss',wins:0,losses:0,streak:0,bestStreak:0,skin:'block',finisher:'pop',owned:['block'],finishers:['pop'],gear:[],gearOn:[],badges:[],crits:0,hardRight:0,flawless:0,pick:{subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'}};}
 function freshModes(){return{parkour:{stage:1,best:0},flappy:{best:0},treasure:{found:0,hunts:0},potion:{clean:0},achs:[],mastermind:{hardClear:false}};}
-function newPlayer(name){const m=freshModes();return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel(),parkour:m.parkour,flappy:m.flappy,treasure:m.treasure,potion:m.potion,achs:m.achs,mastermind:m.mastermind};}
+function newPlayer(name){const m=freshModes();return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel(),parkour:m.parkour,flappy:m.flappy,treasure:m.treasure,potion:m.potion,achs:m.achs,mastermind:m.mastermind,earned:0,redemptions:[],redeemed:0,pickDiff:{}};}
 function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];if(!p.mistakes)p.mistakes=[];if(!p.review)p.review={};
  if(!p.duel)p.duel=freshDuel();const d=p.duel;if(!d.tag)d.tag='Redliss';if(!Array.isArray(d.owned))d.owned=['block'];if(d.owned.indexOf('block')<0)d.owned.unshift('block');if(!Array.isArray(d.finishers))d.finishers=['pop'];if(d.finishers.indexOf('pop')<0)d.finishers.unshift('pop');if(!d.skin)d.skin='block';if(!d.finisher)d.finisher='pop';if(!Array.isArray(d.gear))d.gear=[];if(!Array.isArray(d.gearOn))d.gearOn=[];if(!Array.isArray(d.badges))d.badges=[];if(typeof d.crits!=='number')d.crits=0;if(typeof d.hardRight!=='number')d.hardRight=0;if(typeof d.flawless!=='number')d.flawless=0;if(!d.pick)d.pick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'};
  if(!p.parkour)p.parkour={stage:1,best:0};if(typeof p.parkour.stage!=='number'||p.parkour.stage<1)p.parkour.stage=1;if(typeof p.parkour.best!=='number')p.parkour.best=0;
  if(!p.flappy)p.flappy={best:0};if(typeof p.flappy.best!=='number')p.flappy.best=0;
  if(!p.treasure)p.treasure={found:0,hunts:0};if(typeof p.treasure.found!=='number')p.treasure.found=0;if(typeof p.treasure.hunts!=='number')p.treasure.hunts=0;
  if(!p.potion)p.potion={clean:0};if(typeof p.potion.clean!=='number')p.potion.clean=0;
- if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};}
+ if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};if(typeof p.earned!=='number'||!isFinite(p.earned))p.earned=p.economy==='v2'?Math.max(0,+p.total||0):Math.max(0,Math.round((+p.total||0)/10));if(!Array.isArray(p.redemptions))p.redemptions=[];if(typeof p.redeemed!=='number'||!isFinite(p.redeemed))p.redeemed=clean(p.redemptions.reduce((s,r)=>s+(+r.amount||0),0));if(!p.pickDiff||typeof p.pickDiff!=='object')p.pickDiff={};}
 let player=null;
+function lifetime(){return player&&typeof player.earned==='number'?player.earned:(player?+player.total||0:0);}
+function gainRobux(n){n=clean(n);if(!player||!n)return;player.total=clean((+player.total||0)+n);if(n>0)player.earned=clean((player.earned||0)+n);}
 function setPlayer(name){const k=name.trim().toLowerCase();if(!store.players[k])store.players[k]=newPlayer(name.trim());player=store.players[k];migrate(player);store.last=k;save();}
 if(store.last&&store.players[store.last]){player=store.players[store.last];migrate(player);}
 
@@ -652,7 +662,22 @@ const B={
  cycle:'https://www.bbc.co.uk/bitesize/articles/zdvhxbk',
  plants:'https://www.bbc.co.uk/bitesize/articles/ztvntrd',
  seeds:'https://www.bbc.co.uk/bitesize/articles/zrrk4xs',
- human:'https://www.bbc.co.uk/bitesize/articles/zd3p6g8'
+ human:'https://www.bbc.co.uk/bitesize/articles/zd3p6g8',
+ stone:'https://www.bbc.co.uk/bitesize/topics/z82hsbk',
+ romans:'https://www.bbc.co.uk/bitesize/topics/zqtf34j',
+ saxons:'https://www.bbc.co.uk/bitesize/topics/zxsbcdm',
+ vikings:'https://www.bbc.co.uk/bitesize/topics/ztyr9j6',
+ egypt:'https://www.bbc.co.uk/bitesize/topics/zg87xnb',
+ greece:'https://www.bbc.co.uk/bitesize/topics/z87tn39',
+ maya:'https://www.bbc.co.uk/bitesize/topics/zq6svcw',
+ sg:'https://www.bbc.co.uk/bitesize/subjects/zcw76sg',
+ sgwar:'https://www.bbc.co.uk/bitesize/topics/zsxytcw',
+ cious:'https://www.bbc.co.uk/bitesize/topics/zt62mnb/articles/zp7dk7h',
+ shun:'https://www.bbc.co.uk/bitesize/topics/zt62mnb/articles/zyv4qhv',
+ homo:'https://www.bbc.co.uk/bitesize/topics/zt62mnb/articles/z7g8jhv',
+ silent:'https://www.bbc.co.uk/bitesize/topics/zt62mnb/articles/zcjfhcw',
+ suffix:'https://www.bbc.co.uk/bitesize/topics/zqqsw6f/articles/zqjwcmn',
+ spell:'https://www.bbc.co.uk/bitesize/topics/zt62mnb'
 };
 const BN={
  add:'Addition and subtraction',add4:'Adding 4-digit numbers',sub4:'Subtracting 4-digit numbers',
@@ -673,7 +698,11 @@ const BN={
  dissolve:'Dissolving',separate:'Separating mixtures',reverse:'Reversible and irreversible changes',
  space:'Earth and space',gravity:'Gravity',friction:'Friction',resist:'Air and water resistance',
  gears:'Levers, pulleys and gears',cycle:'Life cycles',plants:'Reproduction in flowering plants',
- seeds:'Pollination and seed dispersal',human:'Changes in humans'
+ seeds:'Pollination and seed dispersal',human:'Changes in humans',
+ stone:'Stone Age to Iron Age',romans:'Roman Britain',saxons:'Anglo-Saxons',vikings:'Vikings',
+ egypt:'Ancient Egypt',greece:'Ancient Greece',maya:'The Maya',sg:'KS2 History',sgwar:'World War Two',
+ cious:'Words ending -cious and -tious',shun:'The shun sound',homo:'Homophones',silent:'Silent letters',
+ suffix:'Suffixes',spell:'Spelling'
 };
 function bite(key){return{link:B[key],linkName:BN[key]};}
 
@@ -684,7 +713,9 @@ const TOPICS={
  decimals:'Decimals',percent:'Percentages',area:'Area & perimeter',volume:'Volume',measures:'Converting units',time:'Time',
  angles:'Angles',shapes:'2D & 3D shapes',coords:'Coordinates',stats:'Tables & graphs',money:'Money problems',word:'Word problems',
  scaling:'Scaling & rates',
- materials:'Materials',space:'Earth & space',forces:'Forces',living:'Living things',humans:'Humans'
+ materials:'Materials',space:'Earth & space',forces:'Forces',living:'Living things',humans:'Humans',
+ stone:'Stone Age to Iron Age',romans:'Romans',saxons:'Anglo-Saxons',vikings:'Vikings',egypt:'Ancient Egypt',greece:'Ancient Greece',maya:'The Maya',singapore:'Singapore',
+ cious:'-cious',tious:'-tious',cial:'-cial',tial:'-tial',antent:'-ant and -ent',able:'-able and -ible',silent:'Silent letters',eic:'ei after c',homo:'Homophones',statutory:'Year 5/6 words'
 };
 const PV=['ones','tens','hundreds','thousands','ten thousands','hundred thousands','millions'];
 const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
@@ -1027,6 +1058,84 @@ const SCIENCE=[
  {topic:'humans',diff:'hard',bite:'human',text:'Which happens before birth?',ans:'Growing as a foetus in the womb',wrongs:['Adolescence','Old age','Learning to talk'],hint:'Before birth the developing baby is a foetus.',steps:['Talking, adolescence and old age come after birth.','The womb stage is first.','So growing as a foetus happens before birth.']},
  {topic:'humans',diff:'hard',bite:'cycle',text:'How is a human life cycle different from a butterfly life cycle?',ans:'A human baby looks like a small human',wrongs:['Humans hatch as caterpillars','Humans have a pupa stage','Humans lay frogspawn'],hint:'Humans do not go through metamorphosis.',steps:['A butterfly changes from caterpillar to chrysalis to adult.','A human baby already has a human body shape.','So a human baby looks like a small human.']}
 ];
+const SCIENCE_EXTRA=[
+{topic:'materials',diff:'easy',bite:'dissolve',text:'Sugar mixed into warm water until the grains disappear has...',ans:'dissolved',wrongs:['burned','been sieved out','turned into gravel'],hint:'Sugar is soluble. When the grains disappear into the water, they have dissolved.',steps:['The sugar was a solid.','It mixed into the water and could not be seen as grains.','So the sugar has dissolved.']},
+{topic:'materials',diff:'easy',bite:'dissolve',text:'Which material does not dissolve in water?',ans:'Sand',wrongs:['Salt','Sugar','Instant coffee'],hint:'Sand is insoluble. Salt and sugar dissolve.',steps:['Soluble materials mix into the water.','Sand stays as bits you can see.','So sand does not dissolve.']},
+{topic:'materials',diff:'easy',bite:'separate',text:'A sieve is useful when the solid pieces are...',ans:'different sizes',wrongs:['all dissolved','both gases','the same liquid'],hint:'Sieving works because smaller bits fall through and bigger bits stay in the sieve.',steps:['A sieve has holes.','Small pieces pass through and large pieces do not.','So it separates pieces of different sizes.']},
+{topic:'materials',diff:'easy',bite:'reverse',text:'Melted chocolate becomes solid again if you...',ans:'cool it',wrongs:['burn it','dissolve it in vinegar','sieve it into a gas'],hint:'Melting is reversible. Cooling the liquid chocolate lets it set.',steps:['Heat turns the solid chocolate into a liquid.','Taking the heat away reverses that.','So you cool it.']},
+{topic:'materials',diff:'easy',bite:'reverse',text:'Which change can be undone?',ans:'Freezing water into ice',wrongs:['Baking a cake','Burning paper','Frying an egg'],hint:'Ice can melt back into water. Baking, burning and frying make new materials.',steps:['Water and ice are the same material in different states.','Warming the ice turns it back into water.','So freezing water is a change that can be undone.']},
+{topic:'materials',diff:'medium',bite:'dissolve',text:'If you keep adding salt to a small amount of water, eventually the salt...',ans:'stops dissolving',wrongs:['turns the water into gold','makes the water freeze at once','becomes sand'],hint:'A solution can become saturated. Extra salt then sits at the bottom.',steps:['There is a limit to how much salt the water will hold.','After that, new salt does not dissolve.','So the salt stops dissolving.']},
+{topic:'materials',diff:'medium',bite:'separate',text:'To separate salt that is dissolved in water you should...',ans:'evaporate the water',wrongs:['sieve the solution','use a magnet','filter the salt out with paper'],hint:'Dissolved salt passes through a filter. Evaporation leaves the salt behind.',steps:['A sieve or filter will not catch dissolved salt.','Heat lets the water turn to vapour and leave.','The salt is left behind, so you evaporate the water.']},
+{topic:'materials',diff:'medium',bite:'separate',text:'Filtering works best for a solid that is...',ans:'insoluble',wrongs:['fully dissolved','a pure gas','already evaporated'],hint:'Filter paper catches bits that have not dissolved.',steps:['An insoluble solid stays as pieces.','Those pieces cannot pass through the tiny gaps.','So filtering suits an insoluble solid.']},
+{topic:'materials',diff:'medium',bite:'reverse',text:'Rusting of iron is...',ans:'usually irreversible',wrongs:['the same as melting','easy to undo by cooling','only a change of shape'],hint:'Rust is a new material. You cannot turn rust back into the original iron by cooling it.',steps:['Iron reacts with oxygen and water.','A new substance, rust, is made.','So rusting is usually irreversible.']},
+{topic:'materials',diff:'medium',bite:'dissolve',text:'The name for a liquid with a solid dissolved in it is...',ans:'a solution',wrongs:['a sieve','a magnet','an axis'],hint:'Salt water and sugar water are solutions.',steps:['The solid has dissolved.','The mixture of liquid and dissolved solid has a science name.','That name is a solution.']},
+{topic:'materials',diff:'hard',bite:'dissolve',text:'Stirring and warm water can make a soluble solid dissolve...',ans:'faster',wrongs:['impossible','into a magnet','only if the solid is sand'],hint:'The solid still dissolves either way, but stirring and warmth speed it up.',steps:['Sugar dissolves in cold water too.','Moving the water and warming it help the grains spread.','So dissolving happens faster.']},
+{topic:'materials',diff:'hard',bite:'separate',text:'Which mixture is best separated with a magnet?',ans:'Iron filings and flour',wrongs:['Salt and water','Sand and water','Sugar and water'],hint:'Iron is magnetic. Flour, salt, sand and sugar are not.',steps:['A magnet attracts iron.','Flour is left behind when the iron is pulled out.','Salt water and sugar water need evaporation, not a magnet.']},
+{topic:'materials',diff:'hard',bite:'reverse',text:'Cooking an egg is irreversible because...',ans:'a new material is formed and you cannot get the raw egg back',wrongs:['the egg only melts','cooling always restores the raw egg','the egg dissolves in the pan'],hint:'The cooked egg white is a new material. Cooling does not turn it raw again.',steps:['Heat changes the egg white.','That change is a chemical change.','You cannot get the raw egg back, so it is irreversible.']},
+{topic:'materials',diff:'hard',bite:'separate',text:'Why will a sieve not separate salt from salty water?',ans:'The salt has dissolved into tiny particles',wrongs:['Salt is magnetic','The holes are smaller than a water drop','Salt evaporates before it is made'],hint:'Dissolved particles are far too small for sieve holes.',steps:['The salt is no longer grains.','It is spread through the water.','A sieve cannot catch it.']},
+{topic:'materials',diff:'hard',bite:'dissolve',text:'An insoluble solid in a liquid is best described as...',ans:'a mixture you can often filter',wrongs:['a solution','a reversible gas only','a planet'],hint:'If it has not dissolved, the bits can be filtered or left to settle.',steps:['Insoluble means it does not dissolve.','The solid bits remain.','You can often separate them by filtering.']},
+{topic:'space',diff:'easy',bite:'space',text:'The Sun is a...',ans:'star',wrongs:['planet','moon','comet made of rock only'],hint:'The Sun is our nearest star. It gives Earth light and heat.',steps:['Stars make their own light.','The Sun does that.','So the Sun is a star.']},
+{topic:'space',diff:'easy',bite:'space',text:'Earth travels around the Sun. That path is called...',ans:'an orbit',wrongs:['a sieve','a solution','a hillfort'],hint:'An orbit is the repeating path of one object around another.',steps:['Earth does not fly off in a straight line.','It keeps a path around the Sun.','That path is an orbit.']},
+{topic:'space',diff:'easy',bite:'space',text:'Which one is a moon, not a planet?',ans:'Earth\'s Moon',wrongs:['Mars','Jupiter','Venus'],hint:'A moon orbits a planet. Earth\'s Moon orbits Earth.',steps:['Mars, Jupiter and Venus orbit the Sun.','Earth\'s Moon orbits a planet.','So Earth\'s Moon is a moon, not a planet.']},
+{topic:'space',diff:'easy',bite:'space',text:'We see the Moon because it...',ans:'reflects light from the Sun',wrongs:['is a star like the Sun','makes its own daylight','orbits inside the Earth'],hint:'The Moon does not make its own light. Sunlight bounces off it.',steps:['The Sun is the light source.','That light hits the Moon and reflects.','So we see the Moon because it reflects sunlight.']},
+{topic:'space',diff:'easy',bite:'space',text:'Night happens on the side of Earth that is...',ans:'facing away from the Sun',wrongs:['always facing the Sun','inside the Moon','outside the solar system'],hint:'Earth spins. The side turned away from the Sun is in darkness.',steps:['The Sun lights up one side of Earth.','The other side is in shadow.','Night is the side facing away from the Sun.']},
+{topic:'space',diff:'medium',bite:'space',text:'About how long does Earth take to orbit the Sun once?',ans:'365 days',wrongs:['24 hours','28 days','8 days'],hint:'One orbit is about one year, 365 days.',steps:['One spin is a day, about 24 hours.','One trip around the Sun is a year.','That is about 365 days.']},
+{topic:'space',diff:'medium',bite:'space',text:'About how long does the Moon take to orbit Earth?',ans:'28 days',wrongs:['24 hours','365 days','1 hour'],hint:'A lunar month is about 28 days.',steps:['The Moon\'s orbit is much shorter than Earth\'s year.','It is much longer than one day.','It takes about 28 days.']},
+{topic:'space',diff:'medium',bite:'space',text:'The Sun appears to move across the sky because...',ans:'Earth is rotating',wrongs:['the Sun orbits Earth once a day','the Moon pushes the Sun','Earth stops at noon'],hint:'The Sun stays in place while Earth turns. That makes the Sun look as if it moves.',steps:['Earth spins about once every 24 hours.','Your view of the Sun changes as you turn.','So the Sun appears to move because Earth is rotating.']},
+{topic:'space',diff:'medium',bite:'space',text:'Which list is in order from the Sun?',ans:'Mercury, Venus, Earth, Mars',wrongs:['Earth, Mercury, Mars, Venus','Mars, Earth, Venus, Mercury','Venus, Mercury, Mars, Earth'],hint:'The four inner planets start Mercury, then Venus, then Earth, then Mars.',steps:['Mercury is closest to the Sun.','Earth is the third planet.','The order is Mercury, Venus, Earth, Mars.']},
+{topic:'space',diff:'medium',bite:'space',text:'Pluto is classed as a...',ans:'dwarf planet',wrongs:['star','moon of Earth','galaxy'],hint:'Since 2006 Pluto has been called a dwarf planet, not one of the 8 planets.',steps:['There are 8 planets.','Pluto is smaller and shares its region with other icy objects.','So Pluto is a dwarf planet.']},
+{topic:'space',diff:'hard',bite:'space',text:'What keeps the planets in orbit around the Sun?',ans:'The Sun\'s gravity',wrongs:['Air resistance','A giant sieve','Friction from the sky'],hint:'Gravity pulls the planets towards the Sun. Their speed stops them falling straight in.',steps:['Every mass has gravity.','The Sun is huge, so its pull is strong.','That pull keeps the planets in orbit.']},
+{topic:'space',diff:'hard',bite:'space',text:'A year on Earth is the time taken to...',ans:'orbit the Sun once',wrongs:['spin once','orbit the Moon once','reflect sunlight once'],hint:'Spinning once makes a day. Orbiting the Sun once makes a year.',steps:['A day is about 24 hours of rotation.','A year is the orbital period.','So a year is one orbit of the Sun.']},
+{topic:'space',diff:'hard',bite:'space',text:'Why does the Moon seem to change shape during a month?',ans:'We see different amounts of its lit half',wrongs:['The Moon is melting','Earth\'s shadow covers it every night','The Moon really shrinks and grows'],hint:'Half of the Moon is lit by the Sun. As the Moon orbits, we see more or less of that lit half. Those are phases.',steps:['The Moon does not make its own light.','Its position changes during the orbit.','We see different amounts of the lit half, so the shape seems to change.']},
+{topic:'space',diff:'hard',bite:'space',text:'Earth\'s seasons happen mainly because...',ans:'Earth\'s axis is tilted',wrongs:['Earth moves much closer to the Sun every summer','the Moon blocks the Sun each winter','Earth stops spinning in December'],hint:'The tilt means one hemisphere leans towards the Sun for part of the year. Distance is not the main reason.',steps:['Earth\'s axis is tilted.','When your hemisphere leans towards the Sun, the days are warmer and longer.','So seasons happen mainly because the axis is tilted.']},
+{topic:'space',diff:'hard',bite:'space',text:'Which statement is correct?',ans:'The Sun is a star at the centre of our solar system',wrongs:['Earth is a star','The Moon is a planet that makes its own light','The Sun orbits Earth once a day'],hint:'Stars make light. Planets and moons do not. Earth orbits the Sun.',steps:['The Sun produces light and heat.','The planets go around it.','So the Sun is a star at the centre of our solar system.']},
+{topic:'forces',diff:'easy',bite:'gravity',text:'Gravity pulls objects...',ans:'towards the centre of Earth',wrongs:['only upwards','sideways into space with no pull','only on the Moon'],hint:'Unsupported objects fall down because Earth\'s gravity pulls them.',steps:['Drop a ball and it falls.','The pull is towards Earth.','Gravity pulls objects towards the centre of Earth.']},
+{topic:'forces',diff:'easy',bite:'friction',text:'Friction is a force that...',ans:'slows things down when surfaces rub',wrongs:['makes every object weightless','only works in space','turns solids into gases'],hint:'Rough surfaces make more friction. Smooth surfaces make less.',steps:['Two surfaces touch and rub.','That rubbing opposes the movement.','So friction slows things down when surfaces rub.']},
+{topic:'forces',diff:'easy',bite:'resist',text:'Air resistance is a force that...',ans:'pushes against objects moving through air',wrongs:['only acts underwater','pulls objects to the Moon','dissolves solids'],hint:'A parachute uses a large area so air resistance is bigger.',steps:['Moving through air means hitting air particles.','Those particles push back.','That push is air resistance.']},
+{topic:'forces',diff:'easy',bite:'resist',text:'Water resistance makes it harder to...',ans:'move quickly through water',wrongs:['freeze ice','orbit the Sun','read hieroglyphs'],hint:'Water resistance is like air resistance, but in water.',steps:['Swimmers and boats push water aside.','The water pushes back.','So it is harder to move quickly through water.']},
+{topic:'forces',diff:'easy',bite:'gears',text:'A lever can help you...',ans:'lift a heavy load',wrongs:['dissolve salt','orbit the Moon','remove gravity'],hint:'A seesaw is a lever. A long bar and a pivot can make a load easier to lift.',steps:['A lever turns around a pivot.','Pressing on the long side can raise a load.','So a lever can help you lift a heavy load.']},
+{topic:'forces',diff:'medium',bite:'friction',text:'Which surface usually gives the most friction?',ans:'A rough carpet',wrongs:['Ice','A polished floor','Oiled metal'],hint:'Rough surfaces grip more. Ice and oil reduce friction.',steps:['Friction is greater when surfaces are rough.','Carpet is rougher than ice or polished floor.','So a rough carpet usually gives the most friction.']},
+{topic:'forces',diff:'medium',bite:'resist',text:'A parachute falls more slowly because it...',ans:'has a large area, so air resistance is greater',wrongs:['removes gravity','makes the person weightless','dissolves the air'],hint:'Gravity still pulls down. The parachute increases the upward force from the air.',steps:['The canopy spreads out.','More air hits it, so air resistance grows.','The fall is slower because air resistance is greater.']},
+{topic:'forces',diff:'medium',bite:'gears',text:'A pulley with a rope can help you...',ans:'lift a load by pulling down',wrongs:['turn water into a planet','stop all friction forever','make gravity reverse'],hint:'A pulley changes the direction of the force. Some pulley systems also make lifting easier.',steps:['The rope goes over a wheel.','You can pull down to raise the load.','So a pulley lets you lift a load by pulling down.']},
+{topic:'forces',diff:'medium',bite:'gears',text:'Gears are wheels with teeth. They can...',ans:'change the speed or direction of a turn',wrongs:['dissolve metal','remove the need for a force','make Earth stop spinning'],hint:'A big gear and a small gear turn at different speeds. Teeth lock so one turns the other.',steps:['The teeth mesh together.','A small gear turns more times than a big gear meshed with it.','So gears can change speed or direction.']},
+{topic:'forces',diff:'medium',bite:'gravity',text:'On Earth, unsupported objects fall because of...',ans:'gravity',wrongs:['friction alone','air resistance alone','magnetism of every object'],hint:'Gravity is the pull. Air resistance acts against the fall but does not cause it.',steps:['Let go of a pencil and it drops.','Earth pulls the pencil.','The force is gravity.']},
+{topic:'forces',diff:'hard',bite:'resist',text:'A streamlined shape reduces...',ans:'water resistance or air resistance',wrongs:['gravity to zero','the mass of Earth','the need for a lever'],hint:'Fish, boats and some cars are streamlined so they slip through air or water more easily.',steps:['A blunt shape hits more air or water.','A smooth pointed shape hits less.','So streamlining reduces air or water resistance.']},
+{topic:'forces',diff:'hard',bite:'friction',text:'Oil on a bicycle chain reduces friction. Oil is acting as...',ans:'a lubricant',wrongs:['a gear tooth','a planet','a solution of sand'],hint:'A lubricant is a substance that makes surfaces slide more easily.',steps:['The chain and the gears rub.','Oil gets between the surfaces.','It is a lubricant.']},
+{topic:'forces',diff:'hard',bite:'gravity',text:'The Moon has less gravity than Earth, so the same person...',ans:'weighs less on the Moon',wrongs:['weighs more on the Moon','has no mass at all','orbits inside their shoe'],hint:'Mass stays the same. Weight is the pull of gravity, and the Moon pulls less.',steps:['Mass is the amount of matter.','Weight depends on gravity.','The Moon\'s gravity is weaker, so the person weighs less there.']},
+{topic:'forces',diff:'hard',bite:'gears',text:'If a small gear turns a bigger gear, the bigger gear turns...',ans:'more slowly',wrongs:['at exactly the same speed always','without any force','into a liquid'],hint:'The small gear must go round several times to turn the big gear once.',steps:['Count the teeth. The big gear has more.','One turn of the big gear needs several turns of the small one.','So the bigger gear turns more slowly.']},
+{topic:'forces',diff:'hard',bite:'resist',text:'Why does a feather often fall more slowly than a pebble?',ans:'Air resistance has a bigger effect on the feather',wrongs:['Gravity does not act on feathers','The feather has more mass','Pebbles have no gravity'],hint:'Both are pulled by gravity. The feather has a large area for its mass, so air resistance matters more.',steps:['Gravity pulls both down.','The feather is spread out and light.','Air resistance slows the feather more.']},
+{topic:'living',diff:'easy',bite:'cycle',text:'A mammal baby usually...',ans:'is born live and drinks milk',wrongs:['hatches from a chrysalis','starts as frogspawn','grows from a seed'],hint:'Mammals give birth to live young and the baby feeds on milk.',steps:['Humans, dogs and whales are mammals.','Their babies are born, not hatched from eggs like a bird.','The baby is born live and drinks milk.']},
+{topic:'living',diff:'easy',bite:'cycle',text:'A chicken\'s life cycle includes...',ans:'an egg',wrongs:['a chrysalis only','a tadpole','a seed cone'],hint:'Birds lay eggs. The chick hatches looking like a small bird.',steps:['A hen lays an egg.','A chick hatches from it.','So the life cycle includes an egg.']},
+{topic:'living',diff:'easy',bite:'plants',text:'A flowering plant makes seeds inside...',ans:'the flower, after pollination and fertilisation',wrongs:['the roots only, with no flower','a chrysalis','a longship'],hint:'Pollen must reach the stigma. Then a seed can form in the ovary.',steps:['The flower is the reproductive part.','Pollination and fertilisation come before the seed.','Seeds form in the flower after that.']},
+{topic:'living',diff:'easy',bite:'seeds',text:'Seed dispersal means...',ans:'spreading seeds away from the parent plant',wrongs:['dissolving the flower','melting the stem','orbiting the Sun'],hint:'Seeds may be moved by wind, animals, water or explosion of a pod.',steps:['If all seeds fell at the parent\'s feet they would be crowded.','Dispersal moves them.','It means spreading seeds away from the parent plant.']},
+{topic:'living',diff:'easy',bite:'cycle',text:'A frog starts life as...',ans:'an egg in water, then a tadpole',wrongs:['a chrysalis on a leaf','a live baby dog','a seed'],hint:'Frogspawn hatches into tadpoles. The tadpole changes into a frog.',steps:['Frogs are amphibians.','The eggs are laid in water.','Life starts as an egg, then a tadpole.']},
+{topic:'living',diff:'medium',bite:'cycle',text:'Metamorphosis means...',ans:'a big change of body form during a life cycle',wrongs:['dissolving in water','orbiting a star','sieving a mixture'],hint:'A caterpillar becoming a butterfly is metamorphosis. A human baby does not change body plan like that.',steps:['The young animal looks very different from the adult.','The change is called metamorphosis.','It is a big change of body form.']},
+{topic:'living',diff:'medium',bite:'plants',text:'Pollination happens when pollen...',ans:'is moved to the stigma',wrongs:['is sieved from sand','turns into a tadpole','orbits the Moon'],hint:'Insects or the wind can carry pollen from the anther to a stigma.',steps:['Pollen is made by the anther.','It needs to land on the stigma.','That movement is pollination.']},
+{topic:'living',diff:'medium',bite:'seeds',text:'Which is a way seeds are dispersed?',ans:'Animals eat fruit and pass the seeds out later',wrongs:['Seeds all stay glued to the parent forever','Seeds must be burned before they exist','Seeds orbit the Sun by themselves'],hint:'Some seeds are inside tasty fruit. Animals carry them away.',steps:['The animal moves.','The seeds leave its droppings somewhere else.','So animals can disperse seeds.']},
+{topic:'living',diff:'medium',bite:'cycle',text:'Which life cycle has a pupa?',ans:'Butterfly',wrongs:['Dog','Frog','Oak tree'],hint:'The pupa, or chrysalis, is between caterpillar and adult butterfly. Dogs and frogs do not have one.',steps:['A butterfly goes egg, larva, pupa, adult.','A dog is a mammal and a frog is an amphibian.','The pupa belongs to the butterfly.']},
+{topic:'living',diff:'medium',bite:'plants',text:'The male part of a flower, which makes pollen, is the...',ans:'stamen',wrongs:['root','seed coat','leaf stalk only'],hint:'The stamen includes the anther, where pollen is made.',steps:['Pollen is the powder used in pollination.','It is made by the male part.','That part is the stamen.']},
+{topic:'living',diff:'hard',bite:'plants',text:'After fertilisation, the ovary of a flower can become...',ans:'a fruit containing seeds',wrongs:['a tadpole','a gear','a planet'],hint:'The ovule becomes a seed. The ovary around it often becomes the fruit.',steps:['Fertilisation follows pollination.','A seed starts to grow.','The ovary can swell into a fruit containing seeds.']},
+{topic:'living',diff:'hard',bite:'seeds',text:'Dandelion seeds are suited to wind dispersal because they are...',ans:'light and have a fluffy parachute',wrongs:['heavy stones','always buried by a farmer first','made of metal'],hint:'The fluffy part catches the wind so the seed can travel.',steps:['Wind can carry a light seed.','The fluff gives a large surface.','So dandelion seeds are light and have a fluffy parachute.']},
+{topic:'living',diff:'hard',bite:'cycle',text:'A human baby is different from a caterpillar because the baby...',ans:'already has the same body plan as an adult human',wrongs:['must form a chrysalis','hatches as frogspawn','is a seed'],hint:'Humans do not go through metamorphosis. A baby looks human.',steps:['A caterpillar does not look like a butterfly.','A baby has a human shape.','So the baby already has the same body plan as an adult.']},
+{topic:'living',diff:'hard',bite:'plants',text:'Germination is when a seed...',ans:'starts to grow into a young plant',wrongs:['dissolves in a sieve','turns into pollen','orbits the Earth'],hint:'A seed needs water, oxygen and a suitable temperature to germinate.',steps:['The seed is alive but waiting.','In the right conditions it sprouts.','That start of growth is germination.']},
+{topic:'living',diff:'hard',bite:'cycle',text:'Which group lays eggs and usually has a life cycle with a big body change?',ans:'Many insects',wrongs:['Dogs','Humans','Oak trees only'],hint:'Insects such as butterflies have a larva and a pupa. Mammals do not.',steps:['Dogs and humans are mammals with live young.','A butterfly changes from caterpillar to adult.','So many insects lay eggs and change body form.']},
+{topic:'humans',diff:'easy',bite:'human',text:'The stage of human life after being a baby is...',ans:'childhood',wrongs:['old age','being a foetus','being a seed'],hint:'A baby grows into a child. Old age is much later.',steps:['Birth comes first, then babyhood.','The next named stage is childhood.','So the answer is childhood.']},
+{topic:'humans',diff:'easy',bite:'human',text:'During old age the body...',ans:'ages, and hair may turn grey',wrongs:['turns into a chrysalis','becomes a tadpole','starts as frogspawn'],hint:'Old age is the last stage of the human life cycle. Changes are gradual.',steps:['People do not metamorphose.','Hair can lose its colour and skin can wrinkle.','So the body ages, and hair may turn grey.']},
+{topic:'humans',diff:'easy',bite:'human',text:'A human foetus is...',ans:'a baby growing in the womb before birth',wrongs:['a hatched chick','an adult','a flower seed'],hint:'The foetus stage is before birth. After birth we say baby.',steps:['The baby develops inside the mother.','That stage has a special name.','A foetus is a baby growing in the womb before birth.']},
+{topic:'humans',diff:'easy',bite:'human',text:'Humans are mammals, so a human baby...',ans:'is born live',wrongs:['hatches from a hard egg like a hen','starts as a caterpillar','grows on a stem'],hint:'Mammal babies are born, then fed milk.',steps:['Humans are not birds or insects.','There is no eggshell to hatch from.','A human baby is born live.']},
+{topic:'humans',diff:'easy',bite:'human',text:'Which order is correct?',ans:'Baby, child, adolescent, adult',wrongs:['Adult, baby, child, adolescent','Egg, tadpole, chrysalis, adult','Seed, seedling, tadpole, adult'],hint:'Start after birth and move forward in time.',steps:['A baby grows into a child.','Adolescence comes before full adulthood.','The order is baby, child, adolescent, adult.']},
+{topic:'humans',diff:'medium',bite:'human',text:'Puberty happens during...',ans:'adolescence',wrongs:['the foetus stage only','old age only','germination'],hint:'Adolescence is the teenage stage, when the body changes towards adulthood.',steps:['A foetus is before birth.','Puberty is the set of changes in the teenage years.','It happens during adolescence.']},
+{topic:'humans',diff:'medium',bite:'human',text:'A human pregnancy lasts about...',ans:'9 months',wrongs:['9 days','9 hours','9 years'],hint:'The baby grows in the womb for about nine months.',steps:['Nine hours or nine days would be far too short.','Nine years would be far too long.','The usual time is about 9 months.']},
+{topic:'humans',diff:'medium',bite:'human',text:'Why do adults have fewer separate bones than babies?',ans:'Some bones join together as people grow',wrongs:['Bones dissolve in water','Gravity deletes bones','Bones are sieved out of the body'],hint:'A baby has about 300 bones. An adult has 206 because some fuse.',steps:['The number falls, but bones are not thrown away.','Separate bones join to make bigger ones.','So some bones join together as people grow.']},
+{topic:'humans',diff:'medium',bite:'human',text:'Learning to walk and talk happens mainly in...',ans:'childhood',wrongs:['the womb, before any birth','old age only','a chrysalis'],hint:'Babies start these skills, and childhood is when they develop strongly.',steps:['A foetus cannot walk or talk.','Children practise both skills.','So this happens mainly in childhood.']},
+{topic:'humans',diff:'medium',bite:'cycle',text:'The human life cycle does not include a pupa because humans are...',ans:'mammals',wrongs:['insects','flowering plants','amphibians'],hint:'A pupa belongs to some insects. Humans give birth to live young.',steps:['Compare a human with a butterfly.','There is no chrysalis stage.','Humans are mammals.']},
+{topic:'humans',diff:'hard',bite:'human',text:'What is puberty?',ans:'The body changes from a child towards an adult',wrongs:['The moment a seed germinates','Only the first day of old age','A stage when humans lay eggs'],hint:'Puberty is a normal part of adolescence.',steps:['It is not birth and it is not old age.','The body grows and changes.','Puberty is the body changing from a child towards an adult.']},
+{topic:'humans',diff:'hard',bite:'human',text:'In old age a person may become a little shorter because...',ans:'bones and discs in the spine can lose height',wrongs:['they orbit the Sun more slowly','gravity switches off','they grow a chrysalis'],hint:'The spine can compress a little, and bones can lose strength.',steps:['Height can decrease slightly late in life.','The skeleton can change.','Bones and discs in the spine can lose height.']},
+{topic:'humans',diff:'hard',bite:'human',text:'Which happens before birth?',ans:'Growing as a foetus',wrongs:['Learning to ride a bicycle','Adolescence','Old age'],hint:'The foetus stage is inside the womb. The other stages come after birth.',steps:['Birth is the change from womb to the outside.','Adolescence and old age are later.','Growing as a foetus happens before birth.']},
+{topic:'humans',diff:'hard',bite:'cycle',text:'How is a human life cycle different from a butterfly life cycle?',ans:'A human does not have a larva and pupa stage',wrongs:['Humans hatch as caterpillars','Humans lay frogspawn','Humans have no childhood'],hint:'A butterfly metamorphoses. A human baby already looks human.',steps:['A caterpillar is a larva and a chrysalis is a pupa.','Humans do not have those stages.','So a human does not have a larva and pupa stage.']},
+{topic:'humans',diff:'hard',bite:'human',text:'Adulthood comes after...',ans:'adolescence',wrongs:['old age','being a foetus only, with no childhood','germination of a seed'],hint:'The order is child, adolescent, adult, then old age.',steps:['Adolescence is the teenage stage.','Adulthood follows it.','Old age is later still.']}
+];
+SCIENCE_EXTRA.forEach(function(s){SCIENCE.push(s);});
 function sciPick(topic,diff){const pool=SCIENCE.filter(s=>s.topic===topic&&s.diff===diff);if(!pool.length)return null;const s=pick(pool);
  return mcQ(topic,diff,s.text,s.ans,s.wrongs,{bite:s.bite,hint:s.hint,steps:s.steps,long:s.text.length>68});}
 G.materials=d=>sciPick('materials',d);
@@ -1034,14 +1143,207 @@ G.space=d=>sciPick('space',d);
 G.forces=d=>sciPick('forces',d);
 G.living=d=>sciPick('living',d);
 G.humans=d=>sciPick('humans',d);
+const HISTORY=[
+{"topic":"stone","diff":"easy","bite":"stone","text":"In the earliest Stone Age in Britain, most people got food by...","ans":"hunting animals and gathering plants","wrongs":["shopping in Roman markets","growing rice in paddy fields","working in iron factories"],"hint":"Before farming, people moved around. They hunted, fished and gathered plants.","steps":["The earliest Stone Age people did not farm.","They used stone tools and followed their food.","So they hunted animals and gathered plants."]},
+{"topic":"stone","diff":"easy","bite":"stone","text":"What change marks the Neolithic, or New Stone Age, in Britain?","ans":"People began farming","wrongs":["The Romans built Hadrian's Wall","Vikings raided Lindisfarne","People started using only plastic"],"hint":"Neolithic means New Stone Age. The big change was settling down to farm.","steps":["Hunter-gatherers came first.","In the Neolithic, people grew crops and kept animals.","So the change is that people began farming."]},
+{"topic":"stone","diff":"easy","bite":"stone","text":"Bronze is a metal made by mixing...","ans":"copper and tin","wrongs":["iron and sand","gold and water","clay and straw"],"hint":"The Bronze Age is named after this mixture. Copper alone is softer.","steps":["Bronze is not a pure metal dug up ready-made.","Tin is mixed with copper.","So bronze is copper and tin."]},
+{"topic":"stone","diff":"medium","bite":"stone","text":"Skara Brae, in Orkney, is best described as...","ans":"a Neolithic village","wrongs":["a Roman fort","a Viking shipyard","a Tudor palace"],"hint":"Skara Brae is a famous stone village from the New Stone Age, not from Roman times.","steps":["Orkney is in the north of Scotland.","The houses at Skara Brae were built in the Neolithic.","So it is a Neolithic village."]},
+{"topic":"stone","diff":"medium","bite":"stone","text":"Stonehenge was built across the...","ans":"Neolithic and early Bronze Age","wrongs":["Victorian period only","Second World War","Norman Conquest"],"hint":"Work at Stonehenge began in the New Stone Age and carried on into the early Bronze Age. It was not built in modern times.","steps":["The circular bank is Neolithic.","The great stones were raised later, around the start of the Bronze Age.","So Stonehenge belongs to the Neolithic and early Bronze Age."]},
+{"topic":"stone","diff":"medium","bite":"stone","text":"Many Iron Age communities in Britain defended themselves with...","ans":"hillforts","wrongs":["pyramids","skyscrapers","longships from Rome"],"hint":"An Iron Age hillfort is a defended hilltop settlement, such as Maiden Castle.","steps":["Iron tools and weapons came after bronze.","Some tribes built banks and ditches on hills.","Those places are called hillforts."]},
+{"topic":"stone","diff":"hard","bite":"stone","text":"The Iron Age in Britain is usually said to begin about...","ans":"800 BCE","wrongs":["1066 CE","1819 CE","1965 CE"],"hint":"Iron working spread in Britain many centuries before the Romans invaded in 43 CE.","steps":["BCE means before the Common Era.","About 800 BCE is the usual start of the British Iron Age.","1066, 1819 and 1965 are much later."]},
+{"topic":"stone","diff":"hard","bite":"stone","text":"Iron Age Britain was organised as...","ans":"many tribes, not one kingdom","wrongs":["one empire ruled from Rome","a single pharaoh's kingdom","one president for the whole island"],"hint":"There was no one king of all Britain. Different tribes had their own leaders.","steps":["The Romans later wrote about many British tribes.","Those tribes did not form one united kingdom.","So Iron Age Britain was many tribes, not one kingdom."]},
+{"topic":"stone","diff":"hard","bite":"stone","text":"Which statement about the early Stone Age is fair?","ans":"People moved with the seasons to find food","wrongs":["Everyone lived at Skara Brae","Everyone was a Roman citizen","Everyone worked in a factory"],"hint":"Skara Brae is Neolithic. The earlier Palaeolithic and Mesolithic people were hunter-gatherers.","steps":["Farming had not started yet.","Groups followed animals and seasonal plants.","So people moved with the seasons to find food."]},
+{"topic":"romans","diff":"easy","bite":"romans","text":"Emperor Claudius sent the Roman army to invade Britain in...","ans":"43 CE","wrongs":["793 CE","1066 CE","1819 CE"],"hint":"This invasion began the lasting Roman occupation of Britain. 43 CE is the year to remember.","steps":["Julius Caesar had come earlier, but he did not stay.","Claudius's invasion was in 43 CE.","So the answer is 43 CE."]},
+{"topic":"romans","diff":"easy","bite":"romans","text":"Which wall did the Romans build across northern Britain?","ans":"Hadrian's Wall","wrongs":["the Great Wall of China","the Berlin Wall","Stonehenge"],"hint":"Emperor Hadrian ordered a frontier wall. It runs near the border of what is now England and Scotland.","steps":["The wall was a Roman frontier, not a modern border wall.","It is in Britain, so it is not the Great Wall of China.","The name is Hadrian's Wall."]},
+{"topic":"romans","diff":"easy","bite":"romans","text":"Roman towns in Britain were known for...","ans":"baths and straight roads","wrongs":["pyramids and papyrus boats","only tents and no roads","longships and runes"],"hint":"Romans built roads, baths, forts and towns such as Londinium.","steps":["Town life included public baths.","Roman roads were often straight.","So the answer is baths and straight roads."]},
+{"topic":"romans","diff":"medium","bite":"romans","text":"Who led a rebellion against the Romans in Britain around 60 CE?","ans":"Boudica","wrongs":["Alfred the Great","Tutankhamun","Stamford Raffles"],"hint":"Boudica was queen of the Iceni. Her revolt was about 60 or 61 CE.","steps":["The Iceni lived in eastern Britain.","Boudica led them against Roman towns.","So the answer is Boudica."]},
+{"topic":"romans","diff":"medium","bite":"romans","text":"Julius Caesar landed in Britain in 55 and 54 BCE. What is true?","ans":"He did not make Britain a lasting Roman province","wrongs":["He built Hadrian's Wall","He became Singapore's first president","He started the Iron Age in 800 BCE"],"hint":"Caesar's visits were expeditions. The lasting conquest began under Claudius in 43 CE.","steps":["55 and 54 BCE are before 43 CE.","Caesar left. Roman rule was not settled then.","So he did not make Britain a lasting Roman province."]},
+{"topic":"romans","diff":"medium","bite":"romans","text":"Roman rule in Britain came to an end around...","ans":"410 CE","wrongs":["43 CE","793 CE","1965 CE"],"hint":"By about 410 CE the Roman army and Roman government had left Britain. It was not a single night when every Roman vanished.","steps":["43 CE is when the Claudian invasion began.","Roman Britain lasted for centuries after that.","Rule ended around 410 CE."]},
+{"topic":"romans","diff":"hard","bite":"romans","text":"Hadrian's Wall was begun in...","ans":"122 CE","wrongs":["43 CE","410 CE","1066 CE"],"hint":"Hadrian visited Britain and work on the wall started in 122 CE.","steps":["43 CE is the invasion, not the wall.","410 CE is near the end of Roman rule.","The wall was begun in 122 CE."]},
+{"topic":"romans","diff":"hard","bite":"romans","text":"What did the Romans call London?","ans":"Londinium","wrongs":["Jorvik","Singapura","Athens"],"hint":"Londinium was the Roman town by the Thames. Jorvik is the later Viking name for York.","steps":["London already existed as a Roman town.","Its Roman name was Londinium.","Jorvik, Singapura and Athens are different places."]},
+{"topic":"romans","diff":"hard","bite":"romans","text":"Where did the Roman emperor live while Britain was a province?","ans":"Rome, not in a British village","wrongs":["in every British farmhouse","in a pyramid at Giza","in a Viking longship"],"hint":"Britain was a province. The emperor's capital was Rome.","steps":["A province is ruled from the centre of the empire.","Governors ran Britain day to day.","The emperor lived in Rome, not in a British village."]},
+{"topic":"saxons","diff":"easy","bite":"saxons","text":"Anglo-Saxon settlers came to Britain...","ans":"after Roman rule ended","wrongs":["before the Stone Age","during Tutankhamun's reign","in 1965"],"hint":"After Roman government ended, people from north-west Europe settled in Britain. We call them Anglo-Saxons.","steps":["Roman rule faded around 410 CE.","Angles, Saxons and Jutes arrived in the centuries after that.","So they came after Roman rule ended."]},
+{"topic":"saxons","diff":"easy","bite":"saxons","text":"Which names are Anglo-Saxon kingdoms?","ans":"Wessex, Mercia and Northumbria","wrongs":["Athens, Sparta and Olympia","Egypt, Nubia and Punt","Johor, Temasek and Melaka"],"hint":"Britain was split into several Anglo-Saxon kingdoms. Wessex, Mercia and Northumbria were three of them.","steps":["There was not one kingdom at first.","Wessex was in the south and west, Mercia in the midlands, Northumbria in the north.","Those are Anglo-Saxon kingdoms."]},
+{"topic":"saxons","diff":"easy","bite":"saxons","text":"Sutton Hoo in Suffolk is famous for...","ans":"an Anglo-Saxon ship burial","wrongs":["a Roman aqueduct","a Maya codex","Raffles's 1819 treaty"],"hint":"A buried ship and rich grave goods were found at Sutton Hoo. It is an Anglo-Saxon royal-style burial.","steps":["Sutton Hoo is in England, not Egypt or Central America.","The grave was a ship under a mound.","So it is an Anglo-Saxon ship burial."]},
+{"topic":"saxons","diff":"medium","bite":"saxons","text":"Augustine arrived in Kent in 597 CE in order to...","ans":"spread Christianity","wrongs":["build Hadrian's Wall","sign the 1819 Singapore treaty","invent bronze"],"hint":"Pope Gregory I sent Augustine to the Anglo-Saxons. He landed in Kent in 597.","steps":["597 CE is after the Romans and before the Viking raid on Lindisfarne.","Augustine's mission was religious.","He came to spread Christianity."]},
+{"topic":"saxons","diff":"medium","bite":"saxons","text":"Alfred the Great was...","ans":"King of Wessex who fought the Vikings","wrongs":["the pharaoh who built the Great Pyramid","the first President of Singapore","the emperor who invaded Britain in 43 CE"],"hint":"Alfred ruled Wessex in the late 800s. He defended his kingdom against the Vikings. He was not the first king of all England.","steps":["Wessex was an Anglo-Saxon kingdom.","Alfred fought Viking armies and later made peace.","So he was King of Wessex who fought the Vikings."]},
+{"topic":"saxons","diff":"medium","bite":"saxons","text":"The Anglo-Saxons spoke a language that grew into English. It is called...","ans":"Old English","wrongs":["hieroglyphs","only Latin","modern Mandarin"],"hint":"Old English is the early form of English. It is not the same as modern English, but it is the ancestor of it.","steps":["Latin was the language of Roman writing.","Anglo-Saxon speech was Germanic.","That language is called Old English."]},
+{"topic":"saxons","diff":"hard","bite":"saxons","text":"Who is often called the first king of all England?","ans":"Athelstan","wrongs":["Boudica","Claudius","Howard Carter"],"hint":"Alfred was King of Wessex. His grandson Athelstan ruled a kingdom that covered England from about 927.","steps":["Alfred did not rule every English kingdom.","Athelstan came later, in the 900s.","He is often called the first king of all England."]},
+{"topic":"saxons","diff":"hard","bite":"saxons","text":"The Sutton Hoo ship burial dates from about...","ans":"the early 600s CE","wrongs":["43 CE","1819 CE","1965 CE"],"hint":"The burial is early Anglo-Saxon, around the 600s, long after the Roman invasion and long before Raffles.","steps":["43 CE is the Roman invasion.","Sutton Hoo's objects fit the early 600s.","So the date is the early 600s CE."]},
+{"topic":"saxons","diff":"hard","bite":"saxons","text":"Who sent Augustine to Kent?","ans":"Pope Gregory I","wrongs":["Emperor Claudius","Sultan Hussein","Pharaoh Khufu"],"hint":"Gregory was pope in Rome. He sent Augustine and a group of monks in 597.","steps":["Augustine did not invent the mission alone.","The pope who sent him was Gregory I.","Claudius, Hussein and Khufu belong to other times and places."]},
+{"topic":"vikings","diff":"easy","bite":"vikings","text":"The Vikings came from...","ans":"Norway, Denmark and Sweden","wrongs":["Egypt, Greece and Rome","Mexico, Belize and Guatemala","only Singapore"],"hint":"Those three countries are in Scandinavia. Viking travellers set out from there.","steps":["Scandinavia is in northern Europe.","Norway, Denmark and Sweden are the Scandinavian homelands linked with the Vikings.","So that is where they came from."]},
+{"topic":"vikings","diff":"easy","bite":"vikings","text":"In 793 CE Vikings raided the monastery at...","ans":"Lindisfarne","wrongs":["Giza","Olympia","Stonehenge"],"hint":"Lindisfarne is an island monastery off the north-east coast of England. The 793 raid is a famous start of the Viking age in Britain.","steps":["793 CE is the date to remember.","The target was a Christian monastery.","Its name is Lindisfarne."]},
+{"topic":"vikings","diff":"easy","bite":"vikings","text":"The fast ships used by Vikings are called...","ans":"longships","wrongs":["pyramids","steam trains","chariots"],"hint":"A longship was narrow, wooden and powered by oars and a sail.","steps":["Vikings travelled by sea.","Their famous war and travel ships are longships.","Pyramids, trains and chariots are not ships."]},
+{"topic":"vikings","diff":"medium","bite":"vikings","text":"Which statement about Vikings is fair?","ans":"Some settled and farmed, as well as raiding","wrongs":["Every Viking was a Roman emperor","They all lived inside pyramids","None of them ever farmed"],"hint":"Raids are only part of the story. Many Vikings settled, traded and farmed.","steps":["The raid on Lindisfarne was real.","Later, Vikings made homes in Britain, including in the north and east.","So some settled and farmed, as well as raiding."]},
+{"topic":"vikings","diff":"medium","bite":"vikings","text":"Jorvik was the Viking name for...","ans":"York","wrongs":["London","Athens","Singapore"],"hint":"York had been the Roman town Eboracum. Under the Vikings it was known as Jorvik.","steps":["Jorvik is in northern England.","It is the same city as York.","It is not London, Athens or Singapore."]},
+{"topic":"vikings","diff":"medium","bite":"vikings","text":"The area of England where Viking settlement and law were strongest is called...","ans":"the Danelaw","wrongs":["Hadrian's Wall","the Valley of the Kings","the East India Company"],"hint":"After fighting the Vikings, Alfred and later kings left a large northern and eastern area under Viking influence. That area is the Danelaw.","steps":["Dane refers to the Vikings from Denmark and the wider Viking settlers.","Law means the rules used there.","The name is the Danelaw."]},
+{"topic":"vikings","diff":"hard","bite":"vikings","text":"Alfred's army defeated Guthrum at the Battle of Edington in...","ans":"878 CE","wrongs":["793 CE","1066 CE","1942 CE"],"hint":"Edington was in 878. Afterwards Alfred and Guthrum made peace, and Guthrum was baptised.","steps":["793 is the Lindisfarne raid, earlier than Edington.","1066 is the Norman Conquest, later.","Edington was in 878 CE."]},
+{"topic":"vikings","diff":"hard","bite":"vikings","text":"After the raid on Lindisfarne, Viking contact with Britain...","ans":"continued, and many Vikings later settled","wrongs":["ended forever in 793","moved entirely to ancient Egypt","became the Roman invasion of 43 CE"],"hint":"793 was an early raid, not the end. Settlement, trade and war carried on for a long time.","steps":["One raid does not finish a whole age.","Vikings later ruled places such as Jorvik.","So contact continued, and many Vikings later settled."]},
+{"topic":"vikings","diff":"hard","bite":"vikings","text":"Horned helmets and Vikings: what do historians say?","ans":"Warriors did not normally wear horned helmets","wrongs":["Every warrior had to wear horns by Roman law","Horned helmets were the main Iron Age farm tool","Hadrian ordered horns on every longship"],"hint":"The horned Viking helmet is a later story and costume idea. Real Viking battle helmets were not normally horned.","steps":["Pictures of horned Vikings come mostly from modern times and old operas.","Archaeologists have not found that warriors normally wore horns.","So warriors did not normally wear horned helmets."]},
+{"topic":"egypt","diff":"easy","bite":"egypt","text":"Ancient Egyptian civilisation grew along the...","ans":"River Nile","wrongs":["River Thames","Amazon River","Singapore River"],"hint":"The Nile gave water and fertile soil in a dry land. Egypt's towns and farms followed the river.","steps":["Egypt is in north-east Africa.","The river that runs through it is the Nile.","So the answer is the River Nile."]},
+{"topic":"egypt","diff":"easy","bite":"egypt","text":"The ruler of ancient Egypt was called a...","ans":"pharaoh","wrongs":["Viking jarl","Roman governor only","Maya scribe"],"hint":"Pharaoh is the title used for the king of Egypt. A pharaoh was treated as a very powerful, god-like ruler.","steps":["Egypt was a kingdom.","Its ruler's title is pharaoh.","A jarl, a Roman governor and a scribe are different roles."]},
+{"topic":"egypt","diff":"easy","bite":"egypt","text":"The picture writing of ancient Egypt is called...","ans":"hieroglyphs","wrongs":["runes","the Maya calendar","Roman numerals"],"hint":"Hieroglyphs use pictures and symbols. They were carved and painted on tombs and temples, and written on papyrus.","steps":["Runes belong to other northern cultures.","Roman numerals are I, V and X.","Egyptian picture writing is hieroglyphs."]},
+{"topic":"egypt","diff":"medium","bite":"egypt","text":"The Great Pyramid at Giza was built for which pharaoh?","ans":"Khufu","wrongs":["Tutankhamun","Cleopatra","Alfred the Great"],"hint":"The Great Pyramid is Khufu's tomb from the Old Kingdom. Tutankhamun was buried much later in the Valley of the Kings.","steps":["Giza is by the Nile, near modern Cairo.","The largest pyramid there belongs to Khufu.","Tutankhamun, Cleopatra and Alfred are not its owner."]},
+{"topic":"egypt","diff":"medium","bite":"egypt","text":"Howard Carter found Tutankhamun's tomb in...","ans":"1922","wrongs":["43 CE","1819","1965"],"hint":"Carter, working with Lord Carnarvon, found the tomb in the Valley of the Kings in 1922.","steps":["Tutankhamun was a young pharaoh of the New Kingdom.","His tomb stayed hidden for centuries.","It was found in 1922."]},
+{"topic":"egypt","diff":"medium","bite":"egypt","text":"Why was the Rosetta Stone so useful?","ans":"It showed the same text in more than one script","wrongs":["It was a Viking longship","It was a map of Hadrian's Wall","It was a Singapore treaty"],"hint":"The stone has hieroglyphs, Demotic and Greek. Matching them helped scholars read hieroglyphs.","steps":["People had lost the ability to read hieroglyphs.","The stone repeated one decree in different scripts.","So it showed the same text in more than one script."]},
+{"topic":"egypt","diff":"hard","bite":"egypt","text":"Who was usually buried in a pyramid?","ans":"Some pharaohs, especially in the Old Kingdom","wrongs":["Every farmer in Egypt","Only pet cats","Every Viking in Britain"],"hint":"Pyramids were royal tombs. Most Egyptians had much simpler burials. Later pharaohs often used hidden rock tombs.","steps":["Building a pyramid was for the most powerful rulers.","Ordinary people were not each given a pyramid.","So the answer is some pharaohs, especially in the Old Kingdom."]},
+{"topic":"egypt","diff":"hard","bite":"egypt","text":"Mummification was meant to...","ans":"preserve the body","wrongs":["melt the body in the Nile","turn the body into bronze","send the body to Athens"],"hint":"Bodies were dried, wrapped and buried so they would last. Jars held some of the organs.","steps":["Egyptians believed the body mattered after death.","Salts and wrappings slowed decay.","So mummification was meant to preserve the body."]},
+{"topic":"egypt","diff":"hard","bite":"egypt","text":"The yearly Nile flood mattered because it...","ans":"spread fertile soil for crops","wrongs":["stopped farming forever","turned the whole desert into ice","washed away every pyramid"],"hint":"Flood water left black silt on the fields. Farmers planted in that soil after the water went down.","steps":["Egypt has very little rain.","The river rose each year and then fell.","The silt it left was fertile soil for crops."]},
+{"topic":"greece","diff":"easy","bite":"greece","text":"Ancient Greece was divided into...","ans":"city-states such as Athens and Sparta","wrongs":["one pyramid kingdom","one Viking empire","a single Stone Age hillfort"],"hint":"A city-state, or polis, had its own city, farmland and government. Athens and Sparta were two famous ones.","steps":["Greece was not one united country for most of this period.","Athens and Sparta ran their own affairs.","So Greece was divided into city-states such as Athens and Sparta."]},
+{"topic":"greece","diff":"easy","bite":"greece","text":"The ancient Olympic Games were held at...","ans":"Olympia","wrongs":["Stonehenge","Jorvik","Singapore"],"hint":"Olympia was a religious site for Zeus in Greece. The games were part of a festival there.","steps":["The games were Greek, not British or Viking.","Their home was Olympia.","Stonehenge, Jorvik and Singapore are other places."]},
+{"topic":"greece","diff":"easy","bite":"greece","text":"Athena was...","ans":"a Greek goddess linked with Athens","wrongs":["an Egyptian god of mummification","a Viking god of longships","a Maya maize god"],"hint":"Athens is named in her honour. The Parthenon was her temple. Anubis and Odin are gods from other cultures.","steps":["Greek city-states had patron gods.","Athena was the protector of Athens.","So she was a Greek goddess linked with Athens."]},
+{"topic":"greece","diff":"medium","bite":"greece","text":"In ancient Athens, who could take part in democracy?","ans":"Free adult male citizens","wrongs":["Every enslaved person","Only children under ten","The pharaoh of Egypt"],"hint":"Athenian democracy was real, but it was limited. Women, enslaved people and foreigners did not vote.","steps":["Citizens met to vote on some decisions.","You had to be a free man and a citizen.","So the voters were free adult male citizens."]},
+{"topic":"greece","diff":"medium","bite":"greece","text":"Sparta was especially famous for...","ans":"hard military training","wrongs":["building the Great Pyramid","writing only in hieroglyphs","running the East India Company"],"hint":"Spartan boys were trained for war from a young age. Sparta was not a democracy like Athens.","steps":["Athens and Sparta were rivals.","Sparta's reputation was its army.","So it was famous for hard military training."]},
+{"topic":"greece","diff":"medium","bite":"greece","text":"The Parthenon in Athens is...","ans":"a temple built for Athena","wrongs":["Hadrian's Wall","a Maya palace","Raffles's trading post"],"hint":"It stands on the Acropolis. It was a temple, not a castle or a market.","steps":["The Acropolis is the high citadel of Athens.","The Parthenon honours Athena.","So it is a temple built for Athena."]},
+{"topic":"greece","diff":"hard","bite":"greece","text":"The first Olympic Games are traditionally dated to...","ans":"776 BCE","wrongs":["43 CE","793 CE","1965 CE"],"hint":"776 BCE is the traditional Greek date, counted in Olympiads. It is a tradition, not a modern stopwatch record.","steps":["The games were already ancient by Roman times.","The usual starting date given by the Greeks is 776 BCE.","43 CE, 793 CE and 1965 are much later."]},
+{"topic":"greece","diff":"hard","bite":"greece","text":"The Trojan War, as told by Homer, is best treated as...","ans":"legend, not a simple diary of events","wrongs":["a Maya codex","the Domesday Book","Raffles's 1819 treaty"],"hint":"Homer's Iliad is a poem. There may have been wars at Troy, but the story of gods and heroes is legend.","steps":["Homer was a poet, not a news reporter.","Gods and heroes fill the story.","So it is legend, not a simple diary of events."]},
+{"topic":"greece","diff":"hard","bite":"greece","text":"Alexander, who built a huge empire in the 300s BCE, came from...","ans":"Macedon","wrongs":["Wessex","Orkney","Johor"],"hint":"Macedon was a kingdom to the north of the old Greek city-states. Alexander was its king, not an Athenian voter.","steps":["He became king of Macedon in 336 BCE.","His empire reached far beyond Greece.","So he came from Macedon."]},
+{"topic":"maya","diff":"easy","bite":"maya","text":"The ancient Maya lived in...","ans":"southern Mexico and Central America","wrongs":["only Britain","only Egypt","only Norway"],"hint":"Maya cities were in places that are now Mexico, Guatemala, Belize and nearby countries.","steps":["This is not a European civilisation.","The region is Mesoamerica.","So they lived in southern Mexico and Central America."]},
+{"topic":"maya","diff":"easy","bite":"maya","text":"A staple food of the Maya was...","ans":"maize, or corn","wrongs":["only Viking salted fish","papyrus from the Nile","only roast swan"],"hint":"Maize was so important that Maya stories explain how people were made from it.","steps":["Farmers grew crops in the rainforest region.","The main grain was maize.","So the staple food was maize, or corn."]},
+{"topic":"maya","diff":"easy","bite":"maya","text":"Maya cities are known for their...","ans":"stone pyramids and temples","wrongs":["only Viking longships","only Roman baths","only Iron Age hillforts"],"hint":"Temples often stood on tall stepped pyramids, around plazas.","steps":["Maya builders used stone.","Important buildings included pyramids and temples.","Longships, Roman baths and hillforts belong to other places."]},
+{"topic":"maya","diff":"medium","bite":"maya","text":"Maya writing used...","ans":"glyphs, and books called codices","wrongs":["only Viking runes","no writing at all","only modern printed English"],"hint":"Glyphs could be carved in stone. Folding books, called codices, were made of bark paper. Most were later destroyed, but a few survive.","steps":["The Maya were not a people without writing.","Signs are called glyphs.","Books of those signs are codices."]},
+{"topic":"maya","diff":"medium","bite":"maya","text":"Around 800 to 900 CE, many Classic Maya cities grew weak. What else is true?","ans":"Maya people did not all vanish","wrongs":["Every Maya person disappeared in one day","They all moved to Stonehenge","They became the Roman army"],"hint":"Some southern cities were abandoned. Maya people carried on in other places, and millions of Maya people are alive today.","steps":["A change in the cities is not the same as a whole people disappearing.","Life continued in the northern lowlands and elsewhere.","So Maya people did not all vanish."]},
+{"topic":"maya","diff":"medium","bite":"maya","text":"The Maya number system was...","ans":"based on 20 and included a zero","wrongs":["based only on 2, with no zero","the same as Roman numerals","only tallies up to five"],"hint":"A dot was one and a bar was five. A shell-like sign stood for zero. Groups went up in twenties.","steps":["Twenty was the base, a bit like ten is our base.","Zero let them write large place values.","So the system was based on 20 and included a zero."]},
+{"topic":"maya","diff":"hard","bite":"maya","text":"The Maya should not be confused with...","ans":"the Aztecs or the Incas","wrongs":["other Maya cities only","farmers who grew maize","people who built temples"],"hint":"The Aztecs were a later empire in central Mexico. The Incas were in the Andes of South America. The Maya were a different civilisation.","steps":["All three are American civilisations, but they are not the same.","The Incas lived along the Andes, far to the south.","So the Maya should not be confused with the Aztecs or the Incas."]},
+{"topic":"maya","diff":"hard","bite":"maya","text":"The 2012 \"end of the world\" story came from...","ans":"a misreading of a Maya calendar cycle","wrongs":["a prophecy that the Nile would freeze","the date Roman Britain began","Singapore's independence day"],"hint":"A Long Count cycle ended and a new one began. That is a calendar turning, not a prediction that the world would stop.","steps":["The Maya used more than one calendar.","One big cycle finished in 2012.","People misread that cycle as the end of the world."]},
+{"topic":"maya","diff":"hard","bite":"maya","text":"Which statement is true today?","ans":"Millions of Maya people are alive today","wrongs":["No Maya people survived after 900 CE","The Maya exist only in myths","Every Maya person became a pharaoh"],"hint":"Maya languages and communities continue in Mexico and Central America.","steps":["The Classic cities changing is not an extinction.","Maya families still live in the region.","So millions of Maya people are alive today."]},
+{"topic":"singapore","diff":"easy","bite":"sg","text":"In which year did Stamford Raffles agree a British trading post in Singapore?","ans":"1819","wrongs":["1299","1942","1965"],"hint":"The year is 1819. People already lived on the island, which had older names including Temasek and Singapura. Raffles did not find an empty island. BBC Bitesize KS2 has no Singapore topic, so the link opens the KS2 History page.","steps":["Raffles worked for the British East India Company.","He made an agreement with local rulers in 1819.","So the year is 1819."]},
+{"topic":"singapore","diff":"easy","bite":"sg","text":"Before Raffles arrived, the island was already known as...","ans":"Temasek and Singapura","wrongs":["Londinium and Jorvik","Olympia and Sparta","Skara Brae and Stonehenge"],"hint":"Temasek and Singapura are older names. Singapura is linked to words meaning lion city. The island was not empty in 1819. Bitesize has no Singapore page, so the link is the KS2 History hub.","steps":["Traders and local people knew the island before the British trading post.","Two historic names are Temasek and Singapura.","Londinium, Olympia and Skara Brae are somewhere else."]},
+{"topic":"singapore","diff":"easy","bite":"sg","text":"Singapore became an independent country on...","ans":"9 August 1965","wrongs":["15 February 1942","6 February 1819","31 August 1957"],"hint":"9 August 1965 is the day Singapore separated from Malaysia. It is National Day. 31 August 1957 is a different country's independence day, Malaya's. The Bitesize link is the KS2 History page because there is no Singapore topic.","steps":["1819 is Raffles's trading post, not independence.","1942 is the fall of Singapore to Japan.","Independence was on 9 August 1965."]},
+{"topic":"singapore","diff":"medium","bite":"sgwar","text":"British forces in Singapore surrendered to Japan on...","ans":"15 February 1942","wrongs":["9 August 1965","6 February 1819","8 December 1941"],"hint":"The Japanese invasion of Malaya began in December 1941. Singapore itself fell on 15 February 1942. Bitesize has no Singapore page. This link is the KS2 Second World War topic, the war in which Singapore was occupied.","steps":["8 December 1941 is when the Malayan campaign began, not the fall of Singapore.","The surrender was the following February.","The date is 15 February 1942."]},
+{"topic":"singapore","diff":"medium","bite":"sgwar","text":"The Japanese occupation of Singapore lasted...","ans":"from 1942 to 1945","wrongs":["from 1819 to 1824","from 1963 to 1965","from 43 CE to 410 CE"],"hint":"Occupation began when Singapore fell in 1942 and ended when Japan was defeated in 1945. Life was very hard for many people. The link is the KS2 Second World War topic, the closest Bitesize page.","steps":["1942 is the fall of Singapore.","1945 is the end of the Second World War.","So the occupation lasted from 1942 to 1945."]},
+{"topic":"singapore","diff":"medium","bite":"sg","text":"Singapore was part of Malaysia during...","ans":"1963 to 1965","wrongs":["1819 to 1942","1942 to 1945","43 CE to 410 CE"],"hint":"Singapore joined Malaysia in 1963 and became independent on 9 August 1965. Bitesize has no Singapore topic, so the link opens KS2 History.","steps":["The Malaysia years were short.","They began in 1963 and ended in 1965.","1942 to 1945 was the Japanese occupation, not Malaysia."]},
+{"topic":"singapore","diff":"hard","bite":"sg","text":"Who was the first prime minister of Singapore?","ans":"Lee Kuan Yew","wrongs":["Stamford Raffles","William Farquhar","Yusof Ishak"],"hint":"Lee Kuan Yew became prime minister in 1959 and was prime minister at independence in 1965. Raffles was not a prime minister. Farquhar was the first British Resident. Yusof Ishak was the first president. The link is the KS2 History page.","steps":["Prime minister and president are different jobs.","Raffles and Farquhar belong to the 1800s colonial post.","The first prime minister was Lee Kuan Yew."]},
+{"topic":"singapore","diff":"hard","bite":"sg","text":"Who was the first president of independent Singapore?","ans":"Yusof Ishak","wrongs":["Lee Kuan Yew","Stamford Raffles","Sultan Hussein"],"hint":"Yusof Ishak became president when Singapore became independent in 1965. Lee Kuan Yew was prime minister, not president. The Bitesize link is the KS2 History hub.","steps":["Independence was in 1965.","The head of state was the president.","The first president was Yusof Ishak."]},
+{"topic":"singapore","diff":"hard","bite":"sg","text":"In 1819 Raffles was working for...","ans":"the British East India Company","wrongs":["the Japanese army","the Maya council of Tikal","the Roman Senate"],"hint":"The East India Company was a British trading company. Raffles agreed the post with local rulers, including Sultan Hussein and the Temenggong. The island was already lived in. Bitesize has no Singapore page, so this opens KS2 History.","steps":["1819 is long before the Japanese occupation.","Raffles was a company official, not a Roman or a Maya ruler.","He worked for the British East India Company."]}
+];
+const SPELLING=[
+{"topic":"cious","diff":"easy","bite":"cious","text":"Which spelling is correct? The meaning is: very valuable.","ans":"precious","wrongs":["pretious","precius","preshous"],"hint":"The \"shus\" ending after a short vowel sound is often -cious. Precious has cious, not tious.","steps":["Say the word slowly: pre-cious.","The ending is -cious.","So the spelling is precious."]},
+{"topic":"cious","diff":"easy","bite":"cious","text":"Which letters complete pre_____s, meaning very valuable?","ans":"ciou","wrongs":["tiou","cial","tial"],"hint":"The whole word is precious. The missing letters are c-i-o-u.","steps":["The word means very valuable.","It ends with -cious, so the gap is ciou before the final s.","The missing letters are ciou."]},
+{"topic":"cious","diff":"easy","bite":"cious","text":"Which spelling is correct? The meaning is: tasty.","ans":"delicious","wrongs":["delitious","delicous","delishus"],"hint":"Delicious describes taste. Like precious, it ends with -cious.","steps":["Listen for the \"shus\" ending.","This one uses c, not t.","The spelling is delicious."]},
+{"topic":"cious","diff":"medium","bite":"cious","text":"Which spelling is correct? The meaning is: not trusting.","ans":"suspicious","wrongs":["suspitious","suspicous","suspishous"],"hint":"If you suspect something, you may feel suspicious. The ending is -cious.","steps":["Suspect is the related word.","The adjective ends -cious.","So it is suspicious."]},
+{"topic":"cious","diff":"medium","bite":"cious","text":"Which letters complete vi_____s, meaning fierce or nasty?","ans":"ciou","wrongs":["tiou","sion","tion"],"hint":"Vicious ends with -cious. Do not switch in a t.","steps":["The meaning is fierce or nasty.","The \"shus\" spelling here is cious.","The missing letters are ciou."]},
+{"topic":"cious","diff":"medium","bite":"cious","text":"Which spelling is correct? The meaning is: meaning to do harm.","ans":"malicious","wrongs":["malitious","malicous","malishous"],"hint":"Malice becomes malicious. Keep the -cious ending.","steps":["The noun is malice.","The adjective adds -ious with a c.","The spelling is malicious."]},
+{"topic":"cious","diff":"hard","bite":"cious","text":"Which spelling is correct? The meaning is: awake and aware.","ans":"conscious","wrongs":["contious","conshous","conscius"],"hint":"Conscious means awake and aware. It is not the same word as conscience. The ending is -cious.","steps":["Conscious has sci in the middle and -cious at the end.","Conscience is the sense of right and wrong, a different word.","The spelling here is conscious."]},
+{"topic":"cious","diff":"hard","bite":"cious","text":"Which letters complete spa_____s, meaning having lots of room?","ans":"ciou","wrongs":["tiou","ceou","shou"],"hint":"Spacious comes from space. The ending is still -cious.","steps":["Space is the related word.","The adjective is spacious.","The missing letters are ciou."]},
+{"topic":"cious","diff":"hard","bite":"cious","text":"Which spelling is correct? The meaning is: kind and polite.","ans":"gracious","wrongs":["gratious","gracous","grayshous"],"hint":"Gracious uses the British-style -cious ending. It does not use a t.","steps":["Grace is the related word.","The adjective ends -cious.","So it is gracious."]},
+{"topic":"cious","diff":"medium","bite":"cious","kind":"say","text":"Listen, then type this word.","ans":"precious","clue":"Very valuable, like gold or a favourite toy.","hint":"Press Listen. If speech does not play, use the written clue and type the British spelling.","steps":["The word means very valuable.","It ends with -cious.","Type precious."]},
+{"topic":"tious","diff":"easy","bite":"cious","text":"Which spelling is correct? The meaning is: careful.","ans":"cautious","wrongs":["cauious","causious","caucious"],"hint":"Some \"shus\" words use -tious. Cautious is one of them. If the root has a t, like caution, keep the t.","steps":["The noun is caution.","The adjective keeps the t: cautious.","It is not cauious."]},
+{"topic":"tious","diff":"easy","bite":"cious","text":"Which letters complete ambi_____s, meaning keen to succeed?","ans":"tiou","wrongs":["ciou","tial","cial"],"hint":"Ambition has a t. Ambitious keeps it and ends -tious.","steps":["Think of ambition.","The ending is -tious, so the gap is tiou.","The missing letters are tiou."]},
+{"topic":"tious","diff":"easy","bite":"cious","text":"Which spelling is correct? The meaning is: good for the body as food.","ans":"nutritious","wrongs":["nutricious","nutritous","nutrishous"],"hint":"Nutrition has a t. Nutritious ends -tious.","steps":["The related word is nutrition.","Keep the t in the ending.","The spelling is nutritious."]},
+{"topic":"tious","diff":"medium","bite":"cious","text":"Which spelling is correct? The meaning is: spreading easily, like a cold.","ans":"infectious","wrongs":["infecious","infectous","infectshous"],"hint":"Infection ends with t-i-o-n. Infectious uses -tious.","steps":["Start from infection.","Change the noun ending to -tious.","The spelling is infectious."]},
+{"topic":"tious","diff":"medium","bite":"cious","text":"Which letters complete fic_____, meaning made up, not real?","ans":"titious","wrongs":["cious","sion","tial"],"hint":"Fiction becomes fictitious. The ending is -titious, which includes -tious.","steps":["The related word is fiction.","The adjective is fictitious.","The missing letters are titious."]},
+{"topic":"tious","diff":"medium","bite":"cious","text":"Which spelling is correct for \"full of superstition\"?","ans":"superstitious","wrongs":["supersticious","superstitous","superstishous"],"hint":"Superstition contains a t. The adjective is superstitious.","steps":["Find the t in superstition.","The adjective ends -tious.","So it is superstitious."]},
+{"topic":"tious","diff":"hard","bite":"cious","text":"Which spelling is correct? The meaning is: extremely tasty.","ans":"scrumptious","wrongs":["scrumcious","scrumptous","scrumshous"],"hint":"Scrumptious is an informal word for delicious. It happens to end -tious.","steps":["Do not copy delicious and put a c here.","This word uses -tious.","The spelling is scrumptious."]},
+{"topic":"tious","diff":"hard","bite":"cious","text":"Which letters complete preten_____, meaning someone who puts on airs?","ans":"tious","wrongs":["cious","tial","sion"],"hint":"Pretentious ends with -tious. The root is related to pretend.","steps":["The word is pretentious.","The ending is -tious.","The missing letters are tious."]},
+{"topic":"tious","diff":"hard","bite":"cious","text":"A root word with a t, such as caution, usually makes a \"shus\" adjective ending in...","ans":"-tious","wrongs":["-cious","-cial","-sion"],"hint":"Caution, ambition and infection all keep a t. Their adjectives end -tious. Precious does not come from a t-root, so it is -cious.","steps":["Look at the letter before the ending.","Caution keeps its t.","The ending is -tious."]},
+{"topic":"cial","diff":"easy","bite":"shun","text":"Which spelling is correct? The meaning is: out of the ordinary.","ans":"special","wrongs":["spetial","speshal","specail"],"hint":"The \"shun\" sound in special is spelt -cial.","steps":["Say spe-cial.","The ending is -cial, with a c.","The spelling is special."]},
+{"topic":"cial","diff":"easy","bite":"shun","text":"Which letters complete offi_____, meaning a formal person or a formal event?","ans":"cial","wrongs":["tial","sion","tion"],"hint":"Official ends with -cial.","steps":["Office is the related word.","The adjective and the noun use -cial.","The missing letters are cial."]},
+{"topic":"cial","diff":"easy","bite":"shun","text":"Which spelling is correct? The meaning is: to do with people together.","ans":"social","wrongs":["sotial","socail","soshal"],"hint":"Social ends -cial. It is linked to society.","steps":["The \"shun\" sound is at the end.","This word uses c, not t.","The spelling is social."]},
+{"topic":"cial","diff":"medium","bite":"shun","text":"Which spelling is correct? The meaning is: not natural.","ans":"artificial","wrongs":["artifitial","artifical","artifishal"],"hint":"Artificial has a c in the -cial ending, and a double f is not used.","steps":["Artifice is a related word.","The ending is -cial.","The spelling is artificial."]},
+{"topic":"cial","diff":"medium","bite":"shun","text":"Which letters complete cru_____, meaning extremely important?","ans":"cial","wrongs":["tial","sial","shal"],"hint":"Crucial ends -cial.","steps":["The word is crucial.","The \"shun\" spelling is cial.","The missing letters are cial."]},
+{"topic":"cial","diff":"medium","bite":"shun","text":"Which spelling is correct? The meaning is: to do with money.","ans":"financial","wrongs":["finantial","financal","finanshal"],"hint":"Finance leads to financial, with -cial.","steps":["Start with finance.","Add -ial, and the c is already there.","The spelling is financial."]},
+{"topic":"cial","diff":"hard","bite":"shun","text":"Which spelling is correct? The meaning is: extremely important.","ans":"crucial","wrongs":["crutial","crucail","crushal"],"hint":"Crucial uses -cial. One of the wrong options is repeated so look carefully: the correct ending is cial.","steps":["Important decisions can be called crucial.","The ending is -cial.","The word is crucial."]},
+{"topic":"cial","diff":"hard","bite":"shun","text":"The \"shun\" sound in special and official is spelt...","ans":"-cial","wrongs":["-tial","-sion","-tion"],"hint":"Special, official and social use -cial. Essential and partial use -tial instead.","steps":["Look at the letter before -ial.","Special has a c.","So the spelling is -cial."]},
+{"topic":"cial","diff":"hard","bite":"shun","text":"Which spelling is correct? The meaning is: helpful.","ans":"beneficial","wrongs":["benefital","beneficail","benefitial"],"hint":"Benefit drops the t when it becomes beneficial. The ending is -cial.","steps":["The related word is benefit.","The adjective is not benefitial.","The spelling is beneficial."]},
+{"topic":"tial","diff":"easy","bite":"shun","text":"Which spelling is correct? The meaning is: completely necessary.","ans":"essential","wrongs":["essencial","essenshal","essentail"],"hint":"Essential ends -tial. The t is part of the \"shun\" spelling.","steps":["The word means necessary.","The ending is -tial.","The spelling is essential."]},
+{"topic":"tial","diff":"easy","bite":"shun","text":"Which letters complete par_____, meaning only a part of something?","ans":"tial","wrongs":["cial","sion","shal"],"hint":"Partial comes from part, so the t stays: partial.","steps":["Part is inside the word.","The ending is -tial.","The missing letters are tial."]},
+{"topic":"tial","diff":"easy","bite":"shun","text":"Which spelling is correct? The meaning is: the first letter of a name.","ans":"initial","wrongs":["inicial","initail","inishal"],"hint":"An initial is the first letter of a name. It ends -tial.","steps":["Initial means first.","The \"shun\" ending is -tial.","The spelling is initial."]},
+{"topic":"tial","diff":"medium","bite":"shun","text":"Which spelling is correct? The meaning is: meant to be kept private.","ans":"confidential","wrongs":["confidencial","confidentail","confidenshal"],"hint":"Confidential ends -tial. It is linked to confidence, but the ending is not -cial.","steps":["The word has a t before the ending.","The ending is -tial.","The spelling is confidential."]},
+{"topic":"tial","diff":"medium","bite":"shun","text":"Which letters complete substan_____, meaning large or solid?","ans":"tial","wrongs":["cial","sion","ciel"],"hint":"Substantial ends -tial.","steps":["Substance is the related word.","The adjective is substantial.","The missing letters are tial."]},
+{"topic":"tial","diff":"medium","bite":"shun","text":"Which spelling is correct? The meaning is: falling very heavily, of rain.","ans":"torrential","wrongs":["torrencial","torrental","torrenshal"],"hint":"Torrential rain is very heavy rain. The ending is -tial.","steps":["Torrent is the related word.","The adjective ends -tial.","The spelling is torrential."]},
+{"topic":"tial","diff":"hard","bite":"shun","text":"Potential ends with which pattern?","ans":"-tial","wrongs":["-cial","-cious","-tion"],"hint":"Potential has a t in the \"shun\" ending.","steps":["Say po-ten-tial.","You can hear a t before the \"shul\" sound.","The pattern is -tial."]},
+{"topic":"tial","diff":"hard","bite":"shun","text":"Which spelling is correct? The meaning is: where people live.","ans":"residential","wrongs":["residencial","residentail","residenshal"],"hint":"Resident leads to residential, with -tial.","steps":["A resident lives in a place.","The adjective keeps the t.","The spelling is residential."]},
+{"topic":"tial","diff":"hard","bite":"shun","text":"Which letters complete sequen_____, meaning following in order?","ans":"tial","wrongs":["cial","sial","shal"],"hint":"Sequential ends -tial.","steps":["Sequence is the related word.","The adjective is sequential.","The missing letters are tial."]},
+{"topic":"antent","diff":"easy","bite":"suffix","text":"Which spelling is correct? The meaning is: quick to notice things.","ans":"observant","wrongs":["observent","observunt","observint"],"hint":"Observant ends -ant. The noun observance also uses a.","steps":["Watch carefully and you are observant.","The ending is -ant, not -ent.","The spelling is observant."]},
+{"topic":"antent","diff":"easy","bite":"suffix","text":"Which letters complete observ_____, the noun from observant?","ans":"ance","wrongs":["ence","ense","unce"],"hint":"Observant and observance share the letter a.","steps":["The adjective is observant.","The noun uses -ance.","The missing letters are ance."]},
+{"topic":"antent","diff":"easy","bite":"suffix","text":"Which spelling is correct? The meaning is: not guilty.","ans":"innocent","wrongs":["innocant","innocint","innosent"],"hint":"Innocent ends -ent. The noun innocence also uses e.","steps":["Innocent does not use -ant.","The vowel in the ending is e.","The spelling is innocent."]},
+{"topic":"antent","diff":"medium","bite":"suffix","text":"Which spelling is correct? The meaning is: a feeling of trust in yourself.","ans":"confidence","wrongs":["confidance","confidense","confidince"],"hint":"Confident and confidence use e. Do not switch to -ance.","steps":["The adjective is confident.","The noun is confidence.","Both use e, so the spelling is confidence."]},
+{"topic":"antent","diff":"medium","bite":"suffix","text":"Which letters complete toler_____, the noun from tolerant?","ans":"ance","wrongs":["ence","ents","ense"],"hint":"Tolerant uses a, so tolerance uses -ance.","steps":["Match the vowel in tolerant.","The noun ending is -ance.","The missing letters are ance."]},
+{"topic":"antent","diff":"medium","bite":"suffix","text":"Which spelling is correct? The meaning is: not needing others to do it for you.","ans":"independent","wrongs":["independant","independint","indeppendant"],"hint":"Independent ends -ent, and there is no double p. Independence uses the same e.","steps":["Depend is inside the word.","The ending is -ent.","The spelling is independent, with one p."]},
+{"topic":"antent","diff":"hard","bite":"suffix","text":"Which spelling is correct? The meaning is: doing as you are told.","ans":"obedience","wrongs":["obediunce","obediance","obediens"],"hint":"Obedient ends -ent, so the noun is obedience, not obediance.","steps":["Start from obedient.","Keep the e for the noun.","The spelling is obedience."]},
+{"topic":"antent","diff":"hard","bite":"suffix","text":"Which pair uses the same vowel?","ans":"relevant and relevance","wrongs":["innocent and innocance","tolerant and tolerence","observant and observence"],"hint":"If the adjective uses -ant, the noun usually uses -ance. If it uses -ent, the noun usually uses -ence.","steps":["Relevant ends -ant.","The noun is relevance.","Innocent would make innocence, not innocance."]},
+{"topic":"antent","diff":"hard","bite":"suffix","text":"Which letters complete exist_____, the noun from existent?","ans":"ence","wrongs":["ance","ense","ants"],"hint":"Existent and existence use e. Existence is also on the Year 5/6 word list.","steps":["The adjective is existent.","The noun ending is -ence.","The missing letters are ence."]},
+{"topic":"able","diff":"easy","bite":"suffix","text":"Which spelling is correct? The meaning is: feeling at ease.","ans":"comfortable","wrongs":["comfortible","comfortabel","comfertable"],"hint":"Comfort is a whole word, and comfortable uses -able. There is no single rule that always works, so learn this one.","steps":["The root is comfort.","The ending is -able.","The spelling is comfortable."]},
+{"topic":"able","diff":"easy","bite":"suffix","text":"Which letters complete enjoy_____, meaning full of enjoyment?","ans":"able","wrongs":["ible","eble","abel"],"hint":"Enjoy stands alone as a word. Enjoyable uses -able.","steps":["Enjoy is a complete word.","Add -able.","The missing letters are able."]},
+{"topic":"able","diff":"easy","bite":"suffix","text":"Which spelling is correct? The meaning is: able to happen.","ans":"possible","wrongs":["possable","possibel","posible"],"hint":"Possible does not come from a word \"poss\". It is one of the -ible words. It has a double s.","steps":["You cannot peel off -ible and leave a normal word.","The ending is -ible.","The spelling is possible, with a double s."]},
+{"topic":"able","diff":"medium","bite":"suffix","text":"Which spelling is correct? The meaning is: very unpleasant.","ans":"horrible","wrongs":["horrable","horible","horribel"],"hint":"Horrible uses -ible, like terrible. It has a double r.","steps":["This is an -ible word.","Double the r.","The spelling is horrible."]},
+{"topic":"able","diff":"medium","bite":"suffix","text":"Which letters complete ador_____, meaning easy to love?","ans":"able","wrongs":["ible","eble","abel"],"hint":"Adore is a whole word. Adorable keeps the e and adds -able.","steps":["The verb is adore.","Keep the e, then add -able.","The missing letters are able."]},
+{"topic":"able","diff":"medium","bite":"suffix","text":"Which spelling is correct? The meaning is: very bad.","ans":"terrible","wrongs":["terrable","terible","terribel"],"hint":"Terrible matches horrible: -ible, with a double r.","steps":["Do not use -able here.","There are two r letters.","The spelling is terrible."]},
+{"topic":"able","diff":"hard","bite":"suffix","text":"Which spelling is correct? The meaning is: easy to notice.","ans":"noticeable","wrongs":["noticable","noticeible","notiseable"],"hint":"Notice keeps the e before -able, so the c stays soft: noticeable.","steps":["Notice ends with a soft c.","Keep the e when you add -able.","The spelling is noticeable."]},
+{"topic":"able","diff":"hard","bite":"suffix","text":"Which spelling is correct? The meaning is: showing good sense.","ans":"sensible","wrongs":["sensable","senseible","sensibel"],"hint":"Sensible uses -ible. Sense does not simply take -able.","steps":["The meaning is having good sense.","The ending is -ible.","The spelling is sensible."]},
+{"topic":"able","diff":"hard","bite":"suffix","text":"Which ending completes visible?","ans":"-ible","wrongs":["-able","-uble","-eble"],"hint":"Visible, possible and horrible share -ible. There is no perfect rule, so group these words together.","steps":["Vision is related, but the adjective is not visionable.","The ending you can see is -ible.","So the ending is -ible."]},
+{"topic":"silent","diff":"easy","bite":"silent","text":"Which spelling is correct? The meaning is: a soldier in armour in old stories.","ans":"knight","wrongs":["nite","kight","knite"],"hint":"Knight has a silent k and a silent gh. Night, without the k, is a different word.","steps":["A knight is a mounted soldier in stories.","The silent letters are k and gh.","The spelling is knight."]},
+{"topic":"silent","diff":"easy","bite":"silent","text":"Which letter is silent at the start of write?","ans":"w","wrongs":["r","t","e"],"hint":"Write, wrist and wrong all begin with a silent w.","steps":["Say the word: it starts with the r sound.","The letter you write first is w.","That w is silent."]},
+{"topic":"silent","diff":"easy","bite":"silent","text":"Which spelling is correct? The meaning is: the thick digit on a hand.","ans":"thumb","wrongs":["thum","tumb","thumm"],"hint":"Thumb ends with a silent b, like lamb and climb.","steps":["You do not say the last letter.","The silent letter is b.","The spelling is thumb."]},
+{"topic":"silent","diff":"medium","bite":"silent","text":"Which spelling is correct? The meaning is: a feeling of not being sure.","ans":"doubt","wrongs":["dout","dowt","doupt"],"hint":"Doubt has a silent b. The related word dubious shows that b.","steps":["The b is not heard in doubt.","It is still written.","The spelling is doubt."]},
+{"topic":"silent","diff":"medium","bite":"silent","text":"Which letters complete _____nome, the garden statue?","ans":"g","wrongs":["k","n","gh"],"hint":"Gnome and gnaw start with a silent g.","steps":["The word sounds like \"nome\".","A g is written first.","The missing letter is g."]},
+{"topic":"silent","diff":"medium","bite":"silent","text":"Which spelling is correct? The meaning is: a fortified stone building.","ans":"castle","wrongs":["cassle","casel","castel"],"hint":"Castle has a silent t. Listen is another word with a silent t.","steps":["You say \"cass-ul\", but that is not the spelling.","The silent letter is t.","The spelling is castle."]},
+{"topic":"silent","diff":"hard","bite":"silent","text":"Which spelling is correct? The meaning is: land with water all around it.","ans":"island","wrongs":["iland","eyland","ilandd"],"hint":"Island has a silent s. The word isle shows the same s.","steps":["The s is not pronounced.","It sits after the i.","The spelling is island."]},
+{"topic":"silent","diff":"hard","bite":"silent","text":"Which spelling is correct? The meaning is: the season after summer.","ans":"autumn","wrongs":["autum","ortumn","autumne"],"hint":"Autumn ends with a silent n. Column and hymn do too.","steps":["The last sound is m.","An n is still written.","The spelling is autumn."]},
+{"topic":"silent","diff":"hard","bite":"silent","text":"Which letter is silent in sword?","ans":"w","wrongs":["s","d","o"],"hint":"Sword keeps a silent w, like write.","steps":["The spoken word starts with the s sound.","W is the second letter.","That w is silent."]},
+{"topic":"silent","diff":"easy","bite":"silent","kind":"say","text":"Listen, then type this word.","ans":"knight","clue":"A soldier in armour, often in a story about castles.","hint":"Press Listen and type the spelling, including the silent letters. Use the clue if speech does not play.","steps":["The clue is a soldier in armour.","There is a silent k and a silent gh.","Type knight."]},
+{"topic":"silent","diff":"medium","bite":"silent","kind":"say","text":"Listen, then type this word.","ans":"doubt","clue":"A feeling of not being sure.","hint":"The spoken word hides a b. Type every letter.","steps":["The meaning is not being sure.","Silent b sits after the ou.","Type doubt."]},
+{"topic":"silent","diff":"hard","bite":"silent","kind":"say","text":"Listen, then type this word.","ans":"autumn","clue":"The season after summer.","hint":"The last n is silent. British spelling is the same here as the usual school spelling.","steps":["This is a season.","It ends with a silent n.","Type autumn."]},
+{"topic":"eic","diff":"easy","bite":"spell","text":"Which spelling is correct? The meaning is: to be given something.","ans":"receive","wrongs":["recieve","receeve","resieve"],"hint":"Receive uses ei after c. This pattern fits these words. It is not a rule for every ie/ei word: science, weird and their do not follow \"i before e except after c\".","steps":["Look just after the c.","These letters are e then i.","The spelling is receive."]},
+{"topic":"eic","diff":"easy","bite":"spell","text":"Which letters complete rec_____t, meaning a note that proves you paid?","ans":"eip","wrongs":["iep","eep","ipe"],"hint":"Receipt has ei after c, and a silent p. The gap is eip.","steps":["The word is receipt.","After c comes ei, and there is a silent p.","The missing letters are eip."]},
+{"topic":"eic","diff":"easy","bite":"spell","text":"Which spelling is correct? The meaning is: the top surface of a room.","ans":"ceiling","wrongs":["cieling","ceeling","seiling"],"hint":"Ceiling has ei after c. Science is different: it is s-c-i, not ei.","steps":["A ceiling is overhead.","After the c, write ei.","The spelling is ceiling."]},
+{"topic":"eic","diff":"medium","bite":"spell","text":"Which spelling is correct? The meaning is: to trick someone.","ans":"deceive","wrongs":["decieve","deseive","deceeve"],"hint":"Deceive matches receive: ei after c.","steps":["The root is the same pattern as receive.","E comes before i.","The spelling is deceive."]},
+{"topic":"eic","diff":"medium","bite":"spell","text":"Which letters complete conc_____t, meaning too much pride?","ans":"ei","wrongs":["ie","ee","ea"],"hint":"Conceit has ei after c.","steps":["The word is conceit.","The vowel pair after c is ei.","The missing letters are ei."]},
+{"topic":"eic","diff":"medium","bite":"spell","text":"Which spelling is correct? The meaning is: the act of tricking someone.","ans":"deceit","wrongs":["deciet","deseit","deceet"],"hint":"Deceit is the noun from deceive. Keep ei after c.","steps":["Think of deceive.","The noun is deceit.","The vowel pair is ei."]},
+{"topic":"eic","diff":"hard","bite":"spell","text":"Which spelling is correct? The meaning is: to notice or become aware.","ans":"perceive","wrongs":["percieve","percieive","perseive"],"hint":"Perceive uses ei after c, like receive.","steps":["The ending sounds like receive.","Write ei after the c.","The spelling is perceive."]},
+{"topic":"eic","diff":"hard","bite":"spell","text":"Which word does NOT use the \"ei after c\" pattern?","ans":"science","wrongs":["receive","ceiling","deceive"],"hint":"Science is s-c-i-e-n-c-e. The \"i before e except after c\" saying fails for science, weird and their. Learn the ei-after-c words on their own.","steps":["Receive, ceiling and deceive do use ei after c.","Science spells the sound with sc and ie.","So the odd one out is science."]},
+{"topic":"eic","diff":"hard","bite":"spell","text":"Which letters complete perc_____ve?","ans":"ei","wrongs":["ie","ee","ea"],"hint":"Perceive puts ei after the c.","steps":["The full word is perceive.","After c comes ei.","The missing letters are ei."]},
+{"topic":"eic","diff":"easy","bite":"spell","kind":"say","text":"Listen, then type this word.","ans":"receive","clue":"To be given something.","hint":"Type the ei-after-c spelling. Use the clue if you cannot hear the word.","steps":["The meaning is to be given something.","After c, the vowels are ei.","Type receive."]},
+{"topic":"eic","diff":"hard","bite":"spell","kind":"say","text":"Listen, then type this word.","ans":"receipt","clue":"The paper a shop gives you after you pay.","hint":"Include the silent p and the ei after c.","steps":["This is the paper from a shop.","It has ei after c and a silent p.","Type receipt."]},
+{"topic":"homo","diff":"easy","bite":"homo","text":"Choose the word: Please put the bags over ___.","ans":"there","wrongs":["their","they're","thier"],"hint":"There is a place. Their means belonging to them. They're means they are.","steps":["The sentence is about a place.","The place word is there.","Their and they're mean something else."]},
+{"topic":"homo","diff":"easy","bite":"homo","text":"Choose the word: That toy is ___.","ans":"theirs","wrongs":["there's","their's","theres"],"hint":"Theirs means belonging to them. It has no apostrophe. There's means there is.","steps":["The sentence is about owning the toy.","Belonging to them is theirs.","Do not add an apostrophe."]},
+{"topic":"homo","diff":"easy","bite":"homo","text":"Choose the word: We ate ___ much cake.","ans":"too","wrongs":["to","two","tow"],"hint":"Too means more than enough, or also. Two is the number. To is the little word in \"go to school\".","steps":["The meaning is more than enough.","That word is too.","Two would mean the number 2."]},
+{"topic":"homo","diff":"medium","bite":"homo","text":"Choose the word: The ___ rode out at night.","ans":"knight","wrongs":["night","nite","knit"],"hint":"A knight is a person. Night is the time. Nite is not the British spelling of night.","steps":["The sentence needs a person who can ride.","That person is a knight.","Night is when it happened, but it does not fit the blank."]},
+{"topic":"homo","diff":"medium","bite":"homo","text":"Choose the word: I cannot tell ___ we should go.","ans":"whether","wrongs":["weather","wether","wheather"],"hint":"Whether introduces a choice. Weather is rain, sun and wind.","steps":["The sentence is about a choice, not the sky.","The word is whether.","Weather would be wrong here."]},
+{"topic":"homo","diff":"medium","bite":"homo","text":"Choose the word: She gave me good ___.","ans":"advice","wrongs":["advise","advize","addvice"],"hint":"Advice is the noun, with a c. Advise is the verb, with an s. In British English the noun sounds softer.","steps":["The blank is a thing she gave, so it is a noun.","The noun is advice.","Advise would mean the action of telling someone."]},
+{"topic":"homo","diff":"hard","bite":"homo","text":"Choose the word: The car stayed ___ at the lights.","ans":"stationary","wrongs":["stationery","stationry","staytionary"],"hint":"Stationary means still. Stationery is paper and envelopes. Remember: stationery has an e for envelopes.","steps":["The car is not moving.","Still is stationary, with an a.","Stationery would be paper."]},
+{"topic":"homo","diff":"hard","bite":"homo","text":"Choose the word: The head teacher is the school ___.","ans":"principal","wrongs":["principle","principel","princible"],"hint":"A principal is the person in charge, or the main thing. A principle is a rule or belief.","steps":["The sentence needs a person.","The person is the principal.","A principle is an idea, not the head teacher."]},
+{"topic":"homo","diff":"hard","bite":"homo","text":"Choose the word: We need extra football ___ for the match.","ans":"practice","wrongs":["practise","practiss","praktice"],"hint":"In British English, practice with a c is the noun. Practise with an s is the verb. \"Football practice\" is a noun here.","steps":["The blank is a thing you can have extra of, so it is a noun.","The noun spelling is practice.","Practise would be the verb, as in \"we practise every day\"."]},
+{"topic":"homo","diff":"easy","bite":"homo","kind":"say","text":"Listen, then type the word that means \"as well\" or \"more than enough\".","ans":"too","clue":"As well, or more than enough. Not the number 2.","hint":"You should hear \"too\". Type the three-letter spelling, not \"to\" or \"two\".","steps":["The meaning is as well, or more than enough.","It is not the number.","Type too."]},
+{"topic":"homo","diff":"hard","bite":"homo","kind":"say","text":"Listen, then type the word that means paper and envelopes.","ans":"stationery","clue":"Paper, pens and envelopes. Not the word that means standing still.","hint":"Stationery has an e, like envelope. Stationary means still.","steps":["The clue is paper and envelopes.","Use the e spelling.","Type stationery."]},
+{"topic":"statutory","diff":"easy","bite":"spell","text":"Which spelling is correct? The meaning is: the number 40.","ans":"forty","wrongs":["fourty","fortey","fourtey"],"hint":"Forty drops the u that you can see in four. Fourty is a common misspelling.","steps":["Four has a u. Forty does not.","The Year 5/6 word is forty.","So the spelling is forty."]},
+{"topic":"statutory","diff":"easy","bite":"spell","text":"Which spelling is correct? The meaning is: a person who lives next door.","ans":"neighbour","wrongs":["neighbor","naybour","neibour"],"hint":"British spelling uses neighbour, with our and ei.","steps":["The American spelling drops the u.","British English keeps our.","The spelling is neighbour."]},
+{"topic":"statutory","diff":"easy","bite":"spell","text":"Which letters complete q_____, a line of people waiting?","ans":"ueue","wrongs":["ue","eueu","ueu"],"hint":"Queue has five letters and four of them are the gap: ueue.","steps":["The word sounds like \"cue\".","It is spelt q-u-e-u-e.","The missing letters are ueue."]},
+{"topic":"statutory","diff":"medium","bite":"spell","text":"Which spelling is correct? The meaning is: to make room for someone.","ans":"accommodate","wrongs":["acommodate","accomodate","acomodate"],"hint":"Accommodate has two c letters and two m letters.","steps":["Count the double letters.","There are two c's and two m's.","The spelling is accommodate."]},
+{"topic":"statutory","diff":"medium","bite":"spell","text":"Which spelling is the British one?","ans":"marvellous","wrongs":["marvelous","marvellus","marvilous"],"hint":"British spelling is marvellous, with a double l. Marvelous is the American spelling.","steps":["This is a British spelling list.","Double the l.","The spelling is marvellous."]},
+{"topic":"statutory","diff":"medium","bite":"spell","text":"Which spelling is correct? The meaning is: playful in a slightly naughty way.","ans":"mischievous","wrongs":["mischievious","mischevious","mischivous"],"hint":"Mischievous has three syllables: mis-chie-vous. Do not add an extra i.","steps":["Say it in three beats, not four.","There is no i before the ous.","The spelling is mischievous."]},
+{"topic":"statutory","diff":"hard","bite":"spell","text":"Which spelling is the British one for a television show?","ans":"programme","wrongs":["program","programn","programe"],"hint":"A television programme uses the British spelling programme. Program is the usual spelling for computer code.","steps":["The question says a television show, not computer code.","British English uses programme.","The spelling is programme."]},
+{"topic":"statutory","diff":"hard","bite":"spell","text":"Which spelling is correct in British English?","ans":"recognise","wrongs":["recognize","reconise","recoganise"],"hint":"The Year 5/6 list uses recognise, with -ise. Recognize is the American spelling.","steps":["British school spelling uses -ise here.","Do not drop the g.","The spelling is recognise."]},
+{"topic":"statutory","diff":"hard","bite":"spell","text":"Which spelling is correct? The meaning is: the way a word is spoken.","ans":"pronunciation","wrongs":["pronounciation","pronunciasion","pronuncation"],"hint":"Pronunciation does not keep the \"ounce\" of pronounce. It is pro-nun-ci-a-tion.","steps":["Say pro-nun-ciation.","There is no o after the n.","The spelling is pronunciation."]},
+{"topic":"statutory","diff":"easy","bite":"spell","kind":"say","text":"Listen, then type this Year 5/6 word.","ans":"queue","clue":"A line of people waiting.","hint":"Type the British spelling. The clue is there if speech will not play.","steps":["The clue is a line of people.","The word has five letters.","Type queue."]},
+{"topic":"statutory","diff":"medium","bite":"spell","kind":"say","text":"Listen, then type this Year 5/6 word.","ans":"neighbour","clue":"A person who lives next door.","hint":"Use the British our spelling.","steps":["The clue is a person next door.","British spelling keeps our.","Type neighbour."]},
+{"topic":"statutory","diff":"hard","bite":"spell","kind":"say","text":"Listen, then type this Year 5/6 word.","ans":"accommodate","clue":"To make room for someone.","hint":"Two c letters and two m letters. Use the clue if you cannot hear it.","steps":["The clue is to make room for someone.","Double c and double m.","Type accommodate."]},
+{"topic":"statutory","diff":"hard","bite":"spell","kind":"say","text":"Listen, then type this Year 5/6 word.","ans":"rhythm","clue":"A pattern of beats in music.","hint":"Rhythm starts with rh and has no vowel letter you might expect. The clue is the fallback.","steps":["The clue is a pattern of beats.","The letters are r-h-y-t-h-m.","Type rhythm."]}
+];
+
+function spellQ(topic,diff,text,ans,o){o=o||{};const b=bite(o.bite||'spell');
+ return {topic,diff,reward:REWARD[diff],type:'spell',text,ans:String(ans),clue:o.clue||'',speak:o.speak||String(ans),hint:o.hint,steps:o.steps,link:b.link,linkName:b.linkName,long:true};}
+function bankPick(bank,topic,diff){let pool=bank.filter(function(s){return s.topic===topic&&s.diff===diff&&(!forceMC||s.kind!=='say');});
+ if(!pool.length)return null;const s=pick(pool);
+ if(s.kind==='say')return spellQ(topic,diff,s.text,s.ans,{bite:s.bite,hint:s.hint,steps:s.steps,clue:s.clue,speak:s.ans});
+ return mcQ(topic,diff,s.text,s.ans,s.wrongs,{bite:s.bite,hint:s.hint,steps:s.steps,long:(s.text||'').length>68});}
+const HISTORY_TOPICS={};HISTORY.forEach(function(s){HISTORY_TOPICS[s.topic]=1;});
+const SPELLING_TOPICS={};SPELLING.forEach(function(s){SPELLING_TOPICS[s.topic]=1;});
+Object.keys(HISTORY_TOPICS).forEach(function(t){G[t]=function(d){return bankPick(HISTORY,t,d);};});
+Object.keys(SPELLING_TOPICS).forEach(function(t){G[t]=function(d){return bankPick(SPELLING,t,d);};});
+let forceMC=false;
 function make(topic,diff){for(let i=0;i<60;i++){let q;try{q=G[topic](diff);}catch(e){q=null;}
  if(!q||q.diff!==diff||q.reward!==REWARD[diff])continue;
+ if(forceMC&&q.type!=='mc')continue;
  if(!q.hint||!q.steps||q.steps.length<2)continue;
  if(!q.link||q.link.indexOf('https://www.bbc.co.uk/bitesize/')!==0)continue;
  if(q.type==='num'&&!isFinite(q.ans))continue;
  if(q.type==='mc'&&(!q.choices||q.choices.length<4||q.choices.indexOf(q.ans)<0))continue;
  if(q.type==='mc'&&new Set(q.choices).size!==q.choices.length)continue;
- q.subject=SCIENCE_TOPICS[topic]?'Science':'Maths';
+ if(q.type==='spell'&&(!q.ans||!q.clue))continue;
+ if(q.type!=='num'&&q.type!=='mc'&&q.type!=='spell')continue;
+ q.subject=HISTORY_TOPICS[topic]?'History':SPELLING_TOPICS[topic]?'Spelling':SCIENCE_TOPICS[topic]?'Science':'Maths';
  return q;}return null;}
 
 const LEVELS=[
@@ -1051,7 +1353,7 @@ const LEVELS=[
  {key:'m2',subject:'maths',mode:'quiz',tycoon:true,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',bonus:2,diffs:['easy','medium','medium'],
   desc:'Times tables to 12×12, division, remainders, factors, primes, squares, cubes and short division',
   topics:{times:3,division:2,remainders:2,factors:2,shortdiv:2,x10:1}},
- {key:'m3',subject:'maths',mode:'quiz',tycoon:false,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
+ {key:'m3',subject:'maths',mode:'quiz',tycoon:false,bomb:true,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
   desc:'Long multiplication, fractions, decimals, percentages and money. Pick easy, medium or hard. A bomb is ticking',
   topics:{multiply:2,shortdiv:1,fractions:3,decimals:2,percent:2,money:2}},
  {key:'m4',subject:'maths',mode:'quiz',tycoon:false,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
@@ -1083,14 +1385,48 @@ const LEVELS=[
   topics:{forces:10}},
  {key:'s5',subject:'science',mode:'quiz',tycoon:false,cls:'l5',name:'Life & growing',tag:'Science',bonus:3,diffs:['easy','medium','hard'],
   desc:'Life cycles, plant reproduction, and how humans change to old age',
-  topics:{living:5,humans:5}}
+  topics:{living:5,humans:5}},
+
+ {key:'h1',subject:'history',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'History',bonus:2,diffs:['easy'],
+  desc:'Slice the right history answer. Easy drops fast, hard drops slowly.',
+  topics:{stone:2,romans:2,saxons:1,vikings:1,egypt:1,greece:1,maya:1,singapore:1}},
+ {key:'h2',subject:'history',mode:'quiz',tycoon:false,cls:'l3',name:'Britain long ago',tag:'History',bonus:2,diffs:['easy'],
+  desc:'Stone Age to Iron Age, the Romans, the Anglo-Saxons and the Vikings',
+  topics:{stone:3,romans:3,saxons:2,vikings:2}},
+ {key:'h3',subject:'history',mode:'quiz',tycoon:false,cls:'l4',name:'Ancient worlds',tag:'History',bonus:2,diffs:['easy'],
+  desc:'Ancient Egypt, Ancient Greece, the Maya, and Singapore',
+  topics:{egypt:3,greece:3,maya:2,singapore:2}},
+ {key:'h4',subject:'history',mode:'treasure',tycoon:false,cls:'l8',name:'Treasure Hunt',tag:'History',bonus:3,diffs:['easy'],
+  desc:'Find the chest with the right history answer. A wrong chest is a dud',
+  topics:{stone:1,romans:1,saxons:1,vikings:1,egypt:1,greece:1,maya:1,singapore:1}},
+ {key:'h5',subject:'history',mode:'quiz',tycoon:false,bomb:true,cls:'l5',name:'History Mastermind',tag:'History',bonus:3,diffs:['easy'],
+  desc:'A mix of every history topic, with a bomb ticking for the whole round',
+  topics:{stone:2,romans:2,saxons:1,vikings:1,egypt:1,greece:1,maya:1,singapore:1}},
+ {key:'p1',subject:'spelling',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Spelling',bonus:2,diffs:['easy'],
+  desc:'Slice the correct British spelling. Easy drops fast, hard drops slowly.',
+  topics:{cious:1,tious:1,cial:1,tial:1,antent:1,able:1,silent:1,eic:1,homo:1,statutory:1}},
+ {key:'p2',subject:'spelling',mode:'quiz',tycoon:false,cls:'l2',name:'Spelling patterns',tag:'Spelling',bonus:2,diffs:['easy'],
+  desc:'-cious and -tious, -cial and -tial, -ant/-ent and -able/-ible. Some words are spoken aloud.',
+  topics:{cious:2,tious:2,cial:2,tial:2,antent:1,able:1}},
+ {key:'p3',subject:'spelling',mode:'quiz',tycoon:false,cls:'l4',name:'Words and homophones',tag:'Spelling',bonus:2,diffs:['easy'],
+  desc:'Silent letters, ei after c, homophones and the Year 5/6 word list. Listen and type when a word is spoken.',
+  topics:{silent:3,eic:2,homo:3,statutory:2}},
+ {key:'p4',subject:'spelling',mode:'treasure',tycoon:false,cls:'l8',name:'Treasure Hunt',tag:'Spelling',bonus:3,diffs:['easy'],
+  desc:'The right spelling is in the treasure chest. A wrong spelling is a dud',
+  topics:{cious:1,tious:1,cial:1,tial:1,antent:1,able:1,silent:1,eic:1,homo:1,statutory:1}},
+ {key:'p5',subject:'spelling',mode:'quiz',tycoon:false,bomb:true,cls:'l5',name:'Spelling Mastermind',tag:'Spelling',bonus:3,diffs:['easy'],
+  desc:'Mixed spelling with a bomb ticking. Multiple choice only, so you can answer fast.',
+  topics:{cious:1,tious:1,cial:1,tial:1,antent:1,able:1,silent:1,eic:1,homo:1,statutory:1}}
 ];
+function qid(q){return q.text+'||'+q.ans+'||'+q.type;}
 function buildRound(L){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);
- const qs=[],seen=new Set();let g=0;
- while(qs.length<10&&g++<700){const t=pick(bag);const q=make(t,pick(L.diffs));if(!q||seen.has(q.text))continue;
-  const nMC=qs.filter(x=>x.type==='mc').length;if(g<500&&((q.type==='num'&&qs.length-nMC>=7)||(q.type==='mc'&&nMC>=6)))continue;
-  seen.add(q.text);qs.push(q);}
- return qs;}
+ const qs=[],seen=new Set();let g=0;const prev=forceMC;if(needsMC(L))forceMC=true;const cap=L.subject==='maths'&&!needsMC(L);
+ while(qs.length<10&&g++<900){const t=pick(bag);const q=make(t,pick(L.diffs));if(!q||seen.has(qid(q)))continue;
+  const nMC=qs.filter(x=>x.type==='mc').length;const nSay=qs.filter(x=>x.type==='spell').length;
+  if(cap&&g<500&&((q.type==='num'&&qs.length-nMC>=7)||(q.type==='mc'&&nMC>=6)))continue;
+  if(q.type==='spell'&&nSay>=3)continue;
+  seen.add(qid(q));qs.push(q);}
+ forceMC=prev;return qs;}
 
 const HOUSE=[
  {id:'plot',name:'Grassy plot',cost:0,say:'Your plot is ready to build on!'},
@@ -1146,7 +1482,7 @@ const SPK_ON='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#ff
 const SPK_OFF='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 9l6 6M22 9l-6 6" stroke="#f87171" stroke-width="2.6" stroke-linecap="round"/></svg>';
 function header(){const h=$('#hdr');
  if(!player){h.innerHTML=`<div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div><button class="hbtn" data-act="mute" aria-label="Sound on or off">${store.muted?SPK_OFF:SPK_ON}</button>`;return;}
- const t=titleFor(player.total);
+ const t=titleFor(lifetime());
  const mine=player.duel?currentRank(player.duel.wins||0):null;
  h.innerHTML=`<div class="who" data-act="home" style="cursor:pointer">${avatar(player.av,52)}<div><div class="nm">${mine?rankIcon(mine,22):''}<span>${esc(player.name)}</span></div><span class="pill t-${t}">${t}</span></div></div>
  <div class="spacer"></div><div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div>
@@ -1174,7 +1510,7 @@ function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','
 const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,PK=null,FL=null;
 const MM_SECS={easy:90,medium:60,hard:30};
 const MM_CLEAR={easy:15,medium:30,hard:45};
-const MM_MIX={easy:['easy','easy','easy','medium'],medium:['medium','medium','hard'],hard:['hard','hard','medium']};
+const MM_MIX={easy:['easy','easy','easy','easy'],medium:['medium','medium','medium'],hard:['hard','hard','hard']};
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
 function stopBomb(){if(bombTimer){clearInterval(bombTimer);bombTimer=null;}}
 function stopFall(){if(fallRAF){cancelAnimationFrame(fallRAF);fallRAF=0;}}
@@ -1189,15 +1525,21 @@ function stopParkourLoop(){if(pkRAF){cancelAnimationFrame(pkRAF);pkRAF=0;}}
 function stopFlappyLoop(){if(flapRAF){cancelAnimationFrame(flapRAF);flapRAF=0;}}
 function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
 function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
-let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='';
-function showStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;header();
+let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='',gateNext=null;
+function redeemHTML(){const bal=player?fmt(player.total):'0';
+ return `<div class="redeem" id="redeempanel"><div><h3>Redeem Robux</h3><p>In the bank: <b id="redeemBal">${bal} R$</b></p><p class="muted">Cash in turns the whole balance into a real-world reward. Gear, badges, the house and scores stay.</p></div><div class="row"><button class="btn green" type="button" data-act="cashin">Cash in</button><button class="btn" type="button" data-act="redeemhist">History</button></div></div>`;}
+function showStart(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;header();
  if(subjectTab==='duel'){loadDuelPick();renderDuelHome();startMsg='';return;}
  const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
- const blurb=subjectTab==='science'
-  ?'Year 5 science. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. After 14 seconds it is half points. Help is a pass.'
-  :'A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). After the timer, a right answer is worth half. Number Ninja is a slicing game. The house builds only in Times Table Tycoon.';
- app.innerHTML=`<div class="start">
+ const blurbs={
+  maths:'A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). After the timer, a right answer is worth half. Pick a difficulty before you play. The house builds only in Times Table Tycoon.',
+  science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. After 14 seconds it is half points. Help is a pass.',
+  history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 1, 2 or 3 R$.',
+  spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.'
+ };
+ const blurb=blurbs[subjectTab]||blurbs.maths;
+ app.innerHTML=`${redeemHTML()}<div class="start">
  <div class="hero"><h1>Block<br>Maths<br>Quest</h1><div class="avatarBox">${avatar(player?player.av:null,180)}</div>
   <div style="color:#fff;font-size:18px;text-shadow:0 2px 0 #14142b;line-height:1.4">Get questions right. Earn 1, 2 or 3 ${COIN}. Build your block house!</div></div>
  <div class="card"><h2>Who's playing?</h2>
@@ -1210,7 +1552,8 @@ function showStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLo
   <div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
  </div></div>`;
  startMsg='';}
-function tabsHTML(){return `<div class="tabs"><button class="tab ${subjectTab==='maths'?'on':''}" data-act="tab" data-t="maths">Maths</button><button class="tab ${subjectTab==='science'?'on':''}" data-act="tab" data-t="science">Science</button><button class="tab ${subjectTab==='duel'?'on':''}" data-act="tab" data-t="duel">Duel</button></div>`;}
+function tabsHTML(){const tabs=[['maths','Maths'],['science','Science'],['history','History'],['spelling','Spelling'],['duel','Duel']];
+ return `<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${subjectTab===id?'on':''}" data-act="tab" data-t="${id}">${label}</button>`).join('')}</div>`;}
 function bombLeft(){if(!Q||!Q.bomb)return 0;return Q.bomb.limit-(performance.now()-Q.bomb.t0)/1000;}
 function paintBomb(){if(!Q||!Q.bomb)return;const left=Math.max(0,bombLeft());const sec=Math.ceil(left-1e-6);const bar=$('#bombbar'),secs=$('#bombsecs'),fill=$('#fusefill'),spark=$('#spark'),lab=$('#bomblabel');
  if(secs)secs.textContent=String(Math.max(0,sec));
@@ -1230,27 +1573,47 @@ function bombTick(){if(!Q||!Q.bomb||Q.bomb.dead){stopBomb();return;}
 function startBomb(){stopBomb();if(!Q||!Q.bomb)return;Q.bomb.shown=null;paintBomb();bombTimer=setInterval(bombTick,100);}
 function bombSVG(){return `<svg viewBox="0 0 64 64" aria-hidden="true"><rect x="30" y="8" width="6" height="12" fill="#44403c" stroke="#000" stroke-width="2"/><circle cx="33" cy="8" r="5" fill="#fde047" stroke="#000" stroke-width="2"/><circle cx="32" cy="40" r="18" fill="#292524" stroke="#000" stroke-width="3"/><circle cx="25" cy="34" r="4" fill="#57534e"/><rect x="20" y="24" width="12" height="4" rx="1" fill="#a8a29e" transform="rotate(-28 26 26)"/></svg>`;}
 function bombHTML(){return `<div class="bombbar" id="bombbar"><div class="bombico">${bombSVG()}</div><div class="bombmeta"><div class="bomblabel" id="bomblabel">Bomb</div><div class="fuse"><i id="fusefill"></i><b id="spark"></b></div></div><div class="bombsecs" id="bombsecs" aria-live="polite"></div></div>`;}
-function showMmPick(){stopBomb();header();
- const card=(d,note)=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" data-act="mmgo" data-d="${d}"><span class="tag">${DNAME[d]} · ${MM_SECS[d]}s bomb</span><span class="t">${DNAME[d]}</span><span class="d">${note} Finish the round for +${MM_CLEAR[d]} R$.</span></button>`;
- app.innerHTML=`<div class="card" style="max-width:760px;margin:12px auto"><h2>Mixed Mastermind</h2>
-  <p class="muted">Same topics as before: long multiplication, short division, fractions, decimals, percentages and money. Easy is a gentler mix. Medium keeps the usual mix. Hard is tougher. The bomb runs for the whole round.</p>
-  <div class="levels">${card('easy','Mostly easy questions.')}${card('medium','The usual mix.')}${card('hard','Mostly hard questions. Short fuse.')}</div>
-  <button class="btn" data-act="home" style="margin-top:12px">Menu</button></div>`;
- showRoundBar('<button class="btn" data-act="home">Menu</button>');}
-function beginMastermind(diff){if(!MM_SECS[diff])diff='medium';mmPick=diff;const L=LEVELS.find(l=>l.key==='m3');if(!player){showStart();return;}
+function savedDiff(key){const d=player&&player.pickDiff&&player.pickDiff[key];return d==='medium'||d==='hard'?d:'easy';}
+function rememberDiff(key,d){if(!player)return;if(!player.pickDiff||typeof player.pickDiff!=='object')player.pickDiff={};if(d!=='easy'&&d!=='medium'&&d!=='hard')d='easy';player.pickDiff[key]=d;save();}
+function needsMC(L){return !!(L&&(L.mode==='ninja'||L.mode==='treasure'||L.bomb));}
+function diffBlurb(L,d){const name=DNAME[d].toLowerCase();
+ if(L.mode==='ninja')return d==='easy'?'Answers drop fast.':d==='hard'?'Answers drop slowly, so there is time to think.':'Answers fall at a steady speed.';
+ if(L.mode==='flappy')return d==='easy'?'The pipe moves slowly.':d==='hard'?'The pipe moves faster.':'The pipe moves at a medium pace.';
+ if(L.mode==='parkour')return 'Every question is '+name+'. The obstacle course still gets harder each stage.';
+ if(L.mode==='treasure')return 'All five questions are '+name+'.';
+ if(L.bomb)return 'Every question is '+name+'. The bomb runs for '+MM_SECS[d]+'s. Finish for +'+MM_CLEAR[d]+' R$.';
+ if(L.tycoon)return 'Every question is '+name+'. House bricks match the Robux.';
+ return 'Every question is '+name+'. A right answer pays '+REWARD[d]+' R$.';}
+function showDiffPick(L){stopBomb();header();const cur=savedDiff(L.key);
+ const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="diffgo" data-k="${L.key}" data-d="${d}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${REWARD[d]} R$</span><span class="t">${DNAME[d]}</span><span class="d">${esc(diffBlurb(L,d))}</span></button>`;
+ app.innerHTML=`<div class="card" id="diffpick" style="max-width:820px;margin:12px auto"><h2>${esc(L.name)}</h2><p class="muted">Pick Easy, Medium or Hard. Every question this time will match that choice.</p><div class="levels">${card('easy')}${card('medium')}${card('hard')}</div><button class="btn" type="button" data-act="home" style="margin-top:12px;min-height:64px">Menu</button></div>`;
+ showRoundBar('<button class="btn" type="button" data-act="home">Menu</button>');}
+function launchLevel(L){const d=savedDiff(L.key);
+ if(L.bomb){beginMastermind(d,L.key);return;}
+ if(L.mode==='parkour'){openParkour();return;}
+ if(L.mode==='flappy'){flappyStart();return;}
+ if(L.mode==='treasure'){treasureStart(L.key);return;}
+ newRound(L,d);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
+function showMmPick(L){L=L||LEVELS.find(l=>l.key==='m3');stopBomb();header();const cur=savedDiff(L.key);
+ const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="mmgo" data-d="${d}" data-k="${L.key}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${MM_SECS[d]}s bomb</span><span class="t">${DNAME[d]}</span><span class="d">Every question is ${DNAME[d].toLowerCase()}. Finish the round for +${MM_CLEAR[d]} R$.</span></button>`;
+ app.innerHTML=`<div class="card" id="diffpick" style="max-width:820px;margin:12px auto"><h2>${esc(L.name)}</h2>
+  <p class="muted">${esc(L.desc)} The bomb runs for the whole round. Every question matches the difficulty you pick.</p>
+  <div class="levels">${card('easy')}${card('medium')}${card('hard')}</div>
+  <button class="btn" type="button" data-act="home" style="margin-top:12px;min-height:64px">Menu</button></div>`;
+ showRoundBar('<button class="btn" type="button" data-act="home">Menu</button>');}
+function beginMastermind(diff,key){const L=LEVELS.find(l=>l.key===(key||'m3'));if(!L){showStart();return;}
+ if(!MM_SECS[diff])diff=savedDiff(L.key);mmPick=diff;rememberDiff(L.key,diff);if(!player){showStart();return;}
  newRound(L,diff);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
-function newRound(L,bombDiff){stopBomb();let src=L,bomb=null;
- if(L.key==='m3'){const d=MM_SECS[bombDiff]?bombDiff:(MM_SECS[mmPick]?mmPick:'medium');mmPick=d;src=Object.assign({},L,{diffs:MM_MIX[d].slice()});bomb={diff:d,limit:MM_SECS[d],t0:performance.now(),dead:false,shown:null,half:0};}
+function newRound(L,bombDiff){stopBomb();const d=REWARD[bombDiff]?bombDiff:savedDiff(L.key);rememberDiff(L.key,d);
+ const src=Object.assign({},L,{diffs:[d]});
+ const bomb=L.bomb?{diff:d,limit:MM_SECS[d],t0:performance.now(),dead:false,shown:null,half:0}:null;
  Q={L,qs:buildRound(src),i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb,finishing:false,potion:L.key==='m4',paid:L.key==='m4'?{}:null};
  if(bomb)startBomb();}
 function startRound(key){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
  const L=LEVELS.find(l=>l.key===key);if(!L)return;
- if(inp)inp.blur();setPlayer(nm);subjectTab=L.subject==='science'?'science':'maths';
- if(L.key==='m3'){showMmPick();return;}
- if(L.key==='m6'){openParkour();return;}
- if(L.key==='m7'){flappyStart();return;}
- if(L.key==='m8'){treasureStart();return;}
- newRound(L);if(!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
+ if(inp)inp.blur();setPlayer(nm);subjectTab=L.subject||'maths';
+ if(L.bomb){showMmPick(L);return;}
+ showDiffPick(L);}
 function roundQuestionPay(){return Q.earn.easy+Q.earn.medium+Q.earn.hard;}
 function pipClass(k){if(k===Q.i)return 'cur';if(k>Q.i)return '';if(Q.res[k]===true)return 'ok';if(Q.res[k]==='pass')return 'pass';return 'no';}
 function isNinja(){return !!(Q&&Q.L&&Q.L.mode==='ninja');}
@@ -1351,7 +1714,8 @@ function beginHalf(){if(!Q||Q.locked||Q.half)return;Q.half=true;const q=Q.qs[Q.i
  const pill=document.querySelector('.dpill');if(pill)pill.textContent=Q.duel?`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ · half damage`:`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ now`;
  const lbl=document.querySelector('.speedlbl span');if(lbl)lbl.textContent="Time's up! Half points now";
  const s=$('#secs');if(s)s.textContent=GRACE+'s';const b=$('#sbar');if(b)b.style.transform='scaleX(1)';}
-function answerArea(q){if(q.type==='mc')return `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-act="choose" data-k="${k}">${c}</button>`).join('')}</div>`;
+function answerArea(q){if(q.type==='spell')return `<div class="spellbox"><p class="muted" style="margin:0">Press Listen, then type the British spelling.</p><div class="row"><button class="btn blue" type="button" data-act="speak">Listen</button><button class="btn grey" type="button" data-act="spellclue">Written clue</button></div><p id="spellclue" class="hidden"></p><input class="name" id="spellin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type the word"><button class="btn green" type="button" data-act="spellok">Check</button></div>`;
+ if(q.type==='mc')return `<div class="choices">${q.choices.map((c,k)=>`<button class="choice" data-act="choose" data-k="${k}">${c}</button>`).join('')}</div>`;
  const keys=['7','8','9','del','4','5','6','-','1','2','3','ok','0','.'];
  return `<div class="disp" id="disp">${q.prefix?`<span class="aff">${q.prefix}</span>`:''}<span id="dv"></span><span class="cur"></span>${q.suffix?`<span class="aff">${q.suffix}</span>`:''}</div>
  <div class="pad">${keys.map(k=>k==='ok'?`<button class="key go" data-act="key" data-k="ok" aria-label="Enter">✓</button>`:k==='del'?`<button class="key fn" data-act="key" data-k="del" aria-label="Delete">⌫</button>`:k==='-'?`<button class="key fn" data-act="key" data-k="-" aria-label="Minus">−</button>`:k==='.'?`<button class="key fn" data-act="key" data-k=".">.</button>`:`<button class="key" data-act="key" data-k="${k}" ${k==='0'?'style="grid-column:span 2"':''}>${k}</button>`).join('')}</div>`;}
@@ -1373,7 +1737,7 @@ function applyGrade(q,ok,opts){opts=opts||{};
  const bon=[];let gained=0;let built=null;
  const late=!!(ok&&Q.half);
  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best||0,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);
-  gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;player.total+=gained;
+  gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;gainRobux(gained);
   if(Q.paid)Q.paid[Q.i]=gained;
   if(q.diff==='hard'&&player.duel){player.duel.hardRight=(player.duel.hardRight||0)+1;grantBadges();}
   if(isTycoon()){const before=houseProgress(player.house.pts);player.house.pts+=gained;const after=houseProgress(player.house.pts);
@@ -1388,7 +1752,7 @@ function applyGrade(q,ok,opts){opts=opts||{};
  logAttempt(q,kind,opts.given!=null?opts.given:opts.val);save();
  return {ok,late,gained,bon,built,replay:false};}
 function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;stopTimer();stopFall();
- let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
+ let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
  const g=applyGrade(q,ok,{timeout:opts.timeout,fell:opts.fell,given:opts.given,val:val});
  const late=g.late,gained=g.gained,bon=g.bon,built=g.built;
  if(q.type==='mc')document.querySelectorAll('.choice').forEach(b=>{const c=q.choices[+b.dataset.k];if(c===q.ans)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim');});
@@ -1407,8 +1771,8 @@ function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[
  if(ok){sfx.correct();if(built){setTimeout(sfx.build,280);if(houseProgress(player.house.pts).done){setTimeout(sfx.fanfare,500);confetti();}}else if(Q.streak>=3)setTimeout(sfx.streak,300);coinBurst(fb,Math.max(1,Math.round(gained)));floatText(fb,'+'+fmt(gained)+' R$');Q.auto=setTimeout(nextQ,built?3200:2400);}
  else{sfx.wrong();if(fb.scrollIntoView)fb.scrollIntoView({block:'nearest',behavior:'smooth'});}}
 function nextQ(){if(!Q)return;clearAuto();Q.i++;if(Q.i>=Q.qs.length)finish();else showQ();}
-function logBombLoss(){if(!player.mistakes)player.mistakes=[];const diff=Q.bomb?Q.bomb.diff:'hard';
- player.mistakes.unshift({d:new Date().toISOString(),subject:'Maths',topic:'Mixed Mastermind',topicId:'m3',diff,mode:'Mixed Mastermind',question:'The bomb exploded before the round finished.',given:'bomb',ans:'Finish the round before the fuse runs out.'});
+function logBombLoss(){if(!player.mistakes)player.mistakes=[];const diff=Q.bomb?Q.bomb.diff:'hard';const subj=Q.L&&Q.L.subject==='history'?'History':Q.L&&Q.L.subject==='spelling'?'Spelling':Q.L&&Q.L.subject==='science'?'Science':'Maths';const name=Q.L?Q.L.name:'Mixed Mastermind';
+ player.mistakes.unshift({d:new Date().toISOString(),subject:subj,topic:name,topicId:Q.L?Q.L.key:'m3',diff,mode:name,question:'The bomb exploded before the round finished.',given:'bomb',ans:'Finish the round before the fuse runs out.'});
  if(player.mistakes.length>400)player.mistakes.length=400;}
 function bombExplode(){if(!Q||!Q.bomb||Q.bomb.dead||Q.finishing)return;
  if(Q.i>=Q.qs.length-1&&Q.res[Q.i]!=null){finish();return;}
@@ -1421,23 +1785,22 @@ function bombExplode(){if(!Q||!Q.bomb||Q.bomb.dead||Q.finishing)return;
  app.innerHTML=`<div class="card boomcard center" style="max-width:720px;margin:12px auto"><div class="blast"></div><h2>BOOM!</h2>
   <p style="font-size:22px;line-height:1.35">The bomb exploded. You did not finish the round, so there is no finish bonus.</p>
   <p style="font-size:22px">You keep the <b>${fmt(kept)} R$</b> already earned on answers.</p>
-  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn red" data-act="again" data-k="m3" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button></div></div>`;
- showRoundBar(`<button class="btn red" data-act="again" data-k="m3" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button>`);
+  <div class="row" style="justify-content:center;margin-top:12px"><button class="btn red" data-act="again" data-k="${L.key}" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button></div></div>`;
+ showRoundBar(`<button class="btn red" data-act="again" data-k="${L.key}" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button>`);
  Q=null;}
 function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
  if(Q.parkour){parkourStageClear();return;}
  if(Q.treasure){treasureClear();return;}
- Q.finishing=true;stopTimer();clearAuto();stopFall();stopBomb();clearChrome();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon;const before=player.total-roundQuestionPay();
- const clearBonus=Q.bomb?(MM_CLEAR[Q.bomb.diff]||0):0;const clearName=Q.bomb?DNAME[Q.bomb.diff]:'';
- const rb=L.bonus,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect+clearBonus;player.rounds++;
+ Q.finishing=true;stopTimer();clearAuto();stopFall();stopBomb();clearChrome();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon; const clearBonus=Q.bomb?(MM_CLEAR[Q.bomb.diff]||0):0;const clearName=Q.bomb?DNAME[Q.bomb.diff]:'';
+ const rb=L.bonus,perfect=score===Q.qs.length?3:0;const oldT=titleFor(lifetime()-roundQuestionPay());gainRobux(rb+perfect+clearBonus);player.rounds++;
  const earned=roundQuestionPay()+rb+perfect+clearBonus;
  player.history.unshift({d:new Date().toISOString(),lvl:L.tag+': '+L.name+(Q.bomb?' · '+clearName:''),score,of:Q.qs.length,earned});if(player.history.length>200)player.history.length=200;
- const newM=MILESTONES.filter(m=>player.total>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
+ const newM=MILESTONES.filter(m=>lifetime()>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
  if(Q.bomb&&Q.bomb.diff==='hard'){if(!player.mastermind)player.mastermind={hardClear:false};player.mastermind.hardClear=true;}
- const oldT=titleFor(before),newT=titleFor(player.total);save();header();window.scrollTo(0,0);
+ const newT=titleFor(lifetime());save();header();window.scrollTo(0,0);
  const rows=['easy','medium','hard'].filter(d=>Q.counts[d]).map(d=>`<tr><td>${DNAME[d]} questions (${Q.counts[d]})</td><td class="r">+${fmt(Q.earn[d])}</td></tr>`).join('');
  const h0=houseProgress(Q.houseAtStart),h1=houseProgress(player.house.pts);const grew=h1.built.slice(h0.built.length);
- const again=`<button class="btn green" data-act="again" data-k="${L.key}" ${Q.bomb?`data-d="${Q.bomb.diff}"`:''}>Next round</button>`;
+ const roundDiff=Q.bomb?Q.bomb.diff:((Q.qs[0]&&Q.qs[0].diff)||savedDiff(L.key));const again=`<button class="btn green" data-act="again" data-k="${L.key}" data-d="${roundDiff}">Next round</button>`;
  app.innerHTML=`<div class="grid2"><div class="card center"><h2>Round complete!</h2><div class="muted" style="font-size:20px">${L.tag}: ${L.name}${Q.bomb?' · '+clearName:''}</div>
   <div class="score">${score}/${Q.qs.length}</div>${clearBonus?`<div class="clearbonus">${clearName} finish! +${clearBonus} R$</div>`:''}<div style="font-size:22px">${perfect?'PERFECT ROUND!':score>=8?'Amazing work!':score>=5?'Great effort!':'Keep practising, you have got this!'}</div>
   ${passed?`<div class="muted" style="font-size:18px;margin-top:6px">${passed} passed · no Robux</div>`:''}
@@ -1460,10 +1823,10 @@ function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
  showRoundBar(`${again}<button class="btn" data-act="home">Menu</button>`);
  checkAchievements();
  Q=null;}
-function nextMilestoneHtml(){const nx=MILESTONES.find(m=>player.total<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>player.total>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((player.total-lo)/(nx.at-lo)*100));
- return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ (${fmt(nx.at-player.total)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
+function nextMilestoneHtml(){const t=lifetime();const nx=MILESTONES.find(m=>t<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>t>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((t-lo)/(nx.at-lo)*100));
+ return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ earned (${fmt(nx.at-t)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
 function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
-function leaveRound(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;}
+function leaveRound(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;}
 function showHouse(){if(!needPlayer())return;leaveRound();header();const st=houseProgress(player.house.pts);
  app.innerHTML=`<div class="housepage"><div class="card"><h2 style="margin-bottom:8px">🏠 ${esc(player.name)}'s house</h2>
   ${houseSVG(player.house.pts)}
@@ -1477,15 +1840,16 @@ function showBank(){if(!needPlayer())return;leaveRound();header();const p=player
  <div class="stats"><div class="stat"><div class="v"><span class="coin big">R$</span>${fmt(p.total)}</div><div class="k">Robux points</div></div>
  <div class="stat"><div class="v">${p.rounds}</div><div class="k">Rounds played</div></div><div class="stat"><div class="v">${acc}%</div><div class="k">Correct answers</div></div><div class="stat"><div class="v">🏠 ${st.built.length}/${HOUSE.length}</div><div class="k">House parts</div></div></div>
  ${nextMilestoneHtml()}
- <h3 style="margin-top:18px">History</h3>
+ <p class="muted">In the bank: ${fmt(p.total)} R$. Earned in all: ${fmt(lifetime())} R$. Cashed in: ${fmt(p.redeemed||0)} R$.</p>
+ <h3 style="margin-top:18px">Rounds</h3>
  ${p.history.length?`<div style="max-height:360px;overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th>Level</th><th class="r">Score</th><th class="r">R$ earned</th></tr>
  ${p.history.slice(0,100).map(h=>{const d=new Date(h.d);return `<tr><td>${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}, ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td><td>${esc(h.lvl)}</td><td class="r">${h.score}/${h.of||10}</td><td class="r">+${fmt(h.earned)}</td></tr>`;}).join('')}</table></div>`:'<p class="muted" style="font-size:20px">No rounds yet. Go and play one!</p>'}
  <div class="row" style="margin-top:20px"><button class="btn red" data-act="reset">Reset my bank</button><span class="muted">Clears R$, the house, history and unlocks for ${esc(p.name)} only.</span></div></div>`;}
-function showRewards(){if(!needPlayer())return;leaveRound();header();const p=player,u=unlocked(p.total);
- app.innerHTML=`<div class="grid2" style="grid-template-columns:1fr 1.4fr"><div class="card center"><h2>Your avatar</h2><div style="margin:6px auto">${avatar(p.av,200)}</div><span class="pill t-${titleFor(p.total)}" style="font-size:20px">${titleFor(p.total)}</span>
-  <p class="muted" style="font-size:16px;line-height:1.4">Titles: Noob → Builder (20 R$) → Pro (80 R$) → Legend (150 R$). Questions pay 1, 2 or 3 R$. Badges are free — you never spend your R$.</p></div>
+function showRewards(){if(!needPlayer())return;leaveRound();header();const p=player,score=lifetime(),u=unlocked(score);
+ app.innerHTML=`<div class="grid2" style="grid-template-columns:1fr 1.4fr"><div class="card center"><h2>Your avatar</h2><div style="margin:6px auto">${avatar(p.av,200)}</div><span class="pill t-${titleFor(score)}" style="font-size:20px">${titleFor(score)}</span>
+  <p class="muted" style="font-size:16px;line-height:1.4">Titles: Noob, Builder (20 R$ earned), Pro (80) and Legend (150). Hats follow Robux earned in total, so cashing in does not lock them. Questions pay 1, 2 or 3 R$.</p></div>
  <div class="card"><h2>🏅 Badges</h2><p class="muted" style="margin-top:-4px">Earn Robux points to unlock gear. The house uses the same 1 / 2 / 3 bricks, saved separately so round bonuses do not skip a build.</p>
-  <div class="badges">${MILESTONES.map(m=>{const got=p.total>=m.at;return `<div class="badge ${got?'':'locked'}">${avatar({hat:m.hats[0]||'none',shirt:m.shirts[0]||'green'},62)}<div class="amt">${COIN}${fmt(m.at)}</div><div class="bn">${m.name}</div><div class="bs">${got?'Unlocked!':fmt(m.at-p.total)+' to go'}</div></div>`;}).join('')}</div>
+  <div class="badges">${MILESTONES.map(m=>{const got=score>=m.at;return `<div class="badge ${got?'':'locked'}">${avatar({hat:m.hats[0]||'none',shirt:m.shirts[0]||'green'},62)}<div class="amt">${COIN}${fmt(m.at)}</div><div class="bn">${m.name}</div><div class="bs">${got?'Unlocked!':fmt(m.at-score)+' to go'}</div></div>`;}).join('')}</div>
   ${nextMilestoneHtml()}
   <h3 style="margin-top:14px" id="achhead">Achievements</h3>
   <p class="muted" style="margin-top:-4px">These unlock as you play. Locked ones show what to do next.</p>
@@ -1497,10 +1861,43 @@ function reviewRows(){const rev=player.review||{};const rows=[];
  for(const id in rev){const s=rev[id];const late=s.late||0;const attempts=s.c+s.w+s.t+s.p;if(!attempts)continue;
   rows.push({id,name:TOPICS[id]||id,subject:s.subject||'Maths',attempts,c:s.c,w:s.w,t:s.t,p:s.p,late,acc:Math.round(s.c/attempts*100)});}
  rows.sort((a,b)=>a.acc-b.acc||b.attempts-a.attempts||a.name.localeCompare(b.name));return rows;}
+
+function stopSpeech(){try{if(window.speechSynthesis)speechSynthesis.cancel();}catch(e){}}
+function normSpell(s){return String(s==null?'':s).trim().toLowerCase().replace(/\s+/g,'');}
+function showSpellClue(msg){const q=Q&&Q.qs&&Q.qs[Q.i];if(!q)return;const el=$('#spellclue');if(!el)return;el.classList.remove('hidden');el.textContent=(msg?msg+' ':'')+(q.clue||'Type the British spelling.');}
+function speakQuestion(){const q=Q&&Q.qs&&Q.qs[Q.i];if(!q)return;const word=q.speak||q.ans;
+ if(!window.speechSynthesis||typeof SpeechSynthesisUtterance!=='function'){showSpellClue('Speech is not available on this device.');return;}
+ try{const u=new SpeechSynthesisUtterance(String(word));u.lang='en-GB';u.rate=0.85;u.onerror=function(){showSpellClue('Speech did not play.');};speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){showSpellClue('Speech is not available on this device.');}}
+function ensureNamed(){const inp=$('#nm');const nm=(inp&&inp.value||'').trim();if(nm)setPlayer(nm);return !!player;}
+function beginCashIn(){if(!ensureNamed()){startMsg='Type your name first, then cash in.';const inp=$('#nm');if(inp)inp.focus();sfx.wrong();showStart();return;}
+ if(!(player.total>0)){startMsg='Nothing to cash in yet. Play a round first.';sfx.wrong();showStart();return;}
+ gateNext='cashin';showParentGate();}
+function gatePassed(){const next=gateNext;gateNext=null;if(next==='cashin'){showRedeemConfirm();return;}showParent();}
+function showRedeemConfirm(){if(!player){showStart();return;}leaveRound();header();const amt=player.total;
+ app.innerHTML=`<div class="card" id="redeemconfirm" style="max-width:720px;margin:12px auto"><h2>Cash in ${fmt(amt)} R$?</h2>
+  <p style="font-size:20px;line-height:1.4">This cashes in the <b>whole</b> balance. The bank becomes <b>0</b>. Weapons, gear, badges, achievements, duel rank, the house, parkour progress and high scores stay.</p>
+  <h3>Reward note (optional)</h3>
+  <textarea id="rnote" maxlength="200" placeholder="e.g. 30 min Roblox"></textarea>
+  <div class="row" style="margin-top:12px"><button class="btn green" type="button" data-act="cashinyes" style="min-height:64px">Confirm cash in</button><button class="btn grey" type="button" data-act="home" style="min-height:64px">Cancel</button></div></div>`;}
+function cashInNow(){if(!player)return;const note=((($('#rnote')&&$('#rnote').value)||'')).trim().slice(0,200);
+ const amount=clean(player.total);if(!(amount>0)){startMsg='Nothing to cash in yet.';showStart();return;}
+ const running=clean((player.redeemed||0)+amount);
+ if(!Array.isArray(player.redemptions))player.redemptions=[];
+ player.redemptions.unshift({d:new Date().toISOString(),amount:amount,note:note,running:running});
+ if(player.redemptions.length>200)player.redemptions.length=200;
+ player.redeemed=running;player.total=0;save();header();sfx.coin();showRedeemHistory(amount);}
+function showRedeemHistory(just){if(!ensureNamed()){startMsg='Type your name to see cash-in history.';showStart();return;}leaveRound();header();
+ const rows=player.redemptions||[];
+ const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th class="r">Amount</th><th>Note</th><th class="r">Running total</th></tr>${rows.map(r=>{const d=new Date(r.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});return `<tr><td>${when}</td><td class="r">${fmt(r.amount)} R$</td><td>${esc(r.note||'')}</td><td class="r">${fmt(r.running)} R$</td></tr>`;}).join('')}</table></div>`:'<p class="muted">No cash-ins yet.</p>';
+ app.innerHTML=`<div class="card" id="redeemhistory" style="max-width:860px;margin:12px auto"><div class="row"><h2 style="margin:0">Cash-in history</h2><div class="spacer"></div><button class="btn grey" type="button" data-act="home">Back</button></div>
+  ${just?`<div class="note">Cashed in <b>${fmt(just)} R$</b>. The bank is now <b>0</b>.</div>`:''}
+  <p style="font-size:22px">Lifetime redeemed: <b>${fmt(player.redeemed||0)} R$</b></p>
+  <p class="muted">Bank balance now: ${fmt(player.total)} R$. Earned in all: ${fmt(lifetime())} R$.</p>
+  ${table}</div>`;}
 function showParentGate(){if(!needPlayer())return;leaveRound();header();
  const a=R(18,49),b=R(17,48);parentSum=a+b;
- app.innerHTML=`<div class="card" style="max-width:640px;margin:12px auto"><div class="row"><h2 style="margin:0">Parents</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
-  <p style="font-size:20px;line-height:1.4">This page is for grown-ups. Answer the sum, or press and hold the button.</p>
+ app.innerHTML=`<div class="card" style="max-width:640px;margin:12px auto"><div class="row"><h2 style="margin:0">${gateNext==='cashin'?'Confirm cash in':'Parents'}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
+  <p style="font-size:20px;line-height:1.4">${gateNext==='cashin'?'A grown-up confirms the cash in. Answer the sum, or press and hold the button.':'This page is for grown-ups. Answer the sum, or press and hold the button.'}</p>
   <p style="font-size:36px;margin:8px 0">${a} + ${b} = ?</p>
   <input class="name" id="psum" inputmode="numeric" autocomplete="off" placeholder="Type the total">
   <div class="err" id="perr"></div>
@@ -1508,7 +1905,7 @@ function showParentGate(){if(!needPlayer())return;leaveRound();header();
   <button class="btn hold" id="phold" type="button" style="width:100%;margin-top:12px"><i class="fill" id="pholdfill"></i><span>Hold for parents</span></button>
  </div>`;
  const btn=$('#phold'),fill=$('#pholdfill');if(!btn)return;let raf=0,t0=0;
- const tick=()=>{const p=Math.min(1,(performance.now()-t0)/1600);if(fill)fill.style.width=(p*100)+'%';if(p>=1){stop();showParent();return;}raf=requestAnimationFrame(tick);};
+ const tick=()=>{const p=Math.min(1,(performance.now()-t0)/1600);if(fill)fill.style.width=(p*100)+'%';if(p>=1){stop();gatePassed();return;}raf=requestAnimationFrame(tick);};
  const start=e=>{e.preventDefault();t0=performance.now();cancelAnimationFrame(raf);raf=requestAnimationFrame(tick);};
  const stop=()=>{cancelAnimationFrame(raf);raf=0;if(fill)fill.style.width='0';};
  btn.addEventListener('pointerdown',start);
@@ -1522,7 +1919,7 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes, late answers or bomb losses yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. After the timer, a right answer is worth half and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt and the potion lab log the same way. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. After the timer, a right answer is worth half and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
  <h3>Topics, weakest first</h3>
  <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt. Late answers count as correct. Passes, wrong answers and timeouts are included in the attempts.</p>
  ${table}
@@ -1541,12 +1938,19 @@ function closeModal(){const m=$('#modal');m.classList.add('hidden');m.innerHTML=
 
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el||el.disabled)return;if(el.tagName!=='A')actx();const a=el.dataset.act;
  switch(a){
-  case 'home':closeModal();showStart();break;
+  case 'home':gateNext=null;closeModal();showStart();break;
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
-  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=t==='science'?'science':t==='duel'?'duel':'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
+  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=['maths','science','history','spelling','duel'].indexOf(t)>=0?t:'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
   case 'level':startRound(el.dataset.k);break;
-  case 'mmgo':beginMastermind(el.dataset.d);break;
-  case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;subjectTab=L.subject==='science'?'science':'maths';newRound(L,el.dataset.d);sfx.click();showQ();break;}
+  case 'mmgo':beginMastermind(el.dataset.d,el.dataset.k);break;
+  case 'diffgo':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;rememberDiff(L.key,el.dataset.d);launchLevel(L);break;}
+  case 'cashin':beginCashIn();break;
+  case 'redeemhist':showRedeemHistory();break;
+  case 'cashinyes':cashInNow();break;
+  case 'speak':speakQuestion();break;
+  case 'spellclue':showSpellClue('');break;
+  case 'spellok':{if(!Q||Q.locked)break;const v=$('#spellin')?$('#spellin').value:'';answer(v,null,{given:v});break;}
+  case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;subjectTab=L.subject||'maths';const d=el.dataset.d||savedDiff(L.key);rememberDiff(L.key,d);if(L.mode==='parkour'){parkourStart((player.parkour&&player.parkour.stage)||1);break;}if(L.mode==='flappy'){flappyStart();break;}if(L.mode==='treasure'){treasureStart(L.key);break;}newRound(L,d);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();break;}sfx.click();showQ();break;}
   case 'choose':if(Q&&!Q.locked){const choice=Q.qs[Q.i].choices[+el.dataset.k];if(Q.duel)duelResolve(choice,{btn:el});else answer(choice,el);}break;
   case 'key':keyIn(el.dataset.k);break;
   case 'help':passQuestion();break;
@@ -1564,8 +1968,8 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'house':showHouse();break;
   case 'bank':showBank();break;
   case 'rewards':showRewards();break;
-  case 'parent':showParentGate();break;
-  case 'parentcheck':{const n=parseInt(($('#psum')&&$('#psum').value||'').replace(/\s/g,''),10);const err=$('#perr');if(n===parentSum){sfx.coin();showParent();}else{if(err)err.textContent='Not quite. Try the sum, or hold the button.';sfx.wrong();}break;}
+  case 'parent':gateNext=null;showParentGate();break;
+  case 'parentcheck':{const n=parseInt(($('#psum')&&$('#psum').value||'').replace(/\s/g,''),10);const err=$('#perr');if(n===parentSum){sfx.coin();gatePassed();}else{if(err)err.textContent='Not quite. Try the sum, or hold the button.';sfx.wrong();}break;}
   case 'clearlog':{const m=$('#modal');m.classList.remove('hidden');m.innerHTML=`<div class="card"><h2>Clear mistake history?</h2><p>This removes the topic summary and the saved wrong answers, timeouts and passes for ${esc(player.name)}. Robux and the house stay.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doclearlog">Yes, clear</button></div></div>`;break;}
   case 'doclearlog':player.mistakes=[];player.review={};save();closeModal();showParent();break;
   case 'mute':store.muted=!store.muted;save();header();if(!store.muted)sfx.click();break;
@@ -1585,10 +1989,10 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'flapagain':flappyStart();break;
   case 'pour':potionPour(+el.dataset.k);break;
   case 'chest':treasureGo(+el.dataset.k);break;
-  case 'thunt':treasureStart();break;
+  case 'thunt':treasureStart(el.dataset.k||'m8');break;
   case 'achclose':achClose();break;
  }});
-document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}if(e.key==='Enter'&&t.id==='psum'){e.preventDefault();const b=document.querySelector('[data-act="parentcheck"]');if(b)b.click();}return;}
+document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}if(e.key==='Enter'&&t.id==='psum'){e.preventDefault();const b=document.querySelector('[data-act="parentcheck"]');if(b)b.click();}if(e.key==='Enter'&&t.id==='spellin'){e.preventDefault();const b=document.querySelector('[data-act="spellok"]');if(b)b.click();}return;}
  if(PK&&PK.phase==='run'){parkourKey(e,true);return;}
  if(FL&&FL.alive){flapKey(e);return;}
  if(!Q||!Q.qs)return;const q=Q.qs[Q.i];if(!q)return;
@@ -1658,18 +2062,17 @@ function currentRank(wins){wins=wins||0;let best=RANKS[0];for(let i=0;i<RANKS.le
 function resolveRank(id,wins){const r=rankBy(id);if(!RANKS.some(x=>x.id===r.id)||(wins||0)<r.need)return currentRank(wins).id;return r.id;}
 function duelUnlocked(id){const wins=player&&player.duel?player.duel.wins||0:0;return wins>=rankBy(id).need;}
 function duelDamage(diff,late,streak,power){let d=(DUEL_DMG[diff]||20)*(power==null?1:power);if(late)d=d/2;if(streak>=3)d+=10;return Math.max(1,Math.round(d));}
-function duelTopicIds(){const maths=Object.keys(TOPICS).filter(id=>!SCIENCE_TOPICS[id]);const sci=Object.keys(SCIENCE_TOPICS);
- if(duelPick.subject==='maths')return maths;if(duelPick.subject==='science')return sci;return maths.concat(sci);}
+function subjectIds(name){if(name==='history')return Object.keys(HISTORY_TOPICS);if(name==='spelling')return Object.keys(SPELLING_TOPICS);if(name==='science')return Object.keys(SCIENCE_TOPICS);if(name==='maths')return Object.keys(TOPICS).filter(id=>!SCIENCE_TOPICS[id]&&!HISTORY_TOPICS[id]&&!SPELLING_TOPICS[id]);return subjectIds('maths').concat(subjectIds('science'),subjectIds('history'),subjectIds('spelling'));}
+function duelTopicIds(){return subjectIds(duelPick.subject);}
 function loadDuelPick(){if(!player||!player.duel||!player.duel.pick)return;const p=player.duel.pick;
- const subjects=['maths','science','mixed'];
+ const subjects=['maths','science','history','spelling','mixed'];
  duelPick.subject=subjects.indexOf(p.subject)>=0?p.subject:'mixed';
  duelPick.topic=p.topic||'mixed';
  duelPick.diff=p.diff==='medium'||p.diff==='hard'?p.diff:'easy';
  duelPick.rank=resolveRank(p.rank,player.duel.wins||0);
  if(duelPick.topic!=='mixed'&&duelTopicIds().indexOf(duelPick.topic)<0)duelPick.topic='mixed';}
-function duelPool(){const maths=Object.keys(TOPICS).filter(id=>!SCIENCE_TOPICS[id]);const sci=Object.keys(SCIENCE_TOPICS);
- if(Q.topic&&Q.topic!=='mixed')return [Q.topic];if(Q.subject==='science')return sci;if(Q.subject==='maths')return maths;return maths.concat(sci);}
-function duelMake(){const ids=duelPool();for(let i=0;i<40;i++){const q=make(pick(ids),Q.diff);if(q)return q;}return null;}
+function duelPool(){if(Q.topic&&Q.topic!=='mixed')return [Q.topic];return subjectIds(Q.subject||'mixed');}
+function duelMake(){const ids=duelPool();for(let i=0;i<80;i++){const q=make(pick(ids),Q.diff);if(q&&(q.type==='mc'||q.type==='num'))return q;}return null;}
 function equippedSkin(){const d=player&&player.duel;if(!d||!d.owned||d.owned.indexOf(d.skin)<0)return 'block';return d.skin||'block';}
 function equippedFin(){const d=player&&player.duel;if(!d||!d.finishers||d.finishers.indexOf(d.finisher)<0)return 'pop';return d.finisher||'pop';}
 function weaponPower(){const s=SKINS.find(x=>x.id===equippedSkin());return s&&s.power?s.power:1;}
@@ -1729,7 +2132,7 @@ function renderDuelHome(){tidyGear();const nameEl=$('#nm'),tagEl=$('#dtag');
  const pow=weaponPower();
  const chip=(act,val,on,label)=>`<button class="chip ${on?'on':''}" data-act="${act}" data-${act==='duelsub'?'s':act==='dueldiff'?'d':'t'}="${val}">${label}</button>`;
  const topics=`<button class="chip ${duelPick.topic==='mixed'?'on':''}" data-act="dueltopic" data-t="mixed">Mixed</button>`+duelTopicIds().map(id=>`<button class="chip ${duelPick.topic===id?'on':''}" data-act="dueltopic" data-t="${id}">${esc(TOPICS[id])}</button>`).join('');
- app.innerHTML=`<div class="card duellobby"><div class="row" style="align-items:center"><div>${avatar(player?player.av:null,84)}</div><div><h2 style="margin:0">Duel Mode</h2><p class="muted" style="margin:2px 0 0">First to 3 rounds. Original arena, original gear.</p></div></div>
+ app.innerHTML=`${redeemHTML()}<div class="card duellobby"><div class="row" style="align-items:center"><div>${avatar(player?player.av:null,84)}</div><div><h2 style="margin:0">Duel Mode</h2><p class="muted" style="margin:2px 0 0">First to 3 rounds. Original arena, original gear.</p></div></div>
   <div class="rankline" id="menurank">${rankIcon(myRank,42)}<div><b id="menutag">${esc(tagVal||'Redliss')}</b><div class="muted">${esc(myRank.name)}</div></div></div>
   <h3 style="margin-top:12px">Who's playing?</h3>
   <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${esc(nameVal)}">
@@ -1739,7 +2142,7 @@ function renderDuelHome(){tidyGear();const nameEl=$('#nm'),tagEl=$('#dtag');
   <h3>Arena tag</h3>
   <input class="name" id="dtag" maxlength="16" placeholder="Redliss" autocomplete="off" spellcheck="false" value="${esc(tagVal)}">
   <h3 style="margin-top:12px">Subject</h3>
-  <div class="chips">${chip('duelsub','maths',duelPick.subject==='maths','Maths')}${chip('duelsub','science',duelPick.subject==='science','Science')}${chip('duelsub','mixed',duelPick.subject==='mixed','Mixed')}</div>
+  <div class="chips">${chip('duelsub','maths',duelPick.subject==='maths','Maths')}${chip('duelsub','science',duelPick.subject==='science','Science')}${chip('duelsub','history',duelPick.subject==='history','History')}${chip('duelsub','spelling',duelPick.subject==='spelling','Spelling')}${chip('duelsub','mixed',duelPick.subject==='mixed','Mixed')}</div>
   <h3 style="margin-top:12px">Topic</h3>
   <div class="topicbox">${topics}</div>
   <h3 style="margin-top:12px">Difficulty</h3>
@@ -1783,11 +2186,11 @@ function duelAsk(){if(!Q||!Q.duel)return;if(Q.phase==='gg'||Q.phase==='round')re
  Q.qs=[q];Q.i=0;renderDuelBoard({asking:true,q});Q.t0=performance.now();startClock();}
 function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=='ask')return;const q=Q.qs[Q.i];if(!q)return;
  Q.locked=true;stopTimer();let ok=false;
- if(!opts.timeout&&!opts.pass){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else ok=val===q.ans;}
+ if(!opts.timeout&&!opts.pass){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
  const late=!!(ok&&Q.half);Q.asked++;
  if(!opts.pass){const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
   if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);Q.right++;
-   const gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;player.total+=gained;
+   const gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;gainRobux(gained);
    if(q.diff==='hard')player.duel.hardRight=(player.duel.hardRight||0)+1;}}
  else Q.streak=0;
  if(!ok)Q.streak=0;
@@ -1824,15 +2227,15 @@ function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=
 function duelNextRound(){if(!Q||!Q.duel||Q.phase!=='round')return;if(Q.myRounds>=3||Q.foeRounds>=3){duelGG();return;}Q.me=Q.meMax||100;Q.foe=Q.foeMax||100;Q.shieldLeft=gearOn('shield')?1:0;Q.hit=null;Q.phase='ask';duelAsk();}
 function duelGG(){if(!Q||!Q.duel||Q.phase==='gg')return;Q.phase='gg';stopTimer();clearAuto();
  const won=Q.myRounds>Q.foeRounds;const d=player.duel;const bonus=won?WIN_BONUS:0;const before=player.total-roundQuestionPay();
- if(won){d.wins=(d.wins||0)+1;d.streak=(d.streak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.streak);if(Q.foeRounds===0)d.flawless=(d.flawless||0)+1;player.total+=bonus;}
+ if(won){d.wins=(d.wins||0)+1;d.streak=(d.streak||0)+1;d.bestStreak=Math.max(d.bestStreak||0,d.streak);if(Q.foeRounds===0)d.flawless=(d.flawless||0)+1;gainRobux(bonus);}
  else{d.losses=(d.losses||0)+1;d.streak=0;}
  const freshBadges=grantBadges();
  Q.winBonus=bonus;const earned=clean(roundQuestionPay()+bonus);player.rounds++;
  const rank=rankBy(Q.rank);const myRank=currentRank(d.wins||0);
  player.history.unshift({d:new Date().toISOString(),lvl:'Duel: '+rank.name,score:Q.myRounds,of:Q.myRounds+Q.foeRounds,earned});
  if(player.history.length>200)player.history.length=200;
- const newM=MILESTONES.filter(m=>player.total>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
- const oldT=titleFor(before),newT=titleFor(player.total);save();
+ const oldT=titleFor(lifetime()-roundQuestionPay()-(won?bonus:0));const newM=MILESTONES.filter(m=>lifetime()>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
+ const newT=titleFor(lifetime());save();
  duelChrome();header();
  const acc=Q.asked?Math.round(Q.right/Q.asked*100):0;const tag=d.tag||'Redliss';
  app.innerHTML=`<div class="gg"><div class="ggtag">${rankIcon(myRank,22)} ${esc(myRank.name)} ${esc(tag)} · vs ${rankIcon(rank,22)} ${esc(rank.name)} ${esc(rank.bot)}</div><h1>GG</h1>
@@ -1912,10 +2315,10 @@ function checkAchievements(){if(!player)return [];if(!Array.isArray(player.achs)
  const m=$('#modal');if(m){m.classList.remove('hidden');m.innerHTML=`<div class="card"><h2>Achievement unlocked!</h2>${fresh.map(a=>`<div class="unlock"><div class="u"><b>${esc(a.name)}</b><br><span class="muted">${esc(a.detail)}</span></div></div>`).join('')}<button class="btn green" type="button" data-act="achclose" style="margin-top:8px">Nice!</button></div>`;}
  sfx.unlock();return fresh;}
 function achClose(){closeModal();if(FL)FL.paused=false;if(Q&&Q._achPause){Q._achPause=false;Q.paused=false;Q.t0=performance.now();}}
-function buildFixed(L,diffs){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);const qs=[],seen=new Set();
- for(const d of diffs){let q=null;for(let i=0;i<40&&!q;i++){const made=make(pick(bag),d);if(made&&!seen.has(made.text)){seen.add(made.text);q=made;}}if(q)qs.push(q);}return qs;}
-function parkourQuestionDiffs(stage){if(stage<=1)return ['easy','easy','easy','easy','easy'];if(stage===2)return ['medium','medium','medium','medium','medium'];if(stage===3)return ['hard','hard','hard','hard','hard'];return ['hard','hard','medium','hard','hard'];}
-function flappyDiff(score){return score<3?'easy':score<7?'medium':'hard';}
+function buildFixed(L,diffs){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);const qs=[],seen=new Set();const prev=forceMC;if(needsMC(L))forceMC=true;
+ for(const d of diffs){let q=null;for(let i=0;i<80&&!q;i++){const made=make(pick(bag),d);if(made&&!seen.has(qid(made))){seen.add(qid(made));q=made;}}if(q)qs.push(q);}forceMC=prev;return qs;}
+function parkourQuestionDiffs(diff){const d=diff==='medium'||diff==='hard'?diff:'easy';return [d,d,d,d,d];}
+function flappyBudget(diff){return diff==='hard'?10:diff==='medium'?11:14;}
 function parkourCourse(stage){stage=Math.max(1,stage|0);const n=stage<=1?4:Math.min(4+stage,9);const gap=Math.min(72+stage*8,140);const step=stage<=1?0:Math.min(16+(stage-1)*10,60);
  const plats=[];let x=0;for(let i=0;i<n;i++){const w=i===0?300:(i===n-1?240:170);const y=328-((i%2)?step:0);plats.push({x,y,w,h:36});x+=w+(i===n-1?0:(i===0?96:gap));}
  const last=plats[plats.length-1];return {plats,flagX:last.x+36,worldW:last.x+last.w+30,gap,stage};}
@@ -1958,13 +2361,13 @@ function openParkour(){stopBomb();stopTimer();clearAuto();stopFall();stopFlappyL
   <div class="stagebtns"><button class="btn green" type="button" data-act="pkresume">Resume stage ${pk.stage}</button><button class="btn" type="button" data-act="pkfresh">Start from stage 1</button><button class="btn grey" type="button" data-act="home">Menu</button></div></div>`;
  showRoundBar(`<button class="btn green" type="button" data-act="pkresume">Resume stage ${pk.stage}</button><button class="btn" type="button" data-act="pkfresh">Start from stage 1</button><button class="btn grey" type="button" data-act="home">Menu</button>`);}
 function parkourQuestions(){const stage=PK?PK.stage:1;stopParkourLoop();PK=null;document.body.classList.remove('play-on','parkour-on');
- const L=LEVELS.find(l=>l.key==='m6');const qs=buildFixed(L,parkourQuestionDiffs(stage));
+ const L=LEVELS.find(l=>l.key==='m6');const qs=buildFixed(L,parkourQuestionDiffs(savedDiff('m6')));
  if(qs.length<5){startMsg='Could not build the questions. Try the stage again.';showStart();return;}
  Q={L,qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,parkour:true,stage};
  header();sfx.coin();showQ();}
 function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();clearAuto();stopFall();stopParkourLoop();PK=null;clearChrome();
  const L=Q.L,stage=Q.stage||1,score=Q.res.filter(r=>r===true).length,passed=Q.res.filter(r=>r==='pass').length;
- const rb=L.bonus||0,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect;player.rounds++;
+ const rb=L.bonus||0,perfect=score===Q.qs.length?3:0;gainRobux(rb+perfect);player.rounds++;
  if(!player.parkour)player.parkour={stage:1,best:0};
  player.parkour.best=Math.max(player.parkour.best||0,stage);player.parkour.stage=stage+1;
  const earned=roundQuestionPay()+rb+perfect;
@@ -1978,7 +2381,7 @@ function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTime
   <div class="stagebtns" style="margin-top:12px"><button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button></div></div>`;
  sfx.fanfare();checkAchievements();Q=null;}
 function numericQuestion(diff){const topics=['addsub','times','division','x10','rounding','negative','money'];
- for(let i=0;i<40;i++){const q=make(pick(topics),diff);if(q&&q.type==='num')return q;}return make('addsub','easy');}
+ for(let i=0;i<40;i++){const q=make(pick(topics),diff);if(q&&q.type==='num')return q;}return make('addsub',diff);}
 function flap(){if(!FL||!FL.alive||FL.paused)return;FL.vy=-280;FL.flew=true;}
 function flapKeyIn(k){if(!FL||!FL.alive||FL.paused||!FL.q||FL.q.resolved)return;
  if(k==='ok'){flapSubmit();return;}
@@ -2021,12 +2424,12 @@ function flapCrash(kind,given){if(!FL||FL.over)return;FL.over=true;FL.alive=fals
   <div class="stagebtns"><button class="btn green" type="button" data-act="flapagain">Try again</button><button class="btn" type="button" data-act="home">Menu</button></div></div>`;
  showRoundBar('<button class="btn green" type="button" data-act="flapagain">Try again</button><button class="btn" type="button" data-act="home">Menu</button>');
  sfx.wrong();checkAchievements();}
-function flapSpawn(){if(!FL||!FL.alive)return;const diff=flappyDiff(FL.score);const q=numericQuestion(diff);if(!q){flapCrash('timeout');return;}
+function flapSpawn(){if(!FL||!FL.alive)return;const diff=FL.diff||savedDiff('m7');const q=numericQuestion(diff);if(!q){flapCrash('timeout');return;}
  q.resolved=false;q.safe=false;FL.q=q;FL.qT=performance.now();FL.input='';Q.half=false;Q.qs=[q];Q.i=0;Q.locked=false;
  const view=$('#flapview');const h=Math.max(320,view?view.clientHeight:0);const w=Math.max(320,view?view.clientWidth:0);
  const gapH=Math.max(200,Math.round(h*0.48));
  const slack=Math.max(0,h-gapH-24);const gapY=12+Math.round(Math.random()*slack);
- const budget=Math.max(7,11-FL.score*0.3);const x=w+40;const speed=(x-164)/budget;
+ const budget=flappyBudget(diff);const x=w+40;const speed=(x-164)/budget;
  FL.pipes=[{x,w:78,gapY,gapH,speed,q}];
  if(!FL.flew)FL.y=Math.max(8,Math.min((h||320)-60,gapY+gapH/2-20));
  const top=$('#pipetop'),bot=$('#pipebot'),sign=$('#pipesign'),bird=$('#flapbird');
@@ -2063,7 +2466,7 @@ function flapLoop(now){if(!FL||!FL.alive)return;
 function flappyStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();PK=null;stopFlappyLoop();clearChrome();
  const L=LEVELS.find(l=>l.key==='m7');
  if(!player.flappy)player.flappy={best:0};
- FL={y:120,vy:0,score:0,earn:0,alive:true,paused:false,over:false,flew:false,pipes:[],input:'',q:null,qT:0,then:0,hold:0};
+ FL={y:120,vy:0,score:0,earn:0,alive:true,paused:false,over:false,flew:false,pipes:[],input:'',q:null,qT:0,then:0,hold:0,diff:savedDiff('m7')};
  Q={L,qs:[],i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},half:false,locked:false,flappy:true,elapsed:0,paused:false,t0:performance.now(),houseAtStart:player.house.pts,finishing:false,input:''};
  header();
  const keys=['7','8','9','del','4','5','6','-','1','2','3','ok','0','.'];
@@ -2121,10 +2524,9 @@ function potionPass(){const q=Q.qs[Q.i];Q.locked=true;Q.streak=0;Q.res[Q.i]='pas
 function treasureChests(q){const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);const labels=q.type==='mc'?q.choices.slice():ninjaOptions(q);
  const spots=shuf([{x:70,y:150},{x:390,y:80},{x:720,y:190},{x:160,y:430},{x:500,y:500},{x:820,y:400}]).slice(0,labels.length);
  return labels.map((label,i)=>({label,right:label===right,x:spots[i].x,y:spots[i].y,opened:false}));}
-function treasureStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();
- const L=LEVELS.find(l=>l.key==='m8');const hunt=(player.treasure&&player.treasure.hunts||0)+1;
- const diffs=hunt<=1?['easy','easy','medium','medium','hard']:hunt===2?['medium','medium','hard','hard','hard']:['hard','hard','medium','hard','hard'];
- const qs=buildFixed(L,diffs);
+function treasureStart(key){stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();
+ const L=LEVELS.find(l=>l.key===(key||'m8'))||LEVELS.find(l=>l.key==='m8');const hunt=(player.treasure&&player.treasure.hunts||0)+1;
+ const d=savedDiff(L.key);const qs=buildFixed(L,[d,d,d,d,d]);
  if(qs.length<5){startMsg='Could not build a hunt. Try again.';showStart();return;}
  Q={L,qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,treasure:true,hunt,chestFor:-1,chests:null,walking:false,walk:0};
  header();sfx.click();showQ();}
@@ -2165,7 +2567,7 @@ function treasureTimeUp(){if(!Q||!Q.treasure)return;const q=Q.qs[Q.i];Q.locked=t
  Q.auto=setTimeout(()=>{if(Q&&Q.treasure)nextQ();},1100);}
 function treasureClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();clearAuto();stopBomb();clearChrome();
  const L=Q.L,score=Q.res.filter(r=>r===true).length,passed=Q.res.filter(r=>r==='pass').length;
- const rb=L.bonus||0,perfect=score===Q.qs.length?3:0;player.total+=rb+perfect;player.rounds++;
+ const rb=L.bonus||0,perfect=score===Q.qs.length?3:0;gainRobux(rb+perfect);player.rounds++;
  if(!player.treasure)player.treasure={found:0,hunts:0};player.treasure.hunts=(player.treasure.hunts||0)+1;
  const earned=roundQuestionPay()+rb+perfect;
  player.history.unshift({d:new Date().toISOString(),lvl:'Treasure Hunt',score,of:Q.qs.length,earned});
@@ -2174,8 +2576,8 @@ function treasureClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();
   <p style="font-size:22px">Hunt bonus +${rb} R$${perfect?' · full chest +'+perfect+' R$':''}</p>
   ${passed?`<p class="muted">${passed} passed</p>`:''}
   <p class="muted">Treasures found in all: ${player.treasure.found}. Bank ${fmt(player.total)} R$. The house does not build here.</p>
-  <div class="stagebtns"><button class="btn green" type="button" data-act="thunt">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button></div></div>`;
- showRoundBar('<button class="btn green" type="button" data-act="thunt">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button>');
+  <div class="stagebtns"><button class="btn green" type="button" data-act="thunt" data-k="${L.key}">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button></div></div>`;
+ showRoundBar('<button class="btn green" type="button" data-act="thunt" data-k="${L.key}">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button>');
  sfx.fanfare();if(score>=4)confetti();checkAchievements();Q=null;}
 
 function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',58:'LVIII',90:'XC',99:'XCIX',400:'CD',444:'CDXLIV',900:'CM',999:'CMXCIX',1000:'M'};
@@ -2214,8 +2616,8 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(MM_SECS.easy!==90||MM_SECS.medium!==60||MM_SECS.hard!==30)throw new Error('bomb');
  if(MM_CLEAR.easy!==15||MM_CLEAR.medium!==30||MM_CLEAR.hard!==45)throw new Error('clear');
  const m3=LEVELS.find(l=>l.key==='m3');
- if(!m3||MM_MIX.medium.join(',')!==m3.diffs.join(','))throw new Error('mm mix');
- if(MM_MIX.easy.indexOf('hard')>=0||MM_MIX.hard.indexOf('easy')>=0)throw new Error('mm band');
+ if(!m3||!m3.bomb)throw new Error('mm bomb');
+ ['easy','medium','hard'].forEach(d=>{if(MM_MIX[d].some(x=>x!==d))throw new Error('mm mix');});
  if(!GEAR.some(g=>g.id==='shield')||!GEAR.some(g=>g.id==='armour')||!GEAR.some(g=>g.id==='pack')||!GEAR.some(g=>g.id==='boots'))throw new Error('gear');
  if(BADGES.length<5||currentRank(0).id!=='iron3'||currentRank(22).name!=='Gold III'||currentRank(999).id!=='legend')throw new Error('current rank');
  const m4=LEVELS.find(l=>l.key==='m4');
@@ -2223,15 +2625,33 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(!LEVELS.some(l=>l.key==='m6'&&l.mode==='parkour')||!LEVELS.some(l=>l.key==='m7'&&l.mode==='flappy')||!LEVELS.some(l=>l.key==='m8'&&l.mode==='treasure'))throw new Error('modes');
  if(LEVELS.filter(l=>l.tycoon).length!==1)throw new Error('tycoon only');
  const ids=ACHS.map(a=>a.id);['park5','flap10','flap20','treasure10','potion10','bombhard'].forEach(id=>{if(ids.indexOf(id)<0)throw new Error('ach '+id);});
- const np=newPlayer('Self');if(np.parkour.stage!==1||np.flappy.best!==0||!Array.isArray(np.achs)||np.mastermind.hardClear!==false||np.potion.clean!==0)throw new Error('fresh modes');
+ const np=newPlayer('Self');if(np.parkour.stage!==1||np.flappy.best!==0||!Array.isArray(np.achs)||np.mastermind.hardClear!==false||np.potion.clean!==0||np.earned!==0||!Array.isArray(np.redemptions)||!np.pickDiff)throw new Error('fresh modes');
  const mig={name:'old',total:3,duel:freshDuel()};migrate(mig);if(!mig.parkour||mig.parkour.stage!==1||!mig.flappy||!Array.isArray(mig.achs)||!mig.mastermind)throw new Error('migrate modes');
- if(parkourQuestionDiffs(1)[0]!=='easy'||parkourQuestionDiffs(2)[0]!=='medium'||parkourQuestionDiffs(3)[0]!=='hard')throw new Error('pk diff');
- if(parkourQuestionDiffs(4).indexOf('medium')<0||parkourQuestionDiffs(4).indexOf('easy')>=0)throw new Error('pk mix');
- if(flappyDiff(0)!=='easy'||flappyDiff(3)!=='medium'||flappyDiff(7)!=='hard')throw new Error('flap diff');
+ if(parkourQuestionDiffs('easy').some(x=>x!=='easy')||parkourQuestionDiffs('medium').some(x=>x!=='medium')||parkourQuestionDiffs('hard').join(',')!=='hard,hard,hard,hard,hard')throw new Error('pk diff');
+ if(!(flappyBudget('easy')>flappyBudget('medium')&&flappyBudget('medium')>flappyBudget('hard')&&flappyBudget('hard')>=9&&flappyBudget('easy')>=13))throw new Error('flap pace');
+ if(HISTORY.length<60||SPELLING.length<60)throw new Error('bank size');
+ ['stone','romans','saxons','vikings','egypt','greece','maya','singapore'].forEach(t=>['easy','medium','hard'].forEach(d=>{if(HISTORY.filter(s=>s.topic===t&&s.diff===d).length<3)throw new Error('hist '+t+' '+d);}));
+ Object.keys(SPELLING_TOPICS).forEach(t=>['easy','medium','hard'].forEach(d=>{if(SPELLING.filter(s=>s.topic===t&&s.diff===d&&s.kind!=='say').length<3)throw new Error('spell '+t+' '+d);}));
+ ['color','favorite','neighbor','gray','marvelous','criticize','recognize'].forEach(w=>{if(SPELLING.some(s=>String(s.ans).toLowerCase()===w))throw new Error('us '+w);});
+ const anchors=[['romans','43 CE'],['romans','410 CE'],['vikings','793'],['singapore','1819'],['singapore','9 August 1965'],['singapore','15 February 1942'],['egypt','1922'],['greece','776 BCE']];
+ anchors.forEach(([t,part])=>{if(!HISTORY.some(q=>q.topic===t&&(q.text+' '+q.ans).indexOf(part)>=0))throw new Error('fact '+part);});
+ ['materials','space','forces','living','humans'].forEach(t=>['easy','medium','hard'].forEach(d=>{if(SCIENCE.filter(s=>s.topic===t&&s.diff===d).length<10)throw new Error('sci thin '+t+' '+d);}));
+ const purePlayer=player;player=newPlayer('Pure');
+ LEVELS.forEach(L=>{['easy','medium','hard'].forEach(d=>{player.pickDiff[L.key]=d;const src=Object.assign({},L,{diffs:[d]});
+  const qs=(L.mode==='parkour'||L.mode==='treasure')?buildFixed(src,[d,d,d,d,d]):L.mode==='flappy'?[numericQuestion(d)]:buildRound(src);
+  const need=(L.mode==='parkour'||L.mode==='treasure')?5:L.mode==='flappy'?1:10;
+  if(!qs||qs.length<need)throw new Error('short '+L.key+' '+d+' '+(qs?qs.length:0));
+  qs.forEach(q=>{if(!q||q.diff!==d)throw new Error('mix '+L.key+' '+d);if(L.mode==='flappy'&&q.type!=='num')throw new Error('flap type');if(needsMC(L)&&q.type!=='mc')throw new Error('mc '+L.key);});
+ });});
+ player=purePlayer;
+ const redeemer=newPlayer('Cash');redeemer.total=12.5;redeemer.earned=40;redeemer.duel.owned.push('lava');redeemer.achs.push('robux30');redeemer.house.pts=9;redeemer.parkour.stage=4;
+ const amount=clean(redeemer.total);redeemer.redeemed=clean((redeemer.redeemed||0)+amount);redeemer.redemptions.push({d:'2026-01-01T00:00:00.000Z',amount:amount,note:'30 min Roblox',running:redeemer.redeemed});redeemer.total=0;
+ if(redeemer.total!==0||redeemer.redeemed!==12.5||redeemer.earned!==40||redeemer.duel.owned.indexOf('lava')<0||redeemer.achs.indexOf('robux30')<0||redeemer.house.pts!==9||redeemer.parkour.stage!==4)throw new Error('redeem keep');
+ if(fmt(redeemer.redeemed)!=='12.5')throw new Error('redeem fmt');
  for(let s=1;s<=6;s++){const c=parkourCourse(s);if(c.plats.length<4||c.gap>150||c.flagX<=c.plats[0].x)throw new Error('course '+s);}
  if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyDiff,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyBudget,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL,lifetime,gainRobux,savedDiff,needsMC,HISTORY,SPELLING,cashInNow,showRedeemHistory};
 showStart();
 })();
 </script>
