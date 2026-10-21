@@ -498,6 +498,7 @@ const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[
 const clean=x=>+(+x).toFixed(6);
 const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
 const fmt=n=>{const s=Math.abs(n).toLocaleString('en-GB',{maximumFractionDigits:3});return (n<0?'−':'')+s;};
+const rfmt=n=>{const v=+n||0;const s=Math.abs(v).toLocaleString('en-GB',{maximumFractionDigits:2});return (v<0?'−':'')+s;};
 const money=n=>'S$'+((+n).toFixed(2));
 const fr=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
 const mixed=(w,n,d)=>`<span class="mixed">${w}${fr(n,d)}</span>`;
@@ -505,7 +506,8 @@ const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'
 const pad2=n=>String(n).padStart(2,'0');
 const COIN='<span class="coin">R$</span>';
 const $=s=>document.querySelector(s);
-const REWARD={easy:1,medium:2,hard:3};
+const REWARD={easy:0.5,medium:1,hard:1.5};
+const BRICK={easy:1,medium:2,hard:3};
 const LIMIT=14;
 const GRACE=30;
 const DNAME={easy:'Easy',medium:'Medium',hard:'Hard'};
@@ -1486,13 +1488,13 @@ function header(){const h=$('#hdr');
  const mine=player.duel?currentRank(player.duel.wins||0):null;
  h.innerHTML=`<div class="who" data-act="home" style="cursor:pointer">${avatar(player.av,52)}<div><div class="nm">${mine?rankIcon(mine,22):''}<span>${esc(player.name)}</span></div><span class="pill t-${t}">${t}</span></div></div>
  <div class="spacer"></div><div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div>
- <div class="bank" id="hdrBank">${COIN}<span id="hdrTotal">${fmt(player.total)}</span></div>
+ <div class="bank" id="hdrBank">${COIN}<span id="hdrTotal">${rfmt(player.total)}</span></div>
  ${(!Q||Q.L.tycoon)?`<button class="hbtn" data-act="house"><span>🏠</span><span class="lbl">House</span></button>`:''}
  <button class="hbtn" data-act="bank"><span>🏦</span><span class="lbl">Bank</span></button>
  <button class="hbtn" data-act="rewards"><span>🏅</span><span class="lbl">Rewards</span></button>
  <button class="hbtn" data-act="parent"><span>👪</span><span class="lbl">Parents</span></button>
  <button class="hbtn" data-act="mute" aria-label="Sound on or off">${store.muted?SPK_OFF:SPK_ON}</button>`;}
-function bumpTotal(){const el=$('#hdrTotal');if(el&&player)el.textContent=fmt(player.total);const b=$('#hdrBank');if(b){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}}
+function bumpTotal(){const el=$('#hdrTotal');if(el&&player)el.textContent=rfmt(player.total);const b=$('#hdrBank');if(b){b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop');}}
 
 const canAnim=!!(Element.prototype.animate);
 function centre(el){const r=el.getBoundingClientRect();return{x:r.left+r.width/2,y:r.top+r.height/2};}
@@ -1509,7 +1511,7 @@ function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','
 
 const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,PK=null,FL=null;
 const MM_SECS={easy:90,medium:60,hard:30};
-const MM_CLEAR={easy:15,medium:30,hard:45};
+const MM_CLEAR={easy:19.5,medium:39,hard:58.5};
 const MM_MIX={easy:['easy','easy','easy','easy'],medium:['medium','medium','medium'],hard:['hard','hard','hard']};
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
 function stopBomb(){if(bombTimer){clearInterval(bombTimer);bombTimer=null;}}
@@ -1526,25 +1528,25 @@ function stopFlappyLoop(){if(flapRAF){cancelAnimationFrame(flapRAF);flapRAF=0;}}
 function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
 function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
 let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='',gateNext=null;
-function redeemHTML(){const bal=player?fmt(player.total):'0';
+function redeemHTML(){const bal=player?rfmt(player.total):'0';
  return `<div class="redeem" id="redeempanel"><div><h3>Redeem Robux</h3><p>In the bank: <b id="redeemBal">${bal} R$</b></p><p class="muted">Cash in turns the whole balance into a real-world reward. Gear, badges, the house and scores stay.</p></div><div class="row"><button class="btn green" type="button" data-act="cashin">Cash in</button><button class="btn" type="button" data-act="redeemhist">History</button></div></div>`;}
 function showStart(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;header();
  if(subjectTab==='duel'){loadDuelPick();renderDuelHome();startMsg='';return;}
  const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
  const blurbs={
-  maths:'A correct answer pays <b>1 R$</b> (easy), <b>2 R$</b> (medium) or <b>3 R$</b> (hard). After the timer, a right answer is worth half. Pick a difficulty before you play. The house builds only in Times Table Tycoon.',
-  science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>1 R$</b>, <b>2 R$</b> or <b>3 R$</b>. After 14 seconds it is half points. Help is a pass.',
-  history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 1, 2 or 3 R$.',
+  maths:'A correct answer pays <b>0.5 R$</b> (easy), <b>1 R$</b> (medium) or <b>1.5 R$</b> (hard). After the timer, a right answer is worth half: 0.25, 0.5 or 0.75 R$. Pick a difficulty before you play. The house builds only in Times Table Tycoon.',
+  science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>0.5 R$</b>, <b>1 R$</b> or <b>1.5 R$</b>. After 14 seconds it is half points. Help is a pass.',
+  history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 0.5, 1 or 1.5 R$.',
   spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.'
  };
  const blurb=blurbs[subjectTab]||blurbs.maths;
  app.innerHTML=`${redeemHTML()}<div class="start">
  <div class="hero"><h1>Block<br>Maths<br>Quest</h1><div class="avatarBox">${avatar(player?player.av:null,180)}</div>
-  <div style="color:#fff;font-size:18px;text-shadow:0 2px 0 #14142b;line-height:1.4">Get questions right. Earn 1, 2 or 3 ${COIN}. Build your block house!</div></div>
+  <div style="color:#fff;font-size:18px;text-shadow:0 2px 0 #14142b;line-height:1.4">Get questions right. Earn 0.5, 1 or 1.5 ${COIN}. Build your block house!</div></div>
  <div class="card"><h2>Who's playing?</h2>
   <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${player?esc(player.name):''}">
-  ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${fmt(p.total)} R$</button>`).join('')}</div>`:''}
+  ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${rfmt(p.total)} R$</button>`).join('')}</div>`:''}
   <div class="err" id="err">${startMsg}</div>
   ${tabsHTML()}
   <h2 style="margin-top:4px">Pick a level</h2>
@@ -1581,11 +1583,11 @@ function diffBlurb(L,d){const name=DNAME[d].toLowerCase();
  if(L.mode==='flappy')return d==='easy'?'The pipe moves slowly.':d==='hard'?'The pipe moves faster.':'The pipe moves at a medium pace.';
  if(L.mode==='parkour')return 'Every question is '+name+'. The obstacle course still gets harder each stage.';
  if(L.mode==='treasure')return 'All five questions are '+name+'.';
- if(L.bomb)return 'Every question is '+name+'. The bomb runs for '+MM_SECS[d]+'s. Finish for +'+MM_CLEAR[d]+' R$.';
- if(L.tycoon)return 'Every question is '+name+'. House bricks match the Robux.';
- return 'Every question is '+name+'. A right answer pays '+REWARD[d]+' R$.';}
+ if(L.bomb)return 'Every question is '+name+'. The bomb runs for '+MM_SECS[d]+'s. Finish for +'+rfmt(MM_CLEAR[d])+' R$.';
+ if(L.tycoon)return 'Every question is '+name+'. The house still adds '+BRICK[d]+' brick'+(BRICK[d]===1?'':'s')+'.';
+ return 'Every question is '+name+'. A right answer pays '+rfmt(REWARD[d])+' R$.';}
 function showDiffPick(L){stopBomb();header();const cur=savedDiff(L.key);
- const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="diffgo" data-k="${L.key}" data-d="${d}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${REWARD[d]} R$</span><span class="t">${DNAME[d]}</span><span class="d">${esc(diffBlurb(L,d))}</span></button>`;
+ const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="diffgo" data-k="${L.key}" data-d="${d}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${rfmt(REWARD[d])} R$</span><span class="t">${DNAME[d]}</span><span class="d">${esc(diffBlurb(L,d))}</span></button>`;
  app.innerHTML=`<div class="card" id="diffpick" style="max-width:820px;margin:12px auto"><h2>${esc(L.name)}</h2><p class="muted">Pick Easy, Medium or Hard. Every question this time will match that choice.</p><div class="levels">${card('easy')}${card('medium')}${card('hard')}</div><button class="btn" type="button" data-act="home" style="margin-top:12px;min-height:64px">Menu</button></div>`;
  showRoundBar('<button class="btn" type="button" data-act="home">Menu</button>');}
 function launchLevel(L){const d=savedDiff(L.key);
@@ -1595,7 +1597,7 @@ function launchLevel(L){const d=savedDiff(L.key);
  if(L.mode==='treasure'){treasureStart(L.key);return;}
  newRound(L,d);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
 function showMmPick(L){L=L||LEVELS.find(l=>l.key==='m3');stopBomb();header();const cur=savedDiff(L.key);
- const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="mmgo" data-d="${d}" data-k="${L.key}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${MM_SECS[d]}s bomb</span><span class="t">${DNAME[d]}</span><span class="d">Every question is ${DNAME[d].toLowerCase()}. Finish the round for +${MM_CLEAR[d]} R$.</span></button>`;
+ const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="mmgo" data-d="${d}" data-k="${L.key}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${MM_SECS[d]}s bomb</span><span class="t">${DNAME[d]}</span><span class="d">Every question is ${DNAME[d].toLowerCase()}. Finish the round for +${rfmt(MM_CLEAR[d])} R$.</span></button>`;
  app.innerHTML=`<div class="card" id="diffpick" style="max-width:820px;margin:12px auto"><h2>${esc(L.name)}</h2>
   <p class="muted">${esc(L.desc)} The bomb runs for the whole round. Every question matches the difficulty you pick.</p>
   <div class="levels">${card('easy')}${card('medium')}${card('hard')}</div>
@@ -1620,7 +1622,7 @@ function isNinja(){return !!(Q&&Q.L&&Q.L.mode==='ninja');}
 function isTycoon(){return !!(Q&&Q.L&&Q.L.tycoon);}
 const DROP_WORD={easy:'drops fast',medium:'steady fall',hard:'slow fall — time to think'};
 function qTop(){return `<div class="qtop"><div class="blocks">${Q.qs.map((_,k)=>`<i class="${pipClass(k)}"></i>`).join('')}</div><div class="spacer"></div>
- <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${fmt(roundQuestionPay())}</span> this round</div></div>`;}
+ <div class="tagbox">${Q.L.tag}: ${Q.L.name}</div><div class="tagbox streak">🔥 Streak ${Q.streak}</div><div class="tagbox">${COIN}<span id="rnd">+${rfmt(roundQuestionPay())}</span> this round</div></div>`;}
 /* Seconds for the correct answer to cross the field. Easy is fastest, hard is slowest. */
 const FALL_SECS={easy:7,medium:11,hard:16};
 function ninjaLimit(diff){return (FALL_SECS[diff]||FALL_SECS.medium)+2;}
@@ -1640,7 +1642,7 @@ function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q
  app.innerHTML=`${qTop()}
  ${Q.bomb?bombHTML():''}
  ${isTycoon()?houseBar(player.house.pts):''}
- <div class="quiz"><div class="card qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$</span></div>
+ <div class="quiz"><div class="card qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$</span></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
   <div id="help" class="helppanel hidden"></div>
@@ -1650,7 +1652,7 @@ function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q
  Q.t0=performance.now();startClock();if(Q.bomb)paintBomb();}
 function showNinja(q){const drop=DROP_WORD[q.diff]||DROP_WORD.medium;document.body.classList.add('ninja-on');
  app.innerHTML=`<div class="ninjawrap">${qTop()}
- <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$ · ${drop}</span><button class="helpbtn helpmini" type="button" data-act="help">Help</button></div>
+ <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$ · ${drop}</span><button class="helpbtn helpmini" type="button" data-act="help">Help</button></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
   <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
  <div id="halfslot"></div>
@@ -1711,7 +1713,7 @@ function passQuestion(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{pass
 function beginHalf(){if(!Q||Q.locked||Q.half)return;Q.half=true;const q=Q.qs[Q.i];
  const slot=$('#halfslot');if(slot)slot.innerHTML=`<div class="halfbanner" id="halfbanner">Time's up! Half points now</div>`;
  const speed=$('#speed');if(speed)speed.classList.add('half');
- const pill=document.querySelector('.dpill');if(pill)pill.textContent=Q.duel?`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ · half damage`:`${DNAME[q.diff]} · ${fmt(halfPay(q.reward))} R$ now`;
+ const pill=document.querySelector('.dpill');if(pill)pill.textContent=Q.duel?`${DNAME[q.diff]} · ${rfmt(halfPay(q.reward))} R$ · half damage`:`${DNAME[q.diff]} · ${rfmt(halfPay(q.reward))} R$ now`;
  const lbl=document.querySelector('.speedlbl span');if(lbl)lbl.textContent="Time's up! Half points now";
  const s=$('#secs');if(s)s.textContent=GRACE+'s';const b=$('#sbar');if(b)b.style.transform='scaleX(1)';}
 function answerArea(q){if(q.type==='spell')return `<div class="spellbox"><p class="muted" style="margin:0">Press Listen, then type the British spelling.</p><div class="row"><button class="btn blue" type="button" data-act="speak">Listen</button><button class="btn grey" type="button" data-act="spellclue">Written clue</button></div><p id="spellclue" class="hidden"></p><input class="name" id="spellin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type the word"><button class="btn green" type="button" data-act="spellok">Check</button></div>`;
@@ -1740,10 +1742,10 @@ function applyGrade(q,ok,opts){opts=opts||{};
   gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;gainRobux(gained);
   if(Q.paid)Q.paid[Q.i]=gained;
   if(q.diff==='hard'&&player.duel){player.duel.hardRight=(player.duel.hardRight||0)+1;grantBadges();}
-  if(isTycoon()){const before=houseProgress(player.house.pts);player.house.pts+=gained;const after=houseProgress(player.house.pts);
+  if(isTycoon()){const bricks=late?halfPay(BRICK[q.diff]):BRICK[q.diff];const before=houseProgress(player.house.pts);player.house.pts+=bricks;const after=houseProgress(player.house.pts);
    if(after.built.length>before.built.length)built=after.built[after.built.length-1];
-   bon.push('+'+fmt(gained)+' house brick'+(gained===1?'':'s'));}
-  bon.unshift('+'+fmt(gained)+' R$ · '+(late?'half points':DNAME[q.diff].toLowerCase()));
+   bon.push('+'+fmt(bricks)+' house brick'+(bricks===1?'':'s'));}
+  bon.unshift('+'+rfmt(gained)+' R$ · '+(late?'half points':DNAME[q.diff].toLowerCase()));
   if(!late&&secs<=10)bon.push('⚡ speed star');
   if(Q.streak>=3)bon.push('🔥 streak '+Q.streak);}
  else Q.streak=0;
@@ -1766,9 +1768,9 @@ function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[
   :`<div class="fbbody"><h2>${missTitle}</h2><div class="ansbig">The answer is ${ansHtml}</div><div class="ex">${q.steps.map(s=>s).join(' ')}</div><div class="muted" style="margin-bottom:8px;font-size:17px">${missNote}</div></div>`;
  const area=$('#ans');if(area){if(q.type==='num'||isNinja())area.innerHTML='';area.appendChild(fb);}
  const slot=$('#houseSlot');if(slot&&ok&&isTycoon())slot.outerHTML=houseBar(player.house.pts,built&&built.id);
- const rnd=$('#rnd');if(rnd)rnd.textContent='+'+fmt(roundQuestionPay());
+ const rnd=$('#rnd');if(rnd)rnd.textContent='+'+rfmt(roundQuestionPay());
  showRoundBar(`<button class="btn ${ok?'green':'blue'}" data-act="next">${ok?'Next question ▶':'Got it ▶'}</button>`);
- if(ok){sfx.correct();if(built){setTimeout(sfx.build,280);if(houseProgress(player.house.pts).done){setTimeout(sfx.fanfare,500);confetti();}}else if(Q.streak>=3)setTimeout(sfx.streak,300);coinBurst(fb,Math.max(1,Math.round(gained)));floatText(fb,'+'+fmt(gained)+' R$');Q.auto=setTimeout(nextQ,built?3200:2400);}
+ if(ok){sfx.correct();if(built){setTimeout(sfx.build,280);if(houseProgress(player.house.pts).done){setTimeout(sfx.fanfare,500);confetti();}}else if(Q.streak>=3)setTimeout(sfx.streak,300);coinBurst(fb,Math.max(1,Math.round(gained)));floatText(fb,'+'+rfmt(gained)+' R$');Q.auto=setTimeout(nextQ,built?3200:2400);}
  else{sfx.wrong();if(fb.scrollIntoView)fb.scrollIntoView({block:'nearest',behavior:'smooth'});}}
 function nextQ(){if(!Q)return;clearAuto();Q.i++;if(Q.i>=Q.qs.length)finish();else showQ();}
 function logBombLoss(){if(!player.mistakes)player.mistakes=[];const diff=Q.bomb?Q.bomb.diff:'hard';const subj=Q.L&&Q.L.subject==='history'?'History':Q.L&&Q.L.subject==='spelling'?'Spelling':Q.L&&Q.L.subject==='science'?'Science':'Maths';const name=Q.L?Q.L.name:'Mixed Mastermind';
@@ -1784,7 +1786,7 @@ function bombExplode(){if(!Q||!Q.bomb||Q.bomb.dead||Q.finishing)return;
  save();clearChrome();header();window.scrollTo(0,0);
  app.innerHTML=`<div class="card boomcard center" style="max-width:720px;margin:12px auto"><div class="blast"></div><h2>BOOM!</h2>
   <p style="font-size:22px;line-height:1.35">The bomb exploded. You did not finish the round, so there is no finish bonus.</p>
-  <p style="font-size:22px">You keep the <b>${fmt(kept)} R$</b> already earned on answers.</p>
+  <p style="font-size:22px">You keep the <b>${rfmt(kept)} R$</b> already earned on answers.</p>
   <div class="row" style="justify-content:center;margin-top:12px"><button class="btn red" data-act="again" data-k="${L.key}" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button></div></div>`;
  showRoundBar(`<button class="btn red" data-act="again" data-k="${L.key}" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button>`);
  Q=null;}
@@ -1798,11 +1800,11 @@ function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
  const newM=MILESTONES.filter(m=>lifetime()>=m.at&&player.seen.indexOf(m.at)<0);newM.forEach(m=>player.seen.push(m.at));
  if(Q.bomb&&Q.bomb.diff==='hard'){if(!player.mastermind)player.mastermind={hardClear:false};player.mastermind.hardClear=true;}
  const newT=titleFor(lifetime());save();header();window.scrollTo(0,0);
- const rows=['easy','medium','hard'].filter(d=>Q.counts[d]).map(d=>`<tr><td>${DNAME[d]} questions (${Q.counts[d]})</td><td class="r">+${fmt(Q.earn[d])}</td></tr>`).join('');
+ const rows=['easy','medium','hard'].filter(d=>Q.counts[d]).map(d=>`<tr><td>${DNAME[d]} questions (${Q.counts[d]})</td><td class="r">+${rfmt(Q.earn[d])}</td></tr>`).join('');
  const h0=houseProgress(Q.houseAtStart),h1=houseProgress(player.house.pts);const grew=h1.built.slice(h0.built.length);
  const roundDiff=Q.bomb?Q.bomb.diff:((Q.qs[0]&&Q.qs[0].diff)||savedDiff(L.key));const again=`<button class="btn green" data-act="again" data-k="${L.key}" data-d="${roundDiff}">Next round</button>`;
  app.innerHTML=`<div class="grid2"><div class="card center"><h2>Round complete!</h2><div class="muted" style="font-size:20px">${L.tag}: ${L.name}${Q.bomb?' · '+clearName:''}</div>
-  <div class="score">${score}/${Q.qs.length}</div>${clearBonus?`<div class="clearbonus">${clearName} finish! +${clearBonus} R$</div>`:''}<div style="font-size:22px">${perfect?'PERFECT ROUND!':score>=8?'Amazing work!':score>=5?'Great effort!':'Keep practising, you have got this!'}</div>
+  <div class="score">${score}/${Q.qs.length}</div>${clearBonus?`<div class="clearbonus">${clearName} finish! +${rfmt(clearBonus)} R$</div>`:''}<div style="font-size:22px">${perfect?'PERFECT ROUND!':score>=8?'Amazing work!':score>=5?'Great effort!':'Keep practising, you have got this!'}</div>
   ${passed?`<div class="muted" style="font-size:18px;margin-top:6px">${passed} passed · no Robux</div>`:''}
   ${ty?`<div style="margin:12px auto 0">${houseSVG(player.house.pts)}</div>`:''}
   <div class="row" style="justify-content:center;margin-top:12px">${again}<button class="btn" data-act="home">Menu</button>${ty?'<button class="btn purple" data-act="house">My house</button>':''}</div></div>
@@ -1810,12 +1812,12 @@ function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
   ${rows}
   <tr><td>Round complete bonus</td><td class="r">+${rb}</td></tr>
   ${perfect?`<tr><td>Perfect round bonus</td><td class="r">+${perfect}</td></tr>`:''}
-  ${clearBonus?`<tr><td>${clearName} finish bonus</td><td class="r">+${clearBonus}</td></tr>`:''}
-  <tr class="tot"><td>Total this round</td><td class="r">+${fmt(earned)} R$</td></tr></table>
-  <div style="font-size:20px;margin-top:12px;display:flex;gap:8px;align-items:center">Bank total: ${COIN} ${fmt(player.total)}</div>
+  ${clearBonus?`<tr><td>${clearName} finish bonus</td><td class="r">+${rfmt(clearBonus)}</td></tr>`:''}
+  <tr class="tot"><td>Total this round</td><td class="r">+${rfmt(earned)} R$</td></tr></table>
+  <div style="font-size:20px;margin-top:12px;display:flex;gap:8px;align-items:center">Bank total: ${COIN} ${rfmt(player.total)}</div>
   ${ty&&grew.length?`<div class="unlock"><span style="font-size:32px">🏠</span><div class="u">You built: <b>${grew.map(s=>esc(s.name)).join(', ')}</b></div></div>`:''}
   ${newT!==oldT?`<div class="unlock"><span style="font-size:32px">🎉</span><div class="u">LEVEL UP! You are now a <span class="pill t-${newT}">${newT}</span></div></div>`:''}
-  ${newM.map(m=>`<div class="unlock">${avatar({hat:m.hats[0]||player.av.hat,shirt:m.shirts[0]||player.av.shirt},70)}<div class="u">Badge unlocked: <b>${m.name}</b> (${fmt(m.at)} R$)<br><span class="muted" style="font-size:16px">New: ${[...m.hats.map(x=>HATS[x]),...m.shirts.map(x=>x+' shirt')].join(', ')}. Wear it in Rewards!</span></div></div>`).join('')}
+  ${newM.map(m=>`<div class="unlock">${avatar({hat:m.hats[0]||player.av.hat,shirt:m.shirts[0]||player.av.shirt},70)}<div class="u">Badge unlocked: <b>${m.name}</b> (${rfmt(m.at)} R$)<br><span class="muted" style="font-size:16px">New: ${[...m.hats.map(x=>HATS[x]),...m.shirts.map(x=>x+' shirt')].join(', ')}. Wear it in Rewards!</span></div></div>`).join('')}
   ${nextMilestoneHtml()}
  </div></div>`;
  const tot=document.querySelector('.tot');if(tot)coinBurst(tot,6);
@@ -1824,7 +1826,7 @@ function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
  checkAchievements();
  Q=null;}
 function nextMilestoneHtml(){const t=lifetime();const nx=MILESTONES.find(m=>t<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>t>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((t-lo)/(nx.at-lo)*100));
- return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${fmt(nx.at)} R$ earned (${fmt(nx.at-t)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
+ return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${rfmt(nx.at)} R$ earned (${rfmt(nx.at-t)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
 function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
 function leaveRound(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;}
 function showHouse(){if(!needPlayer())return;leaveRound();header();const st=houseProgress(player.house.pts);
@@ -1832,24 +1834,24 @@ function showHouse(){if(!needPlayer())return;leaveRound();header();const st=hous
   ${houseSVG(player.house.pts)}
   <p style="font-size:18px;margin:10px 0 0">${st.done?'Every part is built. What a tycoon!':`Next part: <b>${esc(st.next.name)}</b> · ${fmt(st.have)} / ${st.need} bricks`}</p>
   ${st.done?'':`<div class="prog"><span style="width:${Math.round(st.have/st.need*100)}%"></span></div>`}
-  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks, the same as the R$. A late answer adds half. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
+  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks. A late answer adds half. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
   <button class="btn green" data-act="home">Play to build ▶</button></div>
  <div class="card"><h2>Build list</h2><div class="stlist">${HOUSE.map((s,i)=>{const done=st.built.some(b=>b.id===s.id);const now=!done&&st.next&&st.next.id===s.id;return `<div class="st ${done?'done':''} ${now?'now':''}"><span>${done?'✅':now?'🔨':'🔒'} ${i+1}. ${esc(s.name)}</span><span class="need">${s.cost?s.cost+' bricks':"free"}</span></div>`;}).join('')}</div></div></div>`;}
 function showBank(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;const st=houseProgress(p.house.pts);
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">🏦 ${esc(p.name)}'s Bank</h2><div class="spacer"></div><button class="btn green" data-act="home">Play ▶</button></div>
- <div class="stats"><div class="stat"><div class="v"><span class="coin big">R$</span>${fmt(p.total)}</div><div class="k">Robux points</div></div>
+ <div class="stats"><div class="stat"><div class="v"><span class="coin big">R$</span>${rfmt(p.total)}</div><div class="k">Robux points</div></div>
  <div class="stat"><div class="v">${p.rounds}</div><div class="k">Rounds played</div></div><div class="stat"><div class="v">${acc}%</div><div class="k">Correct answers</div></div><div class="stat"><div class="v">🏠 ${st.built.length}/${HOUSE.length}</div><div class="k">House parts</div></div></div>
  ${nextMilestoneHtml()}
- <p class="muted">In the bank: ${fmt(p.total)} R$. Earned in all: ${fmt(lifetime())} R$. Cashed in: ${fmt(p.redeemed||0)} R$.</p>
+ <p class="muted">In the bank: ${rfmt(p.total)} R$. Earned in all: ${rfmt(lifetime())} R$. Cashed in: ${rfmt(p.redeemed||0)} R$.</p>
  <h3 style="margin-top:18px">Rounds</h3>
  ${p.history.length?`<div style="max-height:360px;overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th>Level</th><th class="r">Score</th><th class="r">R$ earned</th></tr>
- ${p.history.slice(0,100).map(h=>{const d=new Date(h.d);return `<tr><td>${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}, ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td><td>${esc(h.lvl)}</td><td class="r">${h.score}/${h.of||10}</td><td class="r">+${fmt(h.earned)}</td></tr>`;}).join('')}</table></div>`:'<p class="muted" style="font-size:20px">No rounds yet. Go and play one!</p>'}
+ ${p.history.slice(0,100).map(h=>{const d=new Date(h.d);return `<tr><td>${d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}, ${d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'})}</td><td>${esc(h.lvl)}</td><td class="r">${h.score}/${h.of||10}</td><td class="r">+${rfmt(h.earned)}</td></tr>`;}).join('')}</table></div>`:'<p class="muted" style="font-size:20px">No rounds yet. Go and play one!</p>'}
  <div class="row" style="margin-top:20px"><button class="btn red" data-act="reset">Reset my bank</button><span class="muted">Clears R$, the house, history and unlocks for ${esc(p.name)} only.</span></div></div>`;}
 function showRewards(){if(!needPlayer())return;leaveRound();header();const p=player,score=lifetime(),u=unlocked(score);
  app.innerHTML=`<div class="grid2" style="grid-template-columns:1fr 1.4fr"><div class="card center"><h2>Your avatar</h2><div style="margin:6px auto">${avatar(p.av,200)}</div><span class="pill t-${titleFor(score)}" style="font-size:20px">${titleFor(score)}</span>
-  <p class="muted" style="font-size:16px;line-height:1.4">Titles: Noob, Builder (20 R$ earned), Pro (80) and Legend (150). Hats follow Robux earned in total, so cashing in does not lock them. Questions pay 1, 2 or 3 R$.</p></div>
- <div class="card"><h2>🏅 Badges</h2><p class="muted" style="margin-top:-4px">Earn Robux points to unlock gear. The house uses the same 1 / 2 / 3 bricks, saved separately so round bonuses do not skip a build.</p>
-  <div class="badges">${MILESTONES.map(m=>{const got=score>=m.at;return `<div class="badge ${got?'':'locked'}">${avatar({hat:m.hats[0]||'none',shirt:m.shirts[0]||'green'},62)}<div class="amt">${COIN}${fmt(m.at)}</div><div class="bn">${m.name}</div><div class="bs">${got?'Unlocked!':fmt(m.at-score)+' to go'}</div></div>`;}).join('')}</div>
+  <p class="muted" style="font-size:16px;line-height:1.4">Titles: Noob, Builder (20 R$ earned), Pro (80) and Legend (150). Hats follow Robux earned in total, so cashing in does not lock them. Questions pay 0.5, 1 or 1.5 R$.</p></div>
+ <div class="card"><h2>🏅 Badges</h2><p class="muted" style="margin-top:-4px">Earn Robux points to unlock gear. The house still adds 1, 2 or 3 bricks, saved separately so round bonuses do not skip a build.</p>
+  <div class="badges">${MILESTONES.map(m=>{const got=score>=m.at;return `<div class="badge ${got?'':'locked'}">${avatar({hat:m.hats[0]||'none',shirt:m.shirts[0]||'green'},62)}<div class="amt">${COIN}${rfmt(m.at)}</div><div class="bn">${m.name}</div><div class="bs">${got?'Unlocked!':rfmt(m.at-score)+' to go'}</div></div>`;}).join('')}</div>
   ${nextMilestoneHtml()}
   <h3 style="margin-top:14px" id="achhead">Achievements</h3>
   <p class="muted" style="margin-top:-4px">These unlock as you play. Locked ones show what to do next.</p>
@@ -1874,7 +1876,7 @@ function beginCashIn(){if(!ensureNamed()){startMsg='Type your name first, then c
  gateNext='cashin';showParentGate();}
 function gatePassed(){const next=gateNext;gateNext=null;if(next==='cashin'){showRedeemConfirm();return;}showParent();}
 function showRedeemConfirm(){if(!player){showStart();return;}leaveRound();header();const amt=player.total;
- app.innerHTML=`<div class="card" id="redeemconfirm" style="max-width:720px;margin:12px auto"><h2>Cash in ${fmt(amt)} R$?</h2>
+ app.innerHTML=`<div class="card" id="redeemconfirm" style="max-width:720px;margin:12px auto"><h2>Cash in ${rfmt(amt)} R$?</h2>
   <p style="font-size:20px;line-height:1.4">This cashes in the <b>whole</b> balance. The bank becomes <b>0</b>. Weapons, gear, badges, achievements, duel rank, the house, parkour progress and high scores stay.</p>
   <h3>Reward note (optional)</h3>
   <textarea id="rnote" maxlength="200" placeholder="e.g. 30 min Roblox"></textarea>
@@ -1888,11 +1890,11 @@ function cashInNow(){if(!player)return;const note=((($('#rnote')&&$('#rnote').va
  player.redeemed=running;player.total=0;save();header();sfx.coin();showRedeemHistory(amount);}
 function showRedeemHistory(just){if(!ensureNamed()){startMsg='Type your name to see cash-in history.';showStart();return;}leaveRound();header();
  const rows=player.redemptions||[];
- const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th class="r">Amount</th><th>Note</th><th class="r">Running total</th></tr>${rows.map(r=>{const d=new Date(r.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});return `<tr><td>${when}</td><td class="r">${fmt(r.amount)} R$</td><td>${esc(r.note||'')}</td><td class="r">${fmt(r.running)} R$</td></tr>`;}).join('')}</table></div>`:'<p class="muted">No cash-ins yet.</p>';
+ const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl"><tr><th>Date</th><th class="r">Amount</th><th>Note</th><th class="r">Running total</th></tr>${rows.map(r=>{const d=new Date(r.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});return `<tr><td>${when}</td><td class="r">${rfmt(r.amount)} R$</td><td>${esc(r.note||'')}</td><td class="r">${rfmt(r.running)} R$</td></tr>`;}).join('')}</table></div>`:'<p class="muted">No cash-ins yet.</p>';
  app.innerHTML=`<div class="card" id="redeemhistory" style="max-width:860px;margin:12px auto"><div class="row"><h2 style="margin:0">Cash-in history</h2><div class="spacer"></div><button class="btn grey" type="button" data-act="home">Back</button></div>
-  ${just?`<div class="note">Cashed in <b>${fmt(just)} R$</b>. The bank is now <b>0</b>.</div>`:''}
-  <p style="font-size:22px">Lifetime redeemed: <b>${fmt(player.redeemed||0)} R$</b></p>
-  <p class="muted">Bank balance now: ${fmt(player.total)} R$. Earned in all: ${fmt(lifetime())} R$.</p>
+  ${just?`<div class="note">Cashed in <b>${rfmt(just)} R$</b>. The bank is now <b>0</b>.</div>`:''}
+  <p style="font-size:22px">Lifetime redeemed: <b>${rfmt(player.redeemed||0)} R$</b></p>
+  <p class="muted">Bank balance now: ${rfmt(player.total)} R$. Earned in all: ${rfmt(lifetime())} R$.</p>
   ${table}</div>`;}
 function showParentGate(){if(!needPlayer())return;leaveRound();header();
  const a=R(18,49),b=R(17,48);parentSum=a+b;
@@ -1919,7 +1921,7 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes, late answers or bomb losses yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>1</b>, <b>2</b> or <b>3 R$</b>. After the timer, a right answer is worth half and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>0.5</b>, <b>1</b> or <b>1.5 R$</b>. After the timer, a right answer is worth half (<b>0.25</b>, <b>0.5</b> or <b>0.75 R$</b>) and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
  <h3>Topics, weakest first</h3>
  <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt. Late answers count as correct. Passes, wrong answers and timeouts are included in the attempts.</p>
  ${table}
@@ -1933,7 +1935,7 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  ${p.note?`<div class="note" style="background:#fefce8;border-color:#ca8a04">Current deal: <b>${esc(p.note)}</b></div>`:''}
  </div>`;}
 function confirmReset(){if(!player)return;const m=$('#modal');m.classList.remove('hidden');
- m.innerHTML=`<div class="card"><h2>Reset ${esc(player.name)}'s bank?</h2><p>This wipes <b>all ${fmt(player.total)} R$</b>, the house build, the history, badges, duel weapons, gear and unlocks for ${esc(player.name)}. It cannot be undone.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doreset">Yes, reset</button></div></div>`;}
+ m.innerHTML=`<div class="card"><h2>Reset ${esc(player.name)}'s bank?</h2><p>This wipes <b>all ${rfmt(player.total)} R$</b>, the house build, the history, badges, duel weapons, gear and unlocks for ${esc(player.name)}. It cannot be undone.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doreset">Yes, reset</button></div></div>`;}
 function closeModal(){const m=$('#modal');m.classList.add('hidden');m.innerHTML='';}
 
 document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if(!el||el.disabled)return;if(el.tagName!=='A')actx();const a=el.dataset.act;
@@ -2136,7 +2138,7 @@ function renderDuelHome(){tidyGear();const nameEl=$('#nm'),tagEl=$('#dtag');
   <div class="rankline" id="menurank">${rankIcon(myRank,42)}<div><b id="menutag">${esc(tagVal||'Redliss')}</b><div class="muted">${esc(myRank.name)}</div></div></div>
   <h3 style="margin-top:12px">Who's playing?</h3>
   <input class="name" id="nm" maxlength="16" placeholder="Type your name" autocomplete="off" autocapitalize="words" spellcheck="false" value="${esc(nameVal)}">
-  ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${fmt(p.total)} R$</button>`).join('')}</div>`:''}
+  ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${rfmt(p.total)} R$</button>`).join('')}</div>`:''}
   <div class="err" id="err">${startMsg}</div>
   ${tabsHTML()}
   <h3>Arena tag</h3>
@@ -2163,12 +2165,12 @@ function renderDuelBoard(o){o=o||{};const q=o.q;const rank=rankBy(Q.rank);const 
  const asking=!!o.asking;
  const qBody=asking?`<button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button><div id="halfslot"></div><div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div><div id="ans">${answerArea(q)}</div>`
   :`<div class="fb ${o.ok?'good':o.pass?'pass':'bad'}" id="fb"><div class="fbbody"><h2>${esc(o.title||'')}</h2><p style="font-size:20px;line-height:1.35;margin:0">${esc(o.note||'')}</p></div></div>${o.pass?helpHTML(q):''}`;
- app.innerHTML=`<div class="duelwrap"><div class="duelmeta"><div class="tagbox">🔥 Streak ${Q.streak}${Q.streak>=2?' · next hit crits':''}</div><div class="tagbox">${COIN}+${fmt(roundQuestionPay())} this match</div>${gearBits()}<div class="spacer"></div><button class="btn grey" data-act="home">Menu</button></div>
+ app.innerHTML=`<div class="duelwrap"><div class="duelmeta"><div class="tagbox">🔥 Streak ${Q.streak}${Q.streak>=2?' · next hit crits':''}</div><div class="tagbox">${COIN}+${rfmt(roundQuestionPay())} this match</div>${gearBits()}<div class="spacer"></div><button class="btn grey" data-act="home">Menu</button></div>
  <div class="duel"><div class="arena ${hit?(hit.incoming?'hurt':'shoot'):''}"><div class="hud"><div class="hpcol"><div class="hplab"><b class="nametag" id="arenatag">${rankIcon(myRank,22)}<span>${esc(tag)}</span></b><span>${esc(myRank.name)} · ${Q.me} HP</span></div><div class="hp"><span id="mebar" style="width:${hpWidth(Q.me,Q.meMax)}%;background:#22c55e"></span></div><div class="pips">${pipHTML(Q.myRounds)}</div></div>
   <div class="vs"><b>VS</b><small>first to 3</small></div>
   <div class="hpcol"><div class="hplab"><b class="nametag" id="botrank">${rankIcon(rank,22)}<span>${esc(rank.bot)}</span></b><span>${esc(rank.name)} · ${Q.foe} HP</span></div><div class="hp"><span id="foebar" style="width:${hpWidth(Q.foe,Q.foeMax)}%;background:#ef4444"></span></div><div class="pips">${pipHTML(Q.foeRounds)}</div></div></div>
   <div class="scene"><i class="plat a"></i><i class="plat b"></i><i class="plat c"></i><i class="block b1"></i><i class="block b2"></i><i class="block b3"></i><div class="cross"></div><div class="botname">${rankIcon(rank,18)}<span>${esc(rank.name)} ${esc(rank.bot)}</span></div>${rivalSVG(rank.color)}${hitHTML}${hit&&!hit.incoming?'<div class="muzzle"></div>':''}${fin?`<div class="finbanner">${esc(fin.say)}</div>`:''}<div class="gun">${gunSVG(equippedSkin())}</div></div></div>
-  <div class="card duelq"><div class="qnum"><span>Round ${Q.myRounds+Q.foeRounds+1} · ${esc(TOPICS[q.topic]||q.topic)}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$ · ${shot} dmg</span></div>
+  <div class="card duelq"><div class="qnum"><span>Round ${Q.myRounds+Q.foeRounds+1} · ${esc(TOPICS[q.topic]||q.topic)}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$ · ${shot} dmg</span></div>
    <div class="qtext ${q.long?'long':''}"><span class="qi">${q.text}</span></div>${qBody}</div></div></div>`;}
 function duelStart(rematch){if(!rematch){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){const e=$('#err');if(e)e.textContent='Type your name first!';if(inp)inp.focus();sfx.wrong();return;}
   const tagEl=$('#dtag');const tag=(tagEl&&tagEl.value.trim().slice(0,16))||'Redliss';if(inp)inp.blur();setPlayer(nm);tidyGear();
@@ -2199,7 +2201,7 @@ function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=
  const rank=rankBy(Q.rank);let dmg,incoming=false,crit=false,blocked=false,healed=0,title,note;
  if(ok){dmg=duelDamage(q.diff,late,Q.streak,weaponPower());crit=Q.streak>=3;if(crit)player.duel.crits=(player.duel.crits||0)+1;Q.foe=Math.max(0,Q.foe-dmg);Q.dmgDealt+=dmg;incoming=false;
   title=late?'Half-damage hit!':crit?'CRIT!':'Direct hit!';
-  note=(late?'Half damage, because the timer had already run out. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+fmt(late?halfPay(q.reward):q.reward)+' R$.';
+  note=(late?'Half damage, because the timer had already run out. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+rfmt(late?halfPay(q.reward):q.reward)+' R$.';
   sfx.shot();sfx.correct();if(crit)setTimeout(sfx.streak,260);
  }else{incoming=true;
   if(gearOn('shield')&&Q.shieldLeft>0){Q.shieldLeft--;blocked=true;dmg=0;sfx.block();title='Shield block!';}
@@ -2222,7 +2224,7 @@ function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=
   return;}
  Q.phase='wait';
  renderDuelBoard({q,ok,pass:!!opts.pass,title,note});
- const fb=$('#fb');if(ok&&fb){coinBurst(fb,Math.max(1,Math.round(late?halfPay(q.reward):q.reward)));floatText(fb,'+'+fmt(late?halfPay(q.reward):q.reward)+' R$');}
+ const fb=$('#fb');if(ok&&fb){coinBurst(fb,Math.max(1,Math.round(late?halfPay(q.reward):q.reward)));floatText(fb,'+'+rfmt(late?halfPay(q.reward):q.reward)+' R$');}
  showRoundBar(`<button class="btn ${ok?'green':'blue'}" data-act="duelshot">${ok?'Next shot':'Next shot'}</button><button class="btn" data-act="home">Menu</button>`);}
 function duelNextRound(){if(!Q||!Q.duel||Q.phase!=='round')return;if(Q.myRounds>=3||Q.foeRounds>=3){duelGG();return;}Q.me=Q.meMax||100;Q.foe=Q.foeMax||100;Q.shieldLeft=gearOn('shield')?1:0;Q.hit=null;Q.phase='ask';duelAsk();}
 function duelGG(){if(!Q||!Q.duel||Q.phase==='gg')return;Q.phase='gg';stopTimer();clearAuto();
@@ -2242,7 +2244,7 @@ function duelGG(){if(!Q||!Q.duel||Q.phase==='gg')return;Q.phase='gg';stopTimer()
   <div class="ggwho" id="ggwho">${rankIcon(won?myRank:rank,36)} ${won?esc(tag)+' wins!':esc(rank.bot)+' wins'}</div>
   <div class="ggscore">${Q.myRounds} – ${Q.foeRounds}</div>
   <div class="ggstats"><div><b>${acc}%</b><span>Accuracy</span></div><div><b>${Q.best}</b><span>Best streak</span></div><div><b>${Q.dmgDealt}</b><span>Damage dealt</span></div></div>
-  <div class="ggear">${won?'Win bonus +'+WIN_BONUS+' R$ · ':''}This match +${fmt(earned)} R$</div>
+  <div class="ggear">${won?'Win bonus +'+WIN_BONUS+' R$ · ':''}This match +${rfmt(earned)} R$</div>
   <div class="ggear">Win streak ${d.streak}</div>
   ${freshBadges.map(n=>`<div class="ggear">Badge earned: ${esc(n)}</div>`).join('')}
   ${newT!==oldT?`<div class="ggear">Level up: ${newT}</div>`:''}
@@ -2255,16 +2257,16 @@ function shopCard(kind,item){const d=player.duel;
  const owned=kind==='finisher'?d.finishers.indexOf(item.id)>=0:kind==='gear'?d.gear.indexOf(item.id)>=0:d.owned.indexOf(item.id)>=0;
  const eq=kind==='finisher'?d.finisher===item.id:kind==='gear'?d.gearOn.indexOf(item.id)>=0:d.skin===item.id;
  const dis=!owned&&player.total+1e-9<item.cost;
- const label=eq?'Equipped':owned?(kind==='gear'?'Equip':'Equip'):dis?'Need '+fmt(item.cost-player.total)+' more':'Buy · '+fmt(item.cost)+' R$';
+ const label=eq?'Equipped':owned?(kind==='gear'?'Equip':'Equip'):dis?'Need '+rfmt(item.cost-player.total)+' more':'Buy · '+rfmt(item.cost)+' R$';
  const art=kind==='finisher'?finSVG(item.id):kind==='gear'?gearSVG(item.id):gunSVG(item.id);
  const extra=kind==='skin'?`<span class="dmgstat">Damage ${weaponLine(item)}</span>`:kind==='gear'?`<span class="dmgstat">${esc(item.blurb)}</span>`:'';
- return `<button class="skin ${eq?'on':''}" type="button" data-act="duelbuy" data-kind="${kind}" data-id="${item.id}" ${dis?'disabled':''}>${art}<b>${esc(item.name)}</b>${extra}<span>${item.cost?fmt(item.cost)+' R$':'Free'}</span><em>${label}</em></button>`;}
+ return `<button class="skin ${eq?'on':''}" type="button" data-act="duelbuy" data-kind="${kind}" data-id="${item.id}" ${dis?'disabled':''}>${art}<b>${esc(item.name)}</b>${extra}<span>${item.cost?rfmt(item.cost)+' R$':'Free'}</span><em>${label}</em></button>`;}
 function openDuelShop(){if(!needPlayer())return;leaveRound();tidyGear();header();subjectTab='duel';const msg=shopMsg;shopMsg='';window.scrollTo(0,0);
  const d=player.duel;grantBadges();save();
  const badges=BADGES.map(b=>{const on=d.badges.indexOf(b.id)>=0;return `<div class="ach ${on?'':'off'}">${badgeMark(b.id,on)}<div><b>${esc(b.name)}</b><span>${esc(b.detail)} · ${badgeProgress(b.id)}</span></div></div>`;}).join('');
  app.innerHTML=`<div class="card duellobby"><div class="row"><h2 style="margin:0">Weapons, gear and badges</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
   <p class="muted">Pricier weapons deal more damage. The numbers under each weapon are easy / medium / hard hits, before a crit. Gear changes the fight. Badges are earned, not bought. Finishers are cosmetic. Spending R$ does not touch the house.</p>
-  <p style="font-size:20px">Bank ${COIN} <b>${fmt(player.total)}</b> · Weapon <b>${esc((SKINS.find(s=>s.id===equippedSkin())||SKINS[0]).name)}</b> · Damage <b>${weaponLine(SKINS.find(s=>s.id===equippedSkin())||SKINS[0])}</b></p>
+  <p style="font-size:20px">Bank ${COIN} <b>${rfmt(player.total)}</b> · Weapon <b>${esc((SKINS.find(s=>s.id===equippedSkin())||SKINS[0]).name)}</b> · Damage <b>${weaponLine(SKINS.find(s=>s.id===equippedSkin())||SKINS[0])}</b></p>
   ${msg?`<div class="note">${esc(msg)}</div>`:''}
   <h3>Achievement badges</h3><div class="achgrid" id="badgegrid">${badges}</div>
   <h3 style="margin-top:16px">Gear</h3><div class="shopgrid" id="geargrid">${GEAR.map(s=>shopCard('gear',s)).join('')}</div>
@@ -2274,12 +2276,12 @@ function openDuelShop(){if(!needPlayer())return;leaveRound();tidyGear();header()
 function duelBuy(kind,id){if(!player)return;tidyGear();const d=player.duel;
  if(kind==='gear'){const item=GEAR.find(g=>g.id===id);if(!item)return;
   if(d.gear.indexOf(id)>=0){const i=d.gearOn.indexOf(id);if(i>=0)d.gearOn.splice(i,1);else d.gearOn.push(id);shopMsg=(d.gearOn.indexOf(id)>=0?'Equipped ':'Put away ')+item.name+'.';save();sfx.click();openDuelShop();return;}
-  if(player.total+1e-9<item.cost){shopMsg='You need '+fmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
+  if(player.total+1e-9<item.cost){shopMsg='You need '+rfmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
   player.total=clean(player.total-item.cost);d.gear.push(id);d.gearOn.push(id);shopMsg='You bought '+item.name+'.';save();header();sfx.coin();openDuelShop();return;}
  const list=kind==='finisher'?FINISHERS:SKINS;const item=list.find(s=>s.id===id);if(!item)return;
  const owned=kind==='finisher'?d.finishers:d.owned;
  if(owned.indexOf(id)>=0){if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='Equipped '+item.name+'.';save();sfx.click();openDuelShop();return;}
- if(player.total+1e-9<item.cost){shopMsg='You need '+fmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
+ if(player.total+1e-9<item.cost){shopMsg='You need '+rfmt(item.cost-player.total)+' more R$ for '+item.name+'.';sfx.wrong();openDuelShop();return;}
  player.total=clean(player.total-item.cost);owned.push(id);if(kind==='finisher')d.finisher=id;else d.skin=id;shopMsg='You bought '+item.name+'.';save();header();sfx.coin();openDuelShop();}
 
 const GUY_W=56,GUY_H=74,PK_WORLD=420;
@@ -2377,7 +2379,7 @@ function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTime
  app.innerHTML=`<div class="card center" id="stagechoice" style="max-width:760px;margin:12px auto"><h2>Stage ${stage} complete!</h2><div class="score">${score}/${Q.qs.length}</div>
   <p style="font-size:22px">Stage clear +${rb} R$${perfect?' · perfect +'+perfect+' R$':''}</p>
   ${passed?`<p class="muted">${passed} passed · no Robux</p>`:''}
-  <p class="muted">Saved. Next is stage ${next}. Bank ${fmt(player.total)} R$.</p>
+  <p class="muted">Saved. Next is stage ${next}. Bank ${rfmt(player.total)} R$.</p>
   <div class="stagebtns" style="margin-top:12px"><button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button></div></div>`;
  sfx.fanfare();checkAchievements();Q=null;}
 function numericQuestion(diff){const topics=['addsub','times','division','x10','rounding','negative','money'];
@@ -2438,7 +2440,7 @@ function flapSpawn(){if(!FL||!FL.alive)return;const diff=FL.diff||savedDiff('m7'
  if(sign){sign.style.left=(x-70)+'px';sign.style.top=(gapY+6)+'px';sign.textContent=plain(q.text).slice(0,90);}
  if(bird)bird.style.top=FL.y+'px';
  const qt=$('#flapqtext');if(qt)qt.innerHTML=q.text;
- const pill=$('#flappill');if(pill)pill.textContent=DNAME[q.diff]+' · '+q.reward+' R$';
+ const pill=$('#flappill');if(pill)pill.textContent=DNAME[q.diff]+' · '+rfmt(q.reward)+' R$';
  const help=$('#flaphelp');if(help){help.classList.add('hidden');help.innerHTML='';}
  const half=$('#halfslot');if(half)half.innerHTML='';
  const dv=$('#dv');if(dv)dv.textContent='';
@@ -2473,7 +2475,7 @@ function flappyStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkour
  const pad=keys.map(k=>k==='ok'?`<button class="key go" type="button" data-act="fkey" data-k="ok" aria-label="Enter">✓</button>`:k==='del'?`<button class="key fn" type="button" data-act="fkey" data-k="del" aria-label="Delete">⌫</button>`:k==='-'?`<button class="key fn" type="button" data-act="fkey" data-k="-" aria-label="Minus">−</button>`:k==='.'?`<button class="key fn" type="button" data-act="fkey" data-k=".">.</button>`:`<button class="key" type="button" data-act="fkey" data-k="${k}" ${k==='0'?'style="grid-column:span 2"':''}>${k}</button>`).join('');
  app.innerHTML=`<div class="flapwrap"><div class="flaphud"><b id="flapscore">Score 0 · Best ${player.flappy.best||0}</b><button class="btn green" type="button" data-act="flap" id="flapbtn" style="min-height:64px">Flap</button></div>
   <div class="flapmain"><div class="flapview" id="flapview"><div class="flapbird" id="flapbird">${FLAP_BIRD}</div><div class="pipe" id="pipetop"></div><div class="pipe" id="pipebot"></div><div class="pipesign" id="pipesign">Type the answer</div><div class="flapground"></div></div>
-  <div class="flapside"><div class="flapqscroll"><div class="qnum"><span>Answer before the pipe</span><span class="dpill d-easy" id="flappill">Easy · 1 R$</span></div>
+  <div class="flapside"><div class="flapqscroll"><div class="qnum"><span>Answer before the pipe</span><span class="dpill d-easy" id="flappill">Easy · 0.5 R$</span></div>
    <div class="qtext" id="flapqtext"></div><div id="halfslot"></div>
    <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button><div id="flaphelp" class="helppanel hidden"></div>
    <div class="disp" id="disp"><span id="dv"></span><span class="cur"></span></div></div>
@@ -2485,7 +2487,7 @@ function showPotion(q){document.body.classList.add('play-on','potion-on');
  const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);
  const labels=q.type==='mc'?q.choices.slice():ninjaOptions(q);
  Q.potRight=right;Q.potOpts=labels;Q.potion=true;
- app.innerHTML=`<div class="potwrap"><div class="card potq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$</span></div>
+ app.innerHTML=`<div class="potwrap"><div class="card potq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$</span></div>
   <div class="qtext ${q.long?'long':''}"><span class="qi">${q.text}</span></div>
   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
   <div id="help" class="helppanel hidden"></div><div id="halfslot"></div>
@@ -2533,7 +2535,7 @@ function treasureStart(key){stopBomb();stopTimer();clearAuto();stopFall();stopPa
 function showTreasure(){const q=Q.qs[Q.i];document.body.classList.add('play-on','treasure-on');
  if(Q.chestFor!==Q.i){Q.chests=treasureChests(q);Q.chestFor=Q.i;}
  const chests=Q.chests.map((c,i)=>`<button class="chest ${c.opened?(c.right?'open good':'open dud'):''}" type="button" data-act="chest" data-k="${i}" style="left:${c.x}px;top:${c.y}px" ${c.opened?'disabled':''}>${CHEST_SVG}<div class="mark">${c.opened?(c.right?'Treasure!':'Empty'):'X marks the spot'}</div><div>${c.label}</div></button>`).join('');
- app.innerHTML=`<div class="thwrap"><div class="card thq qcard"><div class="qnum"><span>Hunt question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${q.reward} R$</span></div>
+ app.innerHTML=`<div class="thwrap"><div class="card thq qcard"><div class="qnum"><span>Hunt question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$</span></div>
   <div class="qtext ${q.long?'long':''}" id="thquestion"><span class="qi">${q.text}</span></div>
   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
   <div id="help" class="helppanel hidden"></div><div id="halfslot"></div>
@@ -2575,7 +2577,7 @@ function treasureClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();
  app.innerHTML=`<div class="card center" id="treasurechest" style="max-width:720px;margin:12px auto"><h2>Treasure chest!</h2>${BIG_CHEST}<div class="score">${score}/${Q.qs.length}</div>
   <p style="font-size:22px">Hunt bonus +${rb} R$${perfect?' · full chest +'+perfect+' R$':''}</p>
   ${passed?`<p class="muted">${passed} passed</p>`:''}
-  <p class="muted">Treasures found in all: ${player.treasure.found}. Bank ${fmt(player.total)} R$. The house does not build here.</p>
+  <p class="muted">Treasures found in all: ${player.treasure.found}. Bank ${rfmt(player.total)} R$. The house does not build here.</p>
   <div class="stagebtns"><button class="btn green" type="button" data-act="thunt" data-k="${L.key}">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button></div></div>`;
  showRoundBar('<button class="btn green" type="button" data-act="thunt" data-k="${L.key}">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button>');
  sfx.fanfare();if(score>=4)confetti();checkAchievements();Q=null;}
@@ -2592,7 +2594,11 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(!(FALL_SECS.easy===7&&FALL_SECS.medium===11&&FALL_SECS.hard===16))throw new Error('fall');
  if(ninjaLimit('easy')!==9||ninjaLimit('medium')!==13||ninjaLimit('hard')!==18)throw new Error('ninja timer');
  if(ninjaLimit('hard')<FALL_SECS.hard||halfPay(1)!==0.5||halfPay(2)!==1||halfPay(3)!==1.5)throw new Error('half');
+ if(REWARD.easy!==0.5||REWARD.medium!==1||REWARD.hard!==1.5)throw new Error('reward');
+ if(halfPay(REWARD.easy)!==0.25||halfPay(REWARD.medium)!==0.5||halfPay(REWARD.hard)!==0.75)throw new Error('half reward');
+ if(BRICK.easy!==1||BRICK.medium!==2||BRICK.hard!==3)throw new Error('bricks');
  if(fmt(12.5)!=='12.5'||fmt(0.5)!=='0.5')throw new Error('fmt half');
+ if(rfmt(0.5)!=='0.5'||rfmt(1)!=='1'||rfmt(1.5)!=='1.5'||rfmt(0.25)!=='0.25'||rfmt(0.75)!=='0.75'||rfmt(19.5)!=='19.5'||rfmt(39)!=='39'||rfmt(58.5)!=='58.5'||rfmt(12.5)!=='12.5')throw new Error('rfmt');
  const halfHouse=houseProgress(0.5);if(halfHouse.have!==0.5||halfHouse.next.id!=='foundation')throw new Error('half brick');
  const seenSci={};SCIENCE.forEach(s=>{if(!s.ans||s.wrongs.length<3||s.wrongs.indexOf(s.ans)>=0||new Set([s.ans,...s.wrongs]).size!==s.wrongs.length+1)throw new Error('sci dup '+s.text.slice(0,48));
   if(!s.hint||!s.steps||s.steps.length<2||!B[s.bite])throw new Error('sci link '+s.bite);
@@ -2614,7 +2620,7 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  for(let i=1;i<easyHits.length;i++)if(easyHits[i]<=easyHits[i-1])throw new Error('easy scale');
  if(!SKINS.some(s=>s.name==='Lava Blaster'&&s.cost>0)||!SKINS.some(s=>s.name==='Galaxy Slingshot'&&s.cost>0))throw new Error('skins');
  if(MM_SECS.easy!==90||MM_SECS.medium!==60||MM_SECS.hard!==30)throw new Error('bomb');
- if(MM_CLEAR.easy!==15||MM_CLEAR.medium!==30||MM_CLEAR.hard!==45)throw new Error('clear');
+ if(MM_CLEAR.easy!==19.5||MM_CLEAR.medium!==39||MM_CLEAR.hard!==58.5)throw new Error('clear');
  const m3=LEVELS.find(l=>l.key==='m3');
  if(!m3||!m3.bomb)throw new Error('mm bomb');
  ['easy','medium','hard'].forEach(d=>{if(MM_MIX[d].some(x=>x!==d))throw new Error('mm mix');});
@@ -2647,7 +2653,7 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  const redeemer=newPlayer('Cash');redeemer.total=12.5;redeemer.earned=40;redeemer.duel.owned.push('lava');redeemer.achs.push('robux30');redeemer.house.pts=9;redeemer.parkour.stage=4;
  const amount=clean(redeemer.total);redeemer.redeemed=clean((redeemer.redeemed||0)+amount);redeemer.redemptions.push({d:'2026-01-01T00:00:00.000Z',amount:amount,note:'30 min Roblox',running:redeemer.redeemed});redeemer.total=0;
  if(redeemer.total!==0||redeemer.redeemed!==12.5||redeemer.earned!==40||redeemer.duel.owned.indexOf('lava')<0||redeemer.achs.indexOf('robux30')<0||redeemer.house.pts!==9||redeemer.parkour.stage!==4)throw new Error('redeem keep');
- if(fmt(redeemer.redeemed)!=='12.5')throw new Error('redeem fmt');
+ if(rfmt(redeemer.redeemed)!=='12.5')throw new Error('redeem fmt');
  for(let s=1;s<=6;s++){const c=parkourCourse(s);if(c.plats.length<4||c.gap>150||c.flagX<=c.plats[0].x)throw new Error('course '+s);}
  if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');}
 selfTest();
