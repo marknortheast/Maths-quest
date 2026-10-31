@@ -1,0 +1,86 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="robots" content="noindex,nofollow"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="My Bots">
+<link rel="apple-touch-icon" href="apple-touch-icon.png"><link rel="icon" href="apple-touch-icon.png"><title>My Bots</title>
+<style>
+*{box-sizing:border-box}html,body{margin:0}body{font-family:-apple-system,system-ui,'Noto Sans','Noto Color Emoji',sans-serif;color:#f1f5f9;background:#1b1030 url(bg.jpg) center/cover fixed;min-height:100vh;font-size:14px;-webkit-tap-highlight-color:transparent}
+.w{padding:10px 12px 14px;max-width:1500px;margin:0 auto;display:flex;flex-direction:column;gap:8px;min-height:100vh}
+.card{background:rgba(10,12,28,.86);border:1px solid rgba(255,255,255,.25);border-radius:14px;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);box-shadow:0 8px 20px #0005}
+button{font:inherit;color:inherit;cursor:pointer;border:0;background:none;padding:0;text-align:inherit}
+.hd{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px}
+h1{margin:0;font-size:20px;text-shadow:0 2px 6px #000}.sub{font-size:12px;color:#e2e8f0;text-shadow:0 1px 3px #000}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}.tb{border-radius:99px;padding:6px 14px;font-weight:700;background:rgba(15,23,42,.85);border:2px solid #475569}.tb.on{background:#f59e0b;color:#111;border-color:#f59e0b}
+.chain{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.nd{border-radius:8px;padding:5px 10px;font-weight:700;font-size:13px}.md{background:#6366f1}.cos{background:#0ea5e9;color:#022}.gb{border:2px dashed #94a3b8;background:rgba(15,15,35,.85)}
+.leg{display:flex;gap:5px;flex-wrap:wrap;font-size:11px;align-items:center}.leg span{border:1px solid #475569;border-radius:99px;padding:2px 8px;background:rgba(15,23,42,.85)}.leg .m{border:2px dashed #fbbf24}
+.cap{text-align:center;font-size:12px;font-style:italic;text-shadow:0 1px 3px #000}
+.teams{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:7px;flex:1}
+.tm{padding:7px;display:flex;flex-direction:column;gap:5px}.th{text-align:center;padding:2px;border-radius:10px}.th:active{background:rgba(255,255,255,.08)}
+.an{font-size:38px;line-height:1.1;filter:drop-shadow(0 2px 4px #000)}.tl{font-weight:800;font-size:15px}
+.bd{display:flex;gap:4px;justify-content:center;flex-wrap:wrap;margin-top:3px}.bd span{border-radius:99px;padding:2px 8px;font-size:11px;font-weight:700}.td{background:#f97316;color:#111}.td0{background:#475569;color:#cbd5e1}.rt{background:#334155}
+.tile{display:flex;align-items:center;gap:6px;width:100%;border:1.5px solid rgba(255,255,255,.28);border-radius:10px;padding:6px 7px;background:rgba(15,23,42,.92);font-size:12.5px;font-weight:600;min-height:36px}
+.tile .e{font-size:19px}.tile .nm{flex:1;min-width:0}.tile .c{color:#7dd3fc;font-weight:800}.tile.dir{border:2px solid var(--a);background:rgba(15,15,35,.95);font-size:13.5px;flex-wrap:wrap}.tile.dir .tt{width:100%;font-size:10px;opacity:.8;text-align:center}
+.tile.mg{border:1.5px dashed #fbbf24;opacity:.85}.tile.sel{outline:3px solid #38bdf8}.tile:active{transform:scale(.98)}
+.ms{font-size:10px;font-weight:800;color:#fbbf24;text-align:center;letter-spacing:.4px;margin-top:3px}.mgs{border:1.5px dashed rgba(251,191,36,.5);border-radius:10px;padding:4px;display:flex;flex-direction:column;gap:4px;background:rgba(15,15,35,.3)}
+.row1{display:grid;grid-template-columns:1.6fr 1fr;gap:7px}.row2{display:grid;grid-template-columns:1fr 240px;gap:7px}
+.box{padding:9px 11px}.box h2{margin:0 0 5px;font-size:14px;border-left:4px solid #f59e0b;padding-left:7px}.how h2{border-color:#a855f7}.how{background:rgba(6,78,59,.82)}
+.dg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px 12px;font-size:12px}.pill{display:inline-block;border-radius:99px;padding:1px 7px;font-weight:800;font-size:10.5px;margin-bottom:2px}.r{background:#f97316;color:#111}.g{background:#22c55e;color:#062}.i{background:#64748b}
+.dg ul{margin:0;padding-left:15px}.ch{display:flex;align-items:center;gap:12px;flex-wrap:wrap}.bars{display:flex;gap:6px;align-items:flex-end;height:38px;flex:1;min-width:160px}.bars i{flex:1;background:#38bdf8;border-radius:4px 4px 0 0;position:relative}.bars i b{position:absolute;top:1px;color:#082f49;white-space:nowrap;left:0;right:0;text-align:center;font-size:10px;font-style:normal}
+.btn{background:#22c55e;color:#052e16;font-weight:800;border-radius:12px;padding:9px 16px}.em{background:#2563eb;border:2px solid #93c5fd;border-radius:16px;font-size:22px;font-weight:800;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:64px}.em small{font-size:11px;font-weight:600;opacity:.85}
+.sheet{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:9;padding:16px}.sheet.on{display:flex}
+.pn{width:min(760px,100%);max-height:88vh;overflow:auto;padding:16px;background:rgba(12,14,32,.98)}.pn h3{margin:0 0 6px;font-size:20px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:6px 0}th,td{text-align:left;padding:5px 6px;border-bottom:1px solid #334155;vertical-align:top}th{color:#94a3b8;font-weight:600}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:3px 10px;font-size:13px;margin:6px 0}.kv b{color:#94a3b8;font-weight:600}
+.x{background:#334155;border-radius:10px;padding:8px 18px;font-weight:700;margin-top:8px}.tdl{margin:4px 0;padding-left:18px}.tdl li{margin:3px 0}.u1{color:#f87171}.u2{color:#fbbf24}
+select{font:inherit;padding:6px;border-radius:8px;background:#0f172a;color:#fff;border:1px solid #475569}
+.view{display:none}.view.on{display:flex;flex-direction:column;gap:8px}.asof{font-size:11px;color:#cbd5e1;text-shadow:0 1px 3px #000}
+@media (min-width:1000px) and (orientation:landscape){.w{height:100vh;gap:5px;padding:6px 10px 8px}.view.on{gap:5px;flex:1;min-height:0}.teams{min-height:0}.tm{padding:5px;gap:3px;overflow:hidden}.an{font-size:30px}.tl{font-size:14px}.tile{min-height:0;padding:3px 6px;font-size:11.5px;gap:4px}.tile .e{font-size:16px}.tile.dir{font-size:12.5px}.tile.dir .tt{font-size:9px}.ms{margin-top:1px;font-size:9px}.mgs{gap:3px;padding:3px}.box{padding:6px 10px}.dg{font-size:11px;gap:2px 10px}.dg li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.dg ul{padding-left:13px}.row1 .dg li:nth-child(n+5){display:none}.em{min-height:48px}h1{font-size:18px}}
+@media (max-width:900px){.teams{grid-template-columns:repeat(2,1fr)}.row1,.row2{grid-template-columns:1fr}.dg{grid-template-columns:1fr}}
+@media (max-width:520px){.teams{grid-template-columns:1fr}.sheet{align-items:flex-end;padding:0}.pn{border-radius:18px 18px 0 0;max-height:85vh}.kv{grid-template-columns:100px 1fr}}
+</style></head><body>
+<div class="w">
+<div class="hd"><div><h1>My Bots</h1><div class="asof" id="asof"></div></div>
+<div class="tabs" id="tabs"><button class="tb on" data-v="today">🐿️ Today</button><button class="tb" data-v="bots">🐾 Bots</button><button class="tb" data-v="sched">⏰ Schedule</button></div>
+<div class="chain"><span class="nd md">👤 Chairman Mark</span>›<span class="nd cos">🦁 Chief of Staff / MD</span>┄<span class="nd gb">🦉 Grok Bot</span></div></div>
+<div class="view on" id="v-today">
+<div class="hd"><div class="leg"><span>✅ Completed</span><span>❌ Failed</span><span>⏳ Running</span><span>— Unknown</span><span class="m">dashed = merge?</span></div><div class="cap">Tap a bot for its details · tap a team header for to-dos and routines</div></div>
+<div class="teams" id="teams"></div>
+<div class="row1"><div class="card box"><h2>Chief of Staff dashboard</h2><div class="dg" id="dash"></div></div>
+<div class="card box how"><h2>How it works in practice</h2><ul style="margin:0;padding-left:16px;font-size:12.5px"><li>Each team lead owns its area and posts one daily line to Chief of Staff.</li><li>You only hear about items marked Needs you.</li></ul></div></div>
+<div class="row2"><div class="card box"><h2>📊 Daily charts</h2><div class="ch"><div class="bars" id="bars"></div><button class="btn" id="openTables">Open detail tables</button></div></div>
+<button class="em" id="openEmail">✉️ Email<small>Email Log · E Mail</small></button></div>
+</div>
+<div class="view" id="v-bots"><div class="card box" id="botlist"></div></div>
+<div class="view" id="v-sched"><div class="card box"><h2>All routines by time (SGT)</h2><label>Team <select id="filt"></select></label><div id="sched"></div><div class="asof" style="text-shadow:none">"not confirmed" times come from the last run seen in the bot's chat, not its schedule.</div></div></div>
+</div>
+<div class="sheet" id="sheet"><div class="card pn" id="pn"></div></div>
+<script src="data.js"></script>
+<script>
+var $=function(s){return document.querySelector(s)};var esc=function(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})};
+var TN=TEAMNAME,STL={ok:"✅ Completed",fail:"❌ Failed",run:"⏳ Running",unk:"— Unknown"},UR=["","Urgent","This week","When you can"];
+var AC={Markets:"#f59e0b",Crypto:"#8b5cf6",News:"#0ea5e9",Work:"#ef4444",Life:"#22c55e",Family:"#ec4899",Projects:"#14b8a6"};
+var ALL=[];TEAMS.forEach(function(t){[t.dir].concat(t.bots).forEach(function(b){ALL.push({b:b,t:t})})});
+function todos(k){return TODOS.filter(function(x){return x.team===k}).sort(function(a,b){return a.urg-b.urg})}
+function rts(f){return RT.filter(f).sort(function(a,b){return a.t-b.t})}
+function rtable(rows,withBot){if(!rows.length)return '<p>No routines found in its chat.</p>';return '<table><tr>'+(withBot?'<th>Bot</th>':'')+'<th>Routine</th><th>Time (SGT)</th><th>Frequency</th><th>Status</th><th>Last run</th></tr>'+rows.map(function(r){return '<tr>'+(withBot?'<td>'+esc(r.bot)+'</td>':'')+'<td>'+esc(r.name)+'</td><td>'+esc(r.time)+'</td><td>'+esc(r.freq)+'</td><td>'+STL[r.st]+'</td><td>'+esc(r.last)+'</td></tr>'}).join('')+'</table>'}
+function tile(b,t,dir){return '<button class="tile'+(dir?' dir':'')+(b.mg?' mg':'')+'" data-bot="'+b.id+'" style="--a:'+AC[t.key]+'">'+(dir?'<span class="tt">'+esc(TN[t.key])+' Director</span>':'')+'<span class="e">'+b.a+'</span><span class="nm">'+esc(b.n)+(b.mg?' · merge?':'')+'</span><span class="c">›</span></button>'}
+function card(t){var n=todos(t.key).length,r=rts(function(x){return x.team===TN[t.key]}).length;var real=t.bots.filter(function(b){return!b.mg}),mg=t.bots.filter(function(b){return b.mg});
+return '<div class="card tm"><button class="th" data-team="'+t.key+'"><div class="an">'+t.a+'</div><div class="tl">'+esc(t.label)+'</div><div class="bd"><span class="'+(n?'td':'td0')+'">To do · '+n+'</span><span class="rt">⏰ '+r+' routine'+(r===1?'':'s')+'</span></div></button>'+tile(t.dir,t,1)+real.map(function(b){return tile(b,t)}).join('')+(mg.length?'<div class="ms">MERGE CANDIDATES</div><div class="mgs">'+mg.map(function(b){return tile(b,t)}).join('')+'</div>':'')+'</div>'}
+function open(h){$('#pn').innerHTML=h+'<button class="x" id="close">Close</button>';$('#sheet').classList.add('on');$('#close').onclick=close}
+function close(){$('#sheet').classList.remove('on');document.querySelectorAll('.tile.sel').forEach(function(e){e.classList.remove('sel')})}
+function showBot(id){var x=ALL.filter(function(a){return a.b.id===id})[0];if(!x)return;document.querySelectorAll('.tile[data-bot="'+id+'"]').forEach(function(e){e.classList.add('sel')});var b=x.b,t=x.t,td=BOTTODO[b.n]||[];
+open('<h3>'+b.a+' '+esc(b.n)+'</h3><div class="kv"><b>Team</b><span>'+esc(TN[t.key])+(b.id===t.dir.id?' (Director)':'')+'</span><b>Merge candidate</b><span>'+(b.mg?'Yes':'No')+'</span><b>Last activity</b><span>'+esc(b.last)+'</span><b>What it does</b><span>'+esc(NOTE[b.n]||'Not stated in its chat')+'</span></div><h4 style="margin:10px 0 2px">Routines</h4>'+rtable(rts(function(r){return r.bot===b.n}))+'<h4 style="margin:10px 0 2px">To do</h4>'+(td.length?'<ul class="tdl">'+td.map(function(s){return'<li>'+esc(s)+'</li>'}).join('')+'</ul>':'<p>No open to-dos for you in its chat.</p>'))}
+function showTeam(k){var t=TEAMS.filter(function(x){return x.key===k})[0],td=todos(k);open('<h3>'+t.a+' '+esc(t.label)+'</h3><h4 style="margin:6px 0 2px">To do · '+td.length+'</h4>'+(td.length?'<ul class="tdl">'+td.map(function(x){return'<li><b class="u'+x.urg+'">'+UR[x.urg]+'</b> · '+esc(x.title)+'<br><small>'+esc(x.detail)+' ('+esc(x.src)+')</small></li>'}).join('')+'</ul>':'<p>No open items for you in this team\'s chats.</p>')+'<h4 style="margin:10px 0 2px">Routines</h4>'+rtable(rts(function(r){return r.team===TN[k]}),1).replace('No routines found in its chat.','No routines found in this team\'s chats.'))}
+$('#asof').textContent='Data as of '+window.ASOF;
+$('#teams').innerHTML=TEAMS.map(card).join('');
+var needs=TODOS.slice().sort(function(a,b){return a.urg-b.urg});
+$('#dash').innerHTML='<div><span class="pill r">Needs you '+needs.length+'</span><ul>'+needs.map(function(x){return'<li><b>'+esc(TN[x.team])+'</b> · '+esc(x.title)+'</li>'}).join('')+'</ul>'+(needs.length>4?'<div><small>+'+(needs.length-4)+' more: tap a team header</small></div>':'')+'</div><div><span class="pill g">Working</span><ul><li>Crypto · 31 Oct buys: SOL 20, RENDER 15, INJ 15 USDC</li><li>Crypto · BTC grid: sells open, nothing filled</li><li>Projects · YouTube channel restore watch</li><li>Projects · Redbubble support reply pending</li></ul></div><div><span class="pill i">Idle (7+ days)</span><ul><li>Shopping, Health BOT, Thailand Retirement</li><li>Daiky News, China Presentation, Candys Grock Bot</li><li>Birthdays!!!, Monopoly, Email Log</li><li>Alexanders Homework, Translation</li><li>7.00AM $20 Crypto: not linked yet</li></ul></div>';
+var C=CHARTS,mx=C.octNet;$('#bars').innerHTML=[['Oct net',C.octNet],['Target',C.target],['Calls',C.calls],['Puts',C.puts]].map(function(p){return'<i style="height:'+Math.max(8,p[1]/mx*100)+'%"><b>'+p[0]+' $'+p[1].toLocaleString()+'</b></i>'}).join('');
+$('#openTables').onclick=function(){open('<h3>Open option trades</h3><p>Year 1: $'+C.year1.toLocaleString()+' of $'+C.year1Target.toLocaleString()+'. October net $'+C.octNet.toLocaleString()+' vs $'+C.target.toLocaleString()+' monthly target.</p><table><tr><th>Ticker</th><th>Option</th><th>Expiry</th><th>Qty</th><th>Premium</th><th>Days left</th></tr>'+OPEN.map(function(o){return'<tr><td>'+o[0]+'</td><td>'+o[1]+'</td><td>'+o[2]+'</td><td>'+o[3]+'</td><td>$'+o[4].toLocaleString()+'</td><td>'+o[5]+'</td></tr>'}).join('')+'</table>')};
+$('#openEmail').onclick=function(){var el=ALL.filter(function(a){return a.b.n==='Email Log'||a.b.n==='E Mail'});open('<h3>✉️ Email</h3><p>'+EMAIL_COUNT.threads+' recent threads in the bot inbox, latest '+esc(EMAIL_COUNT.latest)+'. Subjects are kept off this public page.</p>'+el.map(function(a){return tile(a.b,a.t)}).join('<div style="height:6px"></div>'))};
+$('#botlist').innerHTML='<h2>All bots ('+ALL.length+')</h2><table><tr><th>Bot</th><th>Team</th><th>Last activity</th><th></th></tr>'+ALL.map(function(a){return'<tr><td>'+a.b.a+' '+esc(a.b.n)+(a.b.mg?' (merge?)':'')+'</td><td>'+esc(TN[a.t.key])+'</td><td>'+esc(a.b.last)+'</td><td><button class="c" data-bot="'+a.b.id+'" style="color:#7dd3fc;font-weight:700">Details ›</button></td></tr>'}).join('')+'</table><p class="asof" style="text-shadow:none">Usage: '+USAGE.plan+', weekly '+USAGE.weekly+', resets '+USAGE.resets+'. Per-bot usage: not linked yet.</p>';
+var teamsF=['All teams'].concat(Array.from(new Set(RT.map(function(r){return r.team}))));$('#filt').innerHTML=teamsF.map(function(t){return'<option>'+esc(t)+'</option>'}).join('');
+function sched(){var f=$('#filt').value;$('#sched').innerHTML=rtable(rts(function(r){return f==='All teams'||r.team===f}),1)}$('#filt').onchange=sched;sched();
+document.addEventListener('click',function(e){var b=e.target.closest('[data-bot]');if(b){showBot(b.getAttribute('data-bot'));return}var t=e.target.closest('[data-team]');if(t){showTeam(t.getAttribute('data-team'));return}var v=e.target.closest('[data-v]');if(v){document.querySelectorAll('.tb').forEach(function(x){x.classList.toggle('on',x===v)});['today','bots','sched'].forEach(function(n){$('#v-'+n).classList.toggle('on',n===v.getAttribute('data-v'))})}});
+$('#sheet').onclick=function(e){if(e.target.id==='sheet')close()};
+</script></body></html>
