@@ -365,7 +365,7 @@ body.duel-on #app>.gg{flex:1;min-height:0}
 .fuse{position:relative;height:18px;background:#292524;border:3px solid #000;border-radius:9px}
 .fuse i{display:block;height:100%;width:100%;border-radius:6px;background:repeating-linear-gradient(90deg,#fb923c 0 10px,#44403c 10px 14px)}
 .fuse b{position:absolute;top:-8px;width:18px;height:18px;margin-left:-9px;border-radius:50%;background:#fde047;border:3px solid #000;box-shadow:0 0 0 3px #f97316;animation:spark .22s infinite}
-.bombsecs{font-size:44px;line-height:1;min-width:2.4ch;text-align:right;color:#facc15;text-shadow:0 3px 0 #000}
+.bombsecs{font-size:44px;line-height:1;min-width:4.6ch;text-align:right;color:#facc15;text-shadow:0 3px 0 #000;font-variant-numeric:tabular-nums}
 .bombbar.hot{background:#991b1b;border-color:#facc15;animation:bombflash .4s steps(2,end) infinite}
 .bombbar.hot .bombsecs{color:#fff}
 .bombbar.hot .bomblabel{color:#fde047}
@@ -1510,7 +1510,9 @@ function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','
  const x=Math.random()*innerWidth;c.animate([{transform:`translate(${x}px,-30px) rotate(0deg)`},{transform:`translate(${x+R(-120,120)}px,${innerHeight+40}px) rotate(${R(180,720)}deg)`}],{duration:R(1400,2600),delay:R(0,400),easing:'cubic-bezier(.3,.6,.6,1)',fill:'both'}).onfinish=()=>c.remove();}}
 
 const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,PK=null,FL=null;
-const MM_SECS={easy:90,medium:60,hard:30};
+const MM_SECS={easy:90,medium:60,hard:180};
+function bombLen(sec){if(sec===180)return {tag:'3:00',words:'3 minutes'};return {tag:sec+'s',words:sec+'s'};}
+function bombClock(sec){sec=Math.max(0,sec|0);return Math.floor(sec/60)+':'+pad2(sec%60);}
 const MM_CLEAR={easy:19.5,medium:39,hard:58.5};
 const MM_MIX={easy:['easy','easy','easy','easy'],medium:['medium','medium','medium'],hard:['hard','hard','hard']};
 function stopTimer(){if(timer){clearInterval(timer);timer=null;}}
@@ -1558,7 +1560,7 @@ function tabsHTML(){const tabs=[['maths','Maths'],['science','Science'],['histor
  return `<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${subjectTab===id?'on':''}" data-act="tab" data-t="${id}">${label}</button>`).join('')}</div>`;}
 function bombLeft(){if(!Q||!Q.bomb)return 0;return Q.bomb.limit-(performance.now()-Q.bomb.t0)/1000;}
 function paintBomb(){if(!Q||!Q.bomb)return;const left=Math.max(0,bombLeft());const sec=Math.ceil(left-1e-6);const bar=$('#bombbar'),secs=$('#bombsecs'),fill=$('#fusefill'),spark=$('#spark'),lab=$('#bomblabel');
- if(secs)secs.textContent=String(Math.max(0,sec));
+ if(secs)secs.textContent=Q.bomb.limit>=180?bombClock(Math.max(0,sec)):String(Math.max(0,sec));
  const pct=Q.bomb.limit?Math.max(0,Math.min(100,left/Q.bomb.limit*100)):0;
  if(fill)fill.style.width=pct+'%';
  if(spark)spark.style.left=pct+'%';
@@ -1583,7 +1585,7 @@ function diffBlurb(L,d){const name=DNAME[d].toLowerCase();
  if(L.mode==='flappy')return d==='easy'?'The pipe moves slowly.':d==='hard'?'The pipe moves faster.':'The pipe moves at a medium pace.';
  if(L.mode==='parkour')return 'Every question is '+name+'. The obstacle course still gets harder each stage.';
  if(L.mode==='treasure')return 'All five questions are '+name+'.';
- if(L.bomb)return 'Every question is '+name+'. The bomb runs for '+MM_SECS[d]+'s. Finish for +'+rfmt(MM_CLEAR[d])+' R$.';
+ if(L.bomb)return 'Every question is '+name+'. The bomb runs for '+bombLen(MM_SECS[d]).words+'. Finish for +'+rfmt(MM_CLEAR[d])+' R$.';
  if(L.tycoon)return 'Every question is '+name+'. The house still adds '+BRICK[d]+' brick'+(BRICK[d]===1?'':'s')+'.';
  return 'Every question is '+name+'. A right answer pays '+rfmt(REWARD[d])+' R$.';}
 function showDiffPick(L){stopBomb();header();const cur=savedDiff(L.key);
@@ -1597,7 +1599,7 @@ function launchLevel(L){const d=savedDiff(L.key);
  if(L.mode==='treasure'){treasureStart(L.key);return;}
  newRound(L,d);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();return;}header();sfx.click();showQ();}
 function showMmPick(L){L=L||LEVELS.find(l=>l.key==='m3');stopBomb();header();const cur=savedDiff(L.key);
- const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="mmgo" data-d="${d}" data-k="${L.key}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${MM_SECS[d]}s bomb</span><span class="t">${DNAME[d]}</span><span class="d">Every question is ${DNAME[d].toLowerCase()}. Finish the round for +${rfmt(MM_CLEAR[d])} R$.</span></button>`;
+ const card=d=>`<button class="lvl ${d==='easy'?'l1':d==='hard'?'l5':'l3'}" type="button" data-act="mmgo" data-d="${d}" data-k="${L.key}"><span class="tag">${DNAME[d]}${cur===d?' · last choice':''} · ${bombLen(MM_SECS[d]).tag} bomb</span><span class="t">${DNAME[d]}</span><span class="d">Every question is ${DNAME[d].toLowerCase()}. The bomb runs for ${bombLen(MM_SECS[d]).words}. Finish the round for +${rfmt(MM_CLEAR[d])} R$.</span></button>`;
  app.innerHTML=`<div class="card" id="diffpick" style="max-width:820px;margin:12px auto"><h2>${esc(L.name)}</h2>
   <p class="muted">${esc(L.desc)} The bomb runs for the whole round. Every question matches the difficulty you pick.</p>
   <div class="levels">${card('easy')}${card('medium')}${card('hard')}</div>
@@ -2619,7 +2621,8 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  const easyHits=SKINS.map(s=>duelDamage('easy',false,0,s.power));
  for(let i=1;i<easyHits.length;i++)if(easyHits[i]<=easyHits[i-1])throw new Error('easy scale');
  if(!SKINS.some(s=>s.name==='Lava Blaster'&&s.cost>0)||!SKINS.some(s=>s.name==='Galaxy Slingshot'&&s.cost>0))throw new Error('skins');
- if(MM_SECS.easy!==90||MM_SECS.medium!==60||MM_SECS.hard!==30)throw new Error('bomb');
+ if(MM_SECS.easy!==90||MM_SECS.medium!==60||MM_SECS.hard!==180)throw new Error('bomb');
+ if(bombLen(90).tag!=='90s'||bombLen(60).tag!=='60s'||bombLen(180).tag!=='3:00'||bombLen(180).words!=='3 minutes'||bombClock(180)!=='3:00'||bombClock(179)!=='2:59'||bombClock(59)!=='0:59')throw new Error('bomb face');
  if(MM_CLEAR.easy!==19.5||MM_CLEAR.medium!==39||MM_CLEAR.hard!==58.5)throw new Error('clear');
  const m3=LEVELS.find(l=>l.key==='m3');
  if(!m3||!m3.bomb)throw new Error('mm bomb');
