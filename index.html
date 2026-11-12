@@ -124,6 +124,36 @@ table.mini th{background:#dbeafe;font-size:15px;text-transform:none;letter-spaci
 .helpbtn{width:100%;background:#ede9fe;color:#5b21b6;border:4px solid var(--ink);border-radius:12px;box-shadow:0 5px 0 var(--ink);padding:12px 14px;font-size:20px;text-align:center}
 .helpbtn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
 .helpbtn:disabled{opacity:1;transform:none;box-shadow:0 5px 0 var(--ink);cursor:default}
+.hintrow{display:flex;gap:8px;margin-top:8px}
+.hintrow .helpbtn,.hintrow .hintbtn{flex:1;min-height:56px}
+.hintbtn{background:#fef3c7;color:#92400e;border:4px solid var(--ink);border-radius:12px;box-shadow:0 5px 0 var(--ink);padding:12px 10px;font-size:20px;text-align:center}
+.hintbtn:active{transform:translateY(4px);box-shadow:0 1px 0 var(--ink)}
+.hintbtn:disabled{opacity:.85;transform:none;cursor:default}
+.hintbox{background:#fef9c3;border:4px solid var(--ink);border-radius:12px;padding:10px 12px;margin-top:8px;font-size:18px;line-height:1.35}
+.choice.gone{opacity:.45;text-decoration:line-through}
+.qfig{margin:8px 0}
+.qpic{width:100%;max-width:460px;height:auto;max-height:200px;display:block;background:#f8fafc;border:4px solid var(--ink);border-radius:14px}
+.qfig.tiny .qpic{max-height:84px;max-width:220px}
+.flapside .qpic{max-height:76px}
+.craftwrap{display:flex;flex-direction:column;gap:8px;min-height:calc(100dvh - 92px)}
+.craftview{position:relative;flex:1;min-height:280px;border:4px solid #222;overflow:hidden;background:#d9d4e6;touch-action:none}
+.craftview canvas{width:100%;height:100%;display:block;image-rendering:pixelated}
+.paperTitle{background:#6d6d6d;border:6px solid #3a3a3a;border-radius:8px;padding:18px 12px 22px;text-align:center;box-shadow:inset 0 0 0 4px #8d8d8d}
+.craftlogo{display:inline-block;margin:8px auto 14px;padding:10px 28px 14px;font-size:64px;line-height:.9;letter-spacing:4px;color:#f8fafc;text-shadow:4px 4px 0 #111,-2px 0 0 #111,0 -2px 0 #111;background:repeating-linear-gradient(#a3a3a3,#a3a3a3 8px,#7a7a7a 8px,#7a7a7a 16px);border:6px solid #2a2a2a;box-shadow:inset 0 0 0 4px #d4d4d4}
+.stonebtn{display:block;width:min(420px,92%);margin:10px auto;min-height:64px;font-size:28px;color:#fff;text-shadow:2px 2px 0 #000;background:repeating-linear-gradient(0deg,#b5b5b5 0 8px,#8e8e8e 8px 16px);border:4px solid #4b4b4b;box-shadow:inset 0 0 0 3px #dedede,0 4px 0 #2a2a2a}
+.stonebtn:disabled{opacity:.45}
+.stonebtn:active{transform:translateY(2px)}
+.paperhelp{max-width:640px;margin:12px auto;background:#d6d6d6;border:4px solid #333;padding:10px 12px;text-align:left;font-size:16px;line-height:1.4}
+.paperbar{background:#2b2b2b;border:4px solid #111;padding:6px 8px 8px}
+.vitals{display:flex;justify-content:space-between;gap:8px;margin-bottom:4px}
+.hearts,.meats{display:flex;gap:3px;flex-wrap:wrap}
+.heart,.meat{width:22px;height:20px;display:inline-block}
+.crafthot{display:flex;gap:4px;justify-content:center}
+.crafthot button{width:54px;height:54px;padding:2px;border:4px solid #3f3f46;background:#9ca3af;color:#111;font-size:11px;line-height:1.05;box-shadow:inset 0 0 0 2px #d4d4d8}
+.crafthot button.on{border-color:#fff;box-shadow:inset 0 0 0 2px #fff,0 0 0 3px #facc15}
+.craftnote{background:#111;color:#fff;border:3px solid #444;padding:6px 8px;font-size:15px}
+.craftinv{position:absolute;left:8px;right:8px;top:46px;background:#4b5563;border:4px solid #111;padding:8px;z-index:3;display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+.craftinv button{min-height:52px;background:#9ca3af;border:3px solid #222;color:#111;font-size:13px}
 .helppanel{background:#f5f3ff;border:4px solid #7c3aed;border-radius:12px;padding:14px}
 .helptop{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px}
 .helppanel h3{margin:8px 0 6px;color:#5b21b6}
@@ -498,7 +528,7 @@ const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[
 const clean=x=>+(+x).toFixed(6);
 const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
 const fmt=n=>{const s=Math.abs(n).toLocaleString('en-GB',{maximumFractionDigits:3});return (n<0?'−':'')+s;};
-const rfmt=n=>{const v=+n||0;const s=Math.abs(v).toLocaleString('en-GB',{maximumFractionDigits:2});return (v<0?'−':'')+s;};
+const rfmt=n=>{const v=+n||0;const s=Math.abs(v).toLocaleString('en-GB',{maximumFractionDigits:4});return (v<0?'−':'')+s;};
 const money=n=>'S$'+((+n).toFixed(2));
 const fr=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
 const mixed=(w,n,d)=>`<span class="mixed">${w}${fr(n,d)}</span>`;
@@ -518,15 +548,15 @@ function load(){try{const s=JSON.parse(localStorage.getItem(KEY)||'null');if(s&&
 function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
 load();
 function freshDuel(){return{tag:'Redliss',wins:0,losses:0,streak:0,bestStreak:0,skin:'block',finisher:'pop',owned:['block'],finishers:['pop'],gear:[],gearOn:[],badges:[],crits:0,hardRight:0,flawless:0,pick:{subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'}};}
-function freshModes(){return{parkour:{stage:1,best:0},flappy:{best:0},treasure:{found:0,hunts:0},potion:{clean:0},achs:[],mastermind:{hardClear:false}};}
-function newPlayer(name){const m=freshModes();return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel(),parkour:m.parkour,flappy:m.flappy,treasure:m.treasure,potion:m.potion,achs:m.achs,mastermind:m.mastermind,earned:0,redemptions:[],redeemed:0,pickDiff:{}};}
+function freshModes(){return{parkour:{stage:1,best:0},flappy:{best:0},treasure:{found:0,hunts:0},potion:{clean:0},achs:[],mastermind:{hardClear:false},craft:{seed:0}};}
+function newPlayer(name){const m=freshModes();return{name,total:0,rounds:0,correct:0,answered:0,bestStreak:0,history:[],topics:{},av:{hat:'none',shirt:'green'},seen:[],note:'',house:{pts:0},economy:'v2',mistakes:[],review:{},duel:freshDuel(),parkour:m.parkour,flappy:m.flappy,treasure:m.treasure,potion:m.potion,achs:m.achs,mastermind:m.mastermind,craft:m.craft,earned:0,redemptions:[],redeemed:0,pickDiff:{}};}
 function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.house={pts:0};if(!p.av)p.av={hat:'none',shirt:'green'};if(!p.topics)p.topics={};if(!p.history)p.history=[];if(!p.seen)p.seen=[];if(!p.mistakes)p.mistakes=[];if(!p.review)p.review={};
  if(!p.duel)p.duel=freshDuel();const d=p.duel;if(!d.tag)d.tag='Redliss';if(!Array.isArray(d.owned))d.owned=['block'];if(d.owned.indexOf('block')<0)d.owned.unshift('block');if(!Array.isArray(d.finishers))d.finishers=['pop'];if(d.finishers.indexOf('pop')<0)d.finishers.unshift('pop');if(!d.skin)d.skin='block';if(!d.finisher)d.finisher='pop';if(!Array.isArray(d.gear))d.gear=[];if(!Array.isArray(d.gearOn))d.gearOn=[];if(!Array.isArray(d.badges))d.badges=[];if(typeof d.crits!=='number')d.crits=0;if(typeof d.hardRight!=='number')d.hardRight=0;if(typeof d.flawless!=='number')d.flawless=0;if(!d.pick)d.pick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'};
  if(!p.parkour)p.parkour={stage:1,best:0};if(typeof p.parkour.stage!=='number'||p.parkour.stage<1)p.parkour.stage=1;if(typeof p.parkour.best!=='number')p.parkour.best=0;
  if(!p.flappy)p.flappy={best:0};if(typeof p.flappy.best!=='number')p.flappy.best=0;
  if(!p.treasure)p.treasure={found:0,hunts:0};if(typeof p.treasure.found!=='number')p.treasure.found=0;if(typeof p.treasure.hunts!=='number')p.treasure.hunts=0;
  if(!p.potion)p.potion={clean:0};if(typeof p.potion.clean!=='number')p.potion.clean=0;
- if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};if(typeof p.earned!=='number'||!isFinite(p.earned))p.earned=p.economy==='v2'?Math.max(0,+p.total||0):Math.max(0,Math.round((+p.total||0)/10));if(!Array.isArray(p.redemptions))p.redemptions=[];if(typeof p.redeemed!=='number'||!isFinite(p.redeemed))p.redeemed=clean(p.redemptions.reduce((s,r)=>s+(+r.amount||0),0));if(!p.pickDiff||typeof p.pickDiff!=='object')p.pickDiff={};}
+ if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};if(!p.craft||typeof p.craft!=='object')p.craft={seed:0};if(typeof p.earned!=='number'||!isFinite(p.earned))p.earned=p.economy==='v2'?Math.max(0,+p.total||0):Math.max(0,Math.round((+p.total||0)/10));if(!Array.isArray(p.redemptions))p.redemptions=[];if(typeof p.redeemed!=='number'||!isFinite(p.redeemed))p.redeemed=clean(p.redemptions.reduce((s,r)=>s+(+r.amount||0),0));if(!p.pickDiff||typeof p.pickDiff!=='object')p.pickDiff={};}
 let player=null;
 function lifetime(){return player&&typeof player.earned==='number'?player.earned:(player?+player.total||0:0);}
 function gainRobux(n){n=clean(n);if(!player||!n)return;player.total=clean((+player.total||0)+n);if(n>0)player.earned=clean((player.earned||0)+n);}
@@ -1509,7 +1539,7 @@ function floatText(el,txt){if(!canAnim||!el)return;const fx=$('#fx');const s=cen
 function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','#facc15','#22c55e','#3b82f6','#a855f7','#f97316'];for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti';c.style.background=pick(cols);fx.appendChild(c);
  const x=Math.random()*innerWidth;c.animate([{transform:`translate(${x}px,-30px) rotate(0deg)`},{transform:`translate(${x+R(-120,120)}px,${innerHeight+40}px) rotate(${R(180,720)}deg)`}],{duration:R(1400,2600),delay:R(0,400),easing:'cubic-bezier(.3,.6,.6,1)',fill:'both'}).onfinish=()=>c.remove();}}
 
-const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,PK=null,FL=null;
+const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,craftRAF=0,PK=null,FL=null,CR=null;
 const MM_SECS={easy:90,medium:60,hard:180};
 function bombLen(sec){if(sec===180)return {tag:'3:00',words:'3 minutes'};return {tag:sec+'s',words:sec+'s'};}
 function bombClock(sec){sec=Math.max(0,sec|0);return Math.floor(sec/60)+':'+pad2(sec%60);}
@@ -1527,13 +1557,14 @@ function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();c
 function startClock(){stopTimer();timer=setInterval(paintClock,100);}
 function stopParkourLoop(){if(pkRAF){cancelAnimationFrame(pkRAF);pkRAF=0;}}
 function stopFlappyLoop(){if(flapRAF){cancelAnimationFrame(flapRAF);flapRAF=0;}}
-function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
+function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on','craft-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
 function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
 let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='',gateNext=null;
 function redeemHTML(){const bal=player?rfmt(player.total):'0';
  return `<div class="redeem" id="redeempanel"><div><h3>Redeem Robux</h3><p>In the bank: <b id="redeemBal">${bal} R$</b></p><p class="muted">Cash in turns the whole balance into a real-world reward. Gear, badges, the house and scores stay.</p></div><div class="row"><button class="btn green" type="button" data-act="cashin">Cash in</button><button class="btn" type="button" data-act="redeemhist">History</button></div></div>`;}
-function showStart(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;header();
+function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();if(typeof stopCraftLoop==='function')stopCraftLoop();PK=null;FL=null;CR=null;clearChrome();Q=null;header();
  if(subjectTab==='duel'){loadDuelPick();renderDuelHome();startMsg='';return;}
+ if(subjectTab==='craft'){renderCraftHome();startMsg='';return;}
  const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
  const blurbs={
@@ -1556,7 +1587,7 @@ function showStart(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();
   <div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
  </div></div>`;
  startMsg='';}
-function tabsHTML(){const tabs=[['maths','Maths'],['science','Science'],['history','History'],['spelling','Spelling'],['duel','Duel']];
+function tabsHTML(){const tabs=[['maths','Maths'],['science','Science'],['history','History'],['spelling','Spelling'],['craft','Craft'],['duel','Duel']];
  return `<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${subjectTab===id?'on':''}" data-act="tab" data-t="${id}">${label}</button>`).join('')}</div>`;}
 function bombLeft(){if(!Q||!Q.bomb)return 0;return Q.bomb.limit-(performance.now()-Q.bomb.t0)/1000;}
 function paintBomb(){if(!Q||!Q.bomb)return;const left=Math.max(0,bombLeft());const sec=Math.ceil(left-1e-6);const bar=$('#bombbar'),secs=$('#bombsecs'),fill=$('#fusefill'),spark=$('#spark'),lab=$('#bomblabel');
@@ -1637,7 +1668,107 @@ function ninjaOptions(q){if(q.type==='mc')return q.choices.slice();
  let k=1;while(wrongs.length<3&&k<20){const lab=ninjaLabel(q,clean(q.ans+k*7));k++;if(seen.has(lab))continue;seen.add(lab);wrongs.push(lab);}
  return shuf([right,...wrongs]);}
 const NINJA_GUY=`<svg class="ninjaguy" viewBox="0 0 90 120" aria-hidden="true"><rect x="22" y="10" width="46" height="40" rx="8" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="28" y="18" width="34" height="28" rx="4" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="26" y="18" width="38" height="9" fill="#ef4444" stroke="#14142b" stroke-width="2"/><polygon points="64,18 84,10 64,28" fill="#ef4444" stroke="#14142b" stroke-width="2"/><rect x="36" y="30" width="7" height="7" fill="#14142b"/><rect x="50" y="30" width="7" height="7" fill="#14142b"/><path d="M38 40 Q45 46 54 40" fill="none" stroke="#14142b" stroke-width="3" stroke-linecap="round"/><rect x="8" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="66" y="54" width="16" height="30" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="52" width="42" height="34" fill="#111827" stroke="#14142b" stroke-width="3"/><rect x="24" y="74" width="42" height="7" fill="#ef4444"/><rect x="26" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><rect x="48" y="88" width="16" height="28" fill="#1e1b4b" stroke="#14142b" stroke-width="3"/><g transform="rotate(-28 78 70)"><rect x="74" y="40" width="7" height="36" rx="1" fill="#e5e7eb" stroke="#14142b" stroke-width="2"/><rect x="70" y="70" width="15" height="6" fill="#facc15" stroke="#14142b" stroke-width="2"/></g></svg>`;
-function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.half=false;Q.elapsed=0;Q.paused=false;Q.limit=isNinja()?ninjaLimit(q.diff):LIMIT;window.scrollTo(0,0);
+function svgBox(inner,w,h){return `<svg class="qpic" viewBox="0 0 ${w} ${h}" role="img" aria-label="Question picture">${inner}</svg>`;}
+function divPic(n,d){n=Math.max(1,Math.min(18,n|0||1));d=Math.max(1,Math.min(n,d|0||1));const s=16,g=3,w=n*(s+g)+16,h=64;let p='';
+ for(let i=0;i<n;i++)p+=`<rect x="${8+i*(s+g)}" y="12" width="${s}" height="${s}" rx="3" fill="${i<d?'#facc15':'#60a5fa'}" stroke="#14142b" stroke-width="2"/>`;
+ p+=`<path d="M8 36 H${8+d*(s+g)-g}" fill="none" stroke="#14142b" stroke-width="3"/>`;
+ return svgBox(p,w,h);}
+function blockGrid(rows,cols){rows=Math.max(1,Math.min(5,rows|0||1));cols=Math.max(1,Math.min(8,cols|0||1));
+ const s=26,g=6,w=cols*s+(cols-1)*g+16,h=rows*s+(rows-1)*g+16;const colsR=['#facc15','#22c55e','#3b82f6','#f97316'];let p='';
+ for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const x=8+c*(s+g),y=8+r*(s+g),fill=colsR[(r+c)%4];
+  p+=`<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="4" fill="${fill}" stroke="#14142b" stroke-width="3"/><rect x="${x+4}" y="${y+4}" width="8" height="5" fill="#fff" opacity=".45"/>`;}
+ return svgBox(p,w,h);}
+function numLinePic(a,b,jump){const w=420,h=120;const x0=36,x1=384;const y=62;
+ const span=Math.max(1,Math.abs(b-a));const X=v=>x0+(v-Math.min(a,b))/span*(x1-x0);
+ let p=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#14142b" stroke-width="4"/>`;
+ const steps=Math.min(8,Math.max(2,Math.round(span)));
+ for(let i=0;i<=steps;i++){const x=x0+i*(x1-x0)/steps;p+=`<line x1="${x}" y1="${y-8}" x2="${x}" y2="${y+8}" stroke="#14142b" stroke-width="3"/>`;}
+ const xs=X(a);p+=`<circle cx="${xs}" cy="${y}" r="8" fill="#3b82f6" stroke="#14142b" stroke-width="3"/>`;
+ if(jump){const xe=Math.min(x1-8,xs+(jump>0?70:-70));p+=`<path d="M${xs} ${y-16} Q ${(xs+xe)/2} ${y-48} ${xe} ${y-16}" fill="none" stroke="#f97316" stroke-width="4"/><polygon points="${xe},${y-16} ${xe-8},${y-28} ${xe+8},${y-28}" fill="#f97316"/>`;}
+ p+=`<text x="${xs}" y="${y+28}" text-anchor="middle" font-size="16" font-weight="700" fill="#14142b">${a}</text><text x="${x1-8}" y="24" font-size="16" font-weight="700" fill="#92400e">?</text>`;
+ return svgBox(p,w,h);}
+function fracBar(n,d){d=Math.max(1,Math.min(10,d|0||1));n=Math.max(0,Math.min(d,n|0||0));const w=360,h=78,x=16,bw=328,bh=36;
+ let p=`<rect x="${x}" y="18" width="${bw}" height="${bh}" fill="#fff" stroke="#14142b" stroke-width="3"/>`;
+ const cw=bw/d;for(let i=0;i<d;i++){if(i<n)p+=`<rect x="${x+i*cw}" y="18" width="${cw}" height="${bh}" fill="#38bdf8"/>`;
+  if(i)p+=`<line x1="${x+i*cw}" y1="18" x2="${x+i*cw}" y2="${54}" stroke="#14142b" stroke-width="2"/>`;}
+ return svgBox(p,w,h);}
+function clockPic(hh,mm){const cx=70,cy=70,r=52;hh=((hh%12)+mm/60);const ha=(hh/12)*Math.PI*2-Math.PI/2,ma=(mm/60)*Math.PI*2-Math.PI/2;
+ const p=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="#fff" stroke="#14142b" stroke-width="4"/>${[0,1,2,3].map(i=>{const a=i*Math.PI/2-Math.PI/2;return `<line x1="${cx+Math.cos(a)*40}" y1="${cy+Math.sin(a)*40}" x2="${cx+Math.cos(a)*48}" y2="${cy+Math.sin(a)*48}" stroke="#14142b" stroke-width="4"/>`;}).join('')}
+ <line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(ha)*26}" y2="${cy+Math.sin(ha)*26}" stroke="#14142b" stroke-width="5" stroke-linecap="round"/>
+ <line x1="${cx}" y1="${cy}" x2="${cx+Math.cos(ma)*38}" y2="${cy+Math.sin(ma)*38}" stroke="#1d4ed8" stroke-width="3" stroke-linecap="round"/>
+ <circle cx="${cx}" cy="${cy}" r="4" fill="#ef4444"/>`;
+ return svgBox(p,140,140);}
+function coinsPic(n){n=Math.max(1,Math.min(6,n|0||3));let p='';const cols=['#facc15','#e2e8f0','#f97316'];
+ for(let i=0;i<n;i++){const x=24+i*52,y=36;p+=`<circle cx="${x}" cy="${y}" r="22" fill="${cols[i%3]}" stroke="#14142b" stroke-width="3"/><circle cx="${x}" cy="${y}" r="14" fill="none" stroke="#14142b" stroke-width="2"/>`;}
+ return svgBox(p,24+n*52,80);}
+function placePic(digits){const labels=['1s','10s','100s','1,000s'];const cells=digits.slice(-4);const w=cells.length*78+16;
+ let p='';cells.forEach((d,i)=>{const x=8+i*78;p+=`<rect x="${x}" y="8" width="70" height="64" rx="6" fill="${i===cells.length-1?'#fde68a':'#fff'}" stroke="#14142b" stroke-width="3"/><text x="${x+35}" y="48" text-anchor="middle" font-size="28" font-weight="800" fill="#14142b">${d}</text><text x="${x+35}" y="86" text-anchor="middle" font-size="12" font-weight="700" fill="#55557a">${labels[cells.length-1-i]||''}</text>`;});
+ return svgBox(p,w,98);}
+function polyPic(sides){sides=Math.max(3,Math.min(8,sides|0||4));const cx=90,cy=78,r=52;let pts=[];
+ for(let i=0;i<sides;i++){const a=-Math.PI/2+i*2*Math.PI/sides;pts.push((cx+Math.cos(a)*r).toFixed(1)+','+(cy+Math.sin(a)*r).toFixed(1));}
+ return svgBox(`<polygon points="${pts.join(' ')}" fill="#93c5fd" stroke="#14142b" stroke-width="4"/>`,180,160);}
+function topicArt(topic,word){
+ const T=topic||'';
+ if(word==='knight')return svgBox('<rect x="70" y="30" width="50" height="40" rx="8" fill="#94a3b8" stroke="#14142b" stroke-width="3"/><path d="M60 40 H130" stroke="#14142b" stroke-width="6"/><rect x="78" y="70" width="34" height="28" fill="#1e3a8a" stroke="#14142b" stroke-width="3"/><line x1="150" y1="20" x2="150" y2="90" stroke="#78716c" stroke-width="4"/>',200,110);
+ if(word==='thumb'||word==='hand')return svgBox('<rect x="40" y="30" width="22" height="50" rx="8" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="66" y="40" width="16" height="40" rx="6" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="86" y="44" width="16" height="36" rx="6" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="106" y="48" width="16" height="32" rx="6" fill="#f6c744" stroke="#14142b" stroke-width="3"/>',180,100);
+ if(word==='queue')return svgBox('<circle cx="40" cy="36" r="12" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="28" y="50" width="24" height="30" fill="#3b82f6" stroke="#14142b" stroke-width="3"/><circle cx="90" cy="36" r="12" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="78" y="50" width="24" height="30" fill="#22c55e" stroke="#14142b" stroke-width="3"/><circle cx="140" cy="36" r="12" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="128" y="50" width="24" height="30" fill="#f97316" stroke="#14142b" stroke-width="3"/>',190,96);
+ if(word==='neighbour')return svgBox('<rect x="16" y="40" width="50" height="40" fill="#fde68a" stroke="#14142b" stroke-width="3"/><polygon points="16,40 41,16 66,40" fill="#ef4444" stroke="#14142b" stroke-width="3"/><rect x="110" y="40" width="50" height="40" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/><polygon points="110,40 135,16 160,40" fill="#1d4ed8" stroke="#14142b" stroke-width="3"/>',190,90);
+ if(word==='rhythm')return svgBox('<ellipse cx="50" cy="60" rx="16" ry="12" fill="#14142b"/><rect x="64" y="20" width="4" height="40" fill="#14142b"/><ellipse cx="110" cy="60" rx="16" ry="12" fill="#14142b"/><rect x="124" y="20" width="4" height="40" fill="#14142b"/>',180,90);
+ if(T==='space')return svgBox('<circle cx="46" cy="60" r="22" fill="#38bdf8" stroke="#14142b" stroke-width="3"/><circle cx="100" cy="40" r="14" fill="#facc15" stroke="#14142b" stroke-width="3"/><circle cx="150" cy="70" r="18" fill="#f97316" stroke="#14142b" stroke-width="3"/><circle cx="40" cy="18" r="2" fill="#fff"/><circle cx="130" cy="16" r="2" fill="#fff"/>',200,100);
+ if(T==='materials')return svgBox('<path d="M70 16 H110 L130 88 H50 Z" fill="#e0f2fe" stroke="#14142b" stroke-width="3"/><path d="M58 60 H122 L130 88 H50 Z" fill="#3b82f6"/><rect x="78" y="6" width="24" height="12" rx="2" fill="#94a3b8" stroke="#14142b" stroke-width="3"/>',180,100);
+ if(T==='forces')return svgBox('<rect x="30" y="48" width="70" height="36" rx="4" fill="#f97316" stroke="#14142b" stroke-width="3"/><line x1="100" y1="66" x2="160" y2="66" stroke="#14142b" stroke-width="4"/><polygon points="160,66 148,58 148,74" fill="#14142b"/>',190,100);
+ if(T==='living')return svgBox('<rect x="88" y="48" width="8" height="40" fill="#166534"/><circle cx="92" cy="40" r="16" fill="#22c55e" stroke="#14142b" stroke-width="3"/><ellipse cx="70" cy="58" rx="16" ry="8" fill="#4ade80" stroke="#14142b" stroke-width="3"/><ellipse cx="116" cy="58" rx="16" ry="8" fill="#4ade80" stroke="#14142b" stroke-width="3"/>',180,100);
+ if(T==='humans')return svgBox('<circle cx="90" cy="28" r="14" fill="#f6c744" stroke="#14142b" stroke-width="3"/><rect x="74" y="46" width="32" height="28" rx="4" fill="#3b82f6" stroke="#14142b" stroke-width="3"/><rect x="78" y="76" width="10" height="20" fill="#1e3a8a"/><rect x="94" y="76" width="10" height="20" fill="#1e3a8a"/>',180,110);
+ if(T==='stone')return svgBox('<circle cx="50" cy="60" r="18" fill="#a8a29e" stroke="#14142b" stroke-width="3"/><circle cx="90" cy="68" r="22" fill="#78716c" stroke="#14142b" stroke-width="3"/><circle cx="130" cy="58" r="16" fill="#d6d3d1" stroke="#14142b" stroke-width="3"/>',180,100);
+ if(T==='romans')return svgBox('<path d="M50 70 Q90 20 130 70" fill="#e7e5e4" stroke="#14142b" stroke-width="3"/><rect x="46" y="70" width="12" height="20" fill="#a8a29e" stroke="#14142b" stroke-width="3"/><rect x="122" y="70" width="12" height="20" fill="#a8a29e" stroke="#14142b" stroke-width="3"/><path d="M70 36 H110 L100 18 H80 Z" fill="#ef4444" stroke="#14142b" stroke-width="3"/>',180,100);
+ if(T==='saxons')return svgBox('<path d="M90 16 L110 70 H70 Z" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="84" y="70" width="12" height="22" fill="#92400e" stroke="#14142b" stroke-width="3"/>',180,100);
+ if(T==='vikings')return svgBox('<path d="M20 60 Q90 90 170 60 L150 78 Q90 98 40 78 Z" fill="#92400e" stroke="#14142b" stroke-width="3"/><line x1="96" y1="60" x2="96" y2="22" stroke="#14142b" stroke-width="3"/><path d="M96 24 Q130 36 96 58" fill="#f8fafc" stroke="#14142b" stroke-width="3"/>',200,110);
+ if(T==='egypt')return svgBox('<polygon points="30,90 100,16 170,90" fill="#f59e0b" stroke="#14142b" stroke-width="3"/><polygon points="70,90 110,40 150,90" fill="#fbbf24" stroke="#14142b" stroke-width="3"/>',200,100);
+ if(T==='greece')return svgBox('<rect x="30" y="40" width="16" height="50" fill="#fff" stroke="#14142b" stroke-width="3"/><rect x="70" y="40" width="16" height="50" fill="#fff" stroke="#14142b" stroke-width="3"/><rect x="110" y="40" width="16" height="50" fill="#fff" stroke="#14142b" stroke-width="3"/><rect x="20" y="28" width="120" height="14" fill="#e2e8f0" stroke="#14142b" stroke-width="3"/>',170,100);
+ if(T==='maya')return svgBox('<polygon points="40,90 100,20 160,90" fill="#78716c" stroke="#14142b" stroke-width="3"/><rect x="90" y="28" width="20" height="16" fill="#facc15" stroke="#14142b" stroke-width="2"/>',200,100);
+ if(T==='singapore')return svgBox('<rect x="20" y="16" width="160" height="36" fill="#ef4444" stroke="#14142b" stroke-width="3"/><rect x="20" y="52" width="160" height="36" fill="#fff" stroke="#14142b" stroke-width="3"/><circle cx="58" cy="34" r="12" fill="#fff"/><circle cx="64" cy="34" r="9" fill="#ef4444"/>',200,104);
+ if(T==='cious'||T==='tious'||T==='cial'||T==='tial'||T==='antent'||T==='able'||T==='silent'||T==='eic'||T==='homo'||T==='statutory')return svgBox('<rect x="24" y="28" width="36" height="44" rx="4" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="68" y="28" width="36" height="44" rx="4" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><rect x="112" y="28" width="36" height="44" rx="4" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/>',180,100);
+ return svgBox('<rect x="30" y="30" width="40" height="40" rx="6" fill="#facc15" stroke="#14142b" stroke-width="3"/><rect x="80" y="30" width="40" height="40" rx="6" fill="#22c55e" stroke="#14142b" stroke-width="3"/><rect x="130" y="30" width="40" height="40" rx="6" fill="#3b82f6" stroke="#14142b" stroke-width="3"/>',200,100);
+}
+function qPic(q){if(!q)return '';const raw=String(q.text||'');if(raw.indexOf('<svg')>=0||raw.indexOf('<table')>=0)return '';
+ const a=q.audit||{},op=a.op||'';
+ if(op==='div'||op==='rem')return divPic(op==='rem'?a.n:a.a, op==='rem'?a.d:a.b);
+ if((op==='mul'||op==='sq')&&a.a>0&&a.b>0&&a.a<=6&&a.b<=8)return blockGrid(a.a,a.b);
+ if(op==='sq'&&a.n>0&&a.n<=6)return blockGrid(a.n,a.n);
+ if(op==='mul'&&a.a>0&&a.b>0)return blockGrid(Math.min(4,a.a),Math.min(6,a.b));
+ if(op==='add'||op==='sub')return numLinePic(Math.min(a.a,a.b),Math.max(a.a,a.b),op==='add'?1:-1);
+ if(op==='temp')return numLinePic(a.start,a.start+(a.delta||1),a.delta);
+ if(op==='round')return numLinePic(0,Math.max(10,a.to||10),0);
+ if(op==='fracOf'||op==='equiv')return fracBar(a.num||a.n||1,a.den||a.d||4);
+ if(op==='digit'&&a.place!=null){const s=String(Math.abs(a.n||0));return placePic(s.slice(-4).split(''));}
+ if(op==='shapeName')return polyPic(a.sides||4);
+ if(op==='mins')return clockPic(a.h||3,a.m||0);
+ if(op==='cents')return coinsPic(3);
+ if(op==='roman'||op==='romanMc')return topicArt('romans');
+ const word=String(q.ans||'').toLowerCase();
+ return topicArt(q.topic,word);
+}
+function qFig(q){if(!q||(typeof isNinja==='function'&&isNinja()))return '';const s=qPic(q);return s?`<div class="qfig">${s}</div>`:'';}
+function hintClue(q){let h=plain(q.hint||'Use the picture and the numbers already in the question.');
+ const ans=plain(q.type==='num'?fmt(q.ans):q.ans).toLowerCase();
+ if(ans&&ans.length>1&&h.toLowerCase().indexOf(ans)>=0)h='Use the picture and what the question already tells you. The last step is still yours.';
+ return h;}
+function duePay(q){let p=+q.reward||0;if(Q&&Q.half)p=halfPay(p);if(Q&&Q.hinted)p=clean(p*0.25);return p;}
+function dueBricks(q){let b=BRICK[q.diff]||1;if(Q&&Q.half)b=halfPay(b);if(Q&&Q.hinted)b=clean(b*0.25);return b;}
+function hintRow(mini){const h=mini?' helpmini':'';const help=mini?'Help':"Don't know? Ask for help";
+ return `<div class="hintrow"><button class="hintbtn${h}" type="button" data-act="hint">Hint</button><button class="helpbtn${h}" type="button" data-act="help">${help}</button></div><div id="hintbox" class="hintbox hidden"></div><div id="help" class="helppanel hidden"></div>`;}
+function refreshPayPill(q){const pill=document.querySelector('.dpill')||$('#flappill');if(!pill||!q)return;
+ const extra=(Q&&Q.hinted?' · hint':'')+(Q&&Q.half?' · half':'');
+ pill.textContent=DNAME[q.diff]+' · '+rfmt(duePay(q))+' R$'+extra+(Q&&Q.duel?'':'');}
+function useHint(){if(!Q||Q.locked||Q.hinted)return;const q=(FL&&FL.q)||(Q.qs&&Q.qs[Q.i]);if(!q)return;Q.hinted=true;sfx.click();
+ const box=$('#hintbox');if(box){box.classList.remove('hidden');box.textContent=hintClue(q)+' A correct answer now pays '+rfmt(duePay(q))+' R$.';}
+ const btn=document.querySelector('[data-act="hint"]');if(btn){btn.disabled=true;btn.textContent='Hint used';}
+ if(q.type==='mc'&&q.choices){const wrong=[...document.querySelectorAll('.choice')].filter(b=>q.choices[+b.dataset.k]!==q.ans&&!b.disabled);
+  if(wrong.length){const b=wrong[0];b.disabled=true;b.classList.add('gone');b.textContent='Removed';}}
+ if(isNinja()){const right=q.type==='mc'?plain(q.ans):plain(ninjaLabel(q,q.ans));const chips=[...document.querySelectorAll('.fallchip')].filter(el=>plain(el.textContent)!==right&&!el.disabled);
+  if(chips.length){chips[0].disabled=true;chips[0].classList.add('gone');chips[0].textContent='Removed';}}
+ refreshPayPill(q);}
+function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q.i];Q.input='';Q.locked=false;Q.half=false;Q.hinted=false;Q.elapsed=0;Q.paused=false;Q.limit=isNinja()?ninjaLimit(q.diff):LIMIT;window.scrollTo(0,0);
  if(isNinja()){showNinja(q);return;}
  if(Q.potion||(Q.L&&Q.L.key==='m4')){showPotion(q);return;}
  if(Q.treasure){showTreasure();return;}
@@ -1646,16 +1777,17 @@ function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q
  ${isTycoon()?houseBar(player.house.pts):''}
  <div class="quiz"><div class="card qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$</span></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
-  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
-  <div id="help" class="helppanel hidden"></div>
+  ${qFig(q)}
+  ${hintRow(false)}
   <div id="halfslot"></div>
   <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
   <div id="ans">${answerArea(q)}</div></div>`;
  Q.t0=performance.now();startClock();if(Q.bomb)paintBomb();}
 function showNinja(q){const drop=DROP_WORD[q.diff]||DROP_WORD.medium;document.body.classList.add('ninja-on');
  app.innerHTML=`<div class="ninjawrap">${qTop()}
- <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$ · ${drop}</span><button class="helpbtn helpmini" type="button" data-act="help">Help</button></div>
+ <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$ · ${drop}</span></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
+  ${hintRow(true)}
   <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
  <div id="halfslot"></div>
  <div class="field" id="field">${NINJA_GUY}<div id="ans"></div></div></div>`;
@@ -1690,6 +1822,9 @@ function shownAns(q){if(q.type==='num'){if(q.prefix==='S$')return money(q.ans);r
 function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.mistakes)player.mistakes=[];
  const rec=player.review[q.topic]||(player.review[q.topic]={c:0,w:0,t:0,p:0,late:0,subject:q.subject||'Maths'});
  if(rec.late==null)rec.late=0;
+ if(kind==='hint'||kind==='hintlate'){rec.c++;rec.h=(rec.h||0)+1;if(kind==='hintlate')rec.late++;
+  player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:kind==='hintlate'?'hint, late':'hint',ans:shownAns(q)});
+  if(player.mistakes.length>400)player.mistakes.length=400;return;}
  if(kind==='correct'||kind==='late')rec.c++;
  if(kind==='late')rec.late++;
  else if(kind==='timeout')rec.t++;
@@ -1715,7 +1850,7 @@ function passQuestion(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{pass
 function beginHalf(){if(!Q||Q.locked||Q.half)return;Q.half=true;const q=Q.qs[Q.i];
  const slot=$('#halfslot');if(slot)slot.innerHTML=`<div class="halfbanner" id="halfbanner">Time's up! Half points now</div>`;
  const speed=$('#speed');if(speed)speed.classList.add('half');
- const pill=document.querySelector('.dpill');if(pill)pill.textContent=Q.duel?`${DNAME[q.diff]} · ${rfmt(halfPay(q.reward))} R$ · half damage`:`${DNAME[q.diff]} · ${rfmt(halfPay(q.reward))} R$ now`;
+ refreshPayPill(q);
  const lbl=document.querySelector('.speedlbl span');if(lbl)lbl.textContent="Time's up! Half points now";
  const s=$('#secs');if(s)s.textContent=GRACE+'s';const b=$('#sbar');if(b)b.style.transform='scaleX(1)';}
 function answerArea(q){if(q.type==='spell')return `<div class="spellbox"><p class="muted" style="margin:0">Press Listen, then type the British spelling.</p><div class="row"><button class="btn blue" type="button" data-act="speak">Listen</button><button class="btn grey" type="button" data-act="spellclue">Written clue</button></div><p id="spellclue" class="hidden"></p><input class="name" id="spellin" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Type the word"><button class="btn green" type="button" data-act="spellok">Check</button></div>`;
@@ -1741,18 +1876,18 @@ function applyGrade(q,ok,opts){opts=opts||{};
  const bon=[];let gained=0;let built=null;
  const late=!!(ok&&Q.half);
  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best||0,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);
-  gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;gainRobux(gained);
+  const hinted=!!Q.hinted;gained=late?halfPay(q.reward):q.reward;if(hinted)gained=clean(gained*0.25);Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;gainRobux(gained);
   if(Q.paid)Q.paid[Q.i]=gained;
   if(q.diff==='hard'&&player.duel){player.duel.hardRight=(player.duel.hardRight||0)+1;grantBadges();}
-  if(isTycoon()){const bricks=late?halfPay(BRICK[q.diff]):BRICK[q.diff];const before=houseProgress(player.house.pts);player.house.pts+=bricks;const after=houseProgress(player.house.pts);
+  if(isTycoon()){const bricks=dueBricks(q);const before=houseProgress(player.house.pts);player.house.pts+=bricks;const after=houseProgress(player.house.pts);
    if(after.built.length>before.built.length)built=after.built[after.built.length-1];
-   bon.push('+'+fmt(bricks)+' house brick'+(bricks===1?'':'s'));}
-  bon.unshift('+'+rfmt(gained)+' R$ · '+(late?'half points':DNAME[q.diff].toLowerCase()));
+   bon.push('+'+rfmt(bricks)+' house brick'+(bricks===1?'':'s'));}
+  bon.unshift('+'+rfmt(gained)+' R$ · '+(hinted?'hint · ':'')+(late?'half points':DNAME[q.diff].toLowerCase()));
   if(!late&&secs<=10)bon.push('⚡ speed star');
   if(Q.streak>=3)bon.push('🔥 streak '+Q.streak);}
  else Q.streak=0;
  Q.res[Q.i]=ok;
- const kind=ok?(late?'late':'correct'):opts.timeout?'timeout':opts.fell?'fell':'wrong';
+ const kind=!ok?(opts.timeout?'timeout':opts.fell?'fell':'wrong'):(Q.hinted?(late?'hintlate':'hint'):(late?'late':'correct'));
  logAttempt(q,kind,opts.given!=null?opts.given:opts.val);save();
  return {ok,late,gained,bon,built,replay:false};}
 function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;stopTimer();stopFall();
@@ -1793,6 +1928,7 @@ function bombExplode(){if(!Q||!Q.bomb||Q.bomb.dead||Q.finishing)return;
  showRoundBar(`<button class="btn red" data-act="again" data-k="${L.key}" data-d="${diff}">Try again</button><button class="btn" data-act="home">Menu</button>`);
  Q=null;}
 function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
+ if(Q.craft){craftQuizDone();return;}
  if(Q.parkour){parkourStageClear();return;}
  if(Q.treasure){treasureClear();return;}
  Q.finishing=true;stopTimer();clearAuto();stopFall();stopBomb();clearChrome();const L=Q.L;const score=Q.res.filter(r=>r===true).length;const passed=Q.res.filter(r=>r==='pass').length;const ty=!!L.tycoon; const clearBonus=Q.bomb?(MM_CLEAR[Q.bomb.diff]||0):0;const clearName=Q.bomb?DNAME[Q.bomb.diff]:'';
@@ -1830,7 +1966,7 @@ function finish(){if(!Q||Q.finishing||(Q.bomb&&Q.bomb.dead))return;
 function nextMilestoneHtml(){const t=lifetime();const nx=MILESTONES.find(m=>t<m.at);if(!nx)return `<p style="font-size:18px">You have unlocked every badge. LEGEND status!</p>`;const prev=[...MILESTONES].reverse().find(m=>t>=m.at);const lo=prev?prev.at:0;const pc=Math.max(2,Math.round((t-lo)/(nx.at-lo)*100));
  return `<div style="margin-top:14px;font-size:18px">Next badge: <b>${nx.name}</b> at ${rfmt(nx.at)} R$ earned (${rfmt(nx.at-t)} to go)</div><div class="prog"><span style="width:${pc}%"></span></div>`;}
 function needPlayer(){if(!player){startMsg='Type your name and pick a level to start!';showStart();return false;}return true;}
-function leaveRound(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();PK=null;FL=null;clearChrome();Q=null;}
+function leaveRound(){stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();stopCraftLoop();PK=null;FL=null;CR=null;clearChrome();Q=null;}
 function showHouse(){if(!needPlayer())return;leaveRound();header();const st=houseProgress(player.house.pts);
  app.innerHTML=`<div class="housepage"><div class="card"><h2 style="margin-bottom:8px">🏠 ${esc(player.name)}'s house</h2>
   ${houseSVG(player.house.pts)}
@@ -1923,7 +2059,7 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes, late answers or bomb losses yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>0.5</b>, <b>1</b> or <b>1.5 R$</b>. After the timer, a right answer is worth half (<b>0.25</b>, <b>0.5</b> or <b>0.75 R$</b>) and is logged as <b>late</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>0.5</b>, <b>1</b> or <b>1.5 R$</b>. After the timer, a right answer is worth half (<b>0.25</b>, <b>0.5</b> or <b>0.75 R$</b>) and is logged as <b>late</b>. A hint pays a quarter of the Robux and is logged as <b>hint</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
  <h3>Topics, weakest first</h3>
  <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt. Late answers count as correct. Passes, wrong answers and timeouts are included in the attempts.</p>
  ${table}
@@ -1944,7 +2080,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  switch(a){
   case 'home':gateNext=null;closeModal();showStart();break;
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
-  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=['maths','science','history','spelling','duel'].indexOf(t)>=0?t:'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
+  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=['maths','science','history','spelling','craft','duel'].indexOf(t)>=0?t:'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
   case 'level':startRound(el.dataset.k);break;
   case 'mmgo':beginMastermind(el.dataset.d,el.dataset.k);break;
   case 'diffgo':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;rememberDiff(L.key,el.dataset.d);launchLevel(L);break;}
@@ -1957,6 +2093,15 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'again':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;subjectTab=L.subject||'maths';const d=el.dataset.d||savedDiff(L.key);rememberDiff(L.key,d);if(L.mode==='parkour'){parkourStart((player.parkour&&player.parkour.stage)||1);break;}if(L.mode==='flappy'){flappyStart();break;}if(L.mode==='treasure'){treasureStart(L.key);break;}newRound(L,d);if(!Q||!Q.qs||Q.qs.length<10){startMsg='Could not build a round. Try again.';showStart();break;}sfx.click();showQ();break;}
   case 'choose':if(Q&&!Q.locked){const choice=Q.qs[Q.i].choices[+el.dataset.k];if(Q.duel)duelResolve(choice,{btn:el});else answer(choice,el);}break;
   case 'key':keyIn(el.dataset.k);break;
+  case 'hint':useHint();break;
+  case 'craftnew':{const d=$('#craftdiff');if(d)d.classList.remove('hidden');const h=$('#crafthelpbox');if(h)h.classList.add('hidden');break;}
+  case 'craftload':if(player&&player.craft&&player.craft.seed)craftStart(player.craft.diff||player.pickDiff.craft||'easy',false);break;
+  case 'crafthelp':{const h=$('#crafthelpbox');if(h)h.classList.toggle('hidden');break;}
+  case 'craftgo':craftStart(el.dataset.d||'easy',true);break;
+  case 'crafthot':if(CR){CR.hot=+el.dataset.k||0;if(CR.hot<0||CR.hot>8)CR.hot=0;craftHotbar();}break;
+  case 'craftinv':craftInvToggle();break;
+  case 'crafteat':craftEat();break;
+  case 'craftsave':if(CR){saveCraft();CR.note='Game saved on this device.';}break;
   case 'help':passQuestion();break;
   case 'next':if(Q&&Q.duel)break;nextQ();break;
   case 'duelstart':duelStart();break;
@@ -1998,6 +2143,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  }});
 document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INPUT'||t.tagName==='TEXTAREA')){if(e.key==='Enter'&&t.id==='nm'){e.preventDefault();t.blur();}if(e.key==='Enter'&&t.id==='psum'){e.preventDefault();const b=document.querySelector('[data-act="parentcheck"]');if(b)b.click();}if(e.key==='Enter'&&t.id==='spellin'){e.preventDefault();const b=document.querySelector('[data-act="spellok"]');if(b)b.click();}return;}
  if(PK&&PK.phase==='run'){parkourKey(e,true);return;}
+ if(CR&&CR.phase==='play'){craftKey(e,true);return;}
  if(FL&&FL.alive){flapKey(e);return;}
  if(!Q||!Q.qs)return;const q=Q.qs[Q.i];if(!q)return;
  if(Q.potion){const k=+e.key;if(k>=1&&k<=4){const b=document.querySelector(`.cauldron[data-k="${k-1}"]`);if(b)b.click();}return;}
@@ -2005,7 +2151,7 @@ document.addEventListener('keydown',e=>{const t=e.target;if(t&&(t.tagName==='INP
  if(Q.locked){if(e.key==='Enter'||e.key===' '){e.preventDefault();if(Q.duel){const b=document.querySelector('.roundbar [data-act]');if(b)b.click();}else nextQ();}return;}
  if(q.type==='mc'){const k=+e.key;if(k>=1&&k<=q.choices.length){const b=document.querySelector(`.choice[data-k="${k-1}"]`);if(b)b.click();}return;}
  if(/^[0-9]$/.test(e.key))keyIn(e.key);else if(e.key==='Backspace'){e.preventDefault();keyIn('del');}else if(e.key==='-')keyIn('-');else if(e.key==='.')keyIn('.');else if(e.key==='Enter')keyIn('ok');});
-document.addEventListener('keyup',e=>{if(PK&&PK.phase==='run')parkourKey(e,false);});
+document.addEventListener('keyup',e=>{if(PK&&PK.phase==='run')parkourKey(e,false);if(CR&&CR.phase==='play')craftKey(e,false);});
 
 const DUEL_DMG={easy:20,medium:30,hard:40};
 const WIN_BONUS=5;
@@ -2165,7 +2311,7 @@ function renderDuelBoard(o){o=o||{};const q=o.q;const rank=rankBy(Q.rank);const 
  const shot=duelDamage(q.diff,false,0,weaponPower());
  const hitHTML=hit?`<div class="hitnum ${hit.crit?'crit':''} ${hit.incoming?'in':''}" id="hitnum"><b>${hit.blocked?'BLOCK':'−'+hit.dmg}</b>${hit.crit?'<small>CRIT</small>':''}${hit.healed?'<small>+'+hit.healed+'</small>':''}</div>`:'';
  const asking=!!o.asking;
- const qBody=asking?`<button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button><div id="halfslot"></div><div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div><div id="ans">${answerArea(q)}</div>`
+ const qBody=asking?`${qFig(q)}${hintRow(false)}<div id="halfslot"></div><div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div><div id="ans">${answerArea(q)}</div>`
   :`<div class="fb ${o.ok?'good':o.pass?'pass':'bad'}" id="fb"><div class="fbbody"><h2>${esc(o.title||'')}</h2><p style="font-size:20px;line-height:1.35;margin:0">${esc(o.note||'')}</p></div></div>${o.pass?helpHTML(q):''}`;
  app.innerHTML=`<div class="duelwrap"><div class="duelmeta"><div class="tagbox">🔥 Streak ${Q.streak}${Q.streak>=2?' · next hit crits':''}</div><div class="tagbox">${COIN}+${rfmt(roundQuestionPay())} this match</div>${gearBits()}<div class="spacer"></div><button class="btn grey" data-act="home">Menu</button></div>
  <div class="duel"><div class="arena ${hit?(hit.incoming?'hurt':'shoot'):''}"><div class="hud"><div class="hpcol"><div class="hplab"><b class="nametag" id="arenatag">${rankIcon(myRank,22)}<span>${esc(tag)}</span></b><span>${esc(myRank.name)} · ${Q.me} HP</span></div><div class="hp"><span id="mebar" style="width:${hpWidth(Q.me,Q.meMax)}%;background:#22c55e"></span></div><div class="pips">${pipHTML(Q.myRounds)}</div></div>
@@ -2184,7 +2330,7 @@ function duelStart(rematch){if(!rematch){const inp=$('#nm');const nm=inp?inp.val
  Q={duel:true,L:{name:'Duel',tag:'Duel',tycoon:false,mode:'duel',key:'duel',bonus:WIN_BONUS},qs:[],i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,half:false,elapsed:0,paused:false,limit:LIMIT+(gearOn('boots')?4:0),me:100,meMax:100,foe:foeHP,foeMax:foeHP,shieldLeft:gearOn('shield')?1:0,packUsed:false,myRounds:0,foeRounds:0,dmgDealt:0,dmgTaken:0,asked:0,right:0,subject:pick.subject||'mixed',topic:pick.topic||'mixed',diff:pick.diff||'easy',rank:pick.rank||'iron3',phase:'ask',hit:null,winBonus:0};
  subjectTab='duel';header();sfx.click();duelAsk();}
 function duelAsk(){if(!Q||!Q.duel)return;if(Q.phase==='gg'||Q.phase==='round')return;clearAuto();stopTimer();
- Q.phase='ask';Q.locked=false;Q.half=false;Q.input='';Q.elapsed=0;Q.paused=false;Q.limit=LIMIT+(gearOn('boots')?4:0);Q.hit=null;
+ Q.phase='ask';Q.locked=false;Q.half=false;Q.hinted=false;Q.input='';Q.elapsed=0;Q.paused=false;Q.limit=LIMIT+(gearOn('boots')?4:0);Q.hit=null;
  const q=duelMake();duelChrome();
  if(!q){Q.phase='wait';Q.locked=true;app.innerHTML=`<div class="card"><h2>No question this time</h2><p>Have another shot.</p></div>`;showRoundBar('<button class="btn green" data-act="duelshot">Next shot</button><button class="btn" data-act="home">Menu</button>');return;}
  Q.qs=[q];Q.i=0;renderDuelBoard({asking:true,q});Q.t0=performance.now();startClock();}
@@ -2194,16 +2340,16 @@ function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=
  const late=!!(ok&&Q.half);Q.asked++;
  if(!opts.pass){const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
   if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);Q.right++;
-   const gained=late?halfPay(q.reward):q.reward;Q.earn[q.diff]+=gained;Q.counts[q.diff]++;gainRobux(gained);
+   let gained=late?halfPay(q.reward):q.reward;if(Q.hinted)gained=clean(gained*0.25);Q.earn[q.diff]+=gained;Q.counts[q.diff]++;gainRobux(gained);
    if(q.diff==='hard')player.duel.hardRight=(player.duel.hardRight||0)+1;}}
  else Q.streak=0;
  if(!ok)Q.streak=0;
- const kind=opts.pass?'pass':ok?(late?'late':'correct'):opts.timeout?'timeout':'wrong';
+ const kind=opts.pass?'pass':!ok?(opts.timeout?'timeout':'wrong'):(Q.hinted?(late?'hintlate':'hint'):(late?'late':'correct'));
  logAttempt(q,kind,val);
  const rank=rankBy(Q.rank);let dmg,incoming=false,crit=false,blocked=false,healed=0,title,note;
  if(ok){dmg=duelDamage(q.diff,late,Q.streak,weaponPower());crit=Q.streak>=3;if(crit)player.duel.crits=(player.duel.crits||0)+1;Q.foe=Math.max(0,Q.foe-dmg);Q.dmgDealt+=dmg;incoming=false;
   title=late?'Half-damage hit!':crit?'CRIT!':'Direct hit!';
-  note=(late?'Half damage, because the timer had already run out. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+rfmt(late?halfPay(q.reward):q.reward)+' R$.';
+  note=(late?'Half damage, because the timer had already run out. ':'')+(Q.hinted?'Hint used, so the Robux are a quarter. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+rfmt(Q.hinted?clean((late?halfPay(q.reward):q.reward)*0.25):(late?halfPay(q.reward):q.reward))+' R$.';
   sfx.shot();sfx.correct();if(crit)setTimeout(sfx.streak,260);
  }else{incoming=true;
   if(gearOn('shield')&&Q.shieldLeft>0){Q.shieldLeft--;blocked=true;dmg=0;sfx.block();title='Shield block!';}
@@ -2429,7 +2575,7 @@ function flapCrash(kind,given){if(!FL||FL.over)return;FL.over=true;FL.alive=fals
  showRoundBar('<button class="btn green" type="button" data-act="flapagain">Try again</button><button class="btn" type="button" data-act="home">Menu</button>');
  sfx.wrong();checkAchievements();}
 function flapSpawn(){if(!FL||!FL.alive)return;const diff=FL.diff||savedDiff('m7');const q=numericQuestion(diff);if(!q){flapCrash('timeout');return;}
- q.resolved=false;q.safe=false;FL.q=q;FL.qT=performance.now();FL.input='';Q.half=false;Q.qs=[q];Q.i=0;Q.locked=false;
+ q.resolved=false;q.safe=false;FL.q=q;FL.qT=performance.now();FL.input='';Q.half=false;Q.hinted=false;Q.qs=[q];Q.i=0;Q.locked=false;
  const view=$('#flapview');const h=Math.max(320,view?view.clientHeight:0);const w=Math.max(320,view?view.clientWidth:0);
  const gapH=Math.max(200,Math.round(h*0.48));
  const slack=Math.max(0,h-gapH-24);const gapY=12+Math.round(Math.random()*slack);
@@ -2441,7 +2587,7 @@ function flapSpawn(){if(!FL||!FL.alive)return;const diff=FL.diff||savedDiff('m7'
  if(bot){bot.style.left=x+'px';bot.style.top=(gapY+gapH)+'px';bot.style.height=Math.max(0,(h||320)-gapY-gapH)+'px';}
  if(sign){sign.style.left=(x-70)+'px';sign.style.top=(gapY+6)+'px';sign.textContent=plain(q.text).slice(0,90);}
  if(bird)bird.style.top=FL.y+'px';
- const qt=$('#flapqtext');if(qt)qt.innerHTML=q.text;
+ const qt=$('#flapqtext');if(qt)qt.innerHTML='<div class="qfig tiny">'+qPic(q)+'</div>'+q.text;Q.hinted=false;
  const pill=$('#flappill');if(pill)pill.textContent=DNAME[q.diff]+' · '+rfmt(q.reward)+' R$';
  const help=$('#flaphelp');if(help){help.classList.add('hidden');help.innerHTML='';}
  const half=$('#halfslot');if(half)half.innerHTML='';
@@ -2479,7 +2625,7 @@ function flappyStart(){stopBomb();stopTimer();clearAuto();stopFall();stopParkour
   <div class="flapmain"><div class="flapview" id="flapview"><div class="flapbird" id="flapbird">${FLAP_BIRD}</div><div class="pipe" id="pipetop"></div><div class="pipe" id="pipebot"></div><div class="pipesign" id="pipesign">Type the answer</div><div class="flapground"></div></div>
   <div class="flapside"><div class="flapqscroll"><div class="qnum"><span>Answer before the pipe</span><span class="dpill d-easy" id="flappill">Easy · 0.5 R$</span></div>
    <div class="qtext" id="flapqtext"></div><div id="halfslot"></div>
-   <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button><div id="flaphelp" class="helppanel hidden"></div>
+   ${hintRow(false).replace('id="help"','id="flaphelp"')}
    <div class="disp" id="disp"><span id="dv"></span><span class="cur"></span></div></div>
    <div class="pad flappad" id="flappad">${pad}</div></div></div></div>`;
  document.body.classList.add('play-on','flappy-on');
@@ -2491,8 +2637,9 @@ function showPotion(q){document.body.classList.add('play-on','potion-on');
  Q.potRight=right;Q.potOpts=labels;Q.potion=true;
  app.innerHTML=`<div class="potwrap"><div class="card potq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$</span></div>
   <div class="qtext ${q.long?'long':''}"><span class="qi">${q.text}</span></div>
-  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
-  <div id="help" class="helppanel hidden"></div><div id="halfslot"></div>
+  ${qFig(q)}
+  ${hintRow(false)}
+  <div id="halfslot"></div>
   <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div>
   <div class="potnote" id="potnote">Pour the potion into the right answer. A wrong pour explodes and you go back to question 1. Robux you already earned stay.</div></div>
   <div class="potmain"><div class="pothero" id="pothero">${avatar(player.av,130)}${FLASK}</div>
@@ -2539,8 +2686,9 @@ function showTreasure(){const q=Q.qs[Q.i];document.body.classList.add('play-on',
  const chests=Q.chests.map((c,i)=>`<button class="chest ${c.opened?(c.right?'open good':'open dud'):''}" type="button" data-act="chest" data-k="${i}" style="left:${c.x}px;top:${c.y}px" ${c.opened?'disabled':''}>${CHEST_SVG}<div class="mark">${c.opened?(c.right?'Treasure!':'Empty'):'X marks the spot'}</div><div>${c.label}</div></button>`).join('');
  app.innerHTML=`<div class="thwrap"><div class="card thq qcard"><div class="qnum"><span>Hunt question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]||''}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$</span></div>
   <div class="qtext ${q.long?'long':''}" id="thquestion"><span class="qi">${q.text}</span></div>
-  <button class="helpbtn" type="button" data-act="help">Don't know? Ask for help</button>
-  <div id="help" class="helppanel hidden"></div><div id="halfslot"></div>
+  ${qFig(q)}
+  ${hintRow(false)}
+  <div id="halfslot"></div>
   <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div>
   <div class="potnote" id="thnote">Walk to a chest. The right answer is treasure. A wrong one is a dud.</div></div>
   <div class="thmap" id="thmap"><div class="thworld" id="thworld">${chests}<div class="thguy" id="thguy" style="left:36px;top:620px">${avatar(player.av,96)}</div></div></div></div>`;
@@ -2584,6 +2732,156 @@ function treasureClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTimer();
  showRoundBar('<button class="btn green" type="button" data-act="thunt" data-k="${L.key}">Next hunt</button><button class="btn" type="button" data-act="home">Menu</button>');
  sfx.fanfare();if(score>=4)confetti();checkAchievements();Q=null;}
 
+const CW=96,CH=42,CT=32;
+const CHOT=[2,3,4,5,6,7,8,13,11];
+const CNAMES={2:'Dirt',3:'Stone',4:'Wood',5:'Leaves',6:'Coal',7:'Iron',8:'Gold',11:'Poppy',13:'Apple'};
+function stopCraftLoop(){if(craftRAF){cancelAnimationFrame(craftRAF);craftRAF=0;}}
+function craftHash(n){let x=Math.imul((n ^ ((CR&&CR.seed)||1))|0,0x45d9f3b)|0;x=Math.imul(x^(x>>>16),0x45d9f3b)|0;return ((x^(x>>>16))>>>0)/4294967296;}
+function craftColH(x){return 18+Math.floor(Math.sin(x*0.35)*2+craftHash(x*13+1)*4+craftHash(x*7+4)*2);}
+function craftTree(x){return x>2&&x<CW-3&&craftHash(x*91+3)<0.13;}
+function craftPass(id){return id===0||id===10||id===11||id===12;}
+function craftTile(x,y){if(!CR)return 0;if(x<0||x>=CW||y<0||y>=CH)return y<=0?9:0;
+ const key=x+','+y;if(CR.edits&&CR.edits[key]!=null)return CR.edits[key]|0;
+ if(y<=0)return 9;const h=craftColH(x);
+ if(craftTree(x)&&y>h&&y<=h+4)return 4;
+ if(y>h&&y<h+8){for(let dx=-2;dx<=2;dx++){if(!craftTree(x+dx))continue;const th=craftColH(x+dx);if(y>=th+3&&y<=th+6&&Math.abs(dx)<=2)return 5;}}
+ if(y===h+1&&!craftTree(x)&&h>=20&&craftHash(x*44+9)<0.14)return 11;
+ if(y>h&&y<h+5&&(craftColH(x-1)>=y||craftColH(x+1)>=y)&&craftHash(x*19+y*3)<0.35)return 12;
+ if(y>h&&y<=19&&h<20)return 10;
+ if(y>h)return 0;
+ if(y<h-4&&y>2&&craftHash(x*997+y*17)<0.16)return 0;
+ if(y===h)return 1;if(y>h-4)return 2;
+ const r=craftHash(x*50+y*9);if(r<0.02&&craftHash(x+y)<0.45)return 3;
+ if(r<0.012)return 8;if(r<0.04)return 7;if(r<0.09)return 6;return y>h-7?2:3;}
+function craftSet(x,y,id){if(!CR.edits)CR.edits={};CR.edits[x+','+y]=id;}
+function renderCraftHome(){const names=Object.values(store.players);const saved=player&&player.craft&&player.craft.seed;
+ app.innerHTML=`<div class="paperTitle" id="crafttitle"><div class="craftlogo">BLOCK<br>CRAFT</div>
+  <input class="name" id="nm" maxlength="16" placeholder="Your name" autocomplete="off" value="${player?esc(player.name):''}" style="max-width:280px;margin:0 auto 8px">
+  <div class="err" id="err">${startMsg}</div>
+  ${tabsHTML()}
+  <button class="stonebtn" type="button" data-act="craftnew">New Game</button>
+  <button class="stonebtn" type="button" data-act="craftload" ${saved?'':'disabled'}>Load Game</button>
+  <button class="stonebtn" type="button" data-act="crafthelp">Help</button>
+  <div id="craftdiff" class="hidden"><p style="color:#fff;font-size:20px">Pick a difficulty. Every 30 seconds you answer 3 questions.</p>
+   ${['easy','medium','hard'].map(d=>`<button class="stonebtn" type="button" data-act="craftgo" data-d="${d}">${DNAME[d]} · ${rfmt(REWARD[d])} R$</button>`).join('')}</div>
+  <div class="paperhelp" id="crafthelpbox"><b>Controls.</b> Move with A and D, or the buttons. Jump with Space. Tap a block to dig, tap air to place. E opens the pack. F or Eat uses an apple. The world saves on this device. Every 30 seconds, Block Craft pauses for 3 maths questions. A hint pays a quarter. Help is still a pass.</div>
+  ${names.length?`<div class="chips" style="justify-content:center;margin-top:8px">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)}</button>`).join('')}</div>`:''}
+ </div>`;
+ window.scrollTo(0,0);}
+function freshCraft(diff){return {seed:(Math.floor(Math.random()*9000)+100)|0,diff,edits:{},x:12.2,y:24,vx:0,vy:0,face:1,inv:{2:0,3:0,4:0,5:0,6:0,7:0,8:0,11:0,13:3},hot:0,tool:1,hp:10,food:10,clock:0,note:'Tap blocks to dig. Tap air to place.',phase:'play',keys:{l:false,r:false,j:false},look:0,aimx:0,aimy:0,invOpen:false,starve:0};}
+function saveCraft(){if(!player||!CR)return;if(!player.pickDiff)player.pickDiff={};player.craft={seed:CR.seed,diff:CR.diff,edits:CR.edits,x:+CR.x.toFixed(2),y:+CR.y.toFixed(2),face:CR.face,inv:CR.inv,hot:CR.hot,tool:CR.tool,hp:CR.hp,food:CR.food,clock:+CR.clock.toFixed(1)};player.pickDiff.craft=CR.diff;save();}
+function craftFromSave(src,diff){return {seed:src.seed|0,diff:diff||src.diff||'easy',edits:src.edits||{},x:src.x||12,y:src.y||24,vx:0,vy:0,face:src.face||1,inv:Object.assign({2:0,3:0,4:0,5:0,6:0,7:0,8:0,11:0,13:0},src.inv||{}),hot:src.hot||0,tool:src.tool||1,hp:src.hp||10,food:src.food==null?10:src.food,clock:src.clock||0,note:'World loaded.',phase:'play',keys:{l:false,r:false,j:false},look:0,aimx:200,aimy:80,invOpen:false,starve:0};}
+function craftStart(diff,isNew){const inp=$('#nm');const nm=inp?inp.value:'';if(!nm.trim()){startMsg='Type your name first.';renderCraftHome();return;}
+ setPlayer(nm);if(!player.pickDiff)player.pickDiff={};player.pickDiff.craft=diff;
+ if(isNew||!(player.craft&&player.craft.seed))CR=freshCraft(diff);else CR=craftFromSave(player.craft,diff);
+ CR.diff=diff;CR.y=isNew?craftColH(12)+2:CR.y;CR.phase='play';CR.keys={l:false,r:false,j:false};craftMount();saveCraft();}
+function craftMount(){stopCraftLoop();clearChrome();Q=null;header();
+ app.innerHTML=`<div class="craftwrap"><div class="craftview" id="craftview"><canvas id="craftcv"></canvas>
+  <div class="crafthud" style="position:absolute;left:8px;right:8px;top:8px;display:flex;gap:8px;z-index:2"><span class="tagbox" id="craftclock">Next quiz 30s</span><div class="spacer"></div><button class="btn grey" type="button" data-act="home" style="min-height:48px">Menu</button></div>
+  <div id="craftinv" class="craftinv hidden"></div></div>
+  <div class="paperbar"><div class="vitals"><div class="hearts" id="crafthearts"></div><div class="meats" id="craftmeats"></div></div><div class="crafthot" id="crafthot"></div></div>
+  <p class="craftnote" id="craftnote">${esc(CR.note||'')}</p>
+  <div class="pkpad"><button class="btn blue" type="button" data-act="craftk" data-k="l">◀</button><button class="btn green" type="button" data-act="craftk" data-k="j">Jump</button><button class="btn blue" type="button" data-act="craftk" data-k="r">▶</button><button class="btn" type="button" data-act="craftinv">Pack</button><button class="btn" type="button" data-act="crafteat">Eat</button><button class="btn" type="button" data-act="craftsave">Save</button></div></div>`;
+ document.body.classList.add('play-on','craft-on');
+ craftHotbar();craftVitals();
+ document.querySelectorAll('[data-act="craftk"]').forEach(btn=>{const k=btn.dataset.k;const down=e=>{e.preventDefault();if(CR)CR.keys[k]=true;};const up=()=>{if(CR)CR.keys[k]=false;};
+  btn.addEventListener('pointerdown',down);btn.addEventListener('pointerup',up);btn.addEventListener('pointerleave',up);btn.addEventListener('pointercancel',up);});
+ const cv=$('#craftcv');
+ const aim=e=>{if(!CR)return;const r=cv.getBoundingClientRect();CR.aimx=e.clientX-r.left;CR.aimy=e.clientY-r.top;};
+ cv.addEventListener('pointerdown',e=>{aim(e);craftPointer(e);});cv.addEventListener('pointermove',aim);
+ CR.then=performance.now();craftRAF=requestAnimationFrame(craftLoop);}
+function craftHotbar(){const box=$('#crafthot');if(!box||!CR)return;
+ box.innerHTML=CHOT.map((id,i)=>`<button type="button" class="${CR.hot===i?'on':''}" data-act="crafthot" data-k="${i}">${CNAMES[id]||''}<br>${CR.inv[id]||0}</button>`).join('');
+ const inv=$('#craftinv');if(inv)inv.innerHTML=CHOT.map((id,i)=>`<button type="button" data-act="crafthot" data-k="${i}">${CNAMES[id]} ${CR.inv[id]||0}</button>`).join('');}
+function craftVitals(){const h=$('#crafthearts'),m=$('#craftmeats');if(!h||!CR)return;
+ const heart=on=>`<svg class="heart" viewBox="0 0 16 14"><path d="M2 4 H4 V2 H7 V4 H9 V2 H12 V4 H14 V7 H12 V9 H10 V11 H8 V13 H6 V11 H4 V9 H2 V7 H1 V4 Z" fill="${on?'#e11d48':'#3f3f46'}" stroke="#111" stroke-width="1"/></svg>`;
+ const meat=on=>`<svg class="meat" viewBox="0 0 16 14"><ellipse cx="7" cy="8" rx="5" ry="4" fill="${on?'#b45309':'#3f3f46'}" stroke="#111"/><rect x="10" y="6" width="4" height="3" fill="${on?'#e7e5e4':'#27272a'}" stroke="#111"/></svg>`;
+ h.innerHTML=Array.from({length:10},(_,i)=>heart(i<CR.hp)).join('');
+ m.innerHTML=Array.from({length:10},(_,i)=>meat(i<CR.food)).join('');}
+function craftKey(e,down){if(!CR||CR.phase!=='play')return;const k=e.key;
+ if(k==='ArrowLeft'||k==='a'||k==='A'){CR.keys.l=down;e.preventDefault();}
+ else if(k==='ArrowRight'||k==='d'||k==='D'){CR.keys.r=down;e.preventDefault();}
+ else if(k===' '||k==='ArrowUp'||k==='w'||k==='W'){CR.keys.j=down;e.preventDefault();}
+ else if(down&&k>='1'&&k<='9'){CR.hot=+k-1;craftHotbar();}
+ else if(down&&(k==='e'||k==='E')){e.preventDefault();craftInvToggle();}
+ else if(down&&(k==='f'||k==='F')){e.preventDefault();craftEat();}
+ else if(down&&(k==='p'||k==='P')){saveCraft();CR.note='Game saved on this device.';}}
+function craftInvToggle(){if(!CR)return;CR.invOpen=!CR.invOpen;const p=$('#craftinv');if(p)p.classList.toggle('hidden',!CR.invOpen);craftHotbar();}
+function craftEat(){if(!CR)return;if(!(CR.inv[13]>0)){CR.note='No apples. Break leaves to find one.';return;}if(CR.food>=10){CR.note='You are full.';return;}
+ CR.inv[13]--;CR.food=Math.min(10,CR.food+4);CR.note='You eat an apple.';craftHotbar();craftVitals();saveCraft();}
+function craftHits(px,py){const x0=px-0.3,x1=px+0.3,y0=py,y1=py+1.5;
+ for(let tx=Math.floor(x0);tx<=Math.floor(x1);tx++)for(let ty=Math.floor(y0+0.02);ty<=Math.floor(y1-0.02);ty++)if(!craftPass(craftTile(tx,ty)))return true;return false;}
+function craftWet(){return craftTile(Math.floor(CR.x),Math.floor(CR.y+0.3))===10||craftTile(Math.floor(CR.x),Math.floor(CR.y+1.1))===10;}
+function craftLoop(now){if(!CR||CR.phase!=='play')return;const dt=Math.min(0.033,(now-(CR.then||now))/1000);CR.then=now;
+ if(!CR.invOpen){const left=CR.keys.l,right=CR.keys.r;if(left)CR.face=-1;if(right)CR.face=1;
+  const wet=craftWet();CR.vx=((right?1:0)-(left?1:0))*(wet?3.2:5.4);
+  CR.vy-=(wet?7:20)*dt;if(wet&&CR.keys.j)CR.vy+=16*dt;if(CR.vy<-12)CR.vy=-12;if(wet&&CR.vy<-3)CR.vy=-3;
+  let nx=CR.x+CR.vx*dt;if(!craftHits(nx,CR.y))CR.x=nx;else CR.vx=0;
+  const was=CR.vy;let ny=CR.y+CR.vy*dt;if(!craftHits(CR.x,ny))CR.y=ny;else{if(was<-11){CR.hp=Math.max(0,CR.hp-1);CR.note='That fall hurt.';craftVitals();}if(CR.vy<0)CR.ground=true;CR.vy=0;}
+  CR.ground=craftHits(CR.x,CR.y-0.08)||wet;
+  if(CR.keys.j&&CR.ground&&!wet){CR.vy=8.4;CR.ground=false;}
+  if(CR.y<1){CR.y=craftColH(Math.floor(CR.x))+2;CR.vy=0;CR.hp=Math.max(1,CR.hp);}
+  if(CR.hp<=0){CR.hp=10;CR.food=6;CR.x=12;CR.y=craftColH(12)+3;CR.note='You wake up back on the grass.';}
+  if(CR.x<1)CR.x=1;if(CR.x>CW-2)CR.x=CW-2;
+  CR.starve=(CR.starve||0)+dt;if(CR.starve>10){CR.starve=0;CR.food=Math.max(0,(CR.food||0)-1);if(CR.food===0)CR.hp=Math.max(0,CR.hp-1);craftVitals();}
+  CR.clock+=dt;}
+ const clock=$('#craftclock');if(clock)clock.textContent='Next quiz '+Math.max(0,30-Math.floor(CR.clock))+'s';
+ const note=$('#craftnote');if(note)note.textContent=CR.note||'';
+ craftDraw();
+ if(CR.clock>=30){CR.clock=0;craftQuiz();return;}
+ craftRAF=requestAnimationFrame(craftLoop);}
+function craftBreak(x,y){const id=craftTile(x,y);if(!id||id===9||id===10)return;const need=id>=6&&id<=8?2:id===3?1:0;
+ if(CR.tool<need){CR.note='A better pick is in the maths chest. Finish 3 questions.';return;}
+ craftSet(x,y,0);let bag=id===1?2:id;if(id===5){bag=5;if(craftHash(x*8+y)<0.45)CR.inv[13]=(CR.inv[13]||0)+1;}
+ if(id===12)bag=5;if(CR.inv[bag]!=null)CR.inv[bag]++;else CR.inv[bag]=1;
+ CR.note='Dug a block.';craftHotbar();saveCraft();}
+function craftPlace(tx,ty){const id=CHOT[CR.hot]||2;if(id===13){craftEat();return;}if(!(CR.inv[id]>0)){CR.note='That slot is empty.';return;}
+ if(!craftPass(craftTile(tx,ty))||craftTile(tx,ty)===10)return;
+ if(Math.abs(tx+0.5-CR.x)<0.75&&ty>=Math.floor(CR.y)&&ty<=Math.floor(CR.y+1.4))return;
+ let near=false;for(let dx=-1;dx<=1;dx++)for(let dy=-1;dy<=1;dy++)if(!craftPass(craftTile(tx+dx,ty+dy)))near=true;if(!near)return;
+ craftSet(tx,ty,id);CR.inv[id]--;CR.note='Placed.';craftHotbar();saveCraft();}
+function craftPointer(e){if(!CR||CR.phase!=='play'||CR.invOpen)return;const cv=$('#craftcv');if(!cv)return;const r=cv.getBoundingClientRect();
+ const sx=e.clientX-r.left,sy=e.clientY-r.top;if(CR.camX==null)return;const tx=Math.floor((sx+CR.camX)/CT);const ty=CH-1-Math.floor((sy+CR.camY)/CT);
+ if(Math.abs(tx-CR.x)>5||Math.abs(ty-(CR.y+0.7))>4){CR.note='Too far.';return;}
+ if(!craftPass(craftTile(tx,ty)))craftBreak(tx,ty);else craftPlace(tx,ty);}
+function craftDraw(){const cv=$('#craftcv');if(!cv||!CR)return;const dpr=Math.min(2,window.devicePixelRatio||1);
+ const w=cv.clientWidth||640,h=cv.clientHeight||360;if(cv.width!==Math.floor(w*dpr)||cv.height!==Math.floor(h*dpr)){cv.width=Math.floor(w*dpr);cv.height=Math.floor(h*dpr);}
+ const ctx=cv.getContext('2d');ctx.setTransform(dpr,0,0,dpr,0,0);ctx.imageSmoothingEnabled=false;
+ ctx.fillStyle='#d9d4e6';ctx.fillRect(0,0,w,h);
+ ctx.fillStyle='#f4f1e8';ctx.beginPath();ctx.arc(w*0.82,48,22,0,7);ctx.fill();
+ CR.camX=CR.x*CT-w/2;CR.camY=(CH-CR.y-1)*CT-h*0.62;
+ const x0=Math.max(0,Math.floor(CR.camX/CT)-1),x1=Math.min(CW-1,Math.ceil((CR.camX+w)/CT)+1);
+ const yTop=CH-1-Math.floor(CR.camY/CT),yBot=CH-1-Math.ceil((CR.camY+h)/CT);
+ for(let x=x0;x<=x1;x++)for(let y=Math.max(0,yBot);y<=Math.min(CH-1,yTop);y++){const id=craftTile(x,y);if(!id)continue;
+  const sx=Math.round(x*CT-CR.camX),sy=Math.round((CH-1-y)*CT-CR.camY);craftPaint(ctx,id,sx,sy,x,y);}
+ const px=CR.x*CT-CR.camX,py=(CH-CR.y-1.55)*CT-CR.camY;
+ const look=Math.atan2((CR.aimy||py)-py,(CR.aimx||px+40)-px);CR.look=Math.max(-0.9,Math.min(0.9,look));if((CR.aimx||0)>px)CR.face=1;else if(CR.aimx)CR.face=-1;
+ ctx.save();ctx.translate(px,py+10);ctx.rotate(CR.look*0.8);ctx.fillStyle='#8d5524';ctx.fillRect(-8,-16,16,16);ctx.fillStyle='#3f2a1d';ctx.fillRect(CR.face>0?2:-6,-10,4,4);ctx.restore();
+ ctx.fillStyle='#22d3ee';ctx.fillRect(px-9,py+10,18,16);ctx.fillStyle='#1d4ed8';ctx.fillRect(px-9,py+26,8,14);ctx.fillRect(px+1,py+26,8,14);ctx.fillStyle='#8d5524';ctx.fillRect(px-14,py+12,6,12);ctx.fillRect(px+8,py+12,6,12);}
+function craftPaint(ctx,id,sx,sy,x,y){const u=CT/16;const pix=(i,j,col)=>{ctx.fillStyle=col;ctx.fillRect(sx+i*u,sy+j*u,u+0.2,u+0.2);};
+ const speck=(i,j)=>craftHash(x*17+y*13+i*5+j);
+ if(id===1||id===2){for(let j=0;j<16;j++)for(let i=0;i<16;i++){const n=speck(i,j);pix(i,j,n<0.18?'#4a2c16':n<0.45?'#8d5a32':'#6b3f22');}
+  if(id===1){for(let j=0;j<4;j++)for(let i=0;i<16;i++)pix(i,j,speck(i,j)<0.45?'#3f7d28':'#5da83a');}}
+ else if(id===3||id===9){for(let j=0;j<16;j++)for(let i=0;i<16;i++){const n=speck(i,j);const edge=i%8===0||j%8===0;pix(i,j,edge?'#3f3f46':n<0.3?'#6b7280':'#9ca3af');}}
+ else if(id===4){for(let j=0;j<16;j++)for(let i=0;i<16;i++)pix(i,j,i<3||i>12?'#5c3317':speck(i,j)<0.3?'#a16207':'#ca8a04');}
+ else if(id===5){for(let j=0;j<16;j++)for(let i=0;i<16;i++)pix(i,j,speck(i,j)<0.4?'#166534':'#22c55e');}
+ else if(id===6){ctx.fillStyle='#1c1917';ctx.fillRect(sx,sy,CT,CT);for(let k=0;k<6;k++)pix(2+k*2,3+(k%3)*4,'#44403c');}
+ else if(id===7){ctx.fillStyle='#94a3b8';ctx.fillRect(sx,sy,CT,CT);pix(4,4,'#e2e8f0');pix(10,9,'#e2e8f0');}
+ else if(id===8){ctx.fillStyle='#facc15';ctx.fillRect(sx,sy,CT,CT);pix(5,5,'#fef08a');pix(11,10,'#fef08a');}
+ else if(id===10){ctx.fillStyle='rgba(56,189,248,.72)';ctx.fillRect(sx,sy,CT,CT);pix(2,3,'rgba(224,242,254,.8)');pix(8,8,'rgba(224,242,254,.8)');}
+ else if(id===11){pix(7,6,'#166534');pix(7,7,'#166534');pix(7,8,'#166534');pix(6,4,'#ef4444');pix(8,4,'#ef4444');pix(7,3,'#ef4444');pix(7,5,'#fde047');}
+ else if(id===12){for(let j=0;j<16;j++)if(speck(2,j)<0.7)pix(2,j,'#166534');}
+ if(id!==11&&id!==12){ctx.strokeStyle='rgba(0,0,0,.28)';ctx.strokeRect(sx+0.5,sy+0.5,CT-1,CT-1);}}
+function craftQuiz(){if(!CR)return;CR.phase='quiz';CR.invOpen=false;stopCraftLoop();saveCraft();
+ const diff=CR.diff||'easy';const topics=['times','addsub','division','fractions','placevalue','money','shapes','negative','area'];
+ const qs=[],seen=new Set();let g=0;while(qs.length<3&&g++<80){const q=make(pick(topics),diff);if(!q||seen.has(q.text))continue;seen.add(q.text);qs.push(q);}
+ if(qs.length<3){CR.phase='play';CR.note='Could not build the quiz.';craftMount();return;}
+ Q={L:{key:'craft',name:'Block Craft',tag:'Craft',subject:'craft',mode:'quiz',tycoon:false,bonus:0},qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,half:false,hinted:false,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,craft:true};
+ header();sfx.coin();showQ();}
+function craftQuizDone(){if(!CR){showStart();return;}const score=Q?Q.res.filter(r=>r===true).length:0;
+ if(score>=1)CR.inv[6]=(CR.inv[6]||0)+score;if(score>=2)CR.inv[7]=(CR.inv[7]||0)+1;if(score>=3){CR.inv[8]=(CR.inv[8]||0)+1;if(CR.tool<3)CR.tool++;CR.food=Math.min(10,CR.food+2);}
+ CR.note=score?('Quiz '+score+'/3. '+(score>=3?'Iron pick and gold.':score>=2?'Iron ore added.':'Coal added.')):'Quiz 0/3. Back to the world.';
+ CR.phase='play';CR.clock=0;Q=null;saveCraft();craftMount();}
 function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',58:'LVIII',90:'XC',99:'XCIX',400:'CD',444:'CDXLIV',900:'CM',999:'CMXCIX',1000:'M'};
  for(const k in roman)if(toRoman(+k)!==roman[k])throw new Error('roman '+k+' '+toRoman(+k));
  const wc=[[21,'twenty-one'],[100,'one hundred'],[101,'one hundred and one'],[115,'one hundred and fifteen'],[1000,'one thousand'],[1001,'one thousand and one'],[1100,'one thousand, one hundred'],[2150,'two thousand, one hundred and fifty'],[20000,'twenty thousand'],[100000,'one hundred thousand'],[101000,'one hundred and one thousand']];
@@ -2601,6 +2899,12 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(BRICK.easy!==1||BRICK.medium!==2||BRICK.hard!==3)throw new Error('bricks');
  if(fmt(12.5)!=='12.5'||fmt(0.5)!=='0.5')throw new Error('fmt half');
  if(rfmt(0.5)!=='0.5'||rfmt(1)!=='1'||rfmt(1.5)!=='1.5'||rfmt(0.25)!=='0.25'||rfmt(0.75)!=='0.75'||rfmt(19.5)!=='19.5'||rfmt(39)!=='39'||rfmt(58.5)!=='58.5'||rfmt(12.5)!=='12.5')throw new Error('rfmt');
+ if(rfmt(0.125)!=='0.125'||rfmt(0.375)!=='0.375'||rfmt(0.0625)!=='0.0625')throw new Error('hint fmt');
+ if(clean(REWARD.easy*0.25)!==0.125||clean(REWARD.medium*0.25)!==0.25||clean(REWARD.hard*0.25)!==0.375||clean(halfPay(REWARD.easy)*0.25)!==0.0625)throw new Error('hint pay');
+ const picQ=make('times','easy');if(!picQ||qPic(picQ).indexOf('<svg')<0||qPic(picQ).indexOf('>'+picQ.ans+'<')>=0)throw new Error('pic math');
+ const picS=make('space','easy');if(!picS||qPic(picS).indexOf('<svg')<0)throw new Error('pic sci');
+ const picH=make('romans','easy');if(!picH||qPic(picH).indexOf('<svg')<0)throw new Error('pic hist');
+ const oldCR=CR;CR={seed:5,edits:{}};let cg=0,cs=0,cw=0,ct=0;for(let x=0;x<CW;x++)for(let y=0;y<CH;y++){const t=craftTile(x,y);if(t===1)cg++;if(t===3)cs++;if(t===10)cw++;if(t===4)ct++;}if(!cg||!cs||!cw||!ct)throw new Error('craft world');CR=oldCR;
  const halfHouse=houseProgress(0.5);if(halfHouse.have!==0.5||halfHouse.next.id!=='foundation')throw new Error('half brick');
  const seenSci={};SCIENCE.forEach(s=>{if(!s.ans||s.wrongs.length<3||s.wrongs.indexOf(s.ans)>=0||new Set([s.ans,...s.wrongs]).size!==s.wrongs.length+1)throw new Error('sci dup '+s.text.slice(0,48));
   if(!s.hint||!s.steps||s.steps.length<2||!B[s.bite])throw new Error('sci link '+s.bite);
@@ -2660,7 +2964,7 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  for(let s=1;s<=6;s++){const c=parkourCourse(s);if(c.plats.length<4||c.gap>150||c.flagX<=c.plats[0].x)throw new Error('course '+s);}
  if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyBudget,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL,lifetime,gainRobux,savedDiff,needsMC,HISTORY,SPELLING,cashInNow,showRedeemHistory};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyBudget,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL,getCR:()=>CR,craftQuiz,lifetime,gainRobux,savedDiff,needsMC,HISTORY,SPELLING,cashInNow,showRedeemHistory};
 showStart();
 })();
 </script>
