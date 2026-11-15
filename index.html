@@ -179,6 +179,10 @@ table.mini th{background:#dbeafe;font-size:15px;text-transform:none;letter-spaci
 .tbl th{font-size:16px;text-transform:uppercase;color:#55557a}
 .tbl td.r,.tbl th.r{text-align:right}
 .tbl tr.tot td{border-top:4px solid var(--ink);font-size:24px}
+.sess{flex:none;font-size:15px;font-weight:800;color:#fde68a;background:#14142b;border:3px solid #fde047;border-radius:999px;padding:4px 8px;min-width:68px;text-align:center;line-height:1.2}
+body.ninja-on .sess,body.duel-on .sess,body.play-on .sess,body.craft-on .sess{font-size:14px;padding:2px 6px}
+.statpick{background:transparent;border:0;padding:0;font:inherit;font-weight:800;color:#1d4ed8;text-align:left;cursor:pointer;text-decoration:underline}
+tr.staton td{background:#fef9c3}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:20px}
 .unlock{display:flex;align-items:center;gap:14px;background:linear-gradient(90deg,#fef9c3,#fde68a);border:4px solid var(--ink);border-radius:12px;padding:10px 14px;margin:8px 0;animation:slide .4s}
 .unlock .u{font-size:20px}
@@ -534,6 +538,7 @@ const fr=(n,d)=>`<span class="frac"><span>${n}</span><span>${d}</span></span>`;
 const mixed=(w,n,d)=>`<span class="mixed">${w}${fr(n,d)}</span>`;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const pad2=n=>String(n).padStart(2,'0');
+function fmtDur(ms){const s=Math.max(0,Math.floor((+ms||0)/1000));const h=Math.floor(s/3600),m=Math.floor((s%3600)/60),ss=s%60;if(h)return h+' h '+m+' m';return pad2(m)+':'+pad2(ss);}
 const COIN='<span class="coin">R$</span>';
 const $=s=>document.querySelector(s);
 const REWARD={easy:0.5,medium:1,hard:1.5};
@@ -556,7 +561,8 @@ function migrate(p){if(!p)return;if(!p.house||typeof p.house.pts!=='number')p.ho
  if(!p.flappy)p.flappy={best:0};if(typeof p.flappy.best!=='number')p.flappy.best=0;
  if(!p.treasure)p.treasure={found:0,hunts:0};if(typeof p.treasure.found!=='number')p.treasure.found=0;if(typeof p.treasure.hunts!=='number')p.treasure.hunts=0;
  if(!p.potion)p.potion={clean:0};if(typeof p.potion.clean!=='number')p.potion.clean=0;
- if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};if(!p.craft||typeof p.craft!=='object')p.craft={seed:0};if(typeof p.earned!=='number'||!isFinite(p.earned))p.earned=p.economy==='v2'?Math.max(0,+p.total||0):Math.max(0,Math.round((+p.total||0)/10));if(!Array.isArray(p.redemptions))p.redemptions=[];if(typeof p.redeemed!=='number'||!isFinite(p.redeemed))p.redeemed=clean(p.redemptions.reduce((s,r)=>s+(+r.amount||0),0));if(!p.pickDiff||typeof p.pickDiff!=='object')p.pickDiff={};}
+ if(!Array.isArray(p.achs))p.achs=[];if(!p.mastermind)p.mastermind={hardClear:false};if(!p.craft||typeof p.craft!=='object')p.craft={seed:0};if(typeof p.earned!=='number'||!isFinite(p.earned))p.earned=p.economy==='v2'?Math.max(0,+p.total||0):Math.max(0,Math.round((+p.total||0)/10));if(!Array.isArray(p.redemptions))p.redemptions=[];if(typeof p.redeemed!=='number'||!isFinite(p.redeemed))p.redeemed=clean(p.redemptions.reduce((s,r)=>s+(+r.amount||0),0));if(!p.pickDiff||typeof p.pickDiff!=='object')p.pickDiff={};
+ if(!p.stats||typeof p.stats!=='object')p.stats={totalMs:0,modes:{},topics:{}};if(typeof p.stats.totalMs!=='number'||!isFinite(p.stats.totalMs))p.stats.totalMs=0;if(!p.stats.modes)p.stats.modes={};if(!p.stats.topics)p.stats.topics={};}
 let player=null;
 function lifetime(){return player&&typeof player.earned==='number'?player.earned:(player?+player.total||0:0);}
 function gainRobux(n){n=clean(n);if(!player||!n)return;player.total=clean((+player.total||0)+n);if(n>0)player.earned=clean((player.earned||0)+n);}
@@ -741,7 +747,7 @@ function bite(key){return{link:B[key],linkName:BN[key]};}
 const TOPICS={
  addsub:'Adding & subtracting',placevalue:'Place value',rounding:'Rounding',negative:'Negative numbers',roman:'Roman numerals',
  order:'Ordering numbers',x10:'× and ÷ by 10, 100, 1000',times:'Times tables',division:'Division facts',remainders:'Remainders',
- factors:'Factors, primes, squares & cubes',multiply:'Long multiplication',shortdiv:'Short division',fractions:'Fractions',
+ factors:'Factors and multiples',common:'Common factors',primes:'Prime numbers',squares:'Square numbers',cubes:'Cube numbers',sqvol:'Area and volume',written:'Written × and ÷',tens:'× and ÷ by 10, 100 and 1,000',multiply:'Long multiplication',shortdiv:'Short division',fractions:'Fractions',
  decimals:'Decimals',percent:'Percentages',area:'Area & perimeter',volume:'Volume',measures:'Converting units',time:'Time',
  angles:'Angles',shapes:'2D & 3D shapes',coords:'Coordinates',stats:'Tables & graphs',money:'Money problems',word:'Word problems',
  scaling:'Scaling & rates',
@@ -749,6 +755,13 @@ const TOPICS={
  stone:'Stone Age to Iron Age',romans:'Romans',saxons:'Anglo-Saxons',vikings:'Vikings',egypt:'Ancient Egypt',greece:'Ancient Greece',maya:'The Maya',singapore:'Singapore',
  cious:'-cious',tious:'-tious',cial:'-cial',tial:'-tial',antent:'-ant and -ent',able:'-able and -ible',silent:'Silent letters',eic:'ei after c',homo:'Homophones',statutory:'Year 5/6 words'
 };
+const SCHOOL_TOPICS={common:1,factors:1,primes:1,squares:1,cubes:1,sqvol:1,written:1,tens:1,multiply:1,shortdiv:1,x10:1};
+const SCHOOL_RATE=0.67;
+const FLAP_SCHOOL=['squares','cubes','sqvol','written','tens','x10','multiply','shortdiv'];
+const FLAP_OTHER=['addsub','times','division','rounding','negative','money'];
+const CRAFT_SCHOOL=['common','primes','squares','cubes','sqvol','written','tens','factors'];
+const CRAFT_OTHER=['times','addsub','division','fractions'];
+function schoolOr(school,other){return Math.random()<SCHOOL_RATE?school:other;}
 const PV=['ones','tens','hundreds','thousands','ten thousands','hundred thousands','millions'];
 const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
 const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
@@ -852,7 +865,7 @@ G.division=diff=>{const hard=diff==='hard',med=diff==='medium';const b=hard?R(6,
 G.remainders=diff=>{const hard=diff==='hard',med=diff==='medium';const d=hard?R(6,9):med?R(4,9):R(2,5);const q=hard?R(12,40):med?R(6,20):R(3,12);const r=R(1,d-1);const n=d*q+r;const A=(x,y)=>x+' r '+y;
  return mcQ('remainders',diff,n+' ÷ '+d+' = ?',A(q,r),[A(q,r+1<d?r+1:1),A(q+1,r),A(q-1,r),A(q,0),A(q+1,0)],{bite:'rem',hint:'See how many times the divisor fits inside the number. Whatever is left over, and is smaller than the divisor, is the remainder.',steps:[d+' × '+q+' = '+(d*q)+'.',n+' − '+(d*q)+' = '+r+' left over. '+r+' is smaller than '+d+', so it is the remainder. On the button this is written with an r.',end(q+' r '+r)],audit:{op:'rem',n,d,q,r}});};
 
-G.factors=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,hard?5:med?4:2);
+G.factors=diff=>{const hard=diff==='hard',med=diff==='medium';const v=Math.random()<0.55?0:4;
  if(v===0){const n=pick(hard?[36,48,54,56,60,64,72,84,96]:med?[18,20,24,28,30,32,36,40]:[12,16,18,20,24]);const f=[],nf=[];for(let i=2;i<n;i++)(n%i===0?f:nf).push(i);const c=pick(f);
   return mcQ('factors',diff,'Which of these is a <b>factor</b> of '+n+'?',c,shuf(nf),{bite:'factors',hint:'A factor divides the number exactly. Try dividing '+n+' by each choice. If there is no remainder, it is a factor.',steps:['Check which number divides '+n+' with nothing left over.',n+' ÷ '+c+' = '+(n/c)+', exactly.',end(String(c))],audit:{op:'mcNum',n:c}});}
  if(v===1){const c=pick(PRIMES.filter(p=>hard?p>20:med?p>10:p<=30));return mcQ('factors',diff,'Which of these is a <b>prime number</b>?',c,shuf(ODDCOMP),{bite:'primes',hint:'A prime number has exactly two factors: 1 and itself. If you can make it as a multiplication other than 1 × itself, it is not prime.',steps:['A prime has exactly two factors: 1 and itself.','Cross out any number you can split, such as 9 = 3 × 3 or 21 = 3 × 7 or 25 = 5 × 5.','The number that is left cannot be split that way.',end(String(c))],audit:{op:'mcNum',n:c}});}
@@ -874,7 +887,69 @@ G.shortdiv=diff=>{const hard=diff==='hard',med=diff==='medium';const d=hard?R(3,
   return mcQ('shortdiv',diff,'Use short division: '+n+' ÷ '+d+' = ?',q+' r '+r,[ (q+1)+' r '+r, q+' r '+(r===1?2:1), (q-1)+' r '+r, String(q) ],{bite:'div4',hint:'In the bus-stop method, divide each digit in turn. Carry any remainder to the next digit. At the end, what is left is the remainder.',steps:['How many times does '+d+' fit into '+n+'? ',d+' × '+q+' = '+(d*q)+', and '+n+' − '+(d*q)+' = '+r+' left over. That is '+q+' remainder '+r+', written with an r.',end(q+' r '+r)],audit:{op:'rem',n,d,q,r}});}
  const q=hard?R(20,150):med?R(12,80):R(4,16);const n=d*q;if(String(n).length<2)return null;
  return numQ('shortdiv',diff,n+' ÷ '+d+' = ?',q,{bite:med||hard?'shortd':'div4',hint:'Use the bus-stop method. Divide the first digit by '+d+'. If it does not go, carry that digit to the next one. Each time, write how many times it goes and carry the remainder.',steps:['Ask how many times '+d+' fits into '+n+'.',d+' × '+q+' = '+n+', with nothing left over.',end(String(q))],audit:{op:'div',a:n,b:d}});};
-
+function isPrimeN(n){if(n<2)return false;for(let i=2;i*i<=n;i++)if(n%i===0)return false;return true;}
+function mcNear(topic,diff,text,ans,o){o=o||{};const n=clean(ans);const wrong=[];
+ [1,-1,10,-10,2,-2,100,-100,5,-5,20,-20].forEach(b=>{const w=clean(n+b);if(w!==n&&w>=0&&wrong.indexOf(w)<0)wrong.push(w);});
+ let k=3;while(wrong.length<4){const w=clean(n+k);k++;if(w!==n&&w>=0&&wrong.indexOf(w)<0)wrong.push(w);}
+ return mcQ(topic,diff,text,fmt(n),wrong.slice(0,4).map(fmt),o);}
+G.common=diff=>{const hard=diff==='hard',med=diff==='medium';
+ const pairs=hard?[[12,18],[18,24],[16,24],[20,30],[14,21],[15,25],[8,12],[9,12],[24,36],[18,30],[12,30],[16,40]]:med?[[6,9],[8,12],[10,15],[4,6],[9,12],[6,8],[12,16],[14,21],[8,14],[9,15]]:[[4,6],[6,9],[8,12],[4,8],[6,10],[9,12],[6,8],[4,10]];
+ const pair=pick(pairs),a=pair[0],b=pair[1],g=gcd(a,b),m=a/g*b;
+ if(!forceMC&&(hard||med)&&Math.random()<0.45)return numQ('common',diff,'What is the <b>first common multiple</b> of '+a+' and '+b+'?',m,{bite:'factors',long:true,hint:'The first common multiple is the smallest number that is in both times tables.',steps:['List the multiples of '+a+' and the multiples of '+b+'.','The first number that appears in both lists is the answer.',end(String(m))],audit:{op:'lcm',a,b,m}});
+ if(forceMC||Math.random()<0.55){const askH=hard&&Math.random()<0.5;const shared=[];for(let i=1;i<=Math.min(a,b);i++)if(a%i===0&&b%i===0)shared.push(i);const ans=askH?g:pick(shared);const wrong=[];let guard=0;
+  while(wrong.length<4&&guard++<60){const w=R(2,Math.max(a,b)+8);if(w===ans||(a%w===0&&b%w===0)||wrong.indexOf(w)>=0)continue;wrong.push(w);}
+  let extra=Math.max(a,b)+1;while(wrong.length<4&&extra<Math.max(a,b)+30){if(!(a%extra===0&&b%extra===0)&&extra!==ans&&wrong.indexOf(extra)<0)wrong.push(extra);extra++;}
+  const text=askH?'What is the <b>highest common factor</b> of '+a+' and '+b+'?':'Which of these is a <b>common factor</b> of '+a+' and '+b+'?';
+  return mcQ('common',diff,text,String(ans),wrong.map(String),{bite:'factors',long:true,hint:askH?'The highest common factor is the biggest whole number that divides both numbers exactly.':'A common factor divides both numbers with nothing left over.',steps:['List the factors of '+a+' and the factors of '+b+'.','Keep the numbers that are in both lists.'+(askH?' The biggest of those is the highest common factor.':''),end(String(ans))],audit:{op:'hcf',a,b,g,ans}});}
+ return numQ('common',diff,'What is the <b>highest common factor</b> of '+a+' and '+b+'?',g,{bite:'factors',long:true,hint:'List the factors of each number. The biggest one in both lists is the highest common factor.',steps:['Write the factors of '+a+' and of '+b+'.','The biggest shared factor is the highest common factor.',end(String(g))],audit:{op:'hcf',a,b,g}});};
+G.primes=diff=>{const hard=diff==='hard',med=diff==='medium';
+ if(hard&&Math.random()<0.34){const lo=pick([10,20,30]),hi=lo+10;const inside=PRIMES.filter(n=>n>lo&&n<hi);const ans=pick(inside);const wrong=ODDCOMP.filter(n=>n>lo&&n<hi);let guard=0;
+  while(wrong.length<4&&guard++<20){const w=lo+guard*2;if(w<hi&&w!==ans&&!isPrimeN(w)&&wrong.indexOf(w)<0)wrong.push(w);}
+  return mcQ('primes',diff,'Which of these is a <b>prime number between '+lo+' and '+hi+'</b>?',String(ans),wrong.slice(0,4).map(String),{bite:'primes',hint:'A prime number has exactly two factors: 1 and itself. Cross out any number you can split into a times table.',steps:['Stay between '+lo+' and '+hi+'.','A prime cannot be made by multiplying two whole numbers that are both bigger than 1.',end(String(ans))],audit:{op:'prime',n:ans}});}
+ if(hard&&Math.random()<0.5){const n=pick([12,18,20,24,28,30,36,42,45,60]);const pf=[];for(let i=2;i<=n;i++)if(n%i===0&&isPrimeN(i))pf.push(i);const ans=pick(pf);const wrong=[];let guard=0;
+  while(wrong.length<4&&guard++<40){const w=R(4,Math.max(12,n));if(!isPrimeN(w)&&w!==ans&&wrong.indexOf(w)<0)wrong.push(w);}
+  return mcQ('primes',diff,'Which of these is a <b>prime factor</b> of '+n+'?',String(ans),wrong.map(String),{bite:'primes',hint:'A prime factor is a prime number that divides the original number exactly.',steps:['Divide '+n+' by 2, 3, 5 and the other small primes.','Keep the prime that divides it with no remainder.',end(String(ans))],audit:{op:'pf',n,p:ans}});}
+ const band=hard?PRIMES.filter(p=>p>=11&&p<=47):med?PRIMES.filter(p=>p>=5&&p<=31):PRIMES.filter(p=>p<=19);const p=pick(band);const odds=ODDCOMP.filter(n=>Math.abs(n-p)<28);
+ return mcQ('primes',diff,'Which of these is a <b>prime number</b>?',String(p),shuf(odds.length>=4?odds:ODDCOMP),{bite:'primes',hint:'A prime number has exactly two factors: 1 and itself. If you can split it, it is not prime.',steps:['Cross out numbers such as 9 = 3 × 3, 15 = 3 × 5 or 25 = 5 × 5.','The prime is the one you cannot split that way.',end(String(p))],audit:{op:'prime',n:p}});};
+G.squares=diff=>{const hard=diff==='hard',med=diff==='medium';const n=hard?R(8,12):med?R(5,10):R(2,6);
+ if(forceMC||Math.random()<0.42){const squares=[1,4,9,16,25,36,49,64,81,100,121,144];const ans=pick(hard?squares:squares.filter(s=>s<=81));const wrong=[];let guard=0;
+  while(wrong.length<4&&guard++<40){const w=R(8,150);if(squares.indexOf(w)<0&&wrong.indexOf(w)<0)wrong.push(w);}
+  return mcQ('squares',diff,'Which of these is a <b>square number</b>?',String(ans),wrong.map(String),{bite:'squares',hint:'A square number is a whole number multiplied by itself, such as 3 × 3.',steps:['Try 1×1, 2×2, 3×3 and so on.','One choice matches a square. The others do not.',end(String(ans))],audit:{op:'sqpick',n:ans}});}
+ if(!forceMC&&hard&&Math.random()<0.55){const root=R(4,12),sq=root*root;return numQ('squares',diff,'What is the <b>square root</b> of '+sq+'?',root,{bite:'squares',hint:'The square root is the whole number which was multiplied by itself to make this square.',steps:['Ask which whole number times itself makes '+sq+'.','Check by multiplying that number by itself.',end(String(root))],audit:{op:'sqrt',n:root,sq}});}
+ return numQ('squares',diff,'What is '+n+'<sup>2</sup> ('+n+' squared)?',n*n,{bite:'squares',hint:'Squared means multiply the number by itself. You can picture a square of blocks.',steps:[n+' squared means '+n+' × '+n+'.',end(String(n*n))],audit:{op:'sq',n}});};
+G.cubes=diff=>{const hard=diff==='hard',med=diff==='medium';const n=hard?R(5,10):med?R(3,6):R(2,4);
+ if(forceMC||Math.random()<0.42){const cubes=[8,27,64,125,216,343,512,1000];const ans=pick(hard?cubes:cubes.slice(0,5));const wrong=[];let guard=0;
+  while(wrong.length<4&&guard++<40){const w=R(10,400);if(cubes.indexOf(w)<0&&wrong.indexOf(w)<0)wrong.push(w);}
+  return mcQ('cubes',diff,'Which of these is a <b>cube number</b>?',String(ans),wrong.map(String),{bite:'squares',hint:'A cube number is a whole number multiplied by itself, then by itself again. 2 × 2 × 2 = 8.',steps:['Try 2×2×2, 3×3×3, 4×4×4 and so on.','One choice matches a cube. The others do not.',end(String(ans))],audit:{op:'cubepick',n:ans}});}
+ return numQ('cubes',diff,'What is '+n+'<sup>3</sup> ('+n+' cubed)?',n*n*n,{bite:'squares',hint:'Cubed means multiply the number by itself, then by itself again. It is the number of little cubes in a larger cube.',steps:[n+' × '+n+' = '+(n*n)+'.','Then multiply by '+n+' again.',end(String(n*n*n))],audit:{op:'cube',n}});};
+G.sqvol=diff=>{const hard=diff==='hard',med=diff==='medium';
+ if(hard&&Math.random()<0.34){const l=R(4,12),w=R(3,8),h=R(2,6),vol=l*w*h;const text='A cuboid pencil case is <b>'+l+' cm</b> long, <b>'+w+' cm</b> wide and <b>'+h+' cm</b> tall. What is the volume in cm³?';
+  const o={bite:'vol',long:true,suffix:'cm³',hint:'Volume of a cuboid is length × width × height. The unit for this box is cm³.',steps:['The base has '+l+' × '+w+' centimetre squares.','Multiply by the height, '+h+' cm.',end(vol+' cm³')],audit:{op:'box',l,w,h,ans:vol}};
+  if(forceMC)return mcNear('sqvol',diff,text,vol,o);return numQ('sqvol',diff,text,vol,o);}
+ if(Math.random()<(diff==='easy'?0.4:0.5)){const s=diff==='easy'?R(2,4):hard?R(3,8):R(2,6),vol=s*s*s;const place=pick(['toy box','dice','ice cube','storage cube']);const text='A '+place+' is a cube with edges of <b>'+s+' cm</b>. What is the volume in cm³?';
+  const o={bite:'vol',long:true,suffix:'cm³',hint:'The volume of a cube is edge × edge × edge. Cube the side length. The unit is cm³.',steps:[s+' × '+s+' = '+(s*s)+'.','Then multiply by '+s+' again.',end(vol+' cm³')],audit:{op:'cubevol',n:s}};
+  if(forceMC)return mcNear('sqvol',diff,text,vol,o);return numQ('sqvol',diff,text,vol,o);}
+ const s=hard?R(4,15):med?R(5,12):R(2,8);const place=pick([['tile','cm'],['patio','m'],['garden','m'],['window','cm'],['photo','cm'],['sandbox','m']]);const unit=place[1],area=s*s;
+ const text='A square '+place[0]+' is <b>'+s+' '+unit+'</b> along each side. What is the area in '+unit+'²?';
+ const o={bite:'area',long:true,suffix:unit+'²',hint:'The area of a square is side × side. Square the side length, and square the unit too.',steps:[s+' × '+s+' = '+area+'.','Area uses a squared unit.',end(area+' '+unit+'²')],audit:{op:'sqarea',n:s}};
+ if(forceMC)return mcNear('sqvol',diff,text,area,o);return numQ('sqvol',diff,text,area,o);};
+G.written=diff=>{const hard=diff==='hard',med=diff==='medium';
+ if(Math.random()<0.45){if((med||hard)&&Math.random()<0.55){const d=hard?R(3,9):R(3,6),q=hard?R(15,80):R(6,24),r=R(1,d-1),n=d*q+r;const ans=q+' r '+r;
+  return mcQ('written',diff,'Use short division: '+n+' ÷ '+d+' = ?',ans,[(q+1)+' r '+r,q+' r '+(r===1?2:1),(q-1)+' r '+r,String(q)],{bite:'rem',long:true,hint:'In the bus-stop method, divide each digit in turn. What is left at the end, if it is smaller than the divisor, is the remainder.',steps:[d+' × '+q+' = '+(d*q)+'.',n+' − '+(d*q)+' = '+r+' left over.',end(ans)],audit:{op:'rem',n,d,q,r}});}
+  const src=G.shortdiv(diff);if(!src)return null;src.topic='written';if(!forceMC||src.type==='mc')return src;
+  return mcNear('written',diff,src.text,+src.ans,{bite:'shortd',hint:src.hint,steps:src.steps,audit:src.audit,long:true});}
+ if(diff==='easy'&&Math.random()<0.5){const a=R(100,250),b=R(2,4),p=a*b;const text=fmt(a)+' × '+b+' = ?';
+  const o={bite:'mul3',hint:'Split the 3-digit number into hundreds, tens and ones. Multiply each part, then add.',steps:['Split '+fmt(a)+' into hundreds, tens and ones.','Multiply each part by '+b+', then add the products.',end(fmt(p))],audit:{op:'mul',a,b}};
+  if(forceMC)return mcNear('written',diff,text,p,o);return numQ('written',diff,text,p,o);}
+ const src=G.multiply(diff);if(!src)return null;src.topic='written';if(!forceMC||src.type==='mc')return src;
+ return mcNear('written',diff,src.text,+src.ans,{bite:hard?'longm':med?'mul3':'mul2',hint:src.hint,steps:src.steps,audit:src.audit});};
+G.tens=diff=>{const hard=diff==='hard',med=diff==='medium';
+ const muls=hard?[[20,300],[30,40],[40,50],[15,200],[25,40],[50,60],[12,500],[16,250]]:med?[[20,30],[40,20],[30,40],[50,20],[15,20],[25,40],[12,50],[16,25]]:[[20,10],[30,10],[40,10],[4,100],[6,100],[8,10],[12,10],[15,100],[5,100],[7,10]];
+ const divs=hard?[[4000,20],[3600,40],[2500,25],[1800,30],[2400,40],[5000,25]]:med?[[600,20],[800,40],[1200,30],[2000,50],[900,30]]:[[200,10],[400,10],[800,10],[300,10],[500,10]];
+ const div=(hard||med)&&Math.random()<0.45;const pair=pick(div?divs:muls);const a=pair[0],b=pair[1],ans=div?a/b:a*b;
+ const text=div?fmt(a)+' ÷ '+fmt(b)+' = ?':fmt(a)+' × '+fmt(b)+' = ?';
+ const o={bite:'x10',long:true,hint:'Split off the tens and hundreds. Work out the small multiplication or division first, then put the zeros back.',steps:['Cover the zeros and work out the smaller calculation.','Put the zeros back so the answer is the right size.',end(fmt(ans))],audit:{op:'tens',a,b,div:div?1:0,ans}};
+ if(forceMC)return mcNear('tens',diff,text,ans,o);return numQ('tens',diff,text,ans,o);};
 const SIMPLE=[[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,5],[1,6],[5,6],[3,8],[5,8],[1,8],[3,10],[7,10]];
 G.fractions=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,hard?6:med?4:2);
  if(v===0){const d=pick(hard?[3,4,5,6,8,10]:med?[2,3,4,5,8,10]:[2,3,4,5,10]),n=R(1,d-1),each=R(2,hard?20:12),amt=d*each;
@@ -1380,29 +1455,35 @@ function make(topic,diff){for(let i=0;i<60;i++){let q;try{q=G[topic](diff);}catc
 
 const LEVELS=[
  {key:'m1',subject:'maths',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Level 1',bonus:2,diffs:['easy','easy','medium','hard'],
-  desc:'Slice the falling answer. Easy drops fast, hard drops slowly. Place value, rounding, Roman numerals, negatives and more',
-  topics:{addsub:3,placevalue:2,rounding:2,order:2,negative:1,roman:1,x10:1}},
+  desc:'Slice the falling answer. This week’s factors, primes, squares, cubes and written methods, plus adding, rounding and negatives',
+  topics:{common:2,primes:1,squares:1,cubes:1,factors:1,written:1,tens:1,order:2,roman:1,remainders:1}},
  {key:'m2',subject:'maths',mode:'quiz',tycoon:true,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',bonus:2,diffs:['easy','medium','medium'],
-  desc:'Times tables to 12×12, division, remainders, factors, primes, squares, cubes and short division',
-  topics:{times:3,division:2,remainders:2,factors:2,shortdiv:2,x10:1}},
+  desc:'This week’s factors, primes, squares, cubes and written methods, plus times tables. The house builds here',
+  topics:{common:1,factors:1,primes:1,squares:1,cubes:1,written:2,tens:1,times:2,division:1,remainders:1}},
  {key:'m3',subject:'maths',mode:'quiz',tycoon:false,bomb:true,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
-  desc:'Long multiplication, fractions, decimals, percentages and money. Pick easy, medium or hard. A bomb is ticking',
-  topics:{multiply:2,shortdiv:1,fractions:3,decimals:2,percent:2,money:2}},
+  desc:'This week’s maths, with fractions, decimals and percentages. Pick easy, medium or hard. A bomb is ticking',
+  topics:{written:2,common:1,primes:1,squares:1,cubes:1,sqvol:1,tens:1,order:2,remainders:1,decimals:1}},
  {key:'m4',subject:'maths',mode:'quiz',tycoon:false,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
   desc:'Hold a potion and pour it into the right cauldron. A wrong pour explodes and sends you back to question 1. Area, perimeter, volume, angles, shapes, coordinates, time, measures, tables and graphs',
-  topics:{area:2,volume:1,angles:1,shapes:1,coords:1,time:1,measures:1,stats:2,scaling:1}},
+  topics:{area:2,sqvol:1,volume:1,angles:1,shapes:1,coords:1,time:1,measures:1,stats:2,scaling:1}},
  {key:'m5',subject:'maths',mode:'quiz',tycoon:false,cls:'l5',name:'BOSS BATTLE',tag:'Boss level',bonus:5,diffs:['hard','hard','medium'],
-  desc:'Hard mix: big numbers, fractions, measures, graphs, scaling and tricky word problems',
-  topics:{addsub:1,rounding:1,fractions:1,percent:1,multiply:1,area:1,word:2,stats:1,time:1,negative:1,measures:1,scaling:1}},
+  desc:'This week’s harder maths, plus fractions, percentages and word problems',
+  topics:{written:2,common:1,primes:1,squares:1,cubes:1,sqvol:1,tens:1,word:2,fractions:1,percent:1}},
  {key:'m6',subject:'maths',mode:'parkour',tycoon:false,cls:'l6',name:'Block Parkour',tag:'Parkour',bonus:2,diffs:['easy'],
-  desc:'Jump the obby, then answer five questions. Stages get harder. Save your progress and resume later',
-  topics:{addsub:2,times:2,rounding:1,placevalue:1,money:1,negative:1,x10:1}},
+  desc:'Jump the obby, then answer five questions. This week’s maths is mixed with adding, times tables and money',
+  topics:{common:1,primes:1,squares:1,written:1,tens:1,factors:1,addsub:2,times:1,money:1}},
  {key:'m7',subject:'maths',mode:'flappy',tycoon:false,cls:'l7',name:'Flappy Flight',tag:'Flappy',bonus:0,diffs:['easy'],
-  desc:'Flap through the pipes. Type the answer before you reach the gap, or you lose',
-  topics:{addsub:2,times:2,division:1,x10:1,rounding:1,negative:1,money:1}},
+  desc:'Flap through the pipes. Type the answer before you reach the gap. Most questions are this week’s maths',
+  topics:{squares:1,cubes:1,sqvol:1,written:2,tens:1,x10:1,addsub:1,times:1,money:1}},
  {key:'m8',subject:'maths',mode:'treasure',tycoon:false,cls:'l8',name:'Treasure Hunt',tag:'Treasure',bonus:3,diffs:['easy','medium','hard'],
-  desc:'The question is at the top. Find the chest with the right answer. A wrong chest is a dud',
-  topics:{addsub:2,times:2,fractions:1,money:1,placevalue:1,rounding:1,negative:1}},
+  desc:'The question is at the top. Find the chest with the right answer. This week’s factors, primes, squares and cubes',
+  topics:{common:2,primes:1,squares:1,cubes:1,factors:1,order:2,roman:1,remainders:1}},
+ {key:'w1',subject:'week',mode:'quiz',tycoon:false,cls:'l2',name:'This Week at School',tag:'This week',bonus:2,diffs:['easy','medium','hard'],
+  desc:'Only this week’s maths: common factors, primes, squares, cubes, area and volume, written × and ÷, and × or ÷ by 10, 100 and 1,000',
+  topics:{common:2,factors:1,primes:1,squares:1,cubes:1,sqvol:1,written:2,tens:1}},
+ {key:'w2',subject:'week',mode:'ninja',tycoon:false,cls:'l1',name:'School Ninja',tag:'This week',bonus:2,diffs:['easy','medium','hard'],
+  desc:'Slice this week’s answers only. Common factors, factors and multiples, primes, squares and cubes',
+  topics:{common:2,factors:2,primes:2,squares:2,cubes:2}},
  {key:'s1',subject:'science',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
   desc:'Slice the right science answer. Easy drops fast, hard drops slowly so you can think.',
   topics:{materials:2,space:2,forces:2,living:2,humans:2}},
@@ -1519,6 +1600,7 @@ function header(){const h=$('#hdr');
  h.innerHTML=`<div class="who" data-act="home" style="cursor:pointer">${avatar(player.av,52)}<div><div class="nm">${mine?rankIcon(mine,22):''}<span>${esc(player.name)}</span></div><span class="pill t-${t}">${t}</span></div></div>
  <div class="spacer"></div><div class="brand">Block <b>Maths</b> Quest</div><div class="spacer"></div>
  <div class="bank" id="hdrBank">${COIN}<span id="hdrTotal">${rfmt(player.total)}</span></div>
+ <div class="sess" id="sess" title="Time played this visit">${fmtDur(sessionPlayMs)}</div>
  ${(!Q||Q.L.tycoon)?`<button class="hbtn" data-act="house"><span>🏠</span><span class="lbl">House</span></button>`:''}
  <button class="hbtn" data-act="bank"><span>🏦</span><span class="lbl">Bank</span></button>
  <button class="hbtn" data-act="rewards"><span>🏅</span><span class="lbl">Rewards</span></button>
@@ -1539,7 +1621,7 @@ function floatText(el,txt){if(!canAnim||!el)return;const fx=$('#fx');const s=cen
 function confetti(){if(!canAnim)return;const fx=$('#fx');const cols=['#ef4444','#facc15','#22c55e','#3b82f6','#a855f7','#f97316'];for(let i=0;i<50;i++){const c=document.createElement('div');c.className='confetti';c.style.background=pick(cols);fx.appendChild(c);
  const x=Math.random()*innerWidth;c.animate([{transform:`translate(${x}px,-30px) rotate(0deg)`},{transform:`translate(${x+R(-120,120)}px,${innerHeight+40}px) rotate(${R(180,720)}deg)`}],{duration:R(1400,2600),delay:R(0,400),easing:'cubic-bezier(.3,.6,.6,1)',fill:'both'}).onfinish=()=>c.remove();}}
 
-const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,craftRAF=0,PK=null,FL=null,CR=null;
+const app=$('#app');let Q=null,timer=null,fallRAF=0,bombTimer=null,mmPick='medium',pkRAF=0,flapRAF=0,craftRAF=0,PK=null,FL=null,CR=null,sessionPlayMs=0;
 const MM_SECS={easy:90,medium:60,hard:180};
 function bombLen(sec){if(sec===180)return {tag:'3:00',words:'3 minutes'};return {tag:sec+'s',words:sec+'s'};}
 function bombClock(sec){sec=Math.max(0,sec|0);return Math.floor(sec/60)+':'+pad2(sec%60);}
@@ -1559,7 +1641,7 @@ function stopParkourLoop(){if(pkRAF){cancelAnimationFrame(pkRAF);pkRAF=0;}}
 function stopFlappyLoop(){if(flapRAF){cancelAnimationFrame(flapRAF);flapRAF=0;}}
 function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on','craft-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
 function showRoundBar(html){let b=document.querySelector('.roundbar');if(!b){b=document.createElement('div');b.className='roundbar';document.body.appendChild(b);}b.innerHTML=html;document.body.classList.add('has-roundbar');}
-let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='',gateNext=null;
+let startMsg='',subjectTab='maths',parentSum=null,duelPick={subject:'mixed',topic:'mixed',diff:'easy',rank:'iron3'},shopMsg='',gateNext=null,parentFocus=null;
 function redeemHTML(){const bal=player?rfmt(player.total):'0';
  return `<div class="redeem" id="redeempanel"><div><h3>Redeem Robux</h3><p>In the bank: <b id="redeemBal">${bal} R$</b></p><p class="muted">Cash in turns the whole balance into a real-world reward. Gear, badges, the house and scores stay.</p></div><div class="row"><button class="btn green" type="button" data-act="cashin">Cash in</button><button class="btn" type="button" data-act="redeemhist">History</button></div></div>`;}
 function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech();stopBomb();stopTimer();clearAuto();stopFall();stopParkourLoop();stopFlappyLoop();if(typeof stopCraftLoop==='function')stopCraftLoop();PK=null;FL=null;CR=null;clearChrome();Q=null;header();
@@ -1571,7 +1653,8 @@ function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech
   maths:'A correct answer pays <b>0.5 R$</b> (easy), <b>1 R$</b> (medium) or <b>1.5 R$</b> (hard). After the timer, a right answer is worth half: 0.25, 0.5 or 0.75 R$. Pick a difficulty before you play. The house builds only in Times Table Tycoon.',
   science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>0.5 R$</b>, <b>1 R$</b> or <b>1.5 R$</b>. After 14 seconds it is half points. Help is a pass.',
   history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 0.5, 1 or 1.5 R$.',
-  spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.'
+  spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.',
+  week:'This week at school. Every question is factors, multiples, primes, squares, cubes, area and volume, written multiplication and division, or × and ÷ by 10, 100 and 1,000. Pick Easy, Medium or Hard. 0.5, 1 or 1.5 R$.'
  };
  const blurb=blurbs[subjectTab]||blurbs.maths;
  app.innerHTML=`${redeemHTML()}<div class="start">
@@ -1587,7 +1670,7 @@ function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech
   <div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
  </div></div>`;
  startMsg='';}
-function tabsHTML(){const tabs=[['maths','Maths'],['science','Science'],['history','History'],['spelling','Spelling'],['craft','Craft'],['duel','Duel']];
+function tabsHTML(){const tabs=[['maths','Maths'],['week','This week'],['science','Science'],['history','History'],['spelling','Spelling'],['craft','Craft'],['duel','Duel']];
  return `<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${subjectTab===id?'on':''}" data-act="tab" data-t="${id}">${label}</button>`).join('')}</div>`;}
 function bombLeft(){if(!Q||!Q.bomb)return 0;return Q.bomb.limit-(performance.now()-Q.bomb.t0)/1000;}
 function paintBomb(){if(!Q||!Q.bomb)return;const left=Math.max(0,bombLeft());const sec=Math.ceil(left-1e-6);const bar=$('#bombbar'),secs=$('#bombsecs'),fill=$('#fusefill'),spark=$('#spark'),lab=$('#bomblabel');
@@ -1678,6 +1761,10 @@ function blockGrid(rows,cols){rows=Math.max(1,Math.min(5,rows|0||1));cols=Math.m
  for(let r=0;r<rows;r++)for(let c=0;c<cols;c++){const x=8+c*(s+g),y=8+r*(s+g),fill=colsR[(r+c)%4];
   p+=`<rect x="${x}" y="${y}" width="${s}" height="${s}" rx="4" fill="${fill}" stroke="#14142b" stroke-width="3"/><rect x="${x+4}" y="${y+4}" width="8" height="5" fill="#fff" opacity=".45"/>`;}
  return svgBox(p,w,h);}
+function squarePic(label){const cap=label?`<text x="100" y="168" text-anchor="middle" font-size="18" font-weight="800" fill="#14142b">${label}</text>`:'';
+ return svgBox(`<rect x="40" y="18" width="120" height="120" fill="#93c5fd" stroke="#14142b" stroke-width="4"/>${cap}`,200,186);}
+function cubePic(){return svgBox(`<polygon points="70,28 150,28 170,52 90,52" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><polygon points="90,52 170,52 170,132 90,132" fill="#60a5fa" stroke="#14142b" stroke-width="3"/><polygon points="70,28 90,52 90,132 70,108" fill="#3b82f6" stroke="#14142b" stroke-width="3"/>`,200,150);}
+function twoGroups(){return svgBox(`<g fill="#38bdf8" stroke="#14142b" stroke-width="2"><circle cx="24" cy="28" r="8"/><circle cx="46" cy="28" r="8"/><circle cx="68" cy="28" r="8"/><circle cx="35" cy="50" r="8"/><circle cx="57" cy="50" r="8"/></g><g fill="#facc15" stroke="#14142b" stroke-width="2"><circle cx="120" cy="28" r="8"/><circle cx="142" cy="28" r="8"/><circle cx="164" cy="28" r="8"/><circle cx="131" cy="50" r="8"/></g>`,200,72);}
 function numLinePic(a,b,jump){const w=420,h=120;const x0=36,x1=384;const y=62;
  const span=Math.max(1,Math.abs(b-a));const X=v=>x0+(v-Math.min(a,b))/span*(x1-x0);
  let p=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="#14142b" stroke-width="4"/>`;
@@ -1727,6 +1814,11 @@ function topicArt(topic,word){
  if(T==='greece')return svgBox('<rect x="30" y="40" width="16" height="50" fill="#fff" stroke="#14142b" stroke-width="3"/><rect x="70" y="40" width="16" height="50" fill="#fff" stroke="#14142b" stroke-width="3"/><rect x="110" y="40" width="16" height="50" fill="#fff" stroke="#14142b" stroke-width="3"/><rect x="20" y="28" width="120" height="14" fill="#e2e8f0" stroke="#14142b" stroke-width="3"/>',170,100);
  if(T==='maya')return svgBox('<polygon points="40,90 100,20 160,90" fill="#78716c" stroke="#14142b" stroke-width="3"/><rect x="90" y="28" width="20" height="16" fill="#facc15" stroke="#14142b" stroke-width="2"/>',200,100);
  if(T==='singapore')return svgBox('<rect x="20" y="16" width="160" height="36" fill="#ef4444" stroke="#14142b" stroke-width="3"/><rect x="20" y="52" width="160" height="36" fill="#fff" stroke="#14142b" stroke-width="3"/><circle cx="58" cy="34" r="12" fill="#fff"/><circle cx="64" cy="34" r="9" fill="#ef4444"/>',200,104);
+ if(T==='primes')return svgBox('<circle cx="36" cy="40" r="16" fill="#fde68a" stroke="#14142b" stroke-width="3"/><circle cx="78" cy="40" r="16" fill="#93c5fd" stroke="#14142b" stroke-width="3"/><circle cx="120" cy="40" r="16" fill="#86efac" stroke="#14142b" stroke-width="3"/>',170,80);
+ if(T==='squares'||T==='sqvol')return squarePic('');
+ if(T==='cubes')return cubePic();
+ if(T==='common'||T==='factors')return twoGroups();
+ if(T==='written'||T==='tens'||T==='x10')return svgBox('<rect x="16" y="24" width="36" height="44" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="58" y="24" width="36" height="44" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><rect x="100" y="24" width="36" height="44" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/><path d="M146 46 H176" stroke="#14142b" stroke-width="4"/><polygon points="176,46 166,40 166,52" fill="#14142b"/>',190,90);
  if(T==='cious'||T==='tious'||T==='cial'||T==='tial'||T==='antent'||T==='able'||T==='silent'||T==='eic'||T==='homo'||T==='statutory')return svgBox('<rect x="24" y="28" width="36" height="44" rx="4" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="68" y="28" width="36" height="44" rx="4" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><rect x="112" y="28" width="36" height="44" rx="4" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/>',180,100);
  return svgBox('<rect x="30" y="30" width="40" height="40" rx="6" fill="#facc15" stroke="#14142b" stroke-width="3"/><rect x="80" y="30" width="40" height="40" rx="6" fill="#22c55e" stroke="#14142b" stroke-width="3"/><rect x="130" y="30" width="40" height="40" rx="6" fill="#3b82f6" stroke="#14142b" stroke-width="3"/>',200,100);
 }
@@ -1734,8 +1826,15 @@ function qPic(q){if(!q)return '';const raw=String(q.text||'');if(raw.indexOf('<s
  const a=q.audit||{},op=a.op||'';
  if(op==='div'||op==='rem')return divPic(op==='rem'?a.n:a.a, op==='rem'?a.d:a.b);
  if((op==='mul'||op==='sq')&&a.a>0&&a.b>0&&a.a<=6&&a.b<=8)return blockGrid(a.a,a.b);
- if(op==='sq'&&a.n>0&&a.n<=6)return blockGrid(a.n,a.n);
- if(op==='mul'&&a.a>0&&a.b>0)return blockGrid(Math.min(4,a.a),Math.min(6,a.b));
+ if(op==='sq'&&a.n>0&&a.n<=5)return blockGrid(a.n,a.n);
+ if(op==='sq')return squarePic('');
+ if(op==='sqrt')return squarePic('square');
+ if(op==='sqarea')return squarePic(a.n+' cm');
+ if(op==='cube'||op==='cubevol'||op==='box')return cubePic();
+ if(op==='hcf'||op==='lcm')return twoGroups();
+ if(op==='prime'||op==='pf'||op==='sqpick'||op==='cubepick')return topicArt(op==='cubepick'?'cubes':op==='sqpick'?'squares':'primes');
+ if(op==='tens')return placePic(String(Math.abs(a.a||0)).slice(-4).split(''));
+ if(op==='mul'&&a.a>0&&a.b>0)return topicArt('written');
  if(op==='add'||op==='sub')return numLinePic(Math.min(a.a,a.b),Math.max(a.a,a.b),op==='add'?1:-1);
  if(op==='temp')return numLinePic(a.start,a.start+(a.delta||1),a.delta);
  if(op==='round')return numLinePic(0,Math.max(10,a.to||10),0);
@@ -1819,11 +1918,22 @@ function helpHTML(q){return `<div class="passbanner">Passed – no Robux this ti
  <p class="muted">A pass earns <b>0 R$</b> and <b>0 house bricks</b>. It is not counted as a correct answer.</p>`;}
 function plain(s){const d=document.createElement('div');d.innerHTML=String(s==null?'':s);return (d.textContent||'').replace(/\s+/g,' ').trim();}
 function shownAns(q){if(q.type==='num'){if(q.prefix==='S$')return money(q.ans);return (q.prefix||'')+fmt(q.ans)+(q.suffix?' '+q.suffix:'');}return plain(q.ans);}
+function modeStat(q,kind){if(!player.stats||typeof player.stats!=='object')player.stats={totalMs:0,modes:{},topics:{}};if(!player.stats.modes)player.stats.modes={};
+ const modeId=Q&&Q.L?Q.L.key:'play';const modeName=Q&&Q.L?Q.L.name:'Play';const subj=q.subject||'Maths';
+ const rec=player.stats.modes[modeId]||(player.stats.modes[modeId]={name:modeName,subject:subj,ms:0,asked:0,c:0,w:0,late:0,h:0,p:0});
+ rec.name=modeName;rec.subject=subj;rec.asked++;
+ if(kind==='correct'||kind==='late'||kind==='hint'||kind==='hintlate')rec.c++;
+ if(kind==='wrong'||kind==='timeout'||kind==='fell')rec.w++;
+ if(kind==='late'||kind==='hintlate')rec.late++;
+ if(kind==='hint'||kind==='hintlate')rec.h++;
+ if(kind==='pass')rec.p++;}
 function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.mistakes)player.mistakes=[];
+ modeStat(q,kind);
  const rec=player.review[q.topic]||(player.review[q.topic]={c:0,w:0,t:0,p:0,late:0,subject:q.subject||'Maths'});
  if(rec.late==null)rec.late=0;
+ const modeKey=Q&&Q.L?Q.L.key:'';
  if(kind==='hint'||kind==='hintlate'){rec.c++;rec.h=(rec.h||0)+1;if(kind==='hintlate')rec.late++;
-  player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:kind==='hintlate'?'hint, late':'hint',ans:shownAns(q)});
+  player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',modeKey,question:plain(q.text),given:kind==='hintlate'?'hint, late':'hint',ans:shownAns(q)});
   if(player.mistakes.length>400)player.mistakes.length=400;return;}
  if(kind==='correct'||kind==='late')rec.c++;
  if(kind==='late')rec.late++;
@@ -1832,7 +1942,7 @@ function logAttempt(q,kind,given){if(!player.review)player.review={};if(!player.
  else if(kind!=='correct')rec.w++;
  if(kind==='correct')return;
  const givenText=kind==='timeout'?'timed out':kind==='pass'?'passed':kind==='fell'?'fell off':kind==='late'?'late':plain(given);
- player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',question:plain(q.text),given:givenText||'wrong',ans:shownAns(q)});
+ player.mistakes.unshift({d:new Date().toISOString(),subject:q.subject||'Maths',topic:TOPICS[q.topic]||q.topic,topicId:q.topic,diff:q.diff,mode:Q&&Q.L?Q.L.name:'',modeKey,question:plain(q.text),given:givenText||'wrong',ans:shownAns(q)});
  if(player.mistakes.length>400)player.mistakes.length=400;}
 function passQuestion(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{pass:true});return;}
  if(FL&&FL.alive){flapPass();return;}
@@ -2052,20 +2162,35 @@ function showParentGate(){if(!needPlayer())return;leaveRound();header();
  btn.addEventListener('pointerup',stop);
  btn.addEventListener('pointerleave',stop);
  btn.addEventListener('pointercancel',stop);}
-function showParent(){if(!needPlayer())return;leaveRound();header();const p=player;const rows=reviewRows();
- const table=rows.length?`<div style="overflow:auto;-webkit-overflow-scrolling:touch"><table class="tbl" style="font-size:16px"><tr><th>Topic</th><th class="r">Attempts</th><th class="r">Correct</th><th class="r">Wrong</th><th class="r">Timed out</th><th class="r">Passed</th><th class="r">Late</th><th class="r">Accuracy</th></tr>
- ${rows.map(s=>`<tr><td>${esc(s.subject)} · ${esc(s.name)}</td><td class="r">${s.attempts}</td><td class="r">${s.c}</td><td class="r">${s.w}</td><td class="r">${s.t}</td><td class="r">${s.p}</td><td class="r">${s.late}</td><td class="r">${s.acc}%</td></tr>`).join('')}</table></div>`:'<p class="muted">No questions logged yet.</p>';
+function resultCells(asked,c,inc,late,h,p,ms){const pct=asked?Math.round(c/asked*100):0;return `<td class="r">${asked}</td><td class="r">${c}</td><td class="r">${inc}</td><td class="r">${late}</td><td class="r">${h}</td><td class="r">${p}</td><td class="r">${pct}%</td><td class="r">${fmtDur(ms)}</td>`;}
+function isWrongLog(m){const g=m.given||'';return g!=='passed'&&g!=='late'&&g!=='hint'&&g!=='hint, late'&&g!=='bomb';}
+function showParent(){if(!needPlayer())return;leaveRound();header();const p=player;if(!p.stats)p.stats={totalMs:0,modes:{},topics:{}};
+ const head=`<tr><th>Section</th><th class="r">Asked</th><th class="r">Correct</th><th class="r">Incorrect</th><th class="r">Late</th><th class="r">Hinted</th><th class="r">Help</th><th class="r">%</th><th class="r">Time</th></tr>`;
+ const modeRows=Object.keys(p.stats.modes||{}).map(id=>{const s=p.stats.modes[id];return {id,name:s.name||id,subject:s.subject||'',asked:s.asked||0,c:s.c||0,inc:s.w||0,late:s.late||0,h:s.h||0,p:s.p||0,ms:s.ms||0};}).filter(s=>s.asked||s.ms).sort((a,b)=>b.asked-a.asked||a.name.localeCompare(b.name));
+ const topicIds={};Object.keys(p.review||{}).forEach(id=>{topicIds[id]=1;});Object.keys(p.stats.topics||{}).forEach(id=>{topicIds[id]=1;});
+ const topicRows=Object.keys(topicIds).map(id=>{const r=p.review[id]||{};const ms=(p.stats.topics[id]&&p.stats.topics[id].ms)||0;const asked=(r.c||0)+(r.w||0)+(r.t||0)+(r.p||0);return {id,name:TOPICS[id]||id,subject:r.subject||(p.stats.topics[id]&&p.stats.topics[id].subject)||'Maths',asked,c:r.c||0,inc:(r.w||0)+(r.t||0),late:r.late||0,h:r.h||0,p:r.p||0,ms};}).filter(s=>s.asked||s.ms).sort((a,b)=>a.name.localeCompare(b.name));
+ const sum=rows=>{const o={asked:0,c:0,inc:0,late:0,h:0,p:0,ms:0};rows.forEach(s=>{o.asked+=s.asked;o.c+=s.c;o.inc+=s.inc;o.late+=s.late;o.h+=s.h;o.p+=s.p;o.ms+=s.ms;});return o;};
+ const modeBody=modeRows.map(s=>`<tr class="${parentFocus&&parentFocus.kind==='mode'&&parentFocus.id===s.id?'staton':''}"><td><button class="statpick" type="button" data-act="statrow" data-kind="mode" data-id="${esc(s.id)}">${esc(s.name)}</button></td>${resultCells(s.asked,s.c,s.inc,s.late,s.h,s.p,s.ms)}</tr>`).join('');
+ const topicBody=topicRows.map(s=>`<tr class="${parentFocus&&parentFocus.kind==='topic'&&parentFocus.id===s.id?'staton':''}"><td><button class="statpick" type="button" data-act="statrow" data-kind="topic" data-id="${esc(s.id)}">${esc(s.subject)} · ${esc(s.name)}</button></td>${resultCells(s.asked,s.c,s.inc,s.late,s.h,s.p,s.ms)}</tr>`).join('');
+ const all=sum(topicRows);const modes=sum(modeRows);const allTime=p.stats.totalMs||0;
+ const table=`<div id="resultstable" style="overflow:auto;-webkit-overflow-scrolling:touch"><h3>By mode</h3><table class="tbl" style="font-size:16px">${head}${modeBody||'<tr><td colspan="9">No mode time yet. It starts when he plays.</td></tr>'}<tr class="tot"><td>All modes</td>${resultCells(modes.asked,modes.c,modes.inc,modes.late,modes.h,modes.p,allTime)}</tr></table>
+ <h3 style="margin-top:16px">By topic</h3><table class="tbl" style="font-size:16px">${head}${topicBody||'<tr><td colspan="9">No questions logged yet.</td></tr>'}<tr class="tot"><td>All topics</td>${resultCells(all.asked,all.c,all.inc,all.late,all.h,all.p,all.ms)}</tr></table></div>`;
+ let focusHtml='';
+ if(parentFocus){const pool=(p.mistakes||[]).filter(isWrongLog).filter(m=>parentFocus.kind==='topic'?m.topicId===parentFocus.id:(m.modeKey===parentFocus.id||m.mode===(p.stats.modes[parentFocus.id]&&p.stats.modes[parentFocus.id].name)));
+  const title=parentFocus.kind==='topic'?(TOPICS[parentFocus.id]||parentFocus.id):((p.stats.modes[parentFocus.id]&&p.stats.modes[parentFocus.id].name)||parentFocus.id);
+  focusHtml=`<h3 style="margin-top:18px" id="wronglist">Wrong answers · ${esc(title)}</h3>`+(pool.length?pool.slice(0,40).map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong or timed-out answers saved for this row.</p>');}
  const misses=(p.mistakes||[]).slice(0,25);
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes, late answers or bomb losses yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
  <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>0.5</b>, <b>1</b> or <b>1.5 R$</b>. After the timer, a right answer is worth half (<b>0.25</b>, <b>0.5</b> or <b>0.75 R$</b>) and is logged as <b>late</b>. A hint pays a quarter of the Robux and is logged as <b>hint</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
- <h3>Topics, weakest first</h3>
- <p class="muted" style="margin-top:-4px">Accuracy is correct answers divided by every attempt. Late answers count as correct. Passes, wrong answers and timeouts are included in the attempts.</p>
+ <h3>Results</h3>
+ <p class="muted" style="margin-top:-4px">One row for each mode and each topic. Incorrect is a wrong answer or a timeout. Late and hinted answers count as correct. Help is a pass and earns nothing. % is correct ÷ asked. Time is how long that part was on screen. Total play time is ${fmtDur(allTime)} on this device, and this visit is ${fmtDur(sessionPlayMs)}. Tap a row for the questions he got wrong. Older answers stay in the topic rows. Time starts from this update.</p>
  ${table}
+ ${focusHtml}
  <h3 style="margin-top:18px">Recent log</h3>
  ${list}
- <div class="row" style="margin-top:12px"><button class="btn red" data-act="clearlog">Clear mistake history</button><span class="muted">Clears this log only. R$ and the house stay.</span></div>
+ <div class="row" style="margin-top:12px"><button class="btn red" data-act="resetresults">Reset results</button><button class="btn red" data-act="clearlog">Clear mistake history</button><span class="muted">Reset results clears the table and the times. The missed-question log, Robux, house, duel and Block Craft stay. Clear mistake history removes the log as well.</span></div>
  <h3 style="margin-top:18px">Exchange note (optional)</h3>
  <p class="muted" style="margin-top:-4px">A small treat might be about 15–20 R$.</p>
  <textarea id="note" maxlength="300" placeholder="e.g. 20 points = one small treat on Saturday">${esc(p.note||'')}</textarea>
@@ -2080,7 +2205,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
  switch(a){
   case 'home':gateNext=null;closeModal();showStart();break;
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
-  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=['maths','science','history','spelling','craft','duel'].indexOf(t)>=0?t:'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
+  case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=['maths','week','science','history','spelling','craft','duel'].indexOf(t)>=0?t:'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
   case 'level':startRound(el.dataset.k);break;
   case 'mmgo':beginMastermind(el.dataset.d,el.dataset.k);break;
   case 'diffgo':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;rememberDiff(L.key,el.dataset.d);launchLevel(L);break;}
@@ -2119,6 +2244,9 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'rewards':showRewards();break;
   case 'parent':gateNext=null;showParentGate();break;
   case 'parentcheck':{const n=parseInt(($('#psum')&&$('#psum').value||'').replace(/\s/g,''),10);const err=$('#perr');if(n===parentSum){sfx.coin();gatePassed();}else{if(err)err.textContent='Not quite. Try the sum, or hold the button.';sfx.wrong();}break;}
+  case 'statrow':parentFocus={kind:el.dataset.kind,id:el.dataset.id};showParent();break;
+  case 'resetresults':{const m=$('#modal');m.classList.remove('hidden');m.innerHTML=`<div class="card"><h2>Reset results?</h2><p>This clears the results table and the play times for ${esc(player.name)}. The missed-question log, Robux, house, duel gear and Block Craft world stay.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doresetresults">Yes, reset results</button></div></div>`;break;}
+  case 'doresetresults':player.review={};player.stats={totalMs:0,modes:{},topics:{}};sessionPlayMs=0;parentFocus=null;save();closeModal();showParent();break;
   case 'clearlog':{const m=$('#modal');m.classList.remove('hidden');m.innerHTML=`<div class="card"><h2>Clear mistake history?</h2><p>This removes the topic summary and the saved wrong answers, timeouts and passes for ${esc(player.name)}. Robux and the house stay.</p><div class="row" style="justify-content:center"><button class="btn grey" data-act="cancelreset">Cancel</button><button class="btn red" data-act="doclearlog">Yes, clear</button></div></div>`;break;}
   case 'doclearlog':player.mistakes=[];player.review={};save();closeModal();showParent();break;
   case 'mute':store.muted=!store.muted;save();header();if(!store.muted)sfx.click();break;
@@ -2222,7 +2350,9 @@ function loadDuelPick(){if(!player||!player.duel||!player.duel.pick)return;const
  duelPick.rank=resolveRank(p.rank,player.duel.wins||0);
  if(duelPick.topic!=='mixed'&&duelTopicIds().indexOf(duelPick.topic)<0)duelPick.topic='mixed';}
 function duelPool(){if(Q.topic&&Q.topic!=='mixed')return [Q.topic];return subjectIds(Q.subject||'mixed');}
-function duelMake(){const ids=duelPool();for(let i=0;i<80;i++){const q=make(pick(ids),Q.diff);if(q&&(q.type==='mc'||q.type==='num'))return q;}return null;}
+function duelMake(){let ids=duelPool();
+ if((!Q.topic||Q.topic==='mixed')&&Q.subject==='maths'){const school=ids.filter(id=>SCHOOL_TOPICS[id]);const other=ids.filter(id=>!SCHOOL_TOPICS[id]);if(school.length&&other.length)ids=schoolOr(school,other);}
+ for(let i=0;i<80;i++){const q=make(pick(ids),Q.diff);if(q&&(q.type==='mc'||q.type==='num'))return q;}return null;}
 function equippedSkin(){const d=player&&player.duel;if(!d||!d.owned||d.owned.indexOf(d.skin)<0)return 'block';return d.skin||'block';}
 function equippedFin(){const d=player&&player.duel;if(!d||!d.finishers||d.finishers.indexOf(d.finisher)<0)return 'pop';return d.finisher||'pop';}
 function weaponPower(){const s=SKINS.find(x=>x.id===equippedSkin());return s&&s.power?s.power:1;}
@@ -2530,7 +2660,7 @@ function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTime
   <p class="muted">Saved. Next is stage ${next}. Bank ${rfmt(player.total)} R$.</p>
   <div class="stagebtns" style="margin-top:12px"><button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button></div></div>`;
  sfx.fanfare();checkAchievements();Q=null;}
-function numericQuestion(diff){const topics=['addsub','times','division','x10','rounding','negative','money'];
+function numericQuestion(diff){const topics=schoolOr(FLAP_SCHOOL,FLAP_OTHER);
  for(let i=0;i<40;i++){const q=make(pick(topics),diff);if(q&&q.type==='num')return q;}return make('addsub',diff);}
 function flap(){if(!FL||!FL.alive||FL.paused)return;FL.vy=-280;FL.flew=true;}
 function flapKeyIn(k){if(!FL||!FL.alive||FL.paused||!FL.q||FL.q.resolved)return;
@@ -2873,7 +3003,7 @@ function craftPaint(ctx,id,sx,sy,x,y){const u=CT/16;const pix=(i,j,col)=>{ctx.fi
  else if(id===12){for(let j=0;j<16;j++)if(speck(2,j)<0.7)pix(2,j,'#166534');}
  if(id!==11&&id!==12){ctx.strokeStyle='rgba(0,0,0,.28)';ctx.strokeRect(sx+0.5,sy+0.5,CT-1,CT-1);}}
 function craftQuiz(){if(!CR)return;CR.phase='quiz';CR.invOpen=false;stopCraftLoop();saveCraft();
- const diff=CR.diff||'easy';const topics=['times','addsub','division','fractions','placevalue','money','shapes','negative','area'];
+ const diff=CR.diff||'easy';const topics=schoolOr(CRAFT_SCHOOL,CRAFT_OTHER);
  const qs=[],seen=new Set();let g=0;while(qs.length<3&&g++<80){const q=make(pick(topics),diff);if(!q||seen.has(q.text))continue;seen.add(q.text);qs.push(q);}
  if(qs.length<3){CR.phase='play';CR.note='Could not build the quiz.';craftMount();return;}
  Q={L:{key:'craft',name:'Block Craft',tag:'Craft',subject:'craft',mode:'quiz',tycoon:false,bonus:0},qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,half:false,hinted:false,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,craft:true};
@@ -2882,6 +3012,23 @@ function craftQuizDone(){if(!CR){showStart();return;}const score=Q?Q.res.filter(
  if(score>=1)CR.inv[6]=(CR.inv[6]||0)+score;if(score>=2)CR.inv[7]=(CR.inv[7]||0)+1;if(score>=3){CR.inv[8]=(CR.inv[8]||0)+1;if(CR.tool<3)CR.tool++;CR.food=Math.min(10,CR.food+2);}
  CR.note=score?('Quiz '+score+'/3. '+(score>=3?'Iron pick and gold.':score>=2?'Iron ore added.':'Coal added.')):'Quiz 0/3. Back to the world.';
  CR.phase='play';CR.clock=0;Q=null;saveCraft();craftMount();}
+function playingNow(){if(!player)return null;
+ if(Q&&Q.L){const q=Q.qs&&Q.qs[Q.i];return {mode:Q.L.key,name:Q.L.name,subject:(q&&q.subject)||Q.L.subject||'Maths',topic:q?q.topic:null};}
+ if(CR&&CR.phase==='play')return {mode:'craft',name:'Block Craft',subject:'Craft',topic:null};
+ if(PK)return {mode:'m6',name:'Block Parkour',subject:'Maths',topic:null};
+ if(FL&&FL.alive)return {mode:'m7',name:'Flappy Flight',subject:'Maths',topic:null};
+ return null;}
+function addPlayMs(ms){if(!player||!ms)return;
+ if(!player.stats||typeof player.stats!=='object')player.stats={totalMs:0,modes:{},topics:{}};
+ if(!player.stats.modes)player.stats.modes={};if(!player.stats.topics)player.stats.topics={};
+ player.stats.totalMs=(player.stats.totalMs||0)+ms;const w=playingNow();if(!w)return;
+ const rec=player.stats.modes[w.mode]||(player.stats.modes[w.mode]={name:w.name,subject:w.subject,ms:0,asked:0,c:0,w:0,late:0,h:0,p:0});
+ rec.name=w.name;rec.subject=w.subject||rec.subject;rec.ms+=ms;
+ if(w.topic){const t=player.stats.topics[w.topic]||(player.stats.topics[w.topic]={name:TOPICS[w.topic]||w.topic,subject:w.subject,ms:0});t.name=TOPICS[w.topic]||w.topic;t.subject=w.subject||t.subject;t.ms+=ms;}}
+let playSave=0;
+function tickSession(){const el=$('#sess');
+ if(!player||document.hidden||!playingNow()){if(el)el.textContent=fmtDur(sessionPlayMs);return;}
+ sessionPlayMs+=1000;addPlayMs(1000);if(el)el.textContent=fmtDur(sessionPlayMs);if(++playSave>=15){playSave=0;save();}}
 function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',58:'LVIII',90:'XC',99:'XCIX',400:'CD',444:'CDXLIV',900:'CM',999:'CMXCIX',1000:'M'};
  for(const k in roman)if(toRoman(+k)!==roman[k])throw new Error('roman '+k+' '+toRoman(+k));
  const wc=[[21,'twenty-one'],[100,'one hundred'],[101,'one hundred and one'],[115,'one hundred and fifteen'],[1000,'one thousand'],[1001,'one thousand and one'],[1100,'one thousand, one hundred'],[2150,'two thousand, one hundred and fifty'],[20000,'twenty thousand'],[100000,'one hundred thousand'],[101000,'one hundred and one thousand']];
@@ -2962,10 +3109,42 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(redeemer.total!==0||redeemer.redeemed!==12.5||redeemer.earned!==40||redeemer.duel.owned.indexOf('lava')<0||redeemer.achs.indexOf('robux30')<0||redeemer.house.pts!==9||redeemer.parkour.stage!==4)throw new Error('redeem keep');
  if(rfmt(redeemer.redeemed)!=='12.5')throw new Error('redeem fmt');
  for(let s=1;s<=6;s++){const c=parkourCourse(s);if(c.plats.length<4||c.gap>150||c.flagX<=c.plats[0].x)throw new Error('course '+s);}
- if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');}
+ if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');
+ function bagShare(topics){let s=0,t=0;for(const k in topics){t+=topics[k];if(SCHOOL_TOPICS[k])s+=topics[k];}return t?s/t:0;}
+ ['m1','m2','m3','m5','m6','m7','m8'].forEach(k=>{const L=LEVELS.find(l=>l.key===k);const sh=bagShare(L.topics);if(sh<0.6-1e-9||sh>0.72)throw new Error('share '+k+' '+sh);});
+ ['w1','w2'].forEach(k=>{const L=LEVELS.find(l=>l.key===k);if(!L||L.subject!=='week'||bagShare(L.topics)!==1)throw new Error('week '+k);});
+ if(bagShare(LEVELS.find(l=>l.key==='m4').topics)>0.2)throw new Error('lab share');
+ function shownSchool(q){return String(q.type==='num'?fmt(q.ans):q.ans).replace(/,/g,'').replace(/−/g,'-');}
+ function schoolOk(q){const a=q.audit||{};const shown=shownSchool(q);const num=q.type==='num'?+q.ans:parseFloat(shown);
+  if(a.op==='hcf'){const g=gcd(a.a,a.b);const pickN=a.ans!=null?a.ans:a.g;if(a.g!==g||a.a%pickN||a.b%pickN)return 'hcf';if(/highest common factor/i.test(q.text)&&pickN!==g)return 'hcf high';if(String(pickN)!==shown)return 'hcf ans';return '';}
+  if(a.op==='lcm'){const m=a.a/gcd(a.a,a.b)*a.b;if(a.m!==m||Math.abs(num-m)>1e-6)return 'lcm';return '';}
+  if(a.op==='prime')return isPrimeN(a.n)&&String(a.n)===shown?'':'prime';
+  if(a.op==='pf')return isPrimeN(a.p)&&a.n%a.p===0&&String(a.p)===shown?'':'pf';
+  if(a.op==='sq')return a.n*a.n===num?'':'sq';
+  if(a.op==='sqpick'){const r=Math.sqrt(a.n);return r===Math.floor(r)&&String(a.n)===shown?'':'sqpick';}
+  if(a.op==='sqrt')return a.n*a.n===a.sq&&num===a.n?'':'sqrt';
+  if(a.op==='cube')return a.n*a.n*a.n===num?'':'cube';
+  if(a.op==='cubepick'){const r=Math.round(Math.cbrt(a.n));return r*r*r===a.n&&String(a.n)===shown?'':'cubepick';}
+  if(a.op==='cubevol')return a.n*a.n*a.n===num?'':'cubevol';
+  if(a.op==='sqarea')return a.n*a.n===num?'':'sqarea';
+  if(a.op==='box')return a.l*a.w*a.h===a.ans&&num===a.ans?'':'box';
+  if(a.op==='tens'){const expect=a.div?a.a/a.b:a.a*a.b;if(a.div&&a.a%a.b)return 'tens rem';return expect===a.ans&&Math.abs(num-expect)<1e-6?'':'tens';}
+  if(a.op==='mul')return a.a*a.b===num||fmt(a.a*a.b).replace(/,/g,'')===shown?'':'mul';
+  if(a.op==='div')return a.b&&a.a%a.b===0&&a.a/a.b===num?'':'div';
+  if(a.op==='rem')return a.n===a.d*a.q+a.r&&a.r>0&&a.r<a.d&&shown===a.q+' r '+a.r?'':'rem';
+  return 'audit '+q.topic;}
+ const prevForce=forceMC;
+ ['easy','medium','hard'].forEach(d=>{['common','primes','squares','cubes','sqvol','written','tens'].forEach(t=>{for(let i=0;i<12;i++){forceMC=i%2===0;const q=make(t,d);if(!q)throw new Error('school make '+t+' '+d);const why=schoolOk(q);if(why)throw new Error(why+' '+t+' '+d+' '+plain(q.text).slice(0,70)+' = '+q.ans);const pic=qPic(q);if(pic.indexOf('<svg')<0)throw new Error('school pic '+t);const shown=shownSchool(q);if(shown&&pic.indexOf('>'+shown+'<')>=0)throw new Error('pic leak '+t+' '+shown);}});});
+ forceMC=prevForce;
+ let fs=0,fn=0;for(let i=0;i<160;i++){const q=numericQuestion('medium');if(!q||q.type!=='num')throw new Error('flap q');fn++;if(SCHOOL_TOPICS[q.topic])fs++;}if(fs/fn<0.52||fs/fn>0.84)throw new Error('flap share '+fs/fn);
+ let craftShare=0;for(let i=0;i<120;i++){const id=pick(schoolOr(CRAFT_SCHOOL,CRAFT_OTHER));if(SCHOOL_TOPICS[id])craftShare++;}if(craftShare/120<0.52||craftShare/120>0.84)throw new Error('craft share '+craftShare/120);
+ const oldQ=Q;Q={subject:'maths',topic:'mixed',diff:'medium'};let ds=0,dn=0;for(let i=0;i<80;i++){const q=duelMake();if(q){dn++;if(SCHOOL_TOPICS[q.topic])ds++;}}Q=oldQ;if(dn<40||ds/dn<0.5||ds/dn>0.85)throw new Error('duel share '+(dn?ds/dn:0));
+ ['m1','m3','m8'].forEach(key=>{const L=LEVELS.find(l=>l.key===key);let s=0,n=0;['easy','medium','hard'].forEach(d=>{for(let r=0;r<3;r++){const qs=buildRound(Object.assign({},L,{diffs:[d]}));if(!qs||qs.length<10)throw new Error('short bias '+key+' '+d);qs.forEach(q=>{n++;if(SCHOOL_TOPICS[q.topic])s++;});}});const sh=s/n;if(sh<0.4||sh>0.85)throw new Error('realized '+key+' '+sh);});
+ const clockPlayer=player;player=newPlayer('Clock');migrate(player);Q={L:{key:'w1',name:'This Week at School',subject:'week'},qs:[{topic:'primes',subject:'Maths'}],i:0};addPlayMs(1000);if(player.stats.totalMs!==1000||player.stats.modes.w1.ms!==1000||player.stats.topics.primes.ms!==1000)throw new Error('clock');Q=null;player=clockPlayer;}
 selfTest();
-window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyBudget,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL,getCR:()=>CR,craftQuiz,lifetime,gainRobux,savedDiff,needsMC,HISTORY,SPELLING,cashInNow,showRedeemHistory};
+window.__bmq={G,LEVELS,make,buildRound,HOUSE,houseProgress,REWARD,LIMIT,GRACE,FALL_SECS,ninjaLimit,halfPay,TOPICS,toRoman,words,fmt,fr,mixed,money,getQ:()=>Q,answer,nextQ,finish,beginHalf,DUEL_DMG,RANKS,SKINS,FINISHERS,GEAR,BADGES,duelDamage,freshDuel,MM_SECS,MM_CLEAR,MM_MIX,currentRank,weaponPower,player:()=>player,ACHS,parkourQuestionDiffs,flappyBudget,checkAchievements,newPlayer,getPK:()=>PK,getFL:()=>FL,getCR:()=>CR,craftQuiz,lifetime,gainRobux,savedDiff,needsMC,HISTORY,SPELLING,cashInNow,showRedeemHistory,SCHOOL_TOPICS,fmtDur};
 showStart();
+setInterval(tickSession,1000);
 })();
 </script>
 </body>
