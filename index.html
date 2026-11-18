@@ -1589,7 +1589,7 @@ function houseSVG(pts,fresh){const st=houseProgress(pts);const on=id=>st.built.s
  </svg>`;}
 function houseBar(pts,fresh){const st=houseProgress(pts);const label=st.done?'House complete! You built every part.':`Next: ${st.next.name} · ${fmt(st.have)}/${st.need} bricks`;
  const pc=st.done?100:Math.round(st.have/st.need*100);
- return `<div class="sitebar" id="houseSlot"><div style="width:148px">${houseSVG(pts,fresh)}</div><div class="ht"><b>🏠 ${st.done?'Mansion complete':st.built[st.built.length-1].name}</b><p>${label}. Full points add 1, 2 or 3 bricks. A late answer adds half.</p><div class="prog"><span style="width:${pc}%"></span></div></div></div>`;}
+ return `<div class="sitebar" id="houseSlot"><div style="width:148px">${houseSVG(pts,fresh)}</div><div class="ht"><b>🏠 ${st.done?'Mansion complete':st.built[st.built.length-1].name}</b><p>${label}. A correct answer adds 1, 2 or 3 bricks. A hint adds a quarter of that.</p><div class="prog"><span style="width:${pc}%"></span></div></div></div>`;}
 
 const SPK_ON='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 8q3 4 0 8M18.5 5.5q5 6.5 0 13" stroke="#fff" stroke-width="2.2" fill="none" stroke-linecap="round"/></svg>';
 const SPK_OFF='<svg viewBox="0 0 24 24"><path d="M3 9h4l5-4v14l-5-4H3z" fill="#fff"/><path d="M16 9l6 6M22 9l-6 6" stroke="#f87171" stroke-width="2.6" stroke-linecap="round"/></svg>';
@@ -1636,7 +1636,7 @@ function paintClock(){if(!Q||Q.locked){stopTimer();return;}const el=timeUsed();c
  const lim=Q.limit||LIMIT;
  if(!Q.half){const left=lim-el;if(left<=0){beginHalf();return;}b.style.transform=`scaleX(${Math.max(0,left)/lim})`;s.textContent=Math.ceil(left)+'s';return;}
  const left=GRACE-(el-lim);if(left<=0){stopTimer();timeUp();return;}b.style.transform=`scaleX(${Math.max(0,left)/GRACE})`;s.textContent=Math.ceil(left)+'s';}
-function startClock(){stopTimer();timer=setInterval(paintClock,100);}
+function startClock(){stopTimer();}
 function stopParkourLoop(){if(pkRAF){cancelAnimationFrame(pkRAF);pkRAF=0;}}
 function stopFlappyLoop(){if(flapRAF){cancelAnimationFrame(flapRAF);flapRAF=0;}}
 function clearChrome(){document.body.classList.remove('ninja-on','duel-on','has-roundbar','play-on','parkour-on','flappy-on','treasure-on','potion-on','craft-on');const b=document.querySelector('.roundbar');if(b)b.remove();}
@@ -1650,8 +1650,8 @@ function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech
  const names=Object.values(store.players);
  const list=LEVELS.filter(L=>L.subject===subjectTab);
  const blurbs={
-  maths:'A correct answer pays <b>0.5 R$</b> (easy), <b>1 R$</b> (medium) or <b>1.5 R$</b> (hard). After the timer, a right answer is worth half: 0.25, 0.5 or 0.75 R$. Pick a difficulty before you play. The house builds only in Times Table Tycoon.',
-  science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>0.5 R$</b>, <b>1 R$</b> or <b>1.5 R$</b>. After 14 seconds it is half points. Help is a pass.',
+  maths:'A correct answer pays <b>0.5 R$</b> (easy), <b>1 R$</b> (medium) or <b>1.5 R$</b> (hard). There is no question timer, so a right answer is always full points. A hint pays a quarter. Help is a pass and pays nothing. Pick a difficulty before you play. The house builds only in Times Table Tycoon.',
+  science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>0.5 R$</b>, <b>1 R$</b> or <b>1.5 R$</b>, with no countdown. A hint pays a quarter. Help is a pass.',
   history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 0.5, 1 or 1.5 R$.',
   spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.',
   week:'This week at school. Every question is factors, multiples, primes, squares, cubes, area and volume, written multiplication and division, or × and ÷ by 10, 100 and 1,000. Pick Easy, Medium or Hard. 0.5, 1 or 1.5 R$.'
@@ -1852,12 +1852,12 @@ function hintClue(q){let h=plain(q.hint||'Use the picture and the numbers alread
  const ans=plain(q.type==='num'?fmt(q.ans):q.ans).toLowerCase();
  if(ans&&ans.length>1&&h.toLowerCase().indexOf(ans)>=0)h='Use the picture and what the question already tells you. The last step is still yours.';
  return h;}
-function duePay(q){let p=+q.reward||0;if(Q&&Q.half)p=halfPay(p);if(Q&&Q.hinted)p=clean(p*0.25);return p;}
-function dueBricks(q){let b=BRICK[q.diff]||1;if(Q&&Q.half)b=halfPay(b);if(Q&&Q.hinted)b=clean(b*0.25);return b;}
+function duePay(q){let p=+q.reward||0;if(Q&&Q.hinted)p=clean(p*0.25);return p;}
+function dueBricks(q){let b=BRICK[q.diff]||1;if(Q&&Q.hinted)b=clean(b*0.25);return b;}
 function hintRow(mini){const h=mini?' helpmini':'';const help=mini?'Help':"Don't know? Ask for help";
  return `<div class="hintrow"><button class="hintbtn${h}" type="button" data-act="hint">Hint</button><button class="helpbtn${h}" type="button" data-act="help">${help}</button></div><div id="hintbox" class="hintbox hidden"></div><div id="help" class="helppanel hidden"></div>`;}
 function refreshPayPill(q){const pill=document.querySelector('.dpill')||$('#flappill');if(!pill||!q)return;
- const extra=(Q&&Q.hinted?' · hint':'')+(Q&&Q.half?' · half':'');
+ const extra=(Q&&Q.hinted?' · hint':'');
  pill.textContent=DNAME[q.diff]+' · '+rfmt(duePay(q))+' R$'+extra+(Q&&Q.duel?'':'');}
 function useHint(){if(!Q||Q.locked||Q.hinted)return;const q=(FL&&FL.q)||(Q.qs&&Q.qs[Q.i]);if(!q)return;Q.hinted=true;sfx.click();
  const box=$('#hintbox');if(box){box.classList.remove('hidden');box.textContent=hintClue(q)+' A correct answer now pays '+rfmt(duePay(q))+' R$.';}
@@ -1878,19 +1878,15 @@ function showQ(){stopTimer();clearAuto();stopFall();clearChrome();const q=Q.qs[Q
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
   ${qFig(q)}
   ${hintRow(false)}
-  <div id="halfslot"></div>
-  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
   <div id="ans">${answerArea(q)}</div></div>`;
- Q.t0=performance.now();startClock();if(Q.bomb)paintBomb();}
+ if(Q.bomb)paintBomb();}
 function showNinja(q){const drop=DROP_WORD[q.diff]||DROP_WORD.medium;document.body.classList.add('ninja-on');
  app.innerHTML=`<div class="ninjawrap">${qTop()}
  <div class="card ninjaq qcard"><div class="qnum"><span>Question ${Q.i+1} of ${Q.qs.length} · ${TOPICS[q.topic]}</span><span class="dpill d-${q.diff}">${DNAME[q.diff]} · ${rfmt(q.reward)} R$ · ${drop}</span></div>
   <div class="qtext ${q.long?'long':''}" id="qt"><span class="qi">${q.text}</span></div>
   ${hintRow(true)}
-  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div></div>
- <div id="halfslot"></div>
  <div class="field" id="field">${NINJA_GUY}<div id="ans"></div></div></div>`;
- Q.t0=performance.now();startClock();startFall(q);}
+ startFall(q);}
 function startFall(q){const field=$('#field');if(!field)return;const opts=ninjaOptions(q);const right=q.type==='mc'?q.ans:ninjaLabel(q,q.ans);
  const chips=opts.map((lab,i)=>{const el=document.createElement('button');el.type='button';el.className='fallchip c'+i+(String(lab).length>22?' long':'');el.innerHTML=lab;el.setAttribute('aria-label','Falling answer');field.appendChild(el);
   el.addEventListener('pointerdown',ev=>{ev.preventDefault();ev.stopPropagation();if(!Q||Q.locked)return;const r=field.getBoundingClientRect();const s=document.createElement('div');s.className='slash';s.style.left=(ev.clientX-r.left)+'px';s.style.top=(ev.clientY-r.top)+'px';field.appendChild(s);el.classList.add(lab===right?'hit':'miss');
@@ -1981,19 +1977,17 @@ function timeUp(){if(!Q||Q.locked)return;if(Q.duel){duelResolve(null,{timeout:tr
  answer(null,null,{timeout:true});}
 function applyGrade(q,ok,opts){opts=opts||{};
  if(Q.paid&&Q.paid[Q.i]!=null&&ok){Q.res[Q.i]=true;return {ok:true,replay:true,gained:0,bon:['Already in your bank'],built:null,late:false};}
- const secs=timeUsed();
  const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
  const bon=[];let gained=0;let built=null;
- const late=!!(ok&&Q.half);
+ const late=false;
  if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best||0,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);
-  const hinted=!!Q.hinted;gained=late?halfPay(q.reward):q.reward;if(hinted)gained=clean(gained*0.25);Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;gainRobux(gained);
+  const hinted=!!Q.hinted;gained=q.reward;if(hinted)gained=clean(gained*0.25);Q.earn[q.diff]+=gained;Q.counts[q.diff]=(Q.counts[q.diff]||0)+1;gainRobux(gained);
   if(Q.paid)Q.paid[Q.i]=gained;
   if(q.diff==='hard'&&player.duel){player.duel.hardRight=(player.duel.hardRight||0)+1;grantBadges();}
   if(isTycoon()){const bricks=dueBricks(q);const before=houseProgress(player.house.pts);player.house.pts+=bricks;const after=houseProgress(player.house.pts);
    if(after.built.length>before.built.length)built=after.built[after.built.length-1];
    bon.push('+'+rfmt(bricks)+' house brick'+(bricks===1?'':'s'));}
-  bon.unshift('+'+rfmt(gained)+' R$ · '+(hinted?'hint · ':'')+(late?'half points':DNAME[q.diff].toLowerCase()));
-  if(!late&&secs<=10)bon.push('⚡ speed star');
+  bon.unshift('+'+rfmt(gained)+' R$ · '+(hinted?'hint · ':'')+DNAME[q.diff].toLowerCase());
   if(Q.streak>=3)bon.push('🔥 streak '+Q.streak);}
  else Q.streak=0;
  Q.res[Q.i]=ok;
@@ -2082,7 +2076,7 @@ function showHouse(){if(!needPlayer())return;leaveRound();header();const st=hous
   ${houseSVG(player.house.pts)}
   <p style="font-size:18px;margin:10px 0 0">${st.done?'Every part is built. What a tycoon!':`Next part: <b>${esc(st.next.name)}</b> · ${fmt(st.have)} / ${st.need} bricks`}</p>
   ${st.done?'':`<div class="prog"><span style="width:${Math.round(st.have/st.need*100)}%"></span></div>`}
-  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks. A late answer adds half. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
+  <p class="muted">Only <b>Times Table Tycoon</b> builds the house. A correct answer there adds 1, 2 or 3 bricks. A hint adds a quarter of that. A pass, a wrong answer or another mode adds none. Your build is saved in this browser.</p>
   <button class="btn green" data-act="home">Play to build ▶</button></div>
  <div class="card"><h2>Build list</h2><div class="stlist">${HOUSE.map((s,i)=>{const done=st.built.some(b=>b.id===s.id);const now=!done&&st.next&&st.next.id===s.id;return `<div class="st ${done?'done':''} ${now?'now':''}"><span>${done?'✅':now?'🔨':'🔒'} ${i+1}. ${esc(s.name)}</span><span class="need">${s.cost?s.cost+' bricks':"free"}</span></div>`;}).join('')}</div></div></div>`;}
 function showBank(){if(!needPlayer())return;leaveRound();header();const p=player;const acc=p.answered?Math.round(p.correct/p.answered*100):0;const st=houseProgress(p.house.pts);
@@ -2183,9 +2177,9 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  const list=misses.length?misses.map(m=>{const d=new Date(m.d);const when=d.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})+', '+d.toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   return `<div class="miss"><p class="muted">${esc(when)} · ${esc(m.subject)} · ${esc(m.topic)} · ${esc(DNAME[m.diff]||m.diff)} · ${esc(m.mode)}</p><p class="q"><b>Question:</b> ${esc(m.question)}</p><p><b>His answer:</b> ${esc(m.given)}</p><p><b>Correct:</b> ${esc(m.ans)}</p></div>`;}).join(''):'<p class="muted">No wrong answers, timeouts, passes, late answers or bomb losses yet.</p>';
  app.innerHTML=`<div class="card"><div class="row"><h2 style="margin:0">👪 Parents · ${esc(p.name)}</h2><div class="spacer"></div><button class="btn grey" data-act="home">Back</button></div>
- <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>0.5</b>, <b>1</b> or <b>1.5 R$</b>. After the timer, a right answer is worth half (<b>0.25</b>, <b>0.5</b> or <b>0.75 R$</b>) and is logged as <b>late</b>. A hint pays a quarter of the Robux and is logged as <b>hint</b>. Help is a pass with 0 points. The 30-second cap is a timeout and counts as wrong. A Mixed Mastermind bomb is logged as <b>bomb</b>. Parkour, Flappy Flight, Treasure Hunt, the potion lab, History and Spelling log the same way. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
+ <div class="note"><b>Please note:</b> R$ here are practice points only, not real Robux. A correct answer is worth <b>0.5</b>, <b>1</b> or <b>1.5 R$</b>. There is no per-question countdown, so a right answer is always full points. A hint pays a quarter and is logged as <b>hint</b>. Help is a pass with 0 points. The Late column is older data from when a slow answer paid half. A Mixed Mastermind bomb is still logged as <b>bomb</b>. Number Ninja still counts a fallen answer as wrong, and Flappy Flight still ends if he reaches the pipe. Cashing in Robux does not clear this log. Robux already scored stay, and the round bonus does not. House bricks come only from Times Table Tycoon. This log stays on this device.</div>
  <h3>Results</h3>
- <p class="muted" style="margin-top:-4px">One row for each mode and each topic. Incorrect is a wrong answer or a timeout. Late and hinted answers count as correct. Help is a pass and earns nothing. % is correct ÷ asked. Time is how long that part was on screen. Total play time is ${fmtDur(allTime)} on this device, and this visit is ${fmtDur(sessionPlayMs)}. Tap a row for the questions he got wrong. Older answers stay in the topic rows. Time starts from this update.</p>
+ <p class="muted" style="margin-top:-4px">One row for each mode and each topic. Incorrect is a wrong answer, a fallen ninja answer, a Flappy crash, or an older timeout. The Late column is kept from earlier play, before the question timer was removed. New answers are not marked late. Hinted answers count as correct. Help is a pass and earns nothing. % is correct ÷ asked. Time is how long that part was on screen. Total play time is ${fmtDur(allTime)} on this device, and this visit is ${fmtDur(sessionPlayMs)}. Tap a row for the questions he got wrong.</p>
  ${table}
  ${focusHtml}
  <h3 style="margin-top:18px">Recent log</h3>
@@ -2323,7 +2317,7 @@ const FINISHERS=[
  {id:'stars',name:'Star Rain',cost:20,say:'STAR RAIN'}
 ];
 const GEAR=[
- {id:'boots',name:'Time Boots',cost:8,blurb:'Adds 4 seconds to the duel timer.'},
+ {id:'boots',name:'Time Boots',cost:8,blurb:'A keepsake. Questions no longer have a countdown, so these boots do not add time.'},
  {id:'pack',name:'Health Pack',cost:14,blurb:'Heals 35 HP once per match if a hit leaves you on 40 or less.'},
  {id:'armour',name:'Brick Armour',cost:18,blurb:'Cuts the damage you take by a quarter.'},
  {id:'shield',name:'Block Shield',cost:24,blurb:'Blocks one hit each round.'}
@@ -2430,18 +2424,18 @@ function renderDuelHome(){tidyGear();const nameEl=$('#nm'),tagEl=$('#dtag');
   <h3 style="margin-top:12px">Rival rank</h3>
   <div class="ranks">${RANKS.map(r=>{const open=duelUnlocked(r.id);return `<button class="rankbtn ${duelPick.rank===r.id?'on':''}" data-act="duelrank" data-r="${r.id}" ${open?'':'disabled'}>${rankIcon(r,32)}<span class="rt"><b>${esc(r.name)}</b><span>${open?esc(r.bot)+' · '+r.hp+' HP':'Unlocks at '+r.need+' wins'}</span></span></button>`;}).join('')}</div>
   <p style="font-size:18px;margin:12px 0 0">Win streak <b>${d?d.streak:0}</b> · Best win streak <b>${d?d.bestStreak:0}</b> · Wins <b>${d?d.wins:0}</b> · Losses <b>${d?d.losses||0:0}</b> · Badges <b>${d&&d.badges?d.badges.length:0}/${BADGES.length}</b></p>
-  <p class="muted">A right answer shoots. Your weapon sets the damage: easy, medium and hard still hit harder in that order, and a pricier weapon hits harder still. A streak of 3 adds a crit of +10. After the timer a hit does half damage and pays half R$. A wrong answer, asking for help, or the extra 30 seconds means the rival shoots and you earn nothing. Higher ranks have more health and hit harder. Help is a pass. First to 3 rounds. A match win pays +${WIN_BONUS} R$. The house does not build in a duel.</p>
+  <p class="muted">A right answer shoots. Your weapon sets the damage: easy, medium and hard still hit harder in that order, and a pricier weapon hits harder still. A streak of 3 adds a crit of +10. There is no question timer, so a hit always does full damage and pays full R$. A hint pays a quarter of the Robux. A wrong answer or asking for help means the rival shoots and you earn nothing. Higher ranks have more health and hit harder. Help is a pass. First to 3 rounds. A match win pays +${WIN_BONUS} R$. The house does not build in a duel.</p>
   <div class="row" style="margin-top:8px"><button class="btn green" data-act="duelstart">Start duel</button><button class="btn purple" data-act="duelshop">Shop</button></div>
  </div>`;
  startMsg='';}
 function duelChrome(){clearChrome();document.body.classList.add('duel-on');}
-function gearBits(){const bits=[];if(gearOn('shield'))bits.push(Q&&Q.shieldLeft?'Shield ready':'Shield used');if(gearOn('armour'))bits.push('Armour');if(gearOn('pack'))bits.push(Q&&Q.packUsed?'Pack used':'Pack ready');if(gearOn('boots'))bits.push('+4s');return bits.length?`<div class="tagbox">${bits.join(' · ')}</div>`:'';}
+function gearBits(){const bits=[];if(gearOn('shield'))bits.push(Q&&Q.shieldLeft?'Shield ready':'Shield used');if(gearOn('armour'))bits.push('Armour');if(gearOn('pack'))bits.push(Q&&Q.packUsed?'Pack used':'Pack ready');if(gearOn('boots'))bits.push('Boots');return bits.length?`<div class="tagbox">${bits.join(' · ')}</div>`:'';}
 function renderDuelBoard(o){o=o||{};const q=o.q;const rank=rankBy(Q.rank);const myRank=currentRank(player.duel.wins||0);const tag=player.duel.tag||'Redliss';const hit=Q.hit;
  const fin=o.finisher?FINISHERS.find(f=>f.id===equippedFin()):null;
  const shot=duelDamage(q.diff,false,0,weaponPower());
  const hitHTML=hit?`<div class="hitnum ${hit.crit?'crit':''} ${hit.incoming?'in':''}" id="hitnum"><b>${hit.blocked?'BLOCK':'−'+hit.dmg}</b>${hit.crit?'<small>CRIT</small>':''}${hit.healed?'<small>+'+hit.healed+'</small>':''}</div>`:'';
  const asking=!!o.asking;
- const qBody=asking?`${qFig(q)}${hintRow(false)}<div id="halfslot"></div><div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div><div id="ans">${answerArea(q)}</div>`
+ const qBody=asking?`${qFig(q)}${hintRow(false)}<div id="ans">${answerArea(q)}</div>`
   :`<div class="fb ${o.ok?'good':o.pass?'pass':'bad'}" id="fb"><div class="fbbody"><h2>${esc(o.title||'')}</h2><p style="font-size:20px;line-height:1.35;margin:0">${esc(o.note||'')}</p></div></div>${o.pass?helpHTML(q):''}`;
  app.innerHTML=`<div class="duelwrap"><div class="duelmeta"><div class="tagbox">🔥 Streak ${Q.streak}${Q.streak>=2?' · next hit crits':''}</div><div class="tagbox">${COIN}+${rfmt(roundQuestionPay())} this match</div>${gearBits()}<div class="spacer"></div><button class="btn grey" data-act="home">Menu</button></div>
  <div class="duel"><div class="arena ${hit?(hit.incoming?'hurt':'shoot'):''}"><div class="hud"><div class="hpcol"><div class="hplab"><b class="nametag" id="arenatag">${rankIcon(myRank,22)}<span>${esc(tag)}</span></b><span>${esc(myRank.name)} · ${Q.me} HP</span></div><div class="hp"><span id="mebar" style="width:${hpWidth(Q.me,Q.meMax)}%;background:#22c55e"></span></div><div class="pips">${pipHTML(Q.myRounds)}</div></div>
@@ -2467,10 +2461,10 @@ function duelAsk(){if(!Q||!Q.duel)return;if(Q.phase==='gg'||Q.phase==='round')re
 function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=='ask')return;const q=Q.qs[Q.i];if(!q)return;
  Q.locked=true;stopTimer();let ok=false;
  if(!opts.timeout&&!opts.pass){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
- const late=!!(ok&&Q.half);Q.asked++;
+ const late=false;Q.asked++;
  if(!opts.pass){const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
   if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);Q.right++;
-   let gained=late?halfPay(q.reward):q.reward;if(Q.hinted)gained=clean(gained*0.25);Q.earn[q.diff]+=gained;Q.counts[q.diff]++;gainRobux(gained);
+   let gained=q.reward;if(Q.hinted)gained=clean(gained*0.25);Q.earn[q.diff]+=gained;Q.counts[q.diff]++;gainRobux(gained);
    if(q.diff==='hard')player.duel.hardRight=(player.duel.hardRight||0)+1;}}
  else Q.streak=0;
  if(!ok)Q.streak=0;
@@ -2478,8 +2472,8 @@ function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=
  logAttempt(q,kind,val);
  const rank=rankBy(Q.rank);let dmg,incoming=false,crit=false,blocked=false,healed=0,title,note;
  if(ok){dmg=duelDamage(q.diff,late,Q.streak,weaponPower());crit=Q.streak>=3;if(crit)player.duel.crits=(player.duel.crits||0)+1;Q.foe=Math.max(0,Q.foe-dmg);Q.dmgDealt+=dmg;incoming=false;
-  title=late?'Half-damage hit!':crit?'CRIT!':'Direct hit!';
-  note=(late?'Half damage, because the timer had already run out. ':'')+(Q.hinted?'Hint used, so the Robux are a quarter. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+rfmt(Q.hinted?clean((late?halfPay(q.reward):q.reward)*0.25):(late?halfPay(q.reward):q.reward))+' R$.';
+  title=crit?'CRIT!':'Direct hit!';
+  note=(Q.hinted?'Hint used, so the Robux are a quarter. ':'')+'You hit '+rank.bot+' for '+dmg+(crit?' CRIT':'')+'. +'+rfmt(Q.hinted?clean(q.reward*0.25):q.reward)+' R$.';
   sfx.shot();sfx.correct();if(crit)setTimeout(sfx.streak,260);
  }else{incoming=true;
   if(gearOn('shield')&&Q.shieldLeft>0){Q.shieldLeft--;blocked=true;dmg=0;sfx.block();title='Shield block!';}
@@ -2502,7 +2496,7 @@ function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=
   return;}
  Q.phase='wait';
  renderDuelBoard({q,ok,pass:!!opts.pass,title,note});
- const fb=$('#fb');if(ok&&fb){coinBurst(fb,Math.max(1,Math.round(late?halfPay(q.reward):q.reward)));floatText(fb,'+'+rfmt(late?halfPay(q.reward):q.reward)+' R$');}
+ const fb=$('#fb');if(ok&&fb){coinBurst(fb,Math.max(1,Math.round(q.reward)));floatText(fb,'+'+rfmt(Q.hinted?clean(q.reward*0.25):q.reward)+' R$');}
  showRoundBar(`<button class="btn ${ok?'green':'blue'}" data-act="duelshot">${ok?'Next shot':'Next shot'}</button><button class="btn" data-act="home">Menu</button>`);}
 function duelNextRound(){if(!Q||!Q.duel||Q.phase!=='round')return;if(Q.myRounds>=3||Q.foeRounds>=3){duelGG();return;}Q.me=Q.meMax||100;Q.foe=Q.foeMax||100;Q.shieldLeft=gearOn('shield')?1:0;Q.hit=null;Q.phase='ask';duelAsk();}
 function duelGG(){if(!Q||!Q.duel||Q.phase==='gg')return;Q.phase='gg';stopTimer();clearAuto();
@@ -2681,7 +2675,7 @@ function flapSubmit(){if(!FL||!FL.q||FL.q.resolved)return;const raw=FL.input;
  const n=parseFloat(String(raw).replace(/−/g,'-'));const q=FL.q;
  const ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;
  if(!ok){flapCrash('wrong',raw);return;}
- Q.half=(performance.now()-FL.qT)/1000>8;Q.qs=[q];Q.i=0;Q.locked=false;
+ Q.half=false;Q.qs=[q];Q.i=0;Q.locked=false;
  const g=applyGrade(q,true,{val:raw,given:raw});
  FL.earn=(FL.earn||0)+g.gained;q.resolved=true;q.safe=true;FL.score++;FL.input='';
  if(FL.score>(player.flappy.best||0)){player.flappy.best=FL.score;save();}
@@ -2734,7 +2728,6 @@ function flapLoop(now){if(!FL||!FL.alive)return;
  if(FL.y>h-56){FL.y=h-56;FL.vy=-30;}
  const bird=$('#flapbird');if(bird){bird.style.top=FL.y+'px';bird.style.transform=`rotate(${Math.max(-24,Math.min(55,FL.vy*0.07))}deg)`;}
  const pipe=FL.pipes&&FL.pipes[0];
- if(pipe&&!pipe.q.resolved&&FL.qT&&(now-FL.qT)>8000&&!Q.half){Q.half=true;const slot=$('#halfslot');if(slot&&!slot.firstChild)slot.innerHTML=`<div class="halfbanner">Time's up! Half points now</div>`;}
  if(pipe){pipe.x-=pipe.speed*dt;const top=$('#pipetop'),bot=$('#pipebot'),sign=$('#pipesign');
   if(top){top.style.left=pipe.x+'px';top.style.height=pipe.gapY+'px';}
   if(bot){bot.style.left=pipe.x+'px';bot.style.top=(pipe.gapY+pipe.gapH)+'px';bot.style.height=Math.max(0,h-pipe.gapY-pipe.gapH)+'px';}
@@ -2769,12 +2762,10 @@ function showPotion(q){document.body.classList.add('play-on','potion-on');
   <div class="qtext ${q.long?'long':''}"><span class="qi">${q.text}</span></div>
   ${qFig(q)}
   ${hintRow(false)}
-  <div id="halfslot"></div>
-  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div>
-  <div class="potnote" id="potnote">Pour the potion into the right answer. A wrong pour explodes and you go back to question 1. Robux you already earned stay.</div></div>
+  <div class="potnote" id="potnote">Pour the potion into the right answer. A wrong pour explodes and you go back to question 1. Robux you already earned stay. There is no countdown.</div></div>
   <div class="potmain"><div class="pothero" id="pothero">${avatar(player.av,130)}${FLASK}</div>
   <div class="cauldrons" id="cauldrons">${labels.map((lab,i)=>`<button class="cauldron" type="button" data-act="pour" data-k="${i}"><span>${lab}</span><i class="liquid"></i><i class="bub"></i><i class="bub b2"></i></button>`).join('')}</div></div></div>`;
- Q.t0=performance.now();startClock();}
+}
 function potionPour(k){if(!Q||Q.locked||!Q.potion)return;const q=Q.qs[Q.i];const opt=Q.potOpts&&Q.potOpts[k];if(opt==null)return;
  Q.locked=true;stopTimer();const el=document.querySelector(`.cauldron[data-k="${k}"]`);const hero=$('#pothero');
  if(hero)hero.classList.add('pouring');if(el)el.classList.add('pouring');sfx.pour();
@@ -2818,11 +2809,9 @@ function showTreasure(){const q=Q.qs[Q.i];document.body.classList.add('play-on',
   <div class="qtext ${q.long?'long':''}" id="thquestion"><span class="qi">${q.text}</span></div>
   ${qFig(q)}
   ${hintRow(false)}
-  <div id="halfslot"></div>
-  <div><div class="speedlbl"><span>⏱ ${Q.limit} seconds for full points</span><span id="secs">${Q.limit}s</span></div><div class="speed" id="speed"><span id="sbar"></span></div></div>
-  <div class="potnote" id="thnote">Walk to a chest. The right answer is treasure. A wrong one is a dud.</div></div>
+  <div class="potnote" id="thnote">Walk to a chest. The right answer is treasure. A wrong one is a dud. There is no countdown.</div></div>
   <div class="thmap" id="thmap"><div class="thworld" id="thworld">${chests}<div class="thguy" id="thguy" style="left:36px;top:620px">${avatar(player.av,96)}</div></div></div></div>`;
- Q.t0=performance.now();Q.walking=false;startClock();}
+ Q.walking=false;}
 function treasureGo(k){if(!Q||Q.locked||Q.walking||!Q.treasure)return;const c=Q.chests&&Q.chests[k];if(!c||c.opened)return;
  Q.walking=true;const id=++Q.walk;const guy=$('#thguy');if(guy){guy.style.left=c.x+'px';guy.style.top=(c.y-8)+'px';}
  const btn=document.querySelector(`.chest[data-k="${k}"]`);if(btn&&btn.scrollIntoView)btn.scrollIntoView({block:'center',inline:'center'});
@@ -3048,6 +3037,7 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  if(rfmt(0.5)!=='0.5'||rfmt(1)!=='1'||rfmt(1.5)!=='1.5'||rfmt(0.25)!=='0.25'||rfmt(0.75)!=='0.75'||rfmt(19.5)!=='19.5'||rfmt(39)!=='39'||rfmt(58.5)!=='58.5'||rfmt(12.5)!=='12.5')throw new Error('rfmt');
  if(rfmt(0.125)!=='0.125'||rfmt(0.375)!=='0.375'||rfmt(0.0625)!=='0.0625')throw new Error('hint fmt');
  if(clean(REWARD.easy*0.25)!==0.125||clean(REWARD.medium*0.25)!==0.25||clean(REWARD.hard*0.25)!==0.375||clean(halfPay(REWARD.easy)*0.25)!==0.0625)throw new Error('hint pay');
+ const payQ=Q;Q={half:true,hinted:false};if(duePay({reward:1,diff:'medium'})!==1||dueBricks({diff:'medium'})!==2)throw new Error('no late pay');Q.hinted=true;if(duePay({reward:0.5,diff:'easy'})!==0.125||duePay({reward:1.5,diff:'hard'})!==0.375)throw new Error('hint of full');Q=payQ;
  const picQ=make('times','easy');if(!picQ||qPic(picQ).indexOf('<svg')<0||qPic(picQ).indexOf('>'+picQ.ans+'<')>=0)throw new Error('pic math');
  const picS=make('space','easy');if(!picS||qPic(picS).indexOf('<svg')<0)throw new Error('pic sci');
  const picH=make('romans','easy');if(!picH||qPic(picH).indexOf('<svg')<0)throw new Error('pic hist');
