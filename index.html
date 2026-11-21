@@ -756,13 +756,24 @@ const TOPICS={
  stone:'Stone Age to Iron Age',romans:'Romans',saxons:'Anglo-Saxons',vikings:'Vikings',egypt:'Ancient Egypt',greece:'Ancient Greece',maya:'The Maya',singapore:'Singapore',
  cious:'-cious',tious:'-tious',cial:'-cial',tial:'-tial',antent:'-ant and -ent',able:'-able and -ible',silent:'Silent letters',eic:'ei after c',homo:'Homophones',statutory:'Year 5/6 words'
 };
-const SCHOOL_TOPICS={unfam:1,col4:1,shift:1};
+// Add new weeks to the end. Never remove old weeks.
+const WEEKS=[
+ {id:'2026-11-16',startDate:'2026-11-16',title:'Week of 16 Nov 2026',topics:['common','factors','primes','squares','cubes','sqvol','written','tens']},
+ {id:'2026-11-23',startDate:'2026-11-23',title:'Week of 23 Nov 2026',topics:['unfam','col4','shift']}
+];
+const SCHOOL_TOPICS={};
+WEEKS[WEEKS.length-1].topics.forEach(function(t){SCHOOL_TOPICS[t]=1;});
+const PREV_TOPICS={};
+WEEKS.slice(0,-1).forEach(function(w){w.topics.forEach(function(t){if(!SCHOOL_TOPICS[t])PREV_TOPICS[t]=1;});});
 const SCHOOL_RATE=0.67;
 const FLAP_SCHOOL=['unfam','col4','shift'];
+const FLAP_PREV=['written','tens','squares','sqvol','x10'];
 const FLAP_OTHER=['addsub','times','division','rounding','negative','money'];
 const CRAFT_SCHOOL=['unfam','col4','shift'];
+const CRAFT_PREV=['written','tens','primes','squares','common'];
 const CRAFT_OTHER=['times','addsub','division','fractions'];
 function schoolOr(school,other){return Math.random()<SCHOOL_RATE?school:other;}
+function pickPracticeId(current,prev,other){const r=Math.random();if(r<SCHOOL_RATE)return pick(current);if(prev.length&&r<SCHOOL_RATE+0.22)return pick(prev);return pick(other);}
 const PV=['ones','tens','hundreds','thousands','ten thousands','hundred thousands','millions'];
 const ONES=['','one','two','three','four','five','six','seven','eight','nine','ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
 const TENS=['','','twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
@@ -850,10 +861,10 @@ G.order=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,hard?2:1
 
 G.x10=diff=>{const hard=diff==='hard',med=diff==='medium';const k=hard?pick([100,1000]):med?pick([10,100,1000]):pick([10,100]);const pl=Math.round(Math.log10(k));const mul=Math.random()<.5;
  if(mul){let tenths;if(diff==='easy')tenths=R(2,50)*10;else if(med)tenths=R(2,200)*(Math.random()<.5?10:1);else tenths=R(11,999);const ans=tenths*k/10;const show=tenths%10? (tenths/10).toFixed(1):String(tenths/10);
-  return numQ('x10',diff,show+' × '+fmt(k)+' = ?',ans,{bite:tenths%10?'x10d':'x10',hint:'The decimal point stays still. Multiplying by 10, 100 or 1,000 moves every digit to the left: one column, two columns or three.',steps:['× '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the left.','The decimal point does not move. Columns the digits leave are empty.',end(fmt(ans))],audit:{op:'convMul',tenths,factor:k}});}
+  return numQ('x10',diff,show+' × '+fmt(k)+' = ?',ans,{bite:tenths%10?'x10d':'x10',hint:'Multiplying by 10, 100 or 1,000 moves every digit to the left. ×10 is one place, ×100 is two, ×1,000 is three. The number gets bigger.',steps:['× '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the left.','Empty places after the digits are filled with zeros.',end(fmt(ans))],audit:{op:'convMul',tenths,factor:k}});}
  let whole;if(diff==='easy')whole=R(2,40)*k;else if(med)whole=R(2,80)*k*(Math.random()<.4?10:1);else whole=R(2,200)*k;
  const tenths=whole*10/k;const ans=tenths/10;
- return numQ('x10',diff,fmt(whole)+' ÷ '+fmt(k)+' = ?',ans,{bite:'div10',hint:'The decimal point stays still. Dividing by 10, 100 or 1,000 moves every digit to the right: one column, two columns or three.',steps:['÷ '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the right.','The decimal point stays after the ones column.',end(fmt(ans))],audit:{op:'convDiv',tenths}});};
+ return numQ('x10',diff,fmt(whole)+' ÷ '+fmt(k)+' = ?',ans,{bite:'div10',hint:'Dividing by 10, 100 or 1,000 moves every digit to the right. The number gets smaller. You may need a decimal point.',steps:['÷ '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the right.','The decimal point sits after the ones column.',end(fmt(ans))],audit:{op:'convDiv',tenths}});};
 
 G.times=diff=>{const hard=diff==='hard',med=diff==='medium';const a=hard?R(6,12):med?R(3,12):pick([2,3,4,5,10]);const b=hard?R(6,12):med?R(3,12):R(2,10);const p=a*b;
  if(Math.random()<.35)return numQ('times',diff,a+' × <span class="blank">?</span> = '+p,b,{bite:'times',hint:'This is a times table backwards. Count in steps of the first number until you reach the product, or ask “what times '+a+' makes '+p+'?”',steps:['You need the missing factor in '+a+' × ? = '+p+'.','Skip-count in '+a+'s: the count that lands on '+p+' is the missing number.',end(String(b))],audit:{op:'div',a:p,b:a}});
@@ -949,7 +960,7 @@ G.tens=diff=>{const hard=diff==='hard',med=diff==='medium';
  const divs=hard?[[4000,20],[3600,40],[2500,25],[1800,30],[2400,40],[5000,25]]:med?[[600,20],[800,40],[1200,30],[2000,50],[900,30]]:[[200,10],[400,10],[800,10],[300,10],[500,10]];
  const div=(hard||med)&&Math.random()<0.45;const pair=pick(div?divs:muls);const a=pair[0],b=pair[1],ans=div?a/b:a*b;
  const text=div?fmt(a)+' ÷ '+fmt(b)+' = ?':fmt(a)+' × '+fmt(b)+' = ?';
- const o={bite:'x10',long:true,hint:'The decimal point stays still. Digits move left to multiply by 10, 100 or 1,000, and right to divide. Do not just stick a zero on the end.',steps:['Work out how many columns each digit moves.','The decimal point does not move with them.',end(fmt(ans))],audit:{op:'tens',a,b,div:div?1:0,ans}};
+ const o={bite:'x10',long:true,hint:'Split off the tens and hundreds. Work out the small multiplication or division first, then put the zeros back.',steps:['Cover the zeros and work out the smaller calculation.','Put the zeros back so the answer is the right size.',end(fmt(ans))],audit:{op:'tens',a,b,div:div?1:0,ans}};
  if(forceMC)return mcNear('tens',diff,text,ans,o);return numQ('tens',diff,text,ans,o);};
 function decShow(n){const v=clean(n);let s=Math.abs(v).toFixed(3).replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,'');if(v<0)s='-'+s;return s;}
 function keepDec(n){const v=clean(n);if(!isFinite(v)||Math.abs(v)>=1e7)return false;return Math.abs(clean(numVal(decShow(v)))-v)<1e-9;}
@@ -1513,35 +1524,29 @@ function make(topic,diff){for(let i=0;i<60;i++){let q;try{q=G[topic](diff);}catc
 
 const LEVELS=[
  {key:'m1',subject:'maths',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Level 1',bonus:2,diffs:['easy','easy','medium','hard'],
-  desc:'Slice the falling answer. This week: written problems, 4-digit × 2-digit, and digits moving for × or ÷ by 10, 100 and 1,000',
-  topics:{unfam:3,col4:3,shift:2,order:1,primes:1,squares:1,remainders:1}},
+  desc:'Slice the falling answer. This week’s written methods, plus revision from the week of 16 Nov',
+  topics:{unfam:3,col4:3,shift:2,primes:1,squares:1,common:1,order:1}},
  {key:'m2',subject:'maths',mode:'quiz',tycoon:true,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',bonus:2,diffs:['easy','medium','medium'],
-  desc:'This week’s written problems, column multiplication and place-value shifts, plus times tables. The house builds here',
-  topics:{unfam:3,col4:3,shift:2,times:2,factors:1,remainders:1}},
+  desc:'This week’s written problems and column multiplication, with revision from 16 Nov. The house builds here',
+  topics:{unfam:3,col4:2,shift:3,written:1,tens:1,factors:1,times:1}},
  {key:'m3',subject:'maths',mode:'quiz',tycoon:false,bomb:true,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
-  desc:'This week’s written methods and place value, with a few other topics. Pick easy, medium or hard. A bomb is ticking',
-  topics:{unfam:3,col4:2,shift:3,order:1,roman:1,squares:1,decimals:1}},
+  desc:'This week’s maths, plus revision from the week of 16 Nov. A bomb is ticking',
+  topics:{unfam:3,col4:2,shift:3,primes:1,cubes:1,sqvol:1,order:1}},
  {key:'m4',subject:'maths',mode:'quiz',tycoon:false,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
   desc:'Hold a potion and pour it into the right cauldron. A wrong pour explodes and sends you back to question 1. Area, perimeter, volume, angles, shapes, coordinates, time, measures, tables and graphs',
   topics:{area:2,sqvol:1,volume:1,angles:1,shapes:1,coords:1,time:1,measures:1,stats:2,scaling:1}},
  {key:'m5',subject:'maths',mode:'quiz',tycoon:false,cls:'l5',name:'BOSS BATTLE',tag:'Boss level',bonus:5,diffs:['hard','hard','medium'],
-  desc:'Harder written problems, 4-digit × 2-digit and place-value shifts, plus fractions and percentages',
-  topics:{unfam:2,col4:3,shift:3,word:1,squares:1,fractions:1,percent:1}},
+  desc:'Harder written problems and place-value shifts, plus revision from 16 Nov',
+  topics:{unfam:2,col4:3,shift:3,written:1,squares:1,tens:1,fractions:1}},
  {key:'m6',subject:'maths',mode:'parkour',tycoon:false,cls:'l6',name:'Block Parkour',tag:'Parkour',bonus:2,diffs:['easy'],
-  desc:'Jump the obby, then answer five questions. Most are this week’s written methods and place value',
-  topics:{unfam:2,col4:2,shift:2,addsub:2,times:1,money:1}},
+  desc:'Jump the obby, then answer five questions. Most are this week, with some 16 Nov revision',
+  topics:{unfam:2,col4:2,shift:2,common:1,primes:1,written:1,addsub:1}},
  {key:'m7',subject:'maths',mode:'flappy',tycoon:false,cls:'l7',name:'Flappy Flight',tag:'Flappy',bonus:0,diffs:['easy'],
   desc:'Flap through the pipes. Type the answer before you reach the gap. Most questions are this week’s maths',
-  topics:{unfam:2,col4:2,shift:3,addsub:1,times:1,money:1}},
+  topics:{unfam:2,col4:2,shift:3,tens:1,written:1,addsub:1}},
  {key:'m8',subject:'maths',mode:'treasure',tycoon:false,cls:'l8',name:'Treasure Hunt',tag:'Treasure',bonus:3,diffs:['easy','medium','hard'],
-  desc:'The question is at the top. Find the chest with the right answer. Most questions are this week’s written methods',
-  topics:{unfam:2,col4:2,shift:2,order:2,primes:1,cubes:1}},
- {key:'w1',subject:'week',mode:'quiz',tycoon:false,cls:'l2',name:'This Week at School',tag:'This week',bonus:2,diffs:['easy','medium','hard'],
-  desc:'Only next week’s maths: unfamiliar written problems, 4-digit × 2-digit columns, and digits moving for × or ÷ by 10, 100 and 1,000',
-  topics:{unfam:4,col4:3,shift:3}},
- {key:'w2',subject:'week',mode:'ninja',tycoon:false,cls:'l1',name:'School Ninja',tag:'This week',bonus:2,diffs:['easy','medium','hard'],
-  desc:'Slice next week’s answers only. Written problems, column multiplication, and place-value shifts',
-  topics:{unfam:4,col4:3,shift:3}},
+  desc:'Find the chest with the right answer. Most questions are this week, with some 16 Nov revision',
+  topics:{unfam:2,col4:2,shift:2,primes:1,squares:1,common:1,order:1}},
  {key:'s1',subject:'science',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
   desc:'Slice the right science answer. Easy drops fast, hard drops slowly so you can think.',
   topics:{materials:2,space:2,forces:2,living:2,humans:2}},
@@ -1589,6 +1594,15 @@ const LEVELS=[
   desc:'Mixed spelling with a bomb ticking. Multiple choice only, so you can answer fast.',
   topics:{cious:1,tious:1,cial:1,tial:1,antent:1,able:1,silent:1,eic:1,homo:1,statutory:1}}
 ];
+const MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+function weekStamp(iso){const p=String(iso).split('-');return (+p[2])+' '+MONTHS[(+p[1])-1]+' '+p[0];}
+function weekHeading(w){const cur=WEEKS[WEEKS.length-1];if(w.id===cur.id)return 'This week · '+weekStamp(w.startDate);return 'Week of '+weekStamp(w.startDate);}
+function weekWeights(ids){const t={};ids.forEach(function(id){t[id]=1;});return t;}
+function makeWeekLevel(week,mode){const cur=WEEKS[WEEKS.length-1];const all=week==='all';const ids=all?[].concat.apply([],WEEKS.map(function(w){return w.topics;})):week.topics.slice();const seen={};const list=ids.filter(function(id){if(seen[id])return false;seen[id]=1;return true;});
+ const id=all?'all':week.id;const ninja=mode==='ninja';
+ return {key:'wk-'+id+'-'+mode,subject:'week',mode:ninja?'ninja':'quiz',tycoon:false,cls:ninja?'l1':'l2',name:(ninja?'School Ninja':'This Week at School')+' · '+(all?'all weeks':weekStamp(week.startDate)),tag:all?'All weeks':weekHeading(week),bonus:2,diffs:['easy','medium','hard'],weekId:id,desc:all?'Questions from every saved school week.':(week.topics.map(function(t){return TOPICS[t]||t;}).join(', ')),topics:weekWeights(list)};}
+WEEKS.forEach(function(w){LEVELS.push(makeWeekLevel(w,'quiz'));LEVELS.push(makeWeekLevel(w,'ninja'));});
+LEVELS.push(makeWeekLevel('all','quiz'));LEVELS.push(makeWeekLevel('all','ninja'));
 function qid(q){return q.text+'||'+q.ans+'||'+q.type;}
 function buildRound(L){const bag=[];for(const t in L.topics)for(let i=0;i<L.topics[t];i++)bag.push(t);
  const qs=[],seen=new Set();let g=0;const prev=forceMC;if(needsMC(L))forceMC=true;const cap=L.subject==='maths'&&!needsMC(L);
@@ -1712,9 +1726,12 @@ function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech
   science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>0.5 R$</b>, <b>1 R$</b> or <b>1.5 R$</b>, with no countdown. A hint pays a quarter. Help is a pass.',
   history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 0.5, 1 or 1.5 R$.',
   spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.',
-  week:'Next week at school: written multiplication and division in unfamiliar problems, multiplying a 4-digit number by a 2-digit number in columns, and × or ÷ by 10, 100 and 1,000 by moving digits. The decimal point stays still. Pick Easy, Medium or Hard. 0.5, 1 or 1.5 R$. A hint pays a quarter. There is no question timer.'
+  week:'Every school week stays here. This week is the newest set. Older weeks stay so he can revise them. Pick a week, then Easy, Medium or Hard. 0.5, 1 or 1.5 R$. A hint pays a quarter. There is no question timer.'
  };
  const blurb=blurbs[subjectTab]||blurbs.maths;
+ const weekCards=subjectTab==='week'?(function(){const cur=WEEKS[WEEKS.length-1];const dated=[].concat(WEEKS).reverse().map(function(w){const on=w.id===cur.id;const names=w.topics.map(function(t){return TOPICS[t]||t;}).join(', ');
+  return `<article class="card" id="week-${w.id}"><span class="tag">${on?'This week':('Week of '+weekStamp(w.startDate))}</span><h3 style="margin:6px 0">${esc(w.title)}</h3><p class="muted">${esc(names)}</p><div class="row"><button class="btn green" type="button" data-act="weekgo" data-week="${w.id}" data-mode="quiz">This Week at School</button><button class="btn" type="button" data-act="weekgo" data-week="${w.id}" data-mode="ninja">School Ninja</button></div></article>`;}).join('');
+  return `<div id="weekcards">${dated}<article class="card" id="week-all"><span class="tag">Revision</span><h3 style="margin:6px 0">All weeks mix</h3><p class="muted">Questions from every saved school week, mixed together.</p><div class="row"><button class="btn green" type="button" data-act="weekgo" data-week="all" data-mode="quiz">Mix quiz</button><button class="btn" type="button" data-act="weekgo" data-week="all" data-mode="ninja">Mix ninja</button></div></article></div>`;})():'';
  app.innerHTML=`${redeemHTML()}<div class="start">
  <div class="hero"><h1>Block<br>Maths<br>Quest</h1><div class="avatarBox">${avatar(player?player.av:null,180)}</div>
   <div style="color:#fff;font-size:18px;text-shadow:0 2px 0 #14142b;line-height:1.4">Get questions right. Earn 0.5, 1 or 1.5 ${COIN}. Build your block house!</div></div>
@@ -1723,12 +1740,10 @@ function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech
   ${names.length?`<div class="chips">${names.map(p=>`<button class="chip ${player&&p===player?'on':''}" data-act="pickname" data-n="${esc(p.name)}">${esc(p.name)} · ${rfmt(p.total)} R$</button>`).join('')}</div>`:''}
   <div class="err" id="err">${startMsg}</div>
   ${tabsHTML()}
-  <h2 style="margin-top:4px">Pick a level</h2>
-  <p class="muted" style="margin-top:-4px">${blurb}</p>
-  <div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>
+  ${subjectTab==='week'?`<h2 style="margin-top:4px">School weeks</h2><p class="muted" style="margin-top:-4px">${blurb}</p>${weekCards}`:`<h2 style="margin-top:4px">Pick a level</h2><p class="muted" style="margin-top:-4px">${blurb}</p><div class="levels">${list.map(L=>`<button class="lvl ${L.cls}" data-act="level" data-k="${L.key}"><span class="tag">${L.tag}</span><span class="t">${L.name}</span><span class="d">${L.desc}</span></button>`).join('')}</div>`}
  </div></div>`;
  startMsg='';}
-function tabsHTML(){const tabs=[['maths','Maths'],['week','This week'],['science','Science'],['history','History'],['spelling','Spelling'],['craft','Craft'],['duel','Duel']];
+function tabsHTML(){const tabs=[['maths','Maths'],['week','Weeks'],['science','Science'],['history','History'],['spelling','Spelling'],['craft','Craft'],['duel','Duel']];
  return `<div class="tabs">${tabs.map(([id,label])=>`<button class="tab ${subjectTab===id?'on':''}" data-act="tab" data-t="${id}">${label}</button>`).join('')}</div>`;}
 function bombLeft(){if(!Q||!Q.bomb)return 0;return Q.bomb.limit-(performance.now()-Q.bomb.t0)/1000;}
 function paintBomb(){if(!Q||!Q.bomb)return;const left=Math.max(0,bombLeft());const sec=Math.ceil(left-1e-6);const bar=$('#bombbar'),secs=$('#bombsecs'),fill=$('#fusefill'),spark=$('#spark'),lab=$('#bomblabel');
@@ -2238,10 +2253,15 @@ function showParent(){if(!needPlayer())return;leaveRound();header();const p=play
  const head=`<tr><th>Section</th><th class="r">Asked</th><th class="r">Correct</th><th class="r">Incorrect</th><th class="r">Late</th><th class="r">Hinted</th><th class="r">Help</th><th class="r">%</th><th class="r">Time</th></tr>`;
  const modeRows=Object.keys(p.stats.modes||{}).map(id=>{const s=p.stats.modes[id];return {id,name:s.name||id,subject:s.subject||'',asked:s.asked||0,c:s.c||0,inc:s.w||0,late:s.late||0,h:s.h||0,p:s.p||0,ms:s.ms||0};}).filter(s=>s.asked||s.ms).sort((a,b)=>b.asked-a.asked||a.name.localeCompare(b.name));
  const topicIds={};Object.keys(p.review||{}).forEach(id=>{topicIds[id]=1;});Object.keys(p.stats.topics||{}).forEach(id=>{topicIds[id]=1;});
- const topicRows=Object.keys(topicIds).map(id=>{const r=p.review[id]||{};const ms=(p.stats.topics[id]&&p.stats.topics[id].ms)||0;const asked=(r.c||0)+(r.w||0)+(r.t||0)+(r.p||0);return {id,name:TOPICS[id]||id,subject:r.subject||(p.stats.topics[id]&&p.stats.topics[id].subject)||'Maths',asked,c:r.c||0,inc:(r.w||0)+(r.t||0),late:r.late||0,h:r.h||0,p:r.p||0,ms};}).filter(s=>s.asked||s.ms).sort((a,b)=>a.name.localeCompare(b.name));
+ const topicRows=Object.keys(topicIds).map(id=>{const r=p.review[id]||{};const ms=(p.stats.topics[id]&&p.stats.topics[id].ms)||0;const asked=(r.c||0)+(r.w||0)+(r.t||0)+(r.p||0);return {id,name:TOPICS[id]||id,subject:r.subject||(p.stats.topics[id]&&p.stats.topics[id].subject)||'Maths',asked,c:r.c||0,inc:(r.w||0)+(r.t||0),late:r.late||0,h:r.h||0,p:r.p||0,ms};}).filter(s=>s.asked||s.ms);
+ const rowById={};topicRows.forEach(function(s){rowById[s.id]=s;});
+ const usedTopic={};const weekGroups=[];
+ for(let i=WEEKS.length-1;i>=0;i--){const w=WEEKS[i];const rows=[];w.topics.forEach(function(id){if(usedTopic[id]||!rowById[id])return;usedTopic[id]=1;rows.push(rowById[id]);});weekGroups.push({label:weekHeading(w),rows});}
+ const otherRows=topicRows.filter(function(s){return !usedTopic[s.id];}).sort(function(a,b){return a.name.localeCompare(b.name);});
+ if(otherRows.length)weekGroups.push({label:'Other topics',rows:otherRows});
+ const topicBody=weekGroups.map(function(g){if(!g.rows.length)return '';return `<tr><td colspan="9"><b>${esc(g.label)}</b></td></tr>`+g.rows.map(s=>`<tr class="${parentFocus&&parentFocus.kind==='topic'&&parentFocus.id===s.id?'staton':''}"><td><button class="statpick" type="button" data-act="statrow" data-kind="topic" data-id="${esc(s.id)}">${esc(s.subject)} · ${esc(s.name)}</button></td>${resultCells(s.asked,s.c,s.inc,s.late,s.h,s.p,s.ms)}</tr>`).join('');}).join('');
  const sum=rows=>{const o={asked:0,c:0,inc:0,late:0,h:0,p:0,ms:0};rows.forEach(s=>{o.asked+=s.asked;o.c+=s.c;o.inc+=s.inc;o.late+=s.late;o.h+=s.h;o.p+=s.p;o.ms+=s.ms;});return o;};
  const modeBody=modeRows.map(s=>`<tr class="${parentFocus&&parentFocus.kind==='mode'&&parentFocus.id===s.id?'staton':''}"><td><button class="statpick" type="button" data-act="statrow" data-kind="mode" data-id="${esc(s.id)}">${esc(s.name)}</button></td>${resultCells(s.asked,s.c,s.inc,s.late,s.h,s.p,s.ms)}</tr>`).join('');
- const topicBody=topicRows.map(s=>`<tr class="${parentFocus&&parentFocus.kind==='topic'&&parentFocus.id===s.id?'staton':''}"><td><button class="statpick" type="button" data-act="statrow" data-kind="topic" data-id="${esc(s.id)}">${esc(s.subject)} · ${esc(s.name)}</button></td>${resultCells(s.asked,s.c,s.inc,s.late,s.h,s.p,s.ms)}</tr>`).join('');
  const all=sum(topicRows);const modes=sum(modeRows);const allTime=p.stats.totalMs||0;
  const table=`<div id="resultstable" style="overflow:auto;-webkit-overflow-scrolling:touch"><h3>By mode</h3><table class="tbl" style="font-size:16px">${head}${modeBody||'<tr><td colspan="9">No mode time yet. It starts when he plays.</td></tr>'}<tr class="tot"><td>All modes</td>${resultCells(modes.asked,modes.c,modes.inc,modes.late,modes.h,modes.p,allTime)}</tr></table>
  <h3 style="margin-top:16px">By topic</h3><table class="tbl" style="font-size:16px">${head}${topicBody||'<tr><td colspan="9">No questions logged yet.</td></tr>'}<tr class="tot"><td>All topics</td>${resultCells(all.asked,all.c,all.inc,all.late,all.h,all.p,all.ms)}</tr></table></div>`;
@@ -2277,6 +2297,7 @@ document.addEventListener('click',e=>{const el=e.target.closest('[data-act]');if
   case 'pickname':{const k=el.dataset.n.trim().toLowerCase();if(store.players[k]){player=store.players[k];migrate(player);store.last=k;save();}sfx.click();showStart();break;}
   case 'tab':{const typed=$('#nm')?$('#nm').value:'';const t=el.dataset.t;subjectTab=['maths','week','science','history','spelling','craft','duel'].indexOf(t)>=0?t:'maths';sfx.click();showStart();const nm=$('#nm');if(nm)nm.value=typed;break;}
   case 'level':startRound(el.dataset.k);break;
+  case 'weekgo':{const inp=$('#nm');const nm=inp?inp.value.trim():'';if(!nm){startMsg='Type your name first!';sfx.wrong();showStart();const box=$('#nm');if(box)box.focus();break;}if(inp)inp.blur();setPlayer(nm);subjectTab='week';const L=LEVELS.find(l=>l.key==='wk-'+el.dataset.week+'-'+el.dataset.mode);if(!L)break;sfx.click();showDiffPick(L);break;}
   case 'mmgo':beginMastermind(el.dataset.d,el.dataset.k);break;
   case 'diffgo':{const L=LEVELS.find(l=>l.key===el.dataset.k);if(!L)break;rememberDiff(L.key,el.dataset.d);launchLevel(L);break;}
   case 'cashin':beginCashIn();break;
@@ -2421,7 +2442,7 @@ function loadDuelPick(){if(!player||!player.duel||!player.duel.pick)return;const
  if(duelPick.topic!=='mixed'&&duelTopicIds().indexOf(duelPick.topic)<0)duelPick.topic='mixed';}
 function duelPool(){if(Q.topic&&Q.topic!=='mixed')return [Q.topic];return subjectIds(Q.subject||'mixed');}
 function duelMake(){let ids=duelPool();
- if((!Q.topic||Q.topic==='mixed')&&Q.subject==='maths'){const school=ids.filter(id=>SCHOOL_TOPICS[id]);const other=ids.filter(id=>!SCHOOL_TOPICS[id]);if(school.length&&other.length)ids=schoolOr(school,other);}
+ if((!Q.topic||Q.topic==='mixed')&&Q.subject==='maths'){const school=ids.filter(id=>SCHOOL_TOPICS[id]);const prev=ids.filter(id=>PREV_TOPICS[id]);const other=ids.filter(id=>!SCHOOL_TOPICS[id]&&!PREV_TOPICS[id]);if(school.length){const r=Math.random();ids=r<SCHOOL_RATE?school:(prev.length&&r<SCHOOL_RATE+0.22?prev:(other.length?other:ids));}}
  for(let i=0;i<80;i++){const q=make(pick(ids),Q.diff);if(q&&(q.type==='mc'||q.type==='num'))return q;}return null;}
 function equippedSkin(){const d=player&&player.duel;if(!d||!d.owned||d.owned.indexOf(d.skin)<0)return 'block';return d.skin||'block';}
 function equippedFin(){const d=player&&player.duel;if(!d||!d.finishers||d.finishers.indexOf(d.finisher)<0)return 'pop';return d.finisher||'pop';}
@@ -2730,8 +2751,7 @@ function parkourStageClear(){if(!Q||Q.finishing)return;Q.finishing=true;stopTime
   <p class="muted">Saved. Next is stage ${next}. Bank ${rfmt(player.total)} R$.</p>
   <div class="stagebtns" style="margin-top:12px"><button class="btn green" type="button" data-act="pkcont">Continue</button><button class="btn" type="button" data-act="pkback">Back to modes</button><button class="btn blue" type="button" data-act="pksave">Save progress</button></div></div>`;
  sfx.fanfare();checkAchievements();Q=null;}
-function numericQuestion(diff){const topics=schoolOr(FLAP_SCHOOL,FLAP_OTHER);
- for(let i=0;i<40;i++){const q=make(pick(topics),diff);if(q&&q.type==='num')return q;}return make('addsub',diff);}
+function numericQuestion(diff){for(let i=0;i<40;i++){const q=make(pickPracticeId(FLAP_SCHOOL,FLAP_PREV,FLAP_OTHER),diff);if(q&&q.type==='num')return q;}return make('addsub',diff);}
 function flap(){if(!FL||!FL.alive||FL.paused)return;FL.vy=-280;FL.flew=true;}
 function flapKeyIn(k){if(!FL||!FL.alive||FL.paused||!FL.q||FL.q.resolved)return;
  if(k==='ok'){flapSubmit();return;}
@@ -3068,8 +3088,8 @@ function craftPaint(ctx,id,sx,sy,x,y){const u=CT/16;const pix=(i,j,col)=>{ctx.fi
  else if(id===12){for(let j=0;j<16;j++)if(speck(2,j)<0.7)pix(2,j,'#166534');}
  if(id!==11&&id!==12){ctx.strokeStyle='rgba(0,0,0,.28)';ctx.strokeRect(sx+0.5,sy+0.5,CT-1,CT-1);}}
 function craftQuiz(){if(!CR)return;CR.phase='quiz';CR.invOpen=false;stopCraftLoop();saveCraft();
- const diff=CR.diff||'easy';const topics=schoolOr(CRAFT_SCHOOL,CRAFT_OTHER);
- const qs=[],seen=new Set();let g=0;while(qs.length<3&&g++<80){const q=make(pick(topics),diff);if(!q||seen.has(q.text))continue;seen.add(q.text);qs.push(q);}
+ const diff=CR.diff||'easy';
+ const qs=[],seen=new Set();let g=0;while(qs.length<3&&g++<80){const q=make(pickPracticeId(CRAFT_SCHOOL,CRAFT_PREV,CRAFT_OTHER),diff);if(!q||seen.has(q.text))continue;seen.add(q.text);qs.push(q);}
  if(qs.length<3){CR.phase='play';CR.note='Could not build the quiz.';craftMount();return;}
  Q={L:{key:'craft',name:'Block Craft',tag:'Craft',subject:'craft',mode:'quiz',tycoon:false,bonus:0},qs,i:0,res:[],streak:0,best:0,earn:{easy:0,medium:0,hard:0},counts:{easy:0,medium:0,hard:0},input:'',locked:false,auto:null,half:false,hinted:false,elapsed:0,paused:false,houseAtStart:player.house.pts,bomb:null,finishing:false,craft:true};
  header();sfx.coin();showQ();}
@@ -3177,8 +3197,11 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  for(let s=1;s<=6;s++){const c=parkourCourse(s);if(c.plats.length<4||c.gap>150||c.flagX<=c.plats[0].x)throw new Error('course '+s);}
  if(ACHS.some(a=>/flappy bird/i.test(a.name)))throw new Error('name');
  function bagShare(topics){let s=0,t=0;for(const k in topics){t+=topics[k];if(SCHOOL_TOPICS[k])s+=topics[k];}return t?s/t:0;}
- ['m1','m2','m3','m5','m6','m7','m8'].forEach(k=>{const L=LEVELS.find(l=>l.key===k);const sh=bagShare(L.topics);if(sh<0.6-1e-9||sh>0.72)throw new Error('share '+k+' '+sh);});
- ['w1','w2'].forEach(k=>{const L=LEVELS.find(l=>l.key===k);if(!L||L.subject!=='week'||bagShare(L.topics)!==1)throw new Error('week '+k);});
+ ['m1','m2','m3','m5','m6','m7','m8'].forEach(k=>{const L=LEVELS.find(l=>l.key===k);const sh=bagShare(L.topics);if(sh<0.6-1e-9||sh>0.72)throw new Error('share '+k+' '+sh);let prevN=0,otherN=0,tot=0;for(const id in L.topics){tot+=L.topics[id];if(PREV_TOPICS[id])prevN+=L.topics[id];else if(!SCHOOL_TOPICS[id])otherN+=L.topics[id];}if(!(prevN>otherN))throw new Error('revise '+k+' '+prevN+' '+otherN);});
+ const curWeek=WEEKS[WEEKS.length-1];
+ LEVELS.filter(l=>l.weekId===curWeek.id).forEach(L=>{if(bagShare(L.topics)!==1)throw new Error('current week '+L.key);});
+ LEVELS.filter(l=>l.weekId&&l.weekId!=='all'&&l.weekId!==curWeek.id).forEach(L=>{if(bagShare(L.topics)!==0)throw new Error('old week has current '+L.key);for(const id in L.topics)if(!PREV_TOPICS[id])throw new Error('old week topic '+id);});
+ const mix=LEVELS.find(l=>l.key==='wk-all-quiz');if(!mix)throw new Error('mix');let mixCur=0,mixPrev=0;for(const id in mix.topics){if(SCHOOL_TOPICS[id])mixCur++;if(PREV_TOPICS[id])mixPrev++;}if(!mixCur||!mixPrev)throw new Error('mix topics');
  if(bagShare(LEVELS.find(l=>l.key==='m4').topics)>0.2)throw new Error('lab share');
  function shownSchool(q){return String(q.type==='num'?fmt(q.ans):q.ans).replace(/,/g,'').replace(/−/g,'-');}
  function schoolOk(q){const a=q.audit||{};const shown=shownSchool(q);const num=q.type==='num'?+q.ans:parseFloat(shown);
@@ -3212,7 +3235,7 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
  ['easy','medium','hard'].forEach(d=>{['unfam','col4','shift'].forEach(t=>{for(let i=0;i<16;i++){forceMC=i%2===0;const q=make(t,d);if(!q)throw new Error('school make '+t+' '+d);const why=schoolOk(q);if(why)throw new Error(why+' '+t+' '+d+' '+plain(q.text).slice(0,80)+' = '+q.ans);if(/add a zero|put the zeros|filled with zeros/i.test(q.hint||''))throw new Error('zero hint '+t);const pic=qPic(q);if(pic.indexOf('<svg')<0)throw new Error('school pic '+t);const shown=shownSchool(q);if(shown&&pic.indexOf('>'+shown+'<')>=0)throw new Error('pic leak '+t+' '+shown);if(t==='col4'&&q.audit&&q.audit.op==='col'){if(d==='easy'&&!(q.audit.b<10||q.audit.a<1000))throw new Error('easy col');if(d!=='easy'&&!(q.audit.a>=1000&&q.audit.b>=10))throw new Error('hard col');}}});});
  forceMC=prevForce;
  let fs=0,fn=0;for(let i=0;i<160;i++){const q=numericQuestion('medium');if(!q||q.type!=='num')throw new Error('flap q');fn++;if(SCHOOL_TOPICS[q.topic])fs++;}if(fs/fn<0.52||fs/fn>0.84)throw new Error('flap share '+fs/fn);
- let craftShare=0;for(let i=0;i<120;i++){const id=pick(schoolOr(CRAFT_SCHOOL,CRAFT_OTHER));if(SCHOOL_TOPICS[id])craftShare++;}if(craftShare/120<0.52||craftShare/120>0.84)throw new Error('craft share '+craftShare/120);
+ let craftShare=0,craftPrev=0;for(let i=0;i<160;i++){const id=pickPracticeId(CRAFT_SCHOOL,CRAFT_PREV,CRAFT_OTHER);if(SCHOOL_TOPICS[id])craftShare++;if(PREV_TOPICS[id])craftPrev++;}if(craftShare/160<0.52||craftShare/160>0.84)throw new Error('craft share '+craftShare/160);if(craftPrev<8)throw new Error('craft prev '+craftPrev);
  const oldQ=Q;Q={subject:'maths',topic:'mixed',diff:'medium'};let ds=0,dn=0;for(let i=0;i<80;i++){const q=duelMake();if(q){dn++;if(SCHOOL_TOPICS[q.topic])ds++;}}Q=oldQ;if(dn<40||ds/dn<0.5||ds/dn>0.85)throw new Error('duel share '+(dn?ds/dn:0));
  ['m1','m3','m8'].forEach(key=>{const L=LEVELS.find(l=>l.key===key);let s=0,n=0;['easy','medium','hard'].forEach(d=>{for(let r=0;r<3;r++){const qs=buildRound(Object.assign({},L,{diffs:[d]}));if(!qs||qs.length<10)throw new Error('short bias '+key+' '+d);qs.forEach(q=>{n++;if(SCHOOL_TOPICS[q.topic])s++;});}});const sh=s/n;if(sh<0.4||sh>0.85)throw new Error('realized '+key+' '+sh);});
  const clockPlayer=player;player=newPlayer('Clock');migrate(player);Q={L:{key:'w1',name:'This Week at School',subject:'week'},qs:[{topic:'primes',subject:'Maths'}],i:0};addPlayMs(1000);if(player.stats.totalMs!==1000||player.stats.modes.w1.ms!==1000||player.stats.topics.primes.ms!==1000)throw new Error('clock');Q=null;player=clockPlayer;}
