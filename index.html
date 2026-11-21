@@ -530,6 +530,7 @@ const R=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
 const pick=a=>a[R(0,a.length-1)];
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=R(0,i);[a[i],a[j]]=[a[j],a[i]];}return a;};
 const clean=x=>+(+x).toFixed(6);
+function numVal(s){const t=String(s==null?'':s).replace(/−/g,'-').replace(/,/g,'').replace(/\s/g,'').trim();if(t===''||t==='-'||t==='.'||t==='-.')return NaN;return parseFloat(t);}
 const gcd=(a,b)=>b?gcd(b,a%b):Math.abs(a);
 const fmt=n=>{const s=Math.abs(n).toLocaleString('en-GB',{maximumFractionDigits:3});return (n<0?'−':'')+s;};
 const rfmt=n=>{const v=+n||0;const s=Math.abs(v).toLocaleString('en-GB',{maximumFractionDigits:4});return (v<0?'−':'')+s;};
@@ -747,7 +748,7 @@ function bite(key){return{link:B[key],linkName:BN[key]};}
 const TOPICS={
  addsub:'Adding & subtracting',placevalue:'Place value',rounding:'Rounding',negative:'Negative numbers',roman:'Roman numerals',
  order:'Ordering numbers',x10:'× and ÷ by 10, 100, 1000',times:'Times tables',division:'Division facts',remainders:'Remainders',
- factors:'Factors and multiples',common:'Common factors',primes:'Prime numbers',squares:'Square numbers',cubes:'Cube numbers',sqvol:'Area and volume',written:'Written × and ÷',tens:'× and ÷ by 10, 100 and 1,000',multiply:'Long multiplication',shortdiv:'Short division',fractions:'Fractions',
+ factors:'Factors and multiples',common:'Common factors',primes:'Prime numbers',squares:'Square numbers',cubes:'Cube numbers',sqvol:'Area and volume',written:'Written × and ÷',tens:'× and ÷ by 10, 100 and 1,000',unfam:'Written problems',col4:'4-digit × 2-digit',shift:'Place value × ÷ 10, 100, 1,000',multiply:'Long multiplication',shortdiv:'Short division',fractions:'Fractions',
  decimals:'Decimals',percent:'Percentages',area:'Area & perimeter',volume:'Volume',measures:'Converting units',time:'Time',
  angles:'Angles',shapes:'2D & 3D shapes',coords:'Coordinates',stats:'Tables & graphs',money:'Money problems',word:'Word problems',
  scaling:'Scaling & rates',
@@ -755,11 +756,11 @@ const TOPICS={
  stone:'Stone Age to Iron Age',romans:'Romans',saxons:'Anglo-Saxons',vikings:'Vikings',egypt:'Ancient Egypt',greece:'Ancient Greece',maya:'The Maya',singapore:'Singapore',
  cious:'-cious',tious:'-tious',cial:'-cial',tial:'-tial',antent:'-ant and -ent',able:'-able and -ible',silent:'Silent letters',eic:'ei after c',homo:'Homophones',statutory:'Year 5/6 words'
 };
-const SCHOOL_TOPICS={common:1,factors:1,primes:1,squares:1,cubes:1,sqvol:1,written:1,tens:1,multiply:1,shortdiv:1,x10:1};
+const SCHOOL_TOPICS={unfam:1,col4:1,shift:1};
 const SCHOOL_RATE=0.67;
-const FLAP_SCHOOL=['squares','cubes','sqvol','written','tens','x10','multiply','shortdiv'];
+const FLAP_SCHOOL=['unfam','col4','shift'];
 const FLAP_OTHER=['addsub','times','division','rounding','negative','money'];
-const CRAFT_SCHOOL=['common','primes','squares','cubes','sqvol','written','tens','factors'];
+const CRAFT_SCHOOL=['unfam','col4','shift'];
 const CRAFT_OTHER=['times','addsub','division','fractions'];
 function schoolOr(school,other){return Math.random()<SCHOOL_RATE?school:other;}
 const PV=['ones','tens','hundreds','thousands','ten thousands','hundred thousands','millions'];
@@ -849,10 +850,10 @@ G.order=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,hard?2:1
 
 G.x10=diff=>{const hard=diff==='hard',med=diff==='medium';const k=hard?pick([100,1000]):med?pick([10,100,1000]):pick([10,100]);const pl=Math.round(Math.log10(k));const mul=Math.random()<.5;
  if(mul){let tenths;if(diff==='easy')tenths=R(2,50)*10;else if(med)tenths=R(2,200)*(Math.random()<.5?10:1);else tenths=R(11,999);const ans=tenths*k/10;const show=tenths%10? (tenths/10).toFixed(1):String(tenths/10);
-  return numQ('x10',diff,show+' × '+fmt(k)+' = ?',ans,{bite:tenths%10?'x10d':'x10',hint:'Multiplying by 10, 100 or 1,000 moves every digit to the left. ×10 is one place, ×100 is two, ×1,000 is three. The number gets bigger.',steps:['× '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the left.','Empty places after the digits are filled with zeros.',end(fmt(ans))],audit:{op:'convMul',tenths,factor:k}});}
+  return numQ('x10',diff,show+' × '+fmt(k)+' = ?',ans,{bite:tenths%10?'x10d':'x10',hint:'The decimal point stays still. Multiplying by 10, 100 or 1,000 moves every digit to the left: one column, two columns or three.',steps:['× '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the left.','The decimal point does not move. Columns the digits leave are empty.',end(fmt(ans))],audit:{op:'convMul',tenths,factor:k}});}
  let whole;if(diff==='easy')whole=R(2,40)*k;else if(med)whole=R(2,80)*k*(Math.random()<.4?10:1);else whole=R(2,200)*k;
  const tenths=whole*10/k;const ans=tenths/10;
- return numQ('x10',diff,fmt(whole)+' ÷ '+fmt(k)+' = ?',ans,{bite:'div10',hint:'Dividing by 10, 100 or 1,000 moves every digit to the right. The number gets smaller. You may need a decimal point.',steps:['÷ '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the right.','The decimal point sits after the ones column.',end(fmt(ans))],audit:{op:'convDiv',tenths}});};
+ return numQ('x10',diff,fmt(whole)+' ÷ '+fmt(k)+' = ?',ans,{bite:'div10',hint:'The decimal point stays still. Dividing by 10, 100 or 1,000 moves every digit to the right: one column, two columns or three.',steps:['÷ '+fmt(k)+' moves every digit <b>'+pl+'</b> place'+(pl>1?'s':'')+' to the right.','The decimal point stays after the ones column.',end(fmt(ans))],audit:{op:'convDiv',tenths}});};
 
 G.times=diff=>{const hard=diff==='hard',med=diff==='medium';const a=hard?R(6,12):med?R(3,12):pick([2,3,4,5,10]);const b=hard?R(6,12):med?R(3,12):R(2,10);const p=a*b;
  if(Math.random()<.35)return numQ('times',diff,a+' × <span class="blank">?</span> = '+p,b,{bite:'times',hint:'This is a times table backwards. Count in steps of the first number until you reach the product, or ask “what times '+a+' makes '+p+'?”',steps:['You need the missing factor in '+a+' × ? = '+p+'.','Skip-count in '+a+'s: the count that lands on '+p+' is the missing number.',end(String(b))],audit:{op:'div',a:p,b:a}});
@@ -948,8 +949,65 @@ G.tens=diff=>{const hard=diff==='hard',med=diff==='medium';
  const divs=hard?[[4000,20],[3600,40],[2500,25],[1800,30],[2400,40],[5000,25]]:med?[[600,20],[800,40],[1200,30],[2000,50],[900,30]]:[[200,10],[400,10],[800,10],[300,10],[500,10]];
  const div=(hard||med)&&Math.random()<0.45;const pair=pick(div?divs:muls);const a=pair[0],b=pair[1],ans=div?a/b:a*b;
  const text=div?fmt(a)+' ÷ '+fmt(b)+' = ?':fmt(a)+' × '+fmt(b)+' = ?';
- const o={bite:'x10',long:true,hint:'Split off the tens and hundreds. Work out the small multiplication or division first, then put the zeros back.',steps:['Cover the zeros and work out the smaller calculation.','Put the zeros back so the answer is the right size.',end(fmt(ans))],audit:{op:'tens',a,b,div:div?1:0,ans}};
+ const o={bite:'x10',long:true,hint:'The decimal point stays still. Digits move left to multiply by 10, 100 or 1,000, and right to divide. Do not just stick a zero on the end.',steps:['Work out how many columns each digit moves.','The decimal point does not move with them.',end(fmt(ans))],audit:{op:'tens',a,b,div:div?1:0,ans}};
  if(forceMC)return mcNear('tens',diff,text,ans,o);return numQ('tens',diff,text,ans,o);};
+function decShow(n){const v=clean(n);let s=Math.abs(v).toFixed(3).replace(/(\.\d*?)0+$/,'$1').replace(/\.$/,'');if(v<0)s='-'+s;return s;}
+function keepDec(n){const v=clean(n);if(!isFinite(v)||Math.abs(v)>=1e7)return false;return Math.abs(clean(numVal(decShow(v)))-v)<1e-9;}
+function colWork(a,b){const p=a*b;
+ if(b<10)return {p,steps:['Write '+fmt(a)+' in columns and multiply by '+b+', starting at the ones.','There is only one row because the multiplier is a single digit.',end(fmt(p))]};
+ const ones=b%10,tens=Math.floor(b/10),p1=a*ones,p2=a*tens*10;
+ return {p,steps:['Write '+fmt(a)+' and '+b+' in columns, ones under ones.','Multiply by the ones digit: '+fmt(a)+' × '+ones+' = '+fmt(p1)+'.','Multiply by the tens: '+fmt(a)+' × '+(tens*10)+' = '+fmt(p2)+'. That row sits one column to the left.','Add the partial products: '+fmt(p1)+' + '+fmt(p2)+' = '+fmt(p)+'.',end(fmt(p))]};}
+function asCol(topic,diff,a,b,text){if(b>=10&&b%10===0)return null;const w=colWork(a,b);if(w.p!==a*b)return null;
+ const o={bite:'longm',long:true,hint:'Set the numbers in columns. Multiply by the ones, then by the tens, and add those two partial products. The tens row sits one column to the left.',steps:w.steps,audit:{op:'col',a,b}};
+ if(forceMC)return mcNear(topic,diff,text,w.p,o);return numQ(topic,diff,text,w.p,o);}
+G.col4=diff=>{const hard=diff==='hard',med=diff==='medium';
+ if(!hard&&!med){if(Math.random()<0.5){const a=R(100,999),b=R(12,25);return asCol('col4',diff,a,b,fmt(a)+' × '+b+' = ?');}
+  const a=R(1000,4999),b=R(2,9);return asCol('col4',diff,a,b,fmt(a)+' × '+b+' = ?');}
+ const a=R(1000,hard?8765:4999),b=R(12,hard?89:36);
+ if(Math.random()<0.5){const thing=pick([['pencils','classes'],['exercise books','pupils'],['stickers','packs'],['straws','tables']]);
+  return asCol('col4',diff,a,b,'A school orders <b>'+fmt(a)+' '+thing[0]+'</b> for each of <b>'+b+' '+thing[1]+'</b>. How many '+thing[0]+' is that altogether?');}
+ return asCol('col4',diff,a,b,fmt(a)+' × '+b+' = ?');};
+G.shift=diff=>{const hard=diff==='hard',med=diff==='medium';const pow=hard?pick([10,100,1000]):med?pick([10,100,1000]):pick([10,100]);const places=Math.round(Math.log10(pow));
+ const scale=hard?pick([10,100]):med?pick([1,10,100]):pick([1,10]);let k=scale===1?R(2,hard?999:99):scale===10?R(1,hard?999:99):R(1,hard?999:99);
+ if(scale===100&&k%10===0)k+=1;const value=k/scale;const product=value*pow;const quotient=value/pow;
+ const move=places+(places===1?' column':' columns');
+ const hint='The decimal point stays fixed. Multiplying moves every digit left. Dividing moves every digit right. ×10 or ÷10 is one column, 100 is two, and 1,000 is three.';
+ const hintM='The decimal point stays fixed. Multiplying by '+fmt(pow)+' moves every digit '+move+' to the left.';
+ const hintD='The decimal point stays fixed. Dividing by '+fmt(pow)+' moves every digit '+move+' to the right.';
+ const kind=pick(hard?['mul','div','missM','missD']:med?['mul','div','missM','missD']:['mul','div','missM']);
+ if(!keepDec(value))return null;
+ if(kind==='mul'){const ans=clean(product);if(!keepDec(ans))return null;const text=decShow(value)+' × '+fmt(pow)+' = ?';
+  const o={bite:scale===1?'x10':'x10d',long:true,hint:hintM,steps:['Start with '+decShow(value)+'.','Each digit moves '+move+' to the left. The decimal point does not move.',end(decShow(ans))],audit:{op:'shift',k,scale,pow,div:0,miss:''}};
+  if(forceMC)return mcNear('shift',diff,text,ans,o);return numQ('shift',diff,text,ans,o);}
+ if(kind==='div'){const ans=clean(quotient);if(!(ans>0)||!keepDec(ans))return null;const text=decShow(value)+' ÷ '+fmt(pow)+' = ?';
+  const o={bite:'div10',long:true,hint:hintD,steps:['Start with '+decShow(value)+'.','Each digit moves '+move+' to the right. The decimal point does not move.',end(decShow(ans))],audit:{op:'shift',k,scale,pow,div:1,miss:''}};
+  if(forceMC)return mcNear('shift',diff,text,ans,o);return numQ('shift',diff,text,ans,o);}
+ if(kind==='missM'){const ans=clean(value);if(!keepDec(product))return null;const text='? × '+fmt(pow)+' = '+decShow(product);
+  const o={bite:scale===1?'x10':'x10d',long:true,hint:'The decimal point stays fixed. The digits in the answer have already moved left. Move them back right to find the missing number.',steps:[decShow(product)+' was made by moving digits '+move+' to the left.','Move each digit back '+move+' to the right.',end(decShow(ans))],audit:{op:'shift',k,scale,pow,div:0,miss:'factor'}};
+  if(forceMC)return mcNear('shift',diff,text,ans,o);return numQ('shift',diff,text,ans,o);}
+ const divisor=pow;const start=clean(value*pow);if(!keepDec(start))return null;const ans=pow;const text=decShow(start)+' ÷ ? = '+decShow(value);
+ const o={bite:'div10',long:true,hint:hint,steps:[decShow(start)+' ÷ '+fmt(divisor)+' = '+decShow(value)+'.','The digits moved '+move+' to the right, so the missing divisor is '+fmt(divisor)+'.',end(fmt(ans))],audit:{op:'shift',k:k*pow,scale,pow,div:1,miss:'pow'}};
+ if(forceMC)return mcNear('shift',diff,text,ans,o);return numQ('shift',diff,text,ans,o);};
+G.unfam=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,4);
+ if(v===0){const boxes=hard?R(18,46):med?R(12,30):R(6,16),per=hard?R(16,36):med?R(8,24):R(4,12),sold=R(5,boxes*per-1),left=boxes*per-sold;
+  const text='A shop has <b>'+boxes+'</b> boxes with <b>'+per+'</b> pens in each box. It sells <b>'+sold+'</b> pens. How many pens are left?';
+  const o={bite:'solve',long:true,hint:'Multiply the boxes by the pens in each box first. Then subtract the pens that were sold.',steps:[boxes+' × '+per+' = '+(boxes*per)+' pens to start with.',(boxes*per)+' − '+sold+' = '+left+' left.',end(String(left))],audit:{op:'left',boxes,per,sold}};
+  if(forceMC)return mcNear('unfam',diff,text,left,o);return numQ('unfam',diff,text,left,o);}
+ if(v===1){const a=R(12,89),b=R(3,9),p=a*b;const s=String(a),i=R(0,s.length-1),digit=+s[i];const shown=s.slice(0,i)+'_'+s.slice(i+1);let fits=0;for(let d=0;d<=9;d++){const n=+ (s.slice(0,i)+d+s.slice(i+1));if(n*b===p)fits++;}if(fits!==1)return null;
+  const text='The missing digit makes this calculation correct: <b>'+shown+' × '+b+' = '+p+'</b>. What is the missing digit?';
+  const o={bite:'longm',long:true,hint:'Try the digit in the gap, then multiply. Only one digit makes the product match.',steps:['The complete number is '+a+', because '+a+' × '+b+' = '+p+'.','The hidden digit is '+digit+'.',end(String(digit))],audit:{op:'missdig',a,b,digit}};
+  if(forceMC)return mcNear('unfam',diff,text,digit,o);return numQ('unfam',diff,text,digit,o);}
+ if(v===2){const a=R(12,80),b=R(12,40),c=a+R(1,6),d=b-R(1,5);if(d<2)return null;const opts=[{label:a+' × '+b,v:a*b},{label:c+' × '+d,v:c*d},{label:(a+2)+' × '+(b-1),v:(a+2)*(b-1)},{label:(a-1)+' × '+(d),v:(a-1)*d}];
+  const best=opts.reduce((p,c)=>c.v>p.v?c:p);if(opts.filter(o=>o.v===best.v).length!==1)return null;
+  return mcQ('unfam',diff,'Which calculation has the <b>bigger answer</b>?',best.label,opts.filter(o=>o!==best).map(o=>o.label),{bite:'solve',long:true,hint:'Work out each multiplication, then compare the products. The question asks which calculation is bigger, not what the product is.',steps:opts.map(o=>o.label+' = '+fmt(o.v)+'.'),audit:{op:'bigger',options:opts}});}
+ if(v===3){const each=R(3,8),groups=R(3,12),extra=R(1,each-1),n=each*groups+extra;const up=Math.random()<0.5;const ans=up?Math.ceil(n/each):Math.floor(n/each);
+  const text=up?('<b>'+n+'</b> children need a seat. Each boat holds <b>'+each+'</b>. How many boats are needed so nobody is left behind?'):('<b>'+n+'</b> stickers are put into packs of <b>'+each+'</b>. How many <b>full</b> packs can you make?');
+  const o={bite:'rem',long:true,hint:up?'Divide, then look at the remainder. If anyone is left over they still need a boat, so round up.':'Divide. Only complete packs count, so ignore the remainder and round down.',steps:[n+' ÷ '+each+' = '+Math.floor(n/each)+' remainder '+(n%each)+'.',up?'The remainder still needs a boat, so add 1.':'The remainder is not a full pack, so it is not counted.',end(String(ans))],audit:{op:up?'ceil':'floor',n,each}};
+  if(forceMC)return mcNear('unfam',diff,text,ans,o);return numQ('unfam',diff,text,ans,o);}
+ const cents=pick([150,250,375,425,500,125]),count=R(4,hard?24:12),total=cents*count;
+ const text='Each ticket costs <b>'+money(cents/100)+'</b>. How much do <b>'+count+'</b> tickets cost?';
+ const o={bite:'solve',prefix:'S$',long:true,hint:'Multiply the price by the number of tickets. You can think in cents, then change back to dollars.',steps:[count+' × '+money(cents/100)+' = '+money(total/100)+'.',end(money(total/100))],audit:{op:'pay',cents,count}};
+ if(forceMC)return mcNear('unfam',diff,text,total/100,o);return numQ('unfam',diff,text,total/100,o);};
 const SIMPLE=[[1,2],[1,3],[2,3],[1,4],[3,4],[2,5],[3,5],[1,5],[1,6],[5,6],[3,8],[5,8],[1,8],[3,10],[7,10]];
 G.fractions=diff=>{const hard=diff==='hard',med=diff==='medium';const v=R(0,hard?6:med?4:2);
  if(v===0){const d=pick(hard?[3,4,5,6,8,10]:med?[2,3,4,5,8,10]:[2,3,4,5,10]),n=R(1,d-1),each=R(2,hard?20:12),amt=d*each;
@@ -1455,35 +1513,35 @@ function make(topic,diff){for(let i=0;i<60;i++){let q;try{q=G[topic](diff);}catc
 
 const LEVELS=[
  {key:'m1',subject:'maths',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Level 1',bonus:2,diffs:['easy','easy','medium','hard'],
-  desc:'Slice the falling answer. This week’s factors, primes, squares, cubes and written methods, plus adding, rounding and negatives',
-  topics:{common:2,primes:1,squares:1,cubes:1,factors:1,written:1,tens:1,order:2,roman:1,remainders:1}},
+  desc:'Slice the falling answer. This week: written problems, 4-digit × 2-digit, and digits moving for × or ÷ by 10, 100 and 1,000',
+  topics:{unfam:3,col4:3,shift:2,order:1,primes:1,squares:1,remainders:1}},
  {key:'m2',subject:'maths',mode:'quiz',tycoon:true,cls:'l2',name:'Times Table Tycoon',tag:'Level 2',bonus:2,diffs:['easy','medium','medium'],
-  desc:'This week’s factors, primes, squares, cubes and written methods, plus times tables. The house builds here',
-  topics:{common:1,factors:1,primes:1,squares:1,cubes:1,written:2,tens:1,times:2,division:1,remainders:1}},
+  desc:'This week’s written problems, column multiplication and place-value shifts, plus times tables. The house builds here',
+  topics:{unfam:3,col4:3,shift:2,times:2,factors:1,remainders:1}},
  {key:'m3',subject:'maths',mode:'quiz',tycoon:false,bomb:true,cls:'l3',name:'Mixed Mastermind',tag:'Level 3',bonus:3,diffs:['medium','medium','hard'],
-  desc:'This week’s maths, with fractions, decimals and percentages. Pick easy, medium or hard. A bomb is ticking',
-  topics:{written:2,common:1,primes:1,squares:1,cubes:1,sqvol:1,tens:1,order:2,remainders:1,decimals:1}},
+  desc:'This week’s written methods and place value, with a few other topics. Pick easy, medium or hard. A bomb is ticking',
+  topics:{unfam:3,col4:2,shift:3,order:1,roman:1,squares:1,decimals:1}},
  {key:'m4',subject:'maths',mode:'quiz',tycoon:false,cls:'l4',name:'Shape & Data Lab',tag:'Level 4',bonus:3,diffs:['medium','medium','hard'],
   desc:'Hold a potion and pour it into the right cauldron. A wrong pour explodes and sends you back to question 1. Area, perimeter, volume, angles, shapes, coordinates, time, measures, tables and graphs',
   topics:{area:2,sqvol:1,volume:1,angles:1,shapes:1,coords:1,time:1,measures:1,stats:2,scaling:1}},
  {key:'m5',subject:'maths',mode:'quiz',tycoon:false,cls:'l5',name:'BOSS BATTLE',tag:'Boss level',bonus:5,diffs:['hard','hard','medium'],
-  desc:'This week’s harder maths, plus fractions, percentages and word problems',
-  topics:{written:2,common:1,primes:1,squares:1,cubes:1,sqvol:1,tens:1,word:2,fractions:1,percent:1}},
+  desc:'Harder written problems, 4-digit × 2-digit and place-value shifts, plus fractions and percentages',
+  topics:{unfam:2,col4:3,shift:3,word:1,squares:1,fractions:1,percent:1}},
  {key:'m6',subject:'maths',mode:'parkour',tycoon:false,cls:'l6',name:'Block Parkour',tag:'Parkour',bonus:2,diffs:['easy'],
-  desc:'Jump the obby, then answer five questions. This week’s maths is mixed with adding, times tables and money',
-  topics:{common:1,primes:1,squares:1,written:1,tens:1,factors:1,addsub:2,times:1,money:1}},
+  desc:'Jump the obby, then answer five questions. Most are this week’s written methods and place value',
+  topics:{unfam:2,col4:2,shift:2,addsub:2,times:1,money:1}},
  {key:'m7',subject:'maths',mode:'flappy',tycoon:false,cls:'l7',name:'Flappy Flight',tag:'Flappy',bonus:0,diffs:['easy'],
   desc:'Flap through the pipes. Type the answer before you reach the gap. Most questions are this week’s maths',
-  topics:{squares:1,cubes:1,sqvol:1,written:2,tens:1,x10:1,addsub:1,times:1,money:1}},
+  topics:{unfam:2,col4:2,shift:3,addsub:1,times:1,money:1}},
  {key:'m8',subject:'maths',mode:'treasure',tycoon:false,cls:'l8',name:'Treasure Hunt',tag:'Treasure',bonus:3,diffs:['easy','medium','hard'],
-  desc:'The question is at the top. Find the chest with the right answer. This week’s factors, primes, squares and cubes',
-  topics:{common:2,primes:1,squares:1,cubes:1,factors:1,order:2,roman:1,remainders:1}},
+  desc:'The question is at the top. Find the chest with the right answer. Most questions are this week’s written methods',
+  topics:{unfam:2,col4:2,shift:2,order:2,primes:1,cubes:1}},
  {key:'w1',subject:'week',mode:'quiz',tycoon:false,cls:'l2',name:'This Week at School',tag:'This week',bonus:2,diffs:['easy','medium','hard'],
-  desc:'Only this week’s maths: common factors, primes, squares, cubes, area and volume, written × and ÷, and × or ÷ by 10, 100 and 1,000',
-  topics:{common:2,factors:1,primes:1,squares:1,cubes:1,sqvol:1,written:2,tens:1}},
+  desc:'Only next week’s maths: unfamiliar written problems, 4-digit × 2-digit columns, and digits moving for × or ÷ by 10, 100 and 1,000',
+  topics:{unfam:4,col4:3,shift:3}},
  {key:'w2',subject:'week',mode:'ninja',tycoon:false,cls:'l1',name:'School Ninja',tag:'This week',bonus:2,diffs:['easy','medium','hard'],
-  desc:'Slice this week’s answers only. Common factors, factors and multiples, primes, squares and cubes',
-  topics:{common:2,factors:2,primes:2,squares:2,cubes:2}},
+  desc:'Slice next week’s answers only. Written problems, column multiplication, and place-value shifts',
+  topics:{unfam:4,col4:3,shift:3}},
  {key:'s1',subject:'science',mode:'ninja',tycoon:false,cls:'l1',name:'Number Ninja',tag:'Science',bonus:2,diffs:['easy','medium','hard'],
   desc:'Slice the right science answer. Easy drops fast, hard drops slowly so you can think.',
   topics:{materials:2,space:2,forces:2,living:2,humans:2}},
@@ -1654,7 +1712,7 @@ function showStart(){if(typeof saveCraft==='function'&&CR)saveCraft();stopSpeech
   science:'Year 5 science. Pick Easy, Medium or Hard first. A correct answer pays <b>0.5 R$</b>, <b>1 R$</b> or <b>1.5 R$</b>, with no countdown. A hint pays a quarter. Help is a pass.',
   history:'Year 5 history. Stone Age to Iron Age, the Romans, Anglo-Saxons, Vikings, Ancient Egypt, Ancient Greece, the Maya, and Singapore. Multiple choice. Pick a difficulty. 0.5, 1 or 1.5 R$.',
   spelling:'Year 5 and 6 spelling, in British English. Pick the right spelling, fill the missing letters, choose the homophone, or type a word you hear.',
-  week:'This week at school. Every question is factors, multiples, primes, squares, cubes, area and volume, written multiplication and division, or × and ÷ by 10, 100 and 1,000. Pick Easy, Medium or Hard. 0.5, 1 or 1.5 R$.'
+  week:'Next week at school: written multiplication and division in unfamiliar problems, multiplying a 4-digit number by a 2-digit number in columns, and × or ÷ by 10, 100 and 1,000 by moving digits. The decimal point stays still. Pick Easy, Medium or Hard. 0.5, 1 or 1.5 R$. A hint pays a quarter. There is no question timer.'
  };
  const blurb=blurbs[subjectTab]||blurbs.maths;
  app.innerHTML=`${redeemHTML()}<div class="start">
@@ -1818,10 +1876,26 @@ function topicArt(topic,word){
  if(T==='squares'||T==='sqvol')return squarePic('');
  if(T==='cubes')return cubePic();
  if(T==='common'||T==='factors')return twoGroups();
- if(T==='written'||T==='tens'||T==='x10')return svgBox('<rect x="16" y="24" width="36" height="44" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="58" y="24" width="36" height="44" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><rect x="100" y="24" width="36" height="44" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/><path d="M146 46 H176" stroke="#14142b" stroke-width="4"/><polygon points="176,46 166,40 166,52" fill="#14142b"/>',190,90);
+ if(T==='written'||T==='tens'||T==='x10'||T==='unfam')return svgBox('<rect x="16" y="24" width="36" height="44" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="58" y="24" width="36" height="44" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><rect x="100" y="24" width="36" height="44" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/><path d="M146 46 H176" stroke="#14142b" stroke-width="4"/><polygon points="176,46 166,40 166,52" fill="#14142b"/>',190,90);
+ if(T==='col4')return svgBox('<text x="120" y="22" text-anchor="end" font-size="16" font-weight="800">× ones</text><text x="120" y="48" text-anchor="end" font-size="16" font-weight="800">× tens</text><text x="120" y="74" text-anchor="end" font-size="16" font-weight="800">add</text><path d="M130 28 H250 M130 58 H250" stroke="#14142b" stroke-width="3"/>',270,90);
+ if(T==='shift')return svgBox('<rect x="8" y="28" width="36" height="32" fill="#fff" stroke="#14142b" stroke-width="2"/><rect x="48" y="28" width="36" height="32" fill="#fff" stroke="#14142b" stroke-width="2"/><rect x="88" y="28" width="36" height="32" fill="#fde68a" stroke="#14142b" stroke-width="2"/><circle cx="140" cy="44" r="4" fill="#14142b"/><rect x="156" y="28" width="36" height="32" fill="#fff" stroke="#14142b" stroke-width="2"/><path d="M20 18 H210" stroke="#1d4ed8" stroke-width="3"/><polygon points="210,18 198,12 198,24" fill="#1d4ed8"/>',250,78);
  if(T==='cious'||T==='tious'||T==='cial'||T==='tial'||T==='antent'||T==='able'||T==='silent'||T==='eic'||T==='homo'||T==='statutory')return svgBox('<rect x="24" y="28" width="36" height="44" rx="4" fill="#fde68a" stroke="#14142b" stroke-width="3"/><rect x="68" y="28" width="36" height="44" rx="4" fill="#bfdbfe" stroke="#14142b" stroke-width="3"/><rect x="112" y="28" width="36" height="44" rx="4" fill="#bbf7d0" stroke="#14142b" stroke-width="3"/>',180,100);
  return svgBox('<rect x="30" y="30" width="40" height="40" rx="6" fill="#facc15" stroke="#14142b" stroke-width="3"/><rect x="80" y="30" width="40" height="40" rx="6" fill="#22c55e" stroke="#14142b" stroke-width="3"/><rect x="130" y="30" width="40" height="40" rx="6" fill="#3b82f6" stroke="#14142b" stroke-width="3"/>',200,100);
 }
+function colLayout(a,b){const top=String(a), bot=String(b);const cols=Math.max(top.length,bot.length);const cell=32,x0=36,y0=8;
+ const row=(s,y,fill)=>{let p='';const start=cols-s.length;for(let i=0;i<cols;i++){const ch=i>=start?s[i-start]:'';const x=x0+i*cell;p+=`<rect x="${x}" y="${y}" width="${cell-4}" height="28" fill="${ch?fill:'#f8fafc'}" stroke="#14142b" stroke-width="2"/>`;if(ch)p+=`<text x="${x+(cell-4)/2}" y="${y+20}" text-anchor="middle" font-size="16" font-weight="800" fill="#14142b">${ch}</text>`;}return p;};
+ let p=`<text x="8" y="${y0+50}" font-size="18" font-weight="800" fill="#14142b">×</text>`;
+ p+=row(top,y0,'#fff')+row(bot,y0+34,'#dbeafe');
+ p+=`<path d="M${x0} ${y0+70} H${x0+cols*cell-4}" stroke="#14142b" stroke-width="3"/>`;
+ p+=`<text x="${x0}" y="${y0+92}" font-size="15" font-weight="800" fill="#1d4ed8">× ones</text><text x="${x0+88}" y="${y0+92}" font-size="15" font-weight="800" fill="#b45309">× tens</text><text x="${x0+168}" y="${y0+92}" font-size="15" font-weight="800" fill="#14142b">add</text>`;
+ return svgBox(p,Math.max(x0+cols*cell+12,280),y0+104);}
+function shiftChart(dir){const heads=['1000s','100s','10s','1s','1/10','1/100'];const cell=46;
+ let p=`<circle cx="${16+4*cell-8}" cy="36" r="4" fill="#14142b"/>`;
+ heads.forEach((h,i)=>{const x=16+i*cell+(i>=4?10:0);p+=`<rect x="${x}" y="16" width="40" height="40" fill="${h==='1s'?'#fde68a':'#fff'}" stroke="#14142b" stroke-width="2"/><text x="${x+20}" y="72" text-anchor="middle" font-size="11" font-weight="800" fill="#14142b">${h}</text>`;});
+ const x1=30,x2=16+heads.length*cell;
+ if(dir==='left')p+=`<path d="M${x2-20} 8 H${x1}" stroke="#1d4ed8" stroke-width="4"/><polygon points="${x1},8 ${x1+12},2 ${x1+12},14" fill="#1d4ed8"/>`;
+ else p+=`<path d="M${x1+20} 8 H${x2-10}" stroke="#b45309" stroke-width="4"/><polygon points="${x2-10},8 ${x2-22},2 ${x2-22},14" fill="#b45309"/>`;
+ return svgBox(p,16+heads.length*cell+16,86);}
 function qPic(q){if(!q)return '';const raw=String(q.text||'');if(raw.indexOf('<svg')>=0||raw.indexOf('<table')>=0)return '';
  const a=q.audit||{},op=a.op||'';
  if(op==='div'||op==='rem')return divPic(op==='rem'?a.n:a.a, op==='rem'?a.d:a.b);
@@ -1834,6 +1908,8 @@ function qPic(q){if(!q)return '';const raw=String(q.text||'');if(raw.indexOf('<s
  if(op==='hcf'||op==='lcm')return twoGroups();
  if(op==='prime'||op==='pf'||op==='sqpick'||op==='cubepick')return topicArt(op==='cubepick'?'cubes':op==='sqpick'?'squares':'primes');
  if(op==='tens')return placePic(String(Math.abs(a.a||0)).slice(-4).split(''));
+ if(op==='col'&&a.a&&a.b)return colLayout(a.a,a.b);
+ if(op==='shift')return shiftChart(a.div||a.miss==='factor'?'right':'left');
  if(op==='mul'&&a.a>0&&a.b>0)return topicArt('written');
  if(op==='add'||op==='sub')return numLinePic(Math.min(a.a,a.b),Math.max(a.a,a.b),op==='add'?1:-1);
  if(op==='temp')return numLinePic(a.start,a.start+(a.delta||1),a.delta);
@@ -1995,7 +2071,7 @@ function applyGrade(q,ok,opts){opts=opts||{};
  logAttempt(q,kind,opts.given!=null?opts.given:opts.val);save();
  return {ok,late,gained,bon,built,replay:false};}
 function answer(val,btn,opts){opts=opts||{};if(!Q||Q.locked)return;const q=Q.qs[Q.i];Q.locked=true;stopTimer();stopFall();
- let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
+ let ok=false;if(!opts.timeout&&!opts.fell){if(q.type==='num'){const n=numVal(val);ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
  const g=applyGrade(q,ok,{timeout:opts.timeout,fell:opts.fell,given:opts.given,val:val});
  const late=g.late,gained=g.gained,bon=g.bon,built=g.built;
  if(q.type==='mc')document.querySelectorAll('.choice').forEach(b=>{const c=q.choices[+b.dataset.k];if(c===q.ans)b.classList.add('right');else if(b===btn)b.classList.add('wrong');else b.classList.add('dim');});
@@ -2460,7 +2536,7 @@ function duelAsk(){if(!Q||!Q.duel)return;if(Q.phase==='gg'||Q.phase==='round')re
  Q.qs=[q];Q.i=0;renderDuelBoard({asking:true,q});Q.t0=performance.now();startClock();}
 function duelResolve(val,opts){opts=opts||{};if(!Q||!Q.duel||Q.locked||Q.phase!=='ask')return;const q=Q.qs[Q.i];if(!q)return;
  Q.locked=true;stopTimer();let ok=false;
- if(!opts.timeout&&!opts.pass){if(q.type==='num'){const n=parseFloat(String(val).replace(/−/g,'-').replace(/,/g,''));ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
+ if(!opts.timeout&&!opts.pass){if(q.type==='num'){const n=numVal(val);ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;}else if(q.type==='spell')ok=normSpell(val)===normSpell(q.ans);else ok=val===q.ans;}
  const late=false;Q.asked++;
  if(!opts.pass){const tp=player.topics[q.topic]||(player.topics[q.topic]={c:0,n:0});tp.n++;player.answered++;
   if(ok){tp.c++;player.correct++;Q.streak++;Q.best=Math.max(Q.best,Q.streak);player.bestStreak=Math.max(player.bestStreak||0,Q.streak);Q.right++;
@@ -2672,7 +2748,7 @@ function flapKey(e){if(e.code==='Space'){e.preventDefault();flap();return;}
  else if(e.key==='Enter'){e.preventDefault();flapKeyIn('ok');}}
 function flapSubmit(){if(!FL||!FL.q||FL.q.resolved)return;const raw=FL.input;
  if(raw===''||raw==='-'||/^-?0?\.$/.test(raw)){sfx.wrong();return;}
- const n=parseFloat(String(raw).replace(/−/g,'-'));const q=FL.q;
+ const n=numVal(raw);const q=FL.q;
  const ok=isFinite(n)&&Math.abs(clean(n)-clean(q.ans))<1e-6;
  if(!ok){flapCrash('wrong',raw);return;}
  Q.half=false;Q.qs=[q];Q.i=0;Q.locked=false;
@@ -3122,9 +3198,18 @@ function selfTest(){const roman={1:'I',4:'IV',9:'IX',14:'XIV',40:'XL',49:'XLIX',
   if(a.op==='mul')return a.a*a.b===num||fmt(a.a*a.b).replace(/,/g,'')===shown?'':'mul';
   if(a.op==='div')return a.b&&a.a%a.b===0&&a.a/a.b===num?'':'div';
   if(a.op==='rem')return a.n===a.d*a.q+a.r&&a.r>0&&a.r<a.d&&shown===a.q+' r '+a.r?'':'rem';
+  if(a.op==='col')return a.a*a.b===num?'':'col';
+  if(a.op==='shift'){const base=a.k/a.scale;const expect=a.miss==='factor'?base:a.miss==='pow'?a.pow:(a.div?base/a.pow:base*a.pow);return Math.abs(clean(expect)-clean(num))<1e-6?'':'shift';}
+  if(a.op==='left')return a.boxes*a.per-a.sold===num?'':'left';
+  if(a.op==='ceil')return a.n%a.each!==0&&Math.ceil(a.n/a.each)===num?'':'ceil';
+  if(a.op==='floor')return a.n%a.each!==0&&Math.floor(a.n/a.each)===num?'':'floor';
+  if(a.op==='pay')return Math.abs(a.cents*a.count/100-num)<1e-6?'':'pay';
+  if(a.op==='missdig')return num===a.digit&&String(a.a).indexOf(String(a.digit))>=0?'':'miss';
+  if(a.op==='bigger'){if(!a.options||a.options.length<2)return 'bigger';let best=a.options[0];a.options.forEach(o=>{if(o.v>best.v)best=o;});if(a.options.filter(o=>o.v===best.v).length!==1)return 'bigger tie';return q.ans===best.label?'':'bigger';}
   return 'audit '+q.topic;}
  const prevForce=forceMC;
- ['easy','medium','hard'].forEach(d=>{['common','primes','squares','cubes','sqvol','written','tens'].forEach(t=>{for(let i=0;i<12;i++){forceMC=i%2===0;const q=make(t,d);if(!q)throw new Error('school make '+t+' '+d);const why=schoolOk(q);if(why)throw new Error(why+' '+t+' '+d+' '+plain(q.text).slice(0,70)+' = '+q.ans);const pic=qPic(q);if(pic.indexOf('<svg')<0)throw new Error('school pic '+t);const shown=shownSchool(q);if(shown&&pic.indexOf('>'+shown+'<')>=0)throw new Error('pic leak '+t+' '+shown);}});});
+ if(numVal('4,520')!==4520||numVal('.36')!==0.36||numVal('0.36')!==0.36||numVal(' 3.7 ')!==3.7)throw new Error('numVal');
+ ['easy','medium','hard'].forEach(d=>{['unfam','col4','shift'].forEach(t=>{for(let i=0;i<16;i++){forceMC=i%2===0;const q=make(t,d);if(!q)throw new Error('school make '+t+' '+d);const why=schoolOk(q);if(why)throw new Error(why+' '+t+' '+d+' '+plain(q.text).slice(0,80)+' = '+q.ans);if(/add a zero|put the zeros|filled with zeros/i.test(q.hint||''))throw new Error('zero hint '+t);const pic=qPic(q);if(pic.indexOf('<svg')<0)throw new Error('school pic '+t);const shown=shownSchool(q);if(shown&&pic.indexOf('>'+shown+'<')>=0)throw new Error('pic leak '+t+' '+shown);if(t==='col4'&&q.audit&&q.audit.op==='col'){if(d==='easy'&&!(q.audit.b<10||q.audit.a<1000))throw new Error('easy col');if(d!=='easy'&&!(q.audit.a>=1000&&q.audit.b>=10))throw new Error('hard col');}}});});
  forceMC=prevForce;
  let fs=0,fn=0;for(let i=0;i<160;i++){const q=numericQuestion('medium');if(!q||q.type!=='num')throw new Error('flap q');fn++;if(SCHOOL_TOPICS[q.topic])fs++;}if(fs/fn<0.52||fs/fn>0.84)throw new Error('flap share '+fs/fn);
  let craftShare=0;for(let i=0;i<120;i++){const id=pick(schoolOr(CRAFT_SCHOOL,CRAFT_OTHER));if(SCHOOL_TOPICS[id])craftShare++;}if(craftShare/120<0.52||craftShare/120>0.84)throw new Error('craft share '+craftShare/120);
